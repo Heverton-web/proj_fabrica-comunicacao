@@ -94,7 +94,8 @@ Ao final da rodada 4, `/esbocar`:
   // Rodada 3 — escolha única do operador (objetivo/tom compostos):
   "objetivo_tom": "informacional_tecnico",
   //   educacional_comercial | informacional_tecnico | comercial_informacional_parceria
-  "materiais_selecionados": ["pdf", "landing-page", "arte-01", "arte-02", "arte-03"]
+  "materiais_selecionados": ["pdf", "landing-page", "arte-01", "arte-02", "arte-03"],
+  "edicao": "1ª Edição"           // Obrigatório se 'pdf' estiver em materiais_selecionados
 }
 ```
 

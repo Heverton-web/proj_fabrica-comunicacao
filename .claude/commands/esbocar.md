@@ -77,6 +77,8 @@ Uma única pergunta, multiSelect, com as 6 opções:
 Exija pelo menos 1 selecionado — se vier vazio, assuma todos os 6 (nunca pare para
 confirmar, REGRA 3).
 
+**Se o material 'PDF (apostila)' for selecionado:** pergunte adicionalmente na mesma rodada (ou em uma pergunta subsequente) para o operador definir a **edição do material** (ex: '1ª Edição', '2ª Edição Revisada'). Esse valor deve ser gravado obrigatoriamente no campo `edicao` de `config_projeto.json` para que os validadores e templates o processem de forma correta.
+
 ## Passo 5 — Gravar e preparar (sem nova pausa)
 
 1. Crie `output/<slug>/insumos/` e copie/referencie os arquivos de imagem/texto-base
