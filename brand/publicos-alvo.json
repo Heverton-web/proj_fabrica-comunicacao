@@ -1,0 +1,63 @@
+{
+  "_fonte": "Definido pelo operador na revisão da interação humana (rod. 2 e 3 do /esbocar). Arquivo FIXO — mesmo papel que design-system-conexao.json tem para cor/fonte, mas para registro/voz. Nunca derivar público ou tom do texto-base.",
+  "_uso": "Lido pelo diretor-de-arte para decompor objetivo_tom em objetivo + tom_de_voz, e pelo analista-insumos para registrar as implicações práticas por público no dossie_insumos.md.",
+
+  "publicos": {
+    "consultores": {
+      "_descricao": "Profissionais de saúde que aplicam o produto clinicamente. Querem autoridade técnica, segurança clínica e evidência.",
+      "toms_de_voz_compativeis": ["educacional_comercial", "informacional_tecnico"],
+      "registro_de_linguagem": {
+        "vocabulario": "técnico-clínico (especificações, indicações, contraindicações, protocolos)",
+        "postura": "par técnico — não vende, informa com autoridade",
+        "evitar": "linguagem de vendas direta, superlativos sem evidência, jargão de parceria/distribuição",
+        "cta_padrao": "Saiba mais sobre a aplicação clínica"
+      },
+      "enfase_por_material": {
+        "pdf": "Especificações técnicas completas, tabela de composição, protocolo de uso",
+        "landing-page": "Hero com dado técnico de impacto → seção de especificações → prova (selos/certificações)",
+        "apresentacao": "1 slide = 1 spec ou 1 indicação clínica — sem bullet genérico",
+        "arte": "Headline técnico direto (ex.: 'Torque de 15 N·cm. Plataformas 3.0 a 5.0.')"
+      }
+    },
+
+    "clientes": {
+      "_descricao": "Pacientes ou público leigo interessado no produto/serviço. Querem clareza, benefício concreto e confiança.",
+      "toms_de_voz_compativeis": ["educacional_comercial", "informacional_tecnico"],
+      "registro_de_linguagem": {
+        "vocabulario": "acessível, sem jargão técnico; benefício concreto em linguagem cotidiana",
+        "postura": "orientador — explica, não impressiona com técnica",
+        "evitar": "termos clínicos sem explicação, especificações numéricas isoladas sem contexto de benefício",
+        "cta_padrao": "Fale com um especialista"
+      },
+      "enfase_por_material": {
+        "pdf": "Problema do paciente → como o produto resolve → o que esperar no pós-procedimento",
+        "landing-page": "Hero com benefício de resultado (não de spec) → prova social/selos → CTA de contato",
+        "apresentacao": "Narrativa: antes/depois, dor → alívio — nunca tabela de specs como slide principal",
+        "arte": "Headline de resultado/benefício (ex.: 'Sorria com confiança. Conheça o implante certo para você.')"
+      }
+    },
+
+    "distribuidores": {
+      "_descricao": "Parceiros comerciais que revendem ou distribuem o produto. Querem argumento de revenda, margem, diferencial competitivo e suporte ao parceiro.",
+      "toms_de_voz_compativeis": ["comercial_informacional_parceria"],
+      "registro_de_linguagem": {
+        "vocabulario": "comercial-técnico (portfólio, margem, diferencial de mercado, suporte técnico-comercial, co-marketing)",
+        "postura": "parceiro estratégico — fala de negócio, não só de produto",
+        "evitar": "linguagem clínico-técnica pura (sem contexto de venda/parceria), copy orientado a paciente",
+        "cta_padrao": "Seja um parceiro Conexão"
+      },
+      "enfase_por_material": {
+        "pdf": "Portfólio + diferenciais de revenda + argumentário de vendas + suporte disponível",
+        "landing-page": "Hero com proposta de parceria → diferenciais de distribuição → benefícios do programa de parceiros → CTA de cadastro/contato comercial",
+        "apresentacao": "Pitch de parceria: mercado → produto → programa de distribuição → próximos passos",
+        "arte": "Headline de oportunidade (ex.: 'Amplie seu portfólio com a linha Conexão Implantes.')"
+      }
+    }
+  },
+
+  "mapeamento_objetivo_tom": {
+    "educacional_comercial":              { "objetivo": "educacional",    "tom_de_voz": "comercial" },
+    "informacional_tecnico":              { "objetivo": "informacional",  "tom_de_voz": "tecnico" },
+    "comercial_informacional_parceria":   { "objetivo": "comercial",      "tom_de_voz": "informacional_tecnico_de_parceria_de_venda" }
+  }
+}

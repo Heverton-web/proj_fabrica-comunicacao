@@ -33,6 +33,14 @@ cor_fundo, fonte_titulo, fonte_corpo), lidos de `brand/design-system-conexao.jso
 Também monte manualmente: `author=<nome da marca>`, `title=<nome do material>`,
 `cta_final=<CTA extraído da seção de Fechamento>`.
 
+**Formato obrigatório das flags:** cada linha `-V chave=valor` vira DOIS elementos na
+lista Python — `"-V", "chave=valor"` (argv separados). NUNCA passe a linha inteira
+como um token único (`"-V chave=valor"`): o pandoc parseia o nome da variável com
+espaço à esquerda e a substituição falha em silêncio, caindo no default do template
+(fonte Arial, cores fora da marca) sem erro — quebra a REGRA 6. O helper
+`pdf_typst.py` já normaliza tokens únicos automaticamente (defesa em profundidade),
+mas monte no formato certo desde o início.
+
 ### 2. Compilar via Pandoc + Typst (helper `pdf_typst.py`)
 
 ```python
@@ -43,6 +51,9 @@ from scripts.pdf_typst import executar
 slug_dir = Path("output") / slug
 md = slug_dir / "pdf" / f"apostila_{slug}.md"
 pdf = slug_dir / "pdf" / f"apostila_{slug}.pdf"
+
+# lista_de_flags_V: SEMPRE no formato ["-V", "chave=valor", ...] (argv separados)
+lista_de_flags_V = ["-V", "cor_primaria=#c9a655", "-V", "fonte_titulo=Inter"]
 
 comando = [
     "pandoc", str(md),

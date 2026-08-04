@@ -29,6 +29,35 @@ class Resultado:
         self.stderr = stderr
 
 
+def _normalizar_flags_v(comando):
+    """Quebra tokens '-V chave=valor' em ['-V', 'chave=valor'].
+
+    Motivo: os compiladores montam o comando a partir da saida de
+    `parametros_projeto.py --pdf-vars`, que imprime uma linha '-V chave=valor'
+    por par. Se o chamador passar cada linha como UM argv (forma natural de
+    copiar a saida), o pandoc interpreta o token '-V chave=valor' como opcao
+    '-V' com argumento ' chave=valor' (espaco a esquerda no nome da variavel) e
+    a substituicao no template FALHA SILENCIOSAMENTE - o template cai no
+    else/default (fonte Arial, cores default) sem nenhum erro, quebrando a
+    fidelidade a marca (REGRA 6). Normalizar aqui garante argv separados,
+    independente de como o chamador montou a lista.
+    """
+    novo = []
+    for arg in comando:
+        arg = str(arg)
+        if arg.startswith("-V "):
+            # strip(): captura de saida no Windows pode deixar '\r' (CRLF)
+            # ou espaco no fim - um '\r' embutido no valor quebraria a
+            # variavel no template (ex.: rgb("#0f172a\r")). Nao afeta
+            # valores legitimos com espacos internos (ex.: title=Kit Start Flex).
+            novo += ["-V", arg[3:].strip()]
+        elif arg.startswith("--variable "):
+            novo += ["--variable", arg[len("--variable "):].strip()]
+        else:
+            novo.append(arg)
+    return novo
+
+
 def _sem_motor_pdf(comando, typ_path):
     """Remove --pdf-engine e redireciona a saida (-o) para o .typ intermediario."""
     novo = []
@@ -63,7 +92,7 @@ def executar(comando, pdf_path, dir_raiz, typst_bin, timeout=600, manter_typ=Fal
     dir_raiz = Path(dir_raiz)
     typ_path = dir_raiz / f"_{pdf_path.stem}.typ"
 
-    pandoc = subprocess.run(_sem_motor_pdf(comando, typ_path),
+    pandoc = subprocess.run(_sem_motor_pdf(_normalizar_flags_v(comando), typ_path),
                             capture_output=True, text=True, timeout=timeout)
     if not typ_path.exists() or typ_path.stat().st_size == 0:
         return Resultado(pandoc.returncode or 1, pandoc.stdout,

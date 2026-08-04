@@ -32,6 +32,21 @@ didático que a apostila. Ver `SPEC_HTML.md`.
    inventar nada).
 5. **CTA final** — reforço da mensagem central + botão de ação.
 
+## Tom de voz por público-alvo (obrigatório — REGRA 6)
+
+Leia `brief_criativo.publico_alvo` e aplique o registro de linguagem definido em
+`brand/publicos-alvo.json` para esse público. A landing page é o material mais
+persuasivo — o tom errado aqui é o erro mais visível.
+
+| Público | Tom | Ênfase na landing |
+|---------|-----|-------------------|
+| `consultores` | Técnico-clínico | Hero com dado técnico de impacto → seção de specs → selos/certificações |
+| `clientes` | Acessível/orientador | Hero com benefício de resultado → prova social → CTA de contato |
+| `distribuidores` | Comercial-parceiro | Hero com proposta de parceria → diferenciais de distribuição → CTA de cadastro comercial |
+
+O `dossie_insumos.md` gerado por `analista-insumos` já traz as implicações práticas
+do público escolhido — use-as como guia, não as re-derive do texto-base.
+
 ## Restrições
 
 - Persuasivo não é sinônimo de inflado: todo superlativo ou claim de superioridade
@@ -39,4 +54,6 @@ didático que a apostila. Ver `SPEC_HTML.md`.
   factual.
 - Nunca inclua cor/fonte no `conteudo.json` — estilo vem do design system fixo
   (`brand/design-system-conexao.json`) via `compilador-html`/`aplicador-marca-conexao`.
+- O tom de voz vem de `brief_criativo.tom_de_voz` (escolha do operador, via
+  `brand/publicos-alvo.json`) — nunca re-derive do texto-base.
 - Handoff: `compilador-html` consome `conteudo.json` + `templates/landing.html`.

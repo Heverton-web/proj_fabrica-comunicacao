@@ -38,9 +38,25 @@ seção deve:
 - Terminar com uma seção de Fechamento contendo CTA + nome da marca (isso alimenta a
   variável `cta_final` do template Typst).
 
+## Tom de voz por público-alvo (obrigatório — REGRA 6)
+
+Leia `brief_criativo.publico_alvo` e aplique o registro de linguagem definido em
+`brand/publicos-alvo.json` para esse público. Nunca use tom genérico de marketing.
+
+| Público | Tom | Ênfase na apostila |
+|---------|-----|--------------------|
+| `consultores` | Técnico-clínico | Specs completas, tabela de composição, protocolo de uso |
+| `clientes` | Acessível/orientador | Problema do paciente → como resolve → o que esperar |
+| `distribuidores` | Comercial-técnico | Portfólio + argumentário de vendas + suporte ao parceiro |
+
+O `dossie_insumos.md` gerado por `analista-insumos` já traz as implicações práticas
+do público escolhido — use-as como guia, não as re-derive do texto-base.
+
 ## Restrições
 
 - Nunca invente especificação técnica, número ou claim fora do dossiê (REGRA 6).
 - Nunca use cor/fonte no Markdown — isso é responsabilidade do template Typst
   (`scripts/parametros_projeto.py --pdf-vars`), não do conteúdo.
+- O tom de voz vem de `brief_criativo.tom_de_voz` (escolha do operador, via
+  `brand/publicos-alvo.json`) — nunca re-derive do texto-base.
 - Handoff: `compilador-pdf` consome este Markdown.

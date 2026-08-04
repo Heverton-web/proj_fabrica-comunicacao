@@ -64,9 +64,26 @@ que devem sempre ser lidos por completo, nunca truncados ou "grepados" — decis
 marca e fidelidade à fonte exigem contexto integral.
 
 **REGRA 8 — Scripts são o Árbitro, não a Opinião do Agente:** toda validação objetiva
-(dimensão de PNG, tamanho de PDF, presença de cor/fonte de marca, texto vetorial) é
-feita por script determinístico em `scripts/`, nunca por afirmação do agente. Gates de
-fase são exit codes (`--estrito` → exit 1 se não conforme), não julgamento subjetivo.
+(dimensão de PNG, tamanho de PDF, presença de cor/fonte de marca, texto vetorial, logo
+embutido, transparência de imagem) é feita por script determinístico em `scripts/`,
+nunca por afirmação do agente. Gates de fase são exit codes (`--estrito` → exit 1 se
+não conforme), não julgamento subjetivo.
+
+**REGRA 9 — Grafo Primeiro, Arquivo Depois (economia de tokens inviolável):**
+toda exploração do projeto começa pelo grafo de conhecimento (`code-review-graph`),
+não por leitura direta de arquivo. A ordem obrigatória é:
+1. **Grafo** — `semantic_search_nodes_tool`, `query_graph_tool`,
+   `get_architecture_overview_tool` para localizar o que se precisa.
+2. **Trecho cirúrgico** — `get_review_context_tool` ou `view_file` com
+   `StartLine`/`EndLine` precisos, só se o grafo não trouxer o trecho completo.
+3. **Arquivo inteiro** — apenas para os documentos que a REGRA 7 lista como
+   obrigatórios de leitura integral (texto-base, `brief_criativo.json`,
+   `_pool_estado.json`, `relatorio_auditoria.json`, `manifesto_materiais.json`).
+
+Grep, `list_dir` e leitura de arquivo inteiro sem passar pelo grafo primeiro são
+proibidos quando o grafo puder responder — a violação desperdiça tokens sem ganho
+de precisão. Fall back para leitura direta **somente** quando o grafo não cobrir
+o que se precisa (ex.: arquivo recém-criado ainda não indexado).
 
 ## Arquitetura em uma frase
 
@@ -118,41 +135,40 @@ customizado é necessário — o estado do pipeline é 100% arquivo JSON (ver RE
 ferramentas nativas de leitura/escrita de arquivo do Claude Code já cobrem o que um MCP
 de filesystem faria.
 
-<!-- code-review-graph MCP tools -->
-## MCP Tools: code-review-graph
+## Grafo de Conhecimento — MCP `code-review-graph` (REGRA 9)
 
-**IMPORTANT: This project has a knowledge graph. ALWAYS use the
-code-review-graph MCP tools BEFORE using Grep/Glob/Read to explore
-the codebase.** The graph is faster, cheaper (fewer tokens), and gives
-you structural context (callers, dependents, test coverage) that file
-scanning cannot.
+Este projeto possui um grafo de conhecimento auto-atualizado (via hooks em `.gemini/hooks/`).
+Toda exploração começa aqui — é mais rápido, mais barato em tokens e traz contexto
+estrutural (chamadores, dependentes, cobertura) que leitura de arquivo não consegue.
 
-### When to use graph tools FIRST
+### Quando usar cada tool do grafo
 
-- **Exploring code**: `semantic_search_nodes_tool` or `query_graph_tool` instead of Grep
-- **Understanding impact**: `get_impact_radius_tool` instead of manually tracing imports
-- **Code review**: `detect_changes_tool` + `get_review_context_tool` instead of reading entire files
-- **Finding relationships**: `query_graph_tool` with callers_of/callees_of/imports_of/tests_for
-- **Architecture questions**: `get_architecture_overview_tool` + `list_communities_tool`
+| Situação no pipeline | Tool a usar |
+|---|---|
+| Localizar uma skill, script ou agente por nome/função | `semantic_search_nodes_tool` |
+| Entender o que chama / é chamado por um módulo | `query_graph_tool` (callers_of / callees_of) |
+| Avaliar impacto de mudar um script de validação | `get_impact_radius_tool` |
+| Revisar o que o FreeBuff (ou outro agente) alterou | `detect_changes_tool` + `get_review_context_tool` |
+| Entender quais fluxos do pipeline são afetados por uma mudança | `get_affected_flows_tool` |
+| Visão de alto nível da arquitetura (skills × agentes × scripts) | `get_architecture_overview_tool` + `list_communities_tool` |
+| Planejar renomeação ou encontrar código morto | `refactor_tool` |
 
-Fall back to Grep/Glob/Read **only** when the graph doesn't cover what you need.
+### Hierarquia de acesso — ordem obrigatória (REGRA 9)
 
-### Key Tools
+```
+1. Grafo           → semantic_search / query_graph / get_review_context
+2. Trecho cirúrgico → view_file com StartLine+EndLine exatos
+3. Arquivo inteiro  → SOMENTE para os documentos da REGRA 7
+                      (texto-base, brief_criativo.json, _pool_estado.json,
+                       relatorio_auditoria.json, manifesto_materiais.json)
+```
 
-| Tool | Use when |
-| ------ | ---------- |
-| `detect_changes_tool` | Reviewing code changes — gives risk-scored analysis |
-| `get_review_context_tool` | Need source snippets for review — token-efficient |
-| `get_impact_radius_tool` | Understanding blast radius of a change |
-| `get_affected_flows_tool` | Finding which execution paths are impacted |
-| `query_graph_tool` | Tracing callers, callees, imports, tests, dependencies |
-| `semantic_search_nodes_tool` | Finding functions/classes by name or keyword |
-| `get_architecture_overview_tool` | Understanding high-level codebase structure |
-| `refactor_tool` | Planning renames, finding dead code |
+`grep_search`, `list_dir` e leitura de arquivo inteiro sem passar pelo grafo primeiro
+são proibidos quando o grafo puder responder. Fall back para leitura direta apenas
+quando o arquivo for recém-criado e ainda não indexado pelo grafo.
 
-### Workflow
+### O grafo se auto-atualiza
 
-1. The graph auto-updates on file changes (via hooks).
-2. Use `detect_changes_tool` for code review.
-3. Use `get_affected_flows_tool` to understand impact.
-4. Use `query_graph_tool` pattern="tests_for" to check coverage.
+Hooks em `.gemini/hooks/crg-update.sh` e `.gemini/hooks/crg-session-start.sh`
+atualizam o grafo a cada mudança de arquivo — após editar um skill ou script,
+o grafo reflete a mudança sem intervenção manual.

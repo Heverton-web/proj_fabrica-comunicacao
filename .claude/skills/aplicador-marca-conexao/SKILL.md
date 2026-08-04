@@ -226,18 +226,68 @@ só `opacity`/`transform` (GPU-safe, nunca `top`/`left`/`width`/`height`).
 - **Arte (`arte-*`):** é uma imagem estática (screenshot único) — não precisa de
   motion, mas o fundo em gradiente + glows + título-gradiente valem do mesmo jeito.
 
+## Logo — OBRIGATÓRIO em todo material (não é opcional)
+
+O logo deixou de ser "se disponível". Todo artefato final deve conter o logo correto,
+copiado de `assets/logos-marca/` para `output/<slug>/<tipo>/assets/logos/`, e
+referenciado no HTML/Typst. A ausência de logo é falha de compilação detectada por
+`scripts/validar-logo.py` (REGRA 8) — nunca entregue material sem logo.
+
+### Qual variante usar
+
+O design system usa fundo escuro (`--bg: #0f172a`). Regra por contraste:
+
+| Contexto de fundo | Arquivo de logo |
+|---|---|
+| Fundo escuro (padrão — landing, apresentação, arte, capa PDF) | `Logo_Conexão_horizontal_texto_branco.png` |
+| Fundo claro (exceção — só se o operador solicitar tema claro) | `Logo_Conexão_horizontal_texto_preto.png` |
+
+**Nunca** use a variante vertical (`.._vertical_..`) em header/cabeçalho — reservada
+para composições de capa onde há espaço vertical livre (ex.: capa PDF centralizada).
+
+### Posição por tipo de material
+
+- **landing-page / apresentação**: header fixo, topo-esquerda, altura 32–40px,
+  `object-fit: contain`. Exemplo:
+  ```html
+  <header class="cabecalho">
+    <img src="assets/logos/Logo_Conexão_horizontal_texto_branco.png"
+         alt="Conexão Implantes" class="logo" height="36">
+    <span class="badge">USO PROFISSIONAL</span>
+  </header>
+  ```
+- **arte-01/02/03**: canto superior esquerdo do canvas, margem de 48px, altura 28–32px.
+  Nunca centrado — reservar centro para headline e imagem do produto.
+- **PDF (capa)**: centrado na área superior da capa, altura 56–64px. O `compilador-pdf`
+  copia o arquivo para `output/<slug>/pdf/assets/logos/` e o template Typst o
+  referencia via `image("assets/logos/Logo_Conexão_horizontal_texto_branco.png")`.
+
+### Como copiar o arquivo (obrigatório antes de compilar)
+
+```python
+import shutil
+from pathlib import Path
+
+def copiar_logo(dir_projeto: Path, slug: str, tipo: str):
+    src = dir_projeto / "assets" / "logos-marca" / "Logo_Conexão_horizontal_texto_branco.png"
+    dst = dir_projeto / "output" / slug / tipo / "assets" / "logos"
+    dst.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(src, dst)
+```
+
 ## Por tipo de material
 
-- **landing-page / apresentacao**: cabeçalho = logo (se disponível) à esquerda +
-  `.badge` de contexto à direita (ex.: "USO INTERNO", "USO PROFISSIONAL"). Títulos em
-  gradiente de texto, Inter peso 900 (H1) / 700 (H2), corpo em Inter peso 400 (300 para
-  subtítulo/texto de apoio). CTA final sempre usa `.btn-primario`.
-- **arte-01/02/03**: mesmo `:root` + fontes + vinheta + glows + título-gradiente. O
-  layout usa o padrão `.card`/painel quando há conteúdo tabular/lista (ex.: cartão de
-  referência rápida), com `.badge` para o selo de contexto no canto.
-- **PDF**: fora de escopo desta skill por decisão do operador — não aplique nada daqui
-  a `compilador-pdf`/`template_apostila.typ` até que as regras específicas do PDF
-  ("Flex Gold") sejam definidas.
+- **landing-page / apresentacao**: cabeçalho = logo obrigatório (variante
+  `texto_branco`, topo-esquerda, ver seção "Logo") + `.badge` de contexto à direita
+  (ex.: "USO INTERNO", "USO PROFISSIONAL"). Títulos em gradiente de texto, Inter peso
+  900 (H1) / 700 (H2), corpo em Inter peso 400 (300 para subtítulo/texto de apoio).
+  CTA final sempre usa `.btn-primario`.
+- **arte-01/02/03**: mesmo `:root` + fontes + vinheta + glows + título-gradiente + logo
+  obrigatório no canto superior esquerdo (ver seção "Logo"). O layout usa o padrão
+  `.card`/painel quando há conteúdo tabular/lista, com `.badge` para o selo de contexto.
+- **PDF**: logo obrigatório na capa (variante `texto_branco`, centrado no topo) — ver
+  seção "Logo". O resto do estilo PDF é definido pelas regras próprias do PDF ("Flex
+  Gold") a documentar em rodada futura.
 
 ## Cores que NÃO vêm desta skill (exceção legítima)
 

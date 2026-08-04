@@ -1,5 +1,26 @@
 {
   "_fonte": "Baseado em E:\\design-system-conexao-implantes.md (42 tokens, autoritativo) + confirmado visualmente contra a tela de login real 'Conexão Digital Implant' e a capa Master Flex. Fixo para landing-page, apresentacao e arte. O PDF NAO usa este arquivo ainda — será tratado em uma rodada futura (regras próprias, estilo 'Flex Gold').",
+  "logos": {
+    "_regra": "Logo é OBRIGATÓRIO em todo material (não opcional). Ver .claude/skills/aplicador-marca-conexao/SKILL.md seção 'Logo — OBRIGATÓRIO'. Validado por scripts/validar-logo.py (REGRA 8).",
+    "variante_padrao": "horizontal_texto_branco",
+    "variante_fundo_claro": "horizontal_texto_preto",
+    "variante_capa_vertical": "vertical_texto_branco",
+    "arquivos": {
+      "horizontal_texto_branco": "assets/logos-marca/Logo_Conexão_horizontal_texto_branco.png",
+      "horizontal_texto_preto":  "assets/logos-marca/Logo_Conexão_horizontal_texto_preto.png",
+      "vertical_texto_branco":   "assets/logos-marca/Logo_Conexão_vertical_texto_branco.png",
+      "vertical_texto_preto":    "assets/logos-marca/Logo_Conexão_vertical_texto_preto.png",
+      "favicon":                 "assets/logos-marca/favicon.png"
+    },
+    "posicao_por_tipo": {
+      "landing-page":   "header topo-esquerda, altura 36px",
+      "apresentacao":   "header topo-esquerda, altura 36px",
+      "arte-01":        "canto superior esquerdo, margem 48px, altura 28px",
+      "arte-02":        "canto superior esquerdo, margem 48px, altura 28px",
+      "arte-03":        "canto superior esquerdo, margem 48px, altura 32px",
+      "pdf-capa":       "centrado no topo da capa, altura 56-64px, variante vertical_texto_branco"
+    }
+  },
   "cores": {
     "bg": "#0f172a",
     "surface": "#1e293b",
