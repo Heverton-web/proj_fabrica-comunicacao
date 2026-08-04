@@ -188,17 +188,19 @@
     #place(top + left, rect(width: 100%, height: 0.3cm, fill: gradiente-dourado))
     #place(bottom + left, rect(width: 100%, height: 0.3cm, fill: gradiente-dourado))
 
-    // Do lado superior esquerdo o logo da marca horizontal com texto branco (um pouco menor: width 3.6cm)
+    // Logo horizontal centralizado no topo (width 3.6cm)
     $if(logo_imagem)$
-    #place(top + left, dx: 2cm, dy: 1.5cm, image("$logo_imagem$", width: 3.6cm))
+    #place(top + center, dy: 1.5cm, image("$logo_imagem$", width: 3.6cm))
     $else$
-    #place(top + left, dx: 2cm, dy: 1.5cm, image("pdf/assets/logos/Logo_Conexão_horizontal_texto_branco.png", width: 3.6cm))
+    #place(top + center, dy: 1.5cm, image("pdf/assets/logos/Logo_Conexão_horizontal_texto_branco.png", width: 3.6cm))
     $endif$
 
     // Bloco Único de Conteúdo: Imagem do produto, Título e Parágrafo explicativo
-    // Alinhados horizontalmente à esquerda (dx: 2cm) e verticalmente ao centro (horizon)
-    #place(left + horizon, dx: 2cm, block(width: 17cm)[
-      // Imagem do produto com alinhamento natural à esquerda
+    // Todos centralizados horizontalmente e verticalmente (center + horizon)
+    #place(center + horizon, block(width: 17cm)[
+      #set align(center)
+      
+      // Imagem do produto centralizada
       $if(imagem_produto)$
       #image("$imagem_produto$", width: 13.5cm, height: 7.2cm, fit: "contain")
       $else$
@@ -222,8 +224,9 @@
       ]
     ])
 
-    // No rodapé acima da faixa dourada o texto de direitos autorais (opacidade de 60%)
-    #place(bottom + left, dx: 2cm, dy: -1.2cm, block(width: 17cm)[
+    // No rodapé acima da faixa dourada o texto de direitos autorais (centralizado)
+    #place(bottom + center, dy: -1.2cm, block(width: 17cm)[
+      #set align(center)
       #text(font: fonte-corpo, size: 8.5pt, style: "italic", fill: rgb(255, 255, 255, 60%))[
         2026 © Todos os direitos reservados a Conexão Sistemas de Próteses
       ]
