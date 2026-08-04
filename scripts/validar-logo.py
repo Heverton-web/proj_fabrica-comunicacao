@@ -69,19 +69,50 @@ def checar_pdf(slug: str) -> int:
         print(f"  -> Copie {DIR_LOGOS / LOGO_PADRAO} para output/<slug>/pdf/assets/logos/")
         return 1
 
-    # Verifica que o .typ referencia o logo (pela presença do arquivo de referência)
-    typ_files = list(pasta.glob("*.typ"))
-    if not typ_files:
-        print(f"[AVISO] pdf: nenhum arquivo .typ encontrado em {pasta} — verifique manualmente")
+    # Verifica no PDF BINARIO que ha pelo menos uma imagem raster embutida
+    # (o logo na capa). O Typst nomeia XObjects como /x0, /x1 (nao /Im0), por
+    # isso checamos por presenca de XObject, nao por prefixo. Checar o .typ
+    # intermediario e fragil: o helper pdf_typst.py o apaga apos compilar.
+    pdf = pasta / f"apostila_{slug}.pdf"
+    if not pdf.exists():
+        print(f"[FALHA] pdf: {pdf} não encontrado")
+        return 1
+    try:
+        from pypdf import PdfReader
+        leitor = PdfReader(str(pdf))
+        total_imagens = 0
+        for pagina in leitor.pages:
+            xo = pagina.get("/Resources", {}).get("/XObject", {}) or {}
+            total_imagens += len([k for k in xo if k.startswith("/")])
+        if total_imagens == 0:
+            print(f"[FALHA] pdf: nenhuma imagem embutida encontrada em {pdf}")
+            print(f"  -> Adicione o logo na capa do template Typst (image(...) com logo_imagem)")
+            return 1
+    except Exception as e:
+        print(f"[FALHA] pdf: nao foi possivel inspecionar o PDF ({e})")
         return 1
 
-    typ_conteudo = typ_files[0].read_text(encoding="utf-8", errors="replace")
-    if "logo" not in typ_conteudo.lower() and LOGO_PADRAO not in typ_conteudo:
-        print(f"[FALHA] pdf: logo não referenciado em {typ_files[0].name}")
-        print(f"  -> Adicione referência ao logo na capa do template Typst")
+    print(f"[OK] pdf: logo presente (arquivo copiado) e imagem embutida no PDF ({total_imagens} XObject(s))")
+    return 0
+
+
+def checar_arte(slug: str, tipo: str) -> int:
+    pasta = DIR_OUTPUT / slug / tipo
+
+    # Verifica se o arquivo de logo foi copiado para assets/
+    logo_asset = pasta / "assets" / "logos" / LOGO_PADRAO
+    if not logo_asset.exists():
+        print(f"[FALHA] {tipo}: arquivo de logo não copiado para {logo_asset}")
+        print(f"  -> Copie {DIR_LOGOS / LOGO_PADRAO} para {logo_asset}")
         return 1
 
-    print(f"[OK] pdf: logo presente e referenciado em {typ_files[0].name}")
+    # Para artes, o HTML temporário é apagado após a geração do PNG. Verificamos o PNG final.
+    pngs = list(pasta.glob("*.png"))
+    if not pngs:
+        print(f"[ERRO] {tipo}: nenhum arquivo PNG encontrado em {pasta}")
+        return 1
+
+    print(f"[OK] {tipo}: logo presente (arquivo copiado) e PNG de arte gerado ({pngs[0].name})")
     return 0
 
 
@@ -100,8 +131,10 @@ def main():
 
     if args.tipo == "pdf":
         return checar_pdf(args.slug)
-    elif args.tipo in ("landing-page", "apresentacao", "arte-01", "arte-02", "arte-03"):
+    elif args.tipo in ("landing-page", "apresentacao"):
         return checar_html(args.slug, args.tipo)
+    elif args.tipo in ("arte-01", "arte-02", "arte-03"):
+        return checar_arte(args.slug, args.tipo)
     else:
         print(f"[ERRO] Tipo desconhecido: {args.tipo}")
         return 1

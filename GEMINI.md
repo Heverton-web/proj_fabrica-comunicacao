@@ -36,3 +36,7 @@ Fall back to Grep/Glob/Read **only** when the graph doesn't cover what you need.
 2. Use `detect_changes_tool` for code review.
 3. Use `get_affected_flows_tool` to understand impact.
 4. Use `query_graph_tool` pattern="tests_for" to check coverage.
+
+## Regras Invioláveis do Projeto
+
+1. **Charset UTF-8 Obrigatório:** Todos os materiais gerados (HTML, CSS, JSON, Markdown, etc.) e todos os scripts de leitura/escrita do ecossistema devem utilizar codificação **UTF-8** de forma explícita e obrigatória (ex: `<meta charset="utf-8">` em HTML, `encoding="utf-8"` em chamadas de arquivos em Python). Nenhuma outra codificação é permitida para garantir compatibilidade multiplataforma absoluta de caracteres especiais e acentuação.

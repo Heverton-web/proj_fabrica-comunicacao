@@ -40,6 +40,16 @@ qualquer imagem referenciada para `output/<slug>/<tipo>/assets/` e ajuste os `sr
 paths relativos. `{{BADGE_CONTEXTO}}` = "USO INTERNO" ou "USO PROFISSIONAL"/"USO
 EXTERNO" conforme a decisão de escopo registrada em `brief_criativo.json`.
 
+**Atenção — regra de ouro (bug já ocorrido, não repita):** nos templates os
+placeholders de bloco vivem DENTRO de um comentário HTML
+(`<!-- {{HERO}} -- compilador-html substitui: ... -->`). Substitua o comentário
+INTEIRO pelo HTML gerado (ex.: `re.sub(r'<!--\s*\{\{HERO\}\}.*?-->', html_gerado,
+texto, flags=re.DOTALL)`) — NUNCA apenas o token `{{HERO}}`, senão o conteúdo fica
+invisível (dentro do comentário) e a página renderiza vazia sem nenhum erro de
+console. Depois de salvar, confirme no DOM (não só por grep) que o conteúdo existe:
+`document.querySelectorAll('.slide').length` (apresentação) e
+`document.querySelector('.hero h1')` (landing).
+
 ### 3. Salvar
 
 - `output/<slug>/apresentacao/index.html` (+ `assets/`, incluindo `assets/fonts/`)
