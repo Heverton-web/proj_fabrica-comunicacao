@@ -197,19 +197,20 @@
 
     // Bloco Único de Conteúdo: Imagem do produto, Título e Parágrafo explicativo
     // Todos centralizados horizontalmente e verticalmente (center + horizon)
-    #place(center + horizon, block(width: 17cm)[
+    // Largura do bloco unificada para 13.5cm para que o título tenha exatamente a mesma largura da imagem.
+    #place(center + horizon, block(width: 13.5cm)[
       #set align(center)
       
-      // Imagem do produto centralizada
+      // Imagem do produto ocupando 100% da largura do bloco (13.5cm)
       $if(imagem_produto)$
-      #image("$imagem_produto$", width: 13.5cm, height: 7.2cm, fit: "contain")
+      #image("$imagem_produto$", width: 100%, height: 7.2cm, fit: "contain")
       $else$
-      #image("insumos/kit_start_flex_frontal.png", width: 13.5cm, height: 7.2cm, fit: "contain")
+      #image("insumos/kit_start_flex_frontal.png", width: 100%, height: 7.2cm, fit: "contain")
       $endif$
 
       #v(0.6cm) // Espaçamento elegante entre a imagem e o título
 
-      // Título do material (CAIXA ALTA e Inter 900)
+      // Título do material (CAIXA ALTA e Inter 900) - largura delimitada a 13.5cm
       #text(font: "Inter", size: 28pt, weight: 900, fill: gradiente-dourado)[#upper[$title$]]
       
       #v(0.4cm) // Espaçamento elegante entre o título e o parágrafo
