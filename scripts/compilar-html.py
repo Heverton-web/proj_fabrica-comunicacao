@@ -214,9 +214,17 @@ def compilar_apresentacao(slug):
     # Injeta no template apresentacao.html
     template_content = template_path.read_text(encoding="utf-8")
     
+    # Recupera edição do config_projeto.json
+    config_path = slug_dir / "config_projeto.json"
+    config = carregar_json(config_path)
+    edicao = config.get("edicao", "1ª Edição") if config else "1ª Edição"
+
     # Injeta título
     guia_title = "Apresentação: " + " ".join(word.capitalize() for word in slug.split("-")[1:])
     html_final = template_content.replace("{{TITULO}}", guia_title)
+    
+    # Injeta Edição
+    html_final = html_final.replace("{{EDICAO}}", edicao)
     
     # Injeta Logo
     logo_tag = '<img class="logo" src="assets/logos/Logo_Conexão_horizontal_texto_branco.png" alt="Conexão Implantes">'

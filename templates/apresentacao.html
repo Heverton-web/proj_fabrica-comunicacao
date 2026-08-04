@@ -289,6 +289,14 @@
   /* Cabeçalho fixo */
   .topo-deck { position: fixed; top: 0; left: 0; right: 0; z-index: 5; display: flex; justify-content: space-between; align-items: center; padding: 1.6rem 2rem; pointer-events: none; }
   .topo-deck img.logo { max-height: 36px; }
+  .edicao-header {
+    font-family: var(--fonte-titulo);
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
 
   .contador { position: fixed; bottom: 1.5rem; right: 1.5rem; font-size: 0.9rem; color: var(--text-muted); z-index: 2; font-variant-numeric: tabular-nums; }
   .nav-hint { position: fixed; bottom: 1.5rem; left: 1.5rem; font-size: 0.8rem; color: var(--text-muted); z-index: 2; }
@@ -302,6 +310,7 @@
 
   <div class="topo-deck">
     <!-- {{LOGO}} -- compilador-html substitui (obrigatorio): <img class="logo" src="assets/logos/Logo_Conexão_horizontal_texto_branco.png" alt="Conexão Implantes"> -->
+    <span class="edicao-header">{{EDICAO}}</span>
   </div>
 
   <div class="deck" id="deck">
