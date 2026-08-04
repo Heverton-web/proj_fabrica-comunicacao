@@ -176,28 +176,35 @@
     #place(top + right, dx: 4cm, dy: -4cm, circle(radius: 10cm, fill: glow-1))
     #place(bottom + left, dx: -4cm, dy: 4cm, circle(radius: 8cm, fill: glow-2))
 
-    // Faixas douradas superior e inferior (gradiente dourado de 0.6cm)
-    #place(top + left, rect(width: 100%, height: 0.6cm, fill: gradiente-dourado))
-    #place(bottom + left, rect(width: 100%, height: 0.6cm, fill: gradiente-dourado))
+    // Faixas douradas superior e inferior mais finas (0.3cm) em gradiente dourado
+    #place(top + left, rect(width: 100%, height: 0.3cm, fill: gradiente-dourado))
+    #place(bottom + left, rect(width: 100%, height: 0.3cm, fill: gradiente-dourado))
 
-    // Do lado superior esquerdo o logo da marca horizontal com texto branco
+    // Do lado superior esquerdo o logo da marca horizontal com texto branco (um pouco menor: width 3.6cm)
     $if(logo_imagem)$
-    #place(top + left, dx: 2cm, dy: 1.5cm, image("$logo_imagem$", width: 4.5cm))
+    #place(top + left, dx: 2cm, dy: 1.5cm, image("$logo_imagem$", width: 3.6cm))
     $else$
-    #place(top + left, dx: 2cm, dy: 1.5cm, image("pdf/assets/logos/Logo_Conexão_horizontal_texto_branco.png", width: 4.5cm))
+    #place(top + left, dx: 2cm, dy: 1.5cm, image("pdf/assets/logos/Logo_Conexão_horizontal_texto_branco.png", width: 3.6cm))
     $endif$
 
-    // Abaixo a imagem do produto com fundo transparente
-    $if(imagem_produto)$
-    #place(top + left, dx: 2cm, dy: 4.3cm, image("$imagem_produto$", width: 17cm, height: 7.8cm, fit: "contain"))
-    $else$
-    #place(top + left, dx: 2cm, dy: 4.3cm, image("insumos/kit_start_flex_frontal.png", width: 17cm, height: 7.8cm, fit: "contain"))
-    $endif$
+    // Bloco Único de Conteúdo: Imagem do produto, Título e Parágrafo explicativo
+    // Alinhados horizontalmente à esquerda (dx: 2cm) e verticalmente ao centro (horizon)
+    #place(left + horizon, dx: 2cm, block(width: 17cm)[
+      // Imagem do produto com alinhamento natural à esquerda
+      $if(imagem_produto)$
+      #image("$imagem_produto$", width: 13.5cm, height: 7.2cm, fit: "contain")
+      $else$
+      #image("insumos/kit_start_flex_frontal.png", width: 13.5cm, height: 7.2cm, fit: "contain")
+      $endif$
 
-    // Abaixo da imagem o título do material (CAIXA ALTA e Inter 900), e abaixo do título o parágrafo explicativo
-    #place(top + left, dx: 2cm, dy: 13.2cm, block(width: 17cm)[
+      #v(0.6cm) // Espaçamento elegante entre a imagem e o título
+
+      // Título do material (CAIXA ALTA e Inter 900)
       #text(font: "Inter", size: 28pt, weight: 900, fill: gradiente-dourado)[#upper[$title$]]
-      #v(0.5cm)
+      
+      #v(0.4cm) // Espaçamento elegante entre o título e o parágrafo
+
+      // Parágrafo explicativo
       #text(font: fonte-corpo, size: 12pt, fill: rgb("#e2e8f0"))[
         $if(subtitle)$
         $subtitle$
@@ -233,11 +240,11 @@ $if(cta_final)$
     #place(top + right, dx: 4cm, dy: -4cm, circle(radius: 10cm, fill: glow-1))
     #place(bottom + left, dx: -4cm, dy: 4cm, circle(radius: 8cm, fill: glow-2))
 
-    // Faixas douradas superior e inferior
-    #place(top + left, rect(width: 100%, height: 0.6cm, fill: gradiente-dourado))
-    #place(bottom + left, rect(width: 100%, height: 0.6cm, fill: gradiente-dourado))
+    // Faixas douradas superior e inferior mais finas (0.3cm)
+    #place(top + left, rect(width: 100%, height: 0.3cm, fill: gradiente-dourado))
+    #place(bottom + left, rect(width: 100%, height: 0.3cm, fill: gradiente-dourado))
 
-    #place(top + left, dx: 2cm, dy: 3.5cm, block(width: 17cm)[
+    #place(left + horizon, dx: 2cm, block(width: 17cm)[
       #text(font: "Inter", size: 22pt, weight: 900, fill: gradiente-dourado)[#upper[$title$]]
       #v(1cm)
       #text(font: fonte-corpo, size: 13pt, fill: rgb("#f8fafc"))[$cta_final$]
