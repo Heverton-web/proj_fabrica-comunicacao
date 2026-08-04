@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{TITULO}}</title>
+<style>
+  /* Design system FIXO da Conexão (brand/design-system-conexao.json) — ver
+     .claude/skills/aplicador-marca-conexao/SKILL.md. Não parametrizar por projeto. */
+  @font-face { font-family: 'Inter'; font-weight: 300; src: url('assets/fonts/inter-300.woff2') format('woff2'); font-display: swap; }
+  @font-face { font-family: 'Inter'; font-weight: 400; src: url('assets/fonts/inter-400.woff2') format('woff2'); font-display: swap; }
+  @font-face { font-family: 'Inter'; font-weight: 600; src: url('assets/fonts/inter-600.woff2') format('woff2'); font-display: swap; }
+  @font-face { font-family: 'Inter'; font-weight: 700; src: url('assets/fonts/inter-700.woff2') format('woff2'); font-display: swap; }
+  @font-face { font-family: 'Inter'; font-weight: 900; src: url('assets/fonts/inter-900.woff2') format('woff2'); font-display: swap; }
+
+  :root {
+    --bg: #0f172a;
+    --bg-deep: #0a0f1e;
+    --bg-glow: #16213a;
+    --surface: #1e293b;
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --border-subtle: rgba(248, 250, 252, 0.08);
+    --accent: #c9a655;
+    --gradiente-assinatura: linear-gradient(135deg, #c9a655 0%, #e8d48b 40%, #a8873a 70%, #c9a655 100%);
+    --glow-blue: #148ecb; /* uso exclusivo: glows decorativos de fundo, nunca texto/botao/card */
+    --fonte-titulo: 'Inter', 'Roboto', sans-serif;
+    --fonte-corpo: 'Inter', 'Roboto', sans-serif;
+    --ease-premium: cubic-bezier(0.32, 0.72, 0, 1);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 100%; height: 100%; overflow: hidden; }
+  body {
+    font-family: var(--fonte-corpo);
+    color: var(--text-main);
+    /* Vinheta radial sutil - centro levemente mais claro, bordas mais escuras que
+       #0f172a puro. Mesmo espirito do fundo em gradiente das pecas de referencia
+       (capa Master Flex / tela de login), nunca chapado. */
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 28%, var(--bg-glow) 0%, transparent 60%),
+      radial-gradient(ellipse 100% 100% at 50% 100%, var(--bg-deep) 0%, var(--bg) 45%);
+  }
+
+  /* Glows decorativos - discretos, nunca "gamer". Blur pesado, opacidade baixa,
+     pointer-events:none, sempre em elemento fixo (nunca sobre conteudo que rola). */
+  .glow { position: fixed; border-radius: 50%; pointer-events: none; filter: blur(90px); z-index: 0; }
+  .glow-1 { width: 38vw; height: 38vw; top: -10vw; right: -8vw; background: radial-gradient(circle, rgba(20,142,203,0.22), transparent 70%); }
+  .glow-2 { width: 30vw; height: 30vw; bottom: -12vw; left: -6vw; background: radial-gradient(circle, rgba(20,142,203,0.13), transparent 70%); }
+
+  .deck { position: relative; width: 100%; height: 100vh; z-index: 1; }
+
+  .slide {
+    position: absolute; inset: 0;
+    display: flex;
+    flex-direction: column; justify-content: center; align-items: flex-start;
+    padding: 8vh 8vw;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(28px) scale(0.985);
+    transition: opacity 620ms var(--ease-premium), transform 620ms var(--ease-premium);
+  }
+  .slide.ativo { opacity: 1; pointer-events: auto; transform: translateY(0) scale(1); }
+
+  .slide.capa, .slide.cta { justify-content: center; align-items: center; text-align: center; }
+
+  /* Titulo premium: gradiente metalico no texto, nao cor solida - mesma assinatura
+     visual do titulo "MASTER FLEX" da peca de referencia. */
+  .slide h1 {
+    font-family: var(--fonte-titulo); font-size: 3.2rem; font-weight: 900;
+    margin-bottom: 1rem; letter-spacing: -0.01em;
+    background: var(--gradiente-assinatura);
+    background-clip: text; -webkit-background-clip: text; color: transparent;
+  }
+  .slide h2 {
+    font-family: var(--fonte-titulo); font-size: 2.15rem; font-weight: 700;
+    margin-bottom: 1.3rem; letter-spacing: -0.01em;
+    background: var(--gradiente-assinatura);
+    background-clip: text; -webkit-background-clip: text; color: transparent;
+  }
+  .slide p { font-size: 1.35rem; line-height: 1.55; max-width: 62ch; color: var(--text-main); }
+  .slide.capa p, .slide.cta p { color: var(--text-muted); }
+
+  /* Bloco "double-bezel": moldura externa sutil + superficie interna - da
+     sensacao de painel tecnico, nao de texto solto sobre o fundo. */
+  .slide ul {
+    list-style: none; padding: 1.6rem 1.8rem; margin-top: 0.4rem;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--border-subtle);
+    border-radius: 1.1rem;
+    box-shadow: inset 0 1px 1px rgba(255,255,255,0.04);
+    max-width: 62ch;
+  }
+  .slide ul li {
+    font-size: 1.2rem; line-height: 1.6; color: var(--text-main);
+    padding: 0.55rem 0; padding-left: 1.4rem; position: relative;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .slide ul li:last-child { border-bottom: none; }
+  .slide ul li::before {
+    content: ""; position: absolute; left: 0; top: 1.05rem;
+    width: 6px; height: 6px; border-radius: 50%; background: var(--accent);
+  }
+  .slide ul li strong { color: var(--accent); font-weight: 700; }
+
+  .badge {
+    display: inline-block; border: 1px solid var(--accent); border-radius: 999px;
+    padding: 0.4rem 1.1rem; font-size: 0.78rem; font-weight: 700;
+    letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent);
+    margin-bottom: 1.4rem;
+  }
+
+  .contador { position: fixed; bottom: 1.5rem; right: 1.5rem; font-size: 0.9rem; color: var(--text-muted); z-index: 2; font-variant-numeric: tabular-nums; }
+  .nav-hint { position: fixed; bottom: 1.5rem; left: 1.5rem; font-size: 0.8rem; color: var(--text-muted); z-index: 2; }
+</style>
+</head>
+<body>
+  <div class="glow glow-1"></div>
+  <div class="glow glow-2"></div>
+
+  <div class="deck" id="deck">
+    <!-- {{SLIDES}} -- compilador-html substitui este comentario pelos <div class="slide capa|conteudo|cta"> ... </div>
+         gerados a partir de output/<slug>/apresentacao/slides.json (1 div por slide,
+         o primeiro recebe a classe extra "ativo"). Listas de bullets usam <ul><li> -
+         o template ja estiliza como painel double-bezel. -->
+  </div>
+  <div class="contador" id="contador"></div>
+  <div class="nav-hint">&larr; &rarr; para navegar</div>
+
+  <script>
+    (function () {
+      var slides = Array.prototype.slice.call(document.querySelectorAll(".slide"));
+      var atual = slides.findIndex(function (s) { return s.classList.contains("ativo"); });
+      if (atual < 0) { atual = 0; if (slides[0]) slides[0].classList.add("ativo"); }
+
+      function mostrar(i) {
+        slides.forEach(function (s) { s.classList.remove("ativo"); });
+        atual = Math.max(0, Math.min(slides.length - 1, i));
+        if (slides[atual]) slides[atual].classList.add("ativo");
+        document.getElementById("contador").textContent = (atual + 1) + " / " + slides.length;
+      }
+
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "ArrowRight" || e.key === " ") mostrar(atual + 1);
+        if (e.key === "ArrowLeft") mostrar(atual - 1);
+      });
+      document.addEventListener("click", function () { mostrar(atual + 1); });
+
+      mostrar(atual);
+    })();
+  </script>
+</body>
+</html>

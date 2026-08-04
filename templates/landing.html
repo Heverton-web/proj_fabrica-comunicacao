@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{TITULO}}</title>
+<style>
+  /* Design system FIXO da Conexão (brand/design-system-conexao.json) — ver
+     .claude/skills/aplicador-marca-conexao/SKILL.md. Não parametrizar por projeto:
+     todo landing-page usa exatamente este :root e estas fontes. */
+  @font-face { font-family: 'Inter'; font-weight: 300; src: url('assets/fonts/inter-300.woff2') format('woff2'); font-display: swap; }
+  @font-face { font-family: 'Inter'; font-weight: 400; src: url('assets/fonts/inter-400.woff2') format('woff2'); font-display: swap; }
+  @font-face { font-family: 'Inter'; font-weight: 600; src: url('assets/fonts/inter-600.woff2') format('woff2'); font-display: swap; }
+  @font-face { font-family: 'Inter'; font-weight: 700; src: url('assets/fonts/inter-700.woff2') format('woff2'); font-display: swap; }
+  @font-face { font-family: 'Inter'; font-weight: 900; src: url('assets/fonts/inter-900.woff2') format('woff2'); font-display: swap; }
+
+  :root {
+    --bg: #0f172a;
+    --bg-deep: #0a0f1e;
+    --bg-glow: #16213a;
+    --surface: #1e293b;
+    --surface-hover: #334155;
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --border-subtle: rgba(248, 250, 252, 0.08);
+    --accent: #c9a655;
+    --accent-hover: #d4b366;
+    --gradiente-assinatura: linear-gradient(135deg, #c9a655 0%, #e8d48b 40%, #a8873a 70%, #c9a655 100%);
+    --glow-blue: #148ecb; /* uso exclusivo: glows decorativos de fundo, nunca texto/botao/card */
+    --fonte-titulo: 'Inter', 'Roboto', sans-serif;
+    --fonte-corpo: 'Inter', 'Roboto', sans-serif;
+    --ease-premium: cubic-bezier(0.32, 0.72, 0, 1);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--fonte-corpo); color: var(--text-main); background: var(--bg); overflow-x: hidden; position: relative; }
+
+  /* Vinheta radial fixa (nao rola com o conteudo) - mesmo espirito de fundo em
+     gradiente das pecas de referencia, nunca chapado. */
+  .fundo-vinheta {
+    position: fixed; inset: 0; z-index: -2; pointer-events: none;
+    background:
+      radial-gradient(ellipse 70% 50% at 50% 0%, var(--bg-glow) 0%, transparent 60%),
+      radial-gradient(ellipse 100% 60% at 50% 100%, var(--bg-deep) 0%, var(--bg) 55%);
+  }
+  .glow { position: fixed; border-radius: 50%; pointer-events: none; filter: blur(90px); z-index: -1; }
+  .glow-1 { width: 34vw; height: 34vw; top: -8vw; right: -8vw; background: radial-gradient(circle, rgba(20,142,203,0.20), transparent 70%); }
+  .glow-2 { width: 28vw; height: 28vw; bottom: 10vh; left: -8vw; background: radial-gradient(circle, rgba(20,142,203,0.12), transparent 70%); }
+
+  img { max-width: 100%; display: block; }
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem; }
+  section { padding: 5.5rem 0; }
+  h1, h2, h3 { font-family: var(--fonte-titulo); letter-spacing: -0.01em; }
+  h1 { font-weight: 900; }
+  h2, h3 { font-weight: 700; }
+
+  /* Titulo premium: gradiente metalico no texto (mesma assinatura visual do
+     titulo "MASTER FLEX" da peca de referencia), nunca cor solida. */
+  .titulo-gradiente {
+    background: var(--gradiente-assinatura);
+    background-clip: text; -webkit-background-clip: text; color: transparent;
+  }
+
+  /* Cabecalho: logo a esquerda + badge de contexto a direita */
+  .topo { display: flex; justify-content: space-between; align-items: center; padding: 1.5rem 0; position: relative; z-index: 1; }
+  .topo img.logo { max-height: 40px; }
+
+  .badge {
+    display: inline-block; border: 1px solid var(--accent); border-radius: 999px;
+    padding: 0.35rem 1rem; font-size: 0.8rem; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); background: transparent;
+  }
+  .badge.preenchida { background: color-mix(in srgb, var(--accent) 15%, transparent); }
+
+  .btn-primario {
+    display: inline-block; background: var(--gradiente-assinatura); color: var(--bg);
+    font-family: var(--fonte-corpo); font-weight: 700; border: none; border-radius: 999px;
+    padding: 0.9rem 2rem; text-decoration: none;
+    transition: transform 420ms var(--ease-premium), box-shadow 420ms var(--ease-premium);
+  }
+  .btn-primario:hover { transform: translateY(-2px) scale(1.02); box-shadow: 0 12px 32px -8px rgba(201,166,85,0.45); }
+  .btn-primario:active { transform: scale(0.98); }
+
+  /* HERO */
+  .hero { text-align: center; padding: 6rem 0 5rem; }
+  .hero h1 { font-size: clamp(2.2rem, 5vw, 3.4rem); margin-bottom: 1rem; }
+  .hero .sub { font-size: 1.25rem; color: var(--text-muted); max-width: 60ch; margin: 0 auto 2rem; }
+
+  /* PROBLEMA / SOLUCAO */
+  .problema-solucao { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; }
+  @media (max-width: 700px) { .problema-solucao { grid-template-columns: 1fr; } }
+  .problema-solucao h3 { color: var(--accent); margin-bottom: 0.8rem; font-size: 1.3rem; font-family: var(--fonte-titulo); }
+  .problema-solucao p { line-height: 1.6; font-size: 1.05rem; }
+
+  /* DESTAQUES - "double-bezel": moldura externa sutil + superficie interna */
+  .grade-destaques { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; margin-top: 2.5rem; }
+  .card {
+    background: var(--surface); border: 1px solid var(--border-subtle); border-radius: 1rem;
+    padding: 1.6rem; box-shadow: inset 0 1px 1px rgba(255,255,255,0.04);
+    transition: transform 420ms var(--ease-premium), border-color 420ms var(--ease-premium);
+  }
+  .card:hover { transform: translateY(-4px); border-color: rgba(201,166,85,0.35); }
+  .card h3 { color: var(--accent); font-size: 1.1rem; margin-bottom: 0.5rem; }
+  .card p { font-size: 0.98rem; line-height: 1.5; color: var(--text-main); }
+
+  /* PROVA / COMPOSICAO */
+  .prova table { width: 100%; table-layout: fixed; border-collapse: collapse; margin-top: 1.5rem; }
+  .prova th, .prova td { text-align: left; padding: 0.6rem 0.8rem; border-bottom: 1px solid var(--border-subtle); font-size: 0.95rem; overflow-wrap: break-word; }
+  .prova th { color: var(--text-muted); }
+
+  /* CTA FINAL */
+  .cta-final { text-align: center; }
+  .cta-final h2 { margin-bottom: 1rem; }
+
+  footer { text-align: center; padding: 2rem 0; font-size: 0.8rem; color: var(--text-muted); position: relative; z-index: 1; }
+
+  /* Entrada suave ao rolar - so opacity/transform (GPU-safe) */
+  .revela { opacity: 0; transform: translateY(28px); transition: opacity 700ms var(--ease-premium), transform 700ms var(--ease-premium); }
+  .revela.visivel { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+  <div class="fundo-vinheta"></div>
+  <div class="glow glow-1"></div>
+  <div class="glow glow-2"></div>
+
+  <div class="container topo">
+    <!-- {{LOGO}} -- compilador-html substitui (opcional): <img class="logo" src="assets/logo.png"> -->
+    <span class="badge">{{BADGE_CONTEXTO}}</span>
+  </div>
+
+  <section class="hero revela">
+    <div class="container">
+      <!-- {{HERO}} -- compilador-html substitui: <h1 class="titulo-gradiente">headline</h1><p class="sub">subheadline</p><a class="btn-primario" href="#cta">cta</a> -->
+    </div>
+  </section>
+
+  <section class="problema-solucao-wrap revela">
+    <div class="container problema-solucao">
+      <!-- {{PROBLEMA_SOLUCAO}} -- compilador-html substitui: 2 blocos <div><h3>Problema</h3><p>...</p></div><div><h3>Solução</h3><p>...</p></div> -->
+    </div>
+  </section>
+
+  <section class="destaques revela">
+    <div class="container">
+      <h2 class="titulo-gradiente">Destaques</h2>
+      <div class="grade-destaques">
+        <!-- {{DESTAQUES}} -- compilador-html substitui: N <div class="card"><h3>...</h3><p>...</p></div> -->
+      </div>
+    </div>
+  </section>
+
+  <section class="prova revela">
+    <div class="container">
+      <!-- {{PROVA}} -- compilador-html substitui (opcional, so se o texto-base trouxer dados tabulares) -->
+    </div>
+  </section>
+
+  <section class="cta-final revela" id="cta">
+    <div class="container">
+      <!-- {{CTA_FINAL}} -- compilador-html substitui: <h2 class="titulo-gradiente">mensagem central</h2><a class="btn-primario" href="#">cta</a> -->
+    </div>
+  </section>
+
+  <footer>{{MARCA}}</footer>
+
+  <script>
+    (function () {
+      var alvos = document.querySelectorAll('.revela');
+      if (!('IntersectionObserver' in window)) {
+        alvos.forEach(function (el) { el.classList.add('visivel'); });
+        return;
+      }
+      var obs = new IntersectionObserver(function (entradas) {
+        entradas.forEach(function (e) {
+          if (e.isIntersecting) { e.target.classList.add('visivel'); obs.unobserve(e.target); }
+        });
+      }, { threshold: 0.15 });
+      alvos.forEach(function (el) { obs.observe(el); });
+    })();
+  </script>
+</body>
+</html>

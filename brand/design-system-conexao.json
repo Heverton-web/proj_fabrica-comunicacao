@@ -1,0 +1,72 @@
+{
+  "_fonte": "Baseado em E:\\design-system-conexao-implantes.md (42 tokens, autoritativo) + confirmado visualmente contra a tela de login real 'Conexão Digital Implant' e a capa Master Flex. Fixo para landing-page, apresentacao e arte. O PDF NAO usa este arquivo ainda — será tratado em uma rodada futura (regras próprias, estilo 'Flex Gold').",
+  "cores": {
+    "bg": "#0f172a",
+    "surface": "#1e293b",
+    "surfaceHover": "#334155",
+    "textMain": "#f8fafc",
+    "textMuted": "#94a3b8",
+    "textInverted": "#0f172a",
+    "border": "transparent",
+    "borderSubtle": "#1e293b",
+    "accent": "#c9a655",
+    "accentHover": "#d4b366",
+    "accentForeground": "#0f172a",
+    "gradientStart": "#c9a655",
+    "gradientMid": "#e8d48b",
+    "gradientEnd": "#a8873a",
+    "glowBlue": "#148ecb"
+  },
+  "_nota_glowBlue": "Aprovado pelo operador especificamente para os glows decorativos de fundo (radial-gradient com blur pesado, opacidade baixa) — nunca usar em texto, botão ou superfície de card. Substitui o azul-acinzentado textMuted que era usado ali antes.",
+  "gradiente_assinatura": {
+    "css": "linear-gradient(135deg, #c9a655 0%, #e8d48b 40%, #a8873a 70%, #c9a655 100%)",
+    "uso": "todo CTA/botão primário e todo título hero de destaque — nunca usar accent chapado nesses dois casos, o produto real usa gradiente."
+  },
+  "tipografia": {
+    "fontes_aprovadas": ["Inter", "Poppins", "Roboto"],
+    "_atualizacao": "Operador definiu explicitamente: títulos usam Inter (registro literal: link Google Fonts family=Inter:wght@300;400;600;700;900). Poppins deixou de ser a fonte de título — permanece como fonte de marca aprovada em arquivo (templates/fonts/poppins-*.woff2), mas não é mais referenciada nos stacks ativos de título/corpo.",
+    "titulo": {
+      "familia": "Inter",
+      "pesos": [300, 400, 600, 700, 900],
+      "arquivos": ["templates/fonts/inter-300.woff2", "templates/fonts/inter-400.woff2", "templates/fonts/inter-600.woff2", "templates/fonts/inter-700.woff2", "templates/fonts/inter-900.woff2"],
+      "peso_padrao_h1": 900,
+      "peso_padrao_h2": 700,
+      "fallback_stack": "Inter, Roboto, sans-serif"
+    },
+    "corpo": {
+      "familia": "Inter",
+      "pesos": [300, 400, 600, 700],
+      "arquivos": ["templates/fonts/inter-300.woff2", "templates/fonts/inter-400.woff2", "templates/fonts/inter-600.woff2", "templates/fonts/inter-700.woff2"],
+      "fallback_stack": "Inter, Roboto, sans-serif"
+    },
+    "nota": "Roboto está instalada localmente (confirmado via `typst fonts`) e é fonte de marca aprovada — funciona como fallback seguro em qualquer ambiente sem quebrar a identidade. Inter é auto-hospedada (templates/fonts/inter-*.woff2) para não depender de instalação local nem de CDN externo."
+  },
+  "componentes": {
+    "botao_primario": {
+      "background": "gradiente_assinatura",
+      "cor_texto": "#0f172a",
+      "formato": "pill (border-radius >= 999px ou ~2rem)",
+      "peso_fonte": 700,
+      "exemplo_visual": "botão 'Entrar na Plataforma' da tela de login"
+    },
+    "badge_pill": {
+      "borda": "1px solid var(--accent)",
+      "fundo": "transparent ou accent a ~15% opacidade",
+      "cor_texto": "var(--accent) ou var(--textMain)",
+      "formato": "pill, padding curto, texto em maiúsculas com letter-spacing",
+      "exemplo_visual": "badges 'USO PROFISSIONAL', '35+ anos', 'ISO 13485' da capa Master Flex"
+    },
+    "card": {
+      "background": "var(--surface)",
+      "borda": "1px solid var(--borderSubtle)",
+      "radius": "0.6rem–0.8rem",
+      "exemplo_visual": "card de login"
+    },
+    "input": {
+      "background": "var(--bg)",
+      "borda": "1px solid var(--inputBorder #334155)",
+      "borda_foco": "var(--accent)",
+      "radius": "0.5rem"
+    }
+  }
+}

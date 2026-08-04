@@ -1,0 +1,19 @@
+# Added by code-review-graph
+.code-review-graph/
+
+# Materiais gerados (artefatos de output/ são entregas, não fonte)
+output/
+
+# Config/permissões locais da máquina
+.claude/settings.local.json
+
+# Caches e temporários
+__pycache__/
+*.pyc
+*.pyo
+.crg-*.py
+.DS_Store
+*.bak
+
+# Estado de runtime do Claude Code
+.claude/scheduled_tasks.lock
