@@ -33,6 +33,36 @@
 #let cor-fundo-conteudo = rgb("#ffffff")
 #let cor-texto-conteudo = rgb("#1e293b")
 
+// ── Gradientes e Blobs Premium (Conexão Gold — vindos de templates/arte-1080x1920.html) ──
+#let gradiente-dourado = gradient.linear(
+  rgb("#caa146"),
+  rgb("#fff8d6"),
+  rgb("#e5c158"),
+  rgb("#fff3ad"),
+  rgb("#caa146"),
+  angle: 45deg
+)
+
+#let bg-radial = gradient.radial(
+  rgb("#16213a"), // var(--bg-glow)
+  rgb("#0f172a"), // var(--bg)
+  center: (50%, 15%),
+  radius: 80%
+)
+
+#let glow-1 = gradient.radial(
+  rgb(20, 142, 203, 24%),
+  rgb(20, 142, 203, 0%),
+  radius: 50%
+)
+
+#let glow-2 = gradient.radial(
+  rgb(20, 142, 203, 14%),
+  rgb(20, 142, 203, 0%),
+  radius: 50%
+)
+
+
 // ── Pagina, tipografia e paragrafos ────────────────────────────────
 #set page(
   paper: "a4",
@@ -139,12 +169,16 @@
     #image("$capa_imagem$", width: 100%, height: 100%, fit: "cover")
   ]
   $else$
-  page(fill: rgb("#0f172a"), margin: 0cm, header: none, footer: none, numbering: none)[
+  page(fill: bg-radial, margin: 0cm, header: none, footer: none, numbering: none)[
     #set par(first-line-indent: 0cm, justify: false, leading: 0.55em)
     
-    // Faixas douradas superior e inferior (faixas de 0.6cm no topo e rodapé)
-    #place(top + left, rect(width: 100%, height: 0.6cm, fill: cor-primaria))
-    #place(bottom + left, rect(width: 100%, height: 0.6cm, fill: cor-primaria))
+    // Blobs de fundo (glow-1 no canto superior direito, glow-2 no canto inferior esquerdo)
+    #place(top + right, dx: 4cm, dy: -4cm, circle(radius: 10cm, fill: glow-1))
+    #place(bottom + left, dx: -4cm, dy: 4cm, circle(radius: 8cm, fill: glow-2))
+
+    // Faixas douradas superior e inferior (gradiente dourado de 0.6cm)
+    #place(top + left, rect(width: 100%, height: 0.6cm, fill: gradiente-dourado))
+    #place(bottom + left, rect(width: 100%, height: 0.6cm, fill: gradiente-dourado))
 
     // Do lado superior esquerdo o logo da marca horizontal com texto branco
     $if(logo_imagem)$
@@ -160,9 +194,9 @@
     #place(top + left, dx: 2cm, dy: 4.3cm, image("insumos/kit_start_flex_frontal.png", width: 17cm, height: 7.8cm, fit: "contain"))
     $endif$
 
-    // Abaixo da imagem o título do material, e abaixo do título o parágrafo explicativo
+    // Abaixo da imagem o título do material (CAIXA ALTA e Inter 900), e abaixo do título o parágrafo explicativo
     #place(top + left, dx: 2cm, dy: 13.2cm, block(width: 17cm)[
-      #text(font: fonte-titulo, size: 28pt, weight: "bold", fill: cor-primaria)[$title$]
+      #text(font: "Inter", size: 28pt, weight: 900, fill: gradiente-dourado)[#upper[$title$]]
       #v(0.5cm)
       #text(font: fonte-corpo, size: 12pt, fill: rgb("#e2e8f0"))[
         $if(subtitle)$
@@ -192,19 +226,23 @@ $body$
 // ── PAGINA FINAL: CTA + assinatura da marca ───────────────────────
 $if(cta_final)$
 #if capa-grafica-ativa {
-  page(fill: rgb("#0f172a"), margin: 0cm, header: none, footer: none, numbering: none)[
+  page(fill: bg-radial, margin: 0cm, header: none, footer: none, numbering: none)[
     #set par(first-line-indent: 0cm, justify: true, leading: 0.7em)
     
+    // Blobs de fundo para a contracapa
+    #place(top + right, dx: 4cm, dy: -4cm, circle(radius: 10cm, fill: glow-1))
+    #place(bottom + left, dx: -4cm, dy: 4cm, circle(radius: 8cm, fill: glow-2))
+
     // Faixas douradas superior e inferior
-    #place(top + left, rect(width: 100%, height: 0.6cm, fill: cor-primaria))
-    #place(bottom + left, rect(width: 100%, height: 0.6cm, fill: cor-primaria))
+    #place(top + left, rect(width: 100%, height: 0.6cm, fill: gradiente-dourado))
+    #place(bottom + left, rect(width: 100%, height: 0.6cm, fill: gradiente-dourado))
 
     #place(top + left, dx: 2cm, dy: 3.5cm, block(width: 17cm)[
-      #text(font: fonte-titulo, size: 22pt, weight: "bold", fill: cor-primaria)[$title$]
+      #text(font: "Inter", size: 22pt, weight: 900, fill: gradiente-dourado)[#upper[$title$]]
       #v(1cm)
       #text(font: fonte-corpo, size: 13pt, fill: rgb("#f8fafc"))[$cta_final$]
       #v(1.5cm)
-      #line(length: 5cm, stroke: 2pt + cor-primaria)
+      #line(length: 5cm, stroke: 2pt + gradiente-dourado)
       #v(0.6cm)
       #text(font: fonte-corpo, size: 12pt, weight: "bold", fill: rgb("#f8fafc"))[$author$]
     ])
