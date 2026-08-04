@@ -226,6 +226,7 @@
 
 // ── SUMARIO ───────────────────────────────────────────────────────
 #outline(title: [Sumário], indent: 1.5cm, depth: 3)
+#pagebreak()
 
 // ── CONTEUDO PRINCIPAL ────────────────────────────────────────────
 $body$
