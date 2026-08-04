@@ -22,7 +22,7 @@
     --text-muted: #94a3b8;
     --border-subtle: rgba(248, 250, 252, 0.08);
     --accent: #c9a655;
-    --gradiente-assinatura: linear-gradient(135deg, #c9a655 0%, #e8d48b 40%, #a8873a 70%, #c9a655 100%);
+    --gradiente-assinatura: linear-gradient(135deg, #caa146 0%, #fff8d6 25%, #e5c158 50%, #fff3ad 75%, #caa146 100%);
     --glow-blue: #148ecb; /* uso exclusivo: glows decorativos de fundo, nunca texto/botao/card */
     --fonte-titulo: 'Inter', 'Roboto', sans-serif;
     --fonte-corpo: 'Inter', 'Roboto', sans-serif;
@@ -34,19 +34,19 @@
   body {
     font-family: var(--fonte-corpo);
     color: var(--text-main);
-    /* Vinheta radial sutil - centro levemente mais claro, bordas mais escuras que
-       #0f172a puro. Mesmo espirito do fundo em gradiente das pecas de referencia
-       (capa Master Flex / tela de login), nunca chapado. */
     background:
       radial-gradient(ellipse 80% 60% at 50% 28%, var(--bg-glow) 0%, transparent 60%),
       radial-gradient(ellipse 100% 100% at 50% 100%, var(--bg-deep) 0%, var(--bg) 45%);
   }
 
-  /* Glows decorativos - discretos, nunca "gamer". Blur pesado, opacidade baixa,
-     pointer-events:none, sempre em elemento fixo (nunca sobre conteudo que rola). */
+  /* Glows decorativos */
   .glow { position: fixed; border-radius: 50%; pointer-events: none; filter: blur(90px); z-index: 0; }
   .glow-1 { width: 38vw; height: 38vw; top: -10vw; right: -8vw; background: radial-gradient(circle, rgba(20,142,203,0.22), transparent 70%); }
   .glow-2 { width: 30vw; height: 30vw; bottom: -12vw; left: -6vw; background: radial-gradient(circle, rgba(20,142,203,0.13), transparent 70%); }
+
+  /* Faixas douradas em gradiente e finas (0.3cm = ~3px) */
+  .barra-topo { position: fixed; top: 0; left: 0; width: 100%; height: 3px; background: var(--gradiente-assinatura); z-index: 10; }
+  .barra-baixo { position: fixed; bottom: 0; left: 0; width: 100%; height: 3px; background: var(--gradiente-assinatura); z-index: 10; }
 
   .deck { position: relative; width: 100%; height: 100vh; z-index: 1; }
 
@@ -62,27 +62,23 @@
   }
   .slide.ativo { opacity: 1; pointer-events: auto; transform: translateY(0) scale(1); }
 
-  .slide.capa, .slide.cta { justify-content: center; align-items: center; text-align: center; }
-
-  /* Titulo premium: gradiente metalico no texto, nao cor solida - mesma assinatura
-     visual do titulo "MASTER FLEX" da peca de referencia. */
+  /* Títulos em caixa alta e peso Inter 900 */
   .slide h1 {
     font-family: var(--fonte-titulo); font-size: 3.2rem; font-weight: 900;
-    margin-bottom: 1rem; letter-spacing: -0.01em;
+    text-transform: uppercase; margin-bottom: 1rem; letter-spacing: -0.01em;
     background: var(--gradiente-assinatura);
     background-clip: text; -webkit-background-clip: text; color: transparent;
   }
   .slide h2 {
-    font-family: var(--fonte-titulo); font-size: 2.15rem; font-weight: 700;
-    margin-bottom: 1.3rem; letter-spacing: -0.01em;
+    font-family: var(--fonte-titulo); font-size: 2.15rem; font-weight: 900;
+    text-transform: uppercase; margin-bottom: 1.3rem; letter-spacing: -0.01em;
     background: var(--gradiente-assinatura);
     background-clip: text; -webkit-background-clip: text; color: transparent;
   }
   .slide p { font-size: 1.35rem; line-height: 1.55; max-width: 62ch; color: var(--text-main); }
   .slide.capa p, .slide.cta p { color: var(--text-muted); }
 
-  /* Bloco "double-bezel": moldura externa sutil + superficie interna - da
-     sensacao de painel tecnico, nao de texto solto sobre o fundo. */
+  /* Bullets com painel double-bezel */
   .slide ul {
     list-style: none; padding: 1.6rem 1.8rem; margin-top: 0.4rem;
     background: rgba(255,255,255,0.02);
@@ -90,6 +86,7 @@
     border-radius: 1.1rem;
     box-shadow: inset 0 1px 1px rgba(255,255,255,0.04);
     max-width: 62ch;
+    width: 100%;
   }
   .slide ul li {
     font-size: 1.2rem; line-height: 1.6; color: var(--text-main);
@@ -103,15 +100,193 @@
   }
   .slide ul li strong { color: var(--accent); font-weight: 700; }
 
+  /* Badges dourados premium: fundo com opacidade muito baixa, bordas finas e suaves */
   .badge {
-    display: inline-block; border: 1px solid var(--accent); border-radius: 999px;
-    padding: 0.4rem 1.1rem; font-size: 0.78rem; font-weight: 700;
-    letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent);
+    display: inline-block;
+    background: rgba(201, 166, 85, 0.12);
+    border: 1px solid rgba(201, 166, 85, 0.35);
+    border-radius: 999px;
+    padding: 0.45rem 1.2rem; font-size: 0.8rem; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent);
     margin-bottom: 1.4rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.12);
   }
 
-  /* Cabecalho fixo: logo da marca topo-esquerda (obrigatorio - ver
-     aplicador-marca-conexao SKILL seção "Logo"). Nunca remover. */
+  /* Badges em formato de botões */
+  .btn-badge {
+    display: inline-block;
+    background: var(--gradiente-assinatura);
+    color: var(--bg);
+    font-family: var(--fonte-titulo);
+    font-weight: 900;
+    text-transform: uppercase;
+    padding: 0.65rem 1.6rem;
+    border-radius: 999px;
+    font-size: 0.95rem;
+    letter-spacing: 0.05em;
+    text-decoration: none;
+    box-shadow: 0 4px 15px rgba(201, 166, 85, 0.35);
+    margin-top: 0.8rem;
+    border: none;
+    cursor: pointer;
+  }
+
+  /* Slide 1 - Layout Hero de Capa (Imagem do produto à direita e conteúdos à esquerda) */
+  .slide.capa {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4vw;
+    width: 100%;
+    height: 100%;
+    text-align: left;
+    padding: 8vh 8vw;
+  }
+  .capa-esquerda {
+    flex: 1.2;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+  }
+  .capa-direita {
+    flex: 0.8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .capa-direita img {
+    max-width: 100%;
+    max-height: 55vh;
+    object-fit: contain;
+    filter: drop-shadow(0 15px 30px rgba(0,0,0,0.4));
+  }
+
+  /* Slide CTA - Centralizado */
+  .slide.cta {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 8vh 12vw;
+  }
+
+  /* --- RECURSOS VISUAIS ADICIONAIS --- */
+  
+  /* 1. Grid de Cards */
+  .grid-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    width: 100%;
+    margin-top: 1rem;
+    max-width: 100%;
+  }
+  .card-visual {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border-subtle);
+    border-radius: 14px;
+    padding: 1.5rem;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+    transition: transform 0.25s var(--ease-premium);
+  }
+  .card-visual h3 {
+    font-family: var(--fonte-titulo);
+    font-size: 1.25rem;
+    color: var(--accent);
+    margin-bottom: 0.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  .card-visual p {
+    font-size: 1.05rem;
+    color: var(--text-main);
+    line-height: 1.45;
+  }
+
+  /* 2. Fluxograma Horizontal */
+  .fluxo-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+  .fluxo-passo {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.015);
+    border: 1px dashed rgba(201, 166, 85, 0.35);
+    border-radius: 12px;
+    padding: 1.2rem 1rem;
+    text-align: center;
+  }
+  .fluxo-passo .numero {
+    display: inline-block;
+    background: var(--gradiente-assinatura);
+    color: var(--bg);
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    font-weight: 900;
+    font-size: 0.95rem;
+    line-height: 28px;
+    margin-bottom: 0.6rem;
+  }
+  .fluxo-passo h4 {
+    font-family: var(--fonte-titulo);
+    font-size: 1.15rem;
+    color: var(--accent);
+    font-weight: 700;
+    margin-bottom: 0.4rem;
+    text-transform: uppercase;
+  }
+  .fluxo-passo p {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    line-height: 1.35;
+  }
+  .fluxo-seta {
+    color: var(--accent);
+    font-size: 1.8rem;
+    font-weight: 900;
+  }
+
+  /* 3. Tabelas Customizadas */
+  .tabela-visual {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    background: rgba(255,255,255,0.01);
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .tabela-visual th {
+    background: rgba(201, 166, 85, 0.12);
+    color: var(--accent);
+    font-family: var(--fonte-titulo);
+    font-weight: 700;
+    padding: 1rem 1.2rem;
+    text-align: left;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    border-bottom: 1px solid rgba(201, 166, 85, 0.35);
+  }
+  .tabela-visual td {
+    padding: 1rem 1.2rem;
+    color: var(--text-main);
+    font-size: 1.1rem;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .tabela-visual tr:last-child td {
+    border-bottom: none;
+  }
+  .tabela-visual tr:hover {
+    background: rgba(255,255,255,0.02);
+  }
+
+  /* Cabeçalho fixo */
   .topo-deck { position: fixed; top: 0; left: 0; right: 0; z-index: 5; display: flex; justify-content: space-between; align-items: center; padding: 1.6rem 2rem; pointer-events: none; }
   .topo-deck img.logo { max-height: 36px; }
 
@@ -122,6 +297,8 @@
 <body>
   <div class="glow glow-1"></div>
   <div class="glow glow-2"></div>
+  <div class="barra-topo"></div>
+  <div class="barra-baixo"></div>
 
   <div class="topo-deck">
     <!-- {{LOGO}} -- compilador-html substitui (obrigatorio): <img class="logo" src="assets/logos/Logo_Conexão_horizontal_texto_branco.png" alt="Conexão Implantes"> -->
