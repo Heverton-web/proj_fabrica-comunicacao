@@ -40,3 +40,4 @@ Fall back to Grep/Glob/Read **only** when the graph doesn't cover what you need.
 ## Regras Invioláveis do Projeto
 
 1. **Charset UTF-8 Obrigatório:** Todos os materiais gerados (HTML, CSS, JSON, Markdown, etc.) e todos os scripts de leitura/escrita do ecossistema devem utilizar codificação **UTF-8** de forma explícita e obrigatória (ex: `<meta charset="utf-8">` em HTML, `encoding="utf-8"` em chamadas de arquivos em Python). Nenhuma outra codificação é permitida para garantir compatibilidade multiplataforma absoluta de caracteres especiais e acentuação.
+2. **Sem Hífens nos Títulos:** Os títulos de todos os materiais gerados (PDFs, apresentações, etc.) não devem conter o caractere hífen (-). Sempre que houver um hífen ou travessão de separação, ele deve ser obrigatoriamente substituído por dois-pontos (:).

@@ -49,7 +49,7 @@ def main():
 
     # Título e descrição do brief
     brief = carregar_json(slug_dir / "brief_criativo.json")
-    title = "Kit de Treinamento Técnico — Start Flex"
+    title = "Kit de Treinamento Técnico: Start Flex"
     subtitle = "O GPS cirúrgico para os casos mais frequentes do consultório."
 
     if brief:
@@ -57,7 +57,10 @@ def main():
         if msg:
             subtitle = msg
         # Capitaliza o slug de forma bonita
-        title = "Guia de Treinamento Técnico — " + " ".join(word.capitalize() for word in args.slug.split("-")[1:])
+        title = "Guia de Treinamento Técnico: " + " ".join(word.capitalize() for word in args.slug.split("-")[1:])
+    
+    # Substitui qualquer hífen por dois-pontos de forma garantida
+    title = title.replace(" - ", ": ").replace("-", ":")
 
     # CTA Final da apostila
     cta_final = (
