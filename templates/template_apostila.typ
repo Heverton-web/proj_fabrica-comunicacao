@@ -235,7 +235,7 @@ $body$
 $if(cta_final)$
 #if capa-grafica-ativa {
   page(fill: bg-radial, margin: 0cm, header: none, footer: none, numbering: none)[
-    #set par(first-line-indent: 0cm, justify: true, leading: 0.7em)
+    #set par(first-line-indent: 0cm, justify: false, leading: 0.7em)
     
     // Blobs de fundo para a contracapa
     #place(top + right, dx: 4cm, dy: -4cm, circle(radius: 10cm, fill: glow-1))
@@ -245,12 +245,13 @@ $if(cta_final)$
     #place(top + left, rect(width: 100%, height: 0.3cm, fill: gradiente-dourado))
     #place(bottom + left, rect(width: 100%, height: 0.3cm, fill: gradiente-dourado))
 
-    #place(left + horizon, dx: 2cm, block(width: 17cm)[
+    #place(center + horizon, block(width: 16cm)[
+      #set align(center)
       #text(font: "Inter", size: 22pt, weight: 900, fill: gradiente-dourado)[#upper[$title$]]
       #v(1cm)
       #text(font: fonte-corpo, size: 13pt, fill: rgb("#f8fafc"))[$cta_final$]
       #v(1.5cm)
-      #line(length: 5cm, stroke: 2pt + gradiente-dourado)
+      #align(center)[#line(length: 5cm, stroke: 2pt + gradiente-dourado)]
       #v(0.6cm)
       #text(font: fonte-corpo, size: 12pt, weight: "bold", fill: rgb("#f8fafc"))[$author$]
     ])
