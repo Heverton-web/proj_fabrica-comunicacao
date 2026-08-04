@@ -70,8 +70,16 @@
   fill: cor-fundo-conteudo, // Fundo branco para as páginas de conteúdo
   header: context {
     if counter(page).get().first() > 1 {
-      set text(size: 9pt, fill: rgb("#64748b"), font: fonte-corpo)
-      align(center, "$title$")
+      set text(size: 8.5pt, fill: rgb("#64748b"), font: fonte-corpo)
+      let data_atual = datetime.today().display("[day]/[month]/[year]")
+      let edicao_texto = "$if(edicao)$$edicao$$else$1ª Edição$endif$"
+      grid(
+        columns: (1fr, auto),
+        align(left)[$title$],
+        align(right)[#edicao_texto | #data_atual]
+      )
+      v(0.2cm)
+      line(length: 100%, stroke: 0.5pt + rgb("#e2e8f0"))
     }
   },
   footer: context {

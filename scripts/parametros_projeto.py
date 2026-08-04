@@ -79,6 +79,10 @@ def validar_config(slug):
         if m not in TIPOS_VALIDOS:
             erros.append(f"tipo de material invalido em materiais_selecionados: {m!r}")
 
+    if "pdf" in materiais:
+        if "edicao" not in config or not str(config.get("edicao", "")).strip():
+            erros.append("campo 'edicao' de preenchimento obrigatorio quando o material 'pdf' esta selecionado")
+
     imagens = config.get("imagens", [])
     for img in imagens:
         p = DIR_PROJETO / img.get("path", "")
@@ -133,6 +137,11 @@ def vars_pdf(slug):
     disponiveis = fontes_instaladas()
     fonte_titulo, _ = resolver_fonte(tipografia.get("titulo", {}).get("familia", FONTE_FALLBACK), disponiveis)
     fonte_corpo, _ = resolver_fonte(tipografia.get("corpo", {}).get("familia", FONTE_FALLBACK), disponiveis)
+
+    # Recupera a edição do config_projeto.json
+    config = carregar_json(caminho_config(slug))
+    edicao = config.get("edicao", "1ª Edição") if config else "1ª Edição"
+
     pares = {
         "cor_primaria": cores.get("accent", "#c9a655"),
         "cor_secundaria": cores.get("textMuted", "#94a3b8"),
@@ -141,6 +150,7 @@ def vars_pdf(slug):
         "cor_fundo": cores.get("bg", "#0f172a"),
         "fonte_titulo": fonte_titulo,
         "fonte_corpo": fonte_corpo,
+        "edicao": edicao,
     }
     return pares
 

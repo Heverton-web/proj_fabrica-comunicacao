@@ -66,6 +66,10 @@ def main():
         "Fale com o time de produto Conexão para dúvidas técnicas adicionais. — Conexão Implantes"
     )
 
+    # Recupera edição do config_projeto.json
+    config = carregar_json(slug_dir / "config_projeto.json")
+    edicao = config.get("edicao", "1ª Edição") if config else "1ª Edição"
+
     # Cores e fontes da marca
     fonte_titulo = tipografia.get("titulo", {}).get("familia", "Inter")
     fonte_corpo = tipografia.get("corpo", {}).get("familia", "Inter")
@@ -89,6 +93,7 @@ def main():
         "-V", f"logo_imagem={logo_imagem}",
         "-V", f"imagem_produto={imagem_produto}",
         "-V", f"cta_final={cta_final}",
+        "-V", f"edicao={edicao}",
     ]
 
     comando = [
