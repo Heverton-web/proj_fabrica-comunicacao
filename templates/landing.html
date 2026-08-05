@@ -19,13 +19,13 @@
     --bg-deep: #0a0f1e;
     --bg-glow: #16213a;
     --surface: #1e293b;
-    --surface-hover: #334155;
+    --surface-hover: #24304c;
     --text-main: #f8fafc;
     --text-muted: #94a3b8;
     --border-subtle: rgba(248, 250, 252, 0.08);
     --accent: #c9a655;
-    --accent-hover: #d4b366;
-    --gradiente-assinatura: linear-gradient(135deg, #c9a655 0%, #e8d48b 40%, #a8873a 70%, #c9a655 100%);
+    --accent-hover: #e8d48b;
+    --gradiente-assinatura: linear-gradient(135deg, #caa146 0%, #fff8d6 25%, #e5c158 50%, #fff3ad 75%, #caa146 100%);
     --glow-blue: #148ecb; /* uso exclusivo: glows decorativos de fundo, nunca texto/botao/card */
     --fonte-titulo: 'Inter', 'Roboto', sans-serif;
     --fonte-corpo: 'Inter', 'Roboto', sans-serif;
@@ -36,8 +36,7 @@
   html { scroll-behavior: smooth; }
   body { font-family: var(--fonte-corpo); color: var(--text-main); background: var(--bg); overflow-x: hidden; position: relative; }
 
-  /* Vinheta radial fixa (nao rola com o conteudo) - mesmo espirito de fundo em
-     gradiente das pecas de referencia, nunca chapado. */
+  /* Vinheta radial fixa */
   .fundo-vinheta {
     position: fixed; inset: 0; z-index: -2; pointer-events: none;
     background:
@@ -48,85 +47,121 @@
   .glow-1 { width: 34vw; height: 34vw; top: -8vw; right: -8vw; background: radial-gradient(circle, rgba(20,142,203,0.20), transparent 70%); }
   .glow-2 { width: 28vw; height: 28vw; bottom: 10vh; left: -8vw; background: radial-gradient(circle, rgba(20,142,203,0.12), transparent 70%); }
 
+  /* Faixas douradas em gradiente e finas (0.3cm = ~3px) */
+  .barra-topo { position: fixed; top: 0; left: 0; width: 100%; height: 3px; background: var(--gradiente-assinatura); z-index: 100; }
+  .barra-baixo { position: fixed; bottom: 0; left: 0; width: 100%; height: 3px; background: var(--gradiente-assinatura); z-index: 100; }
+
   img { max-width: 100%; display: block; }
   .container { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem; }
-  section { padding: 5.5rem 0; }
-  h1, h2, h3 { font-family: var(--fonte-titulo); letter-spacing: -0.01em; }
-  h1 { font-weight: 900; }
-  h2, h3 { font-weight: 700; }
+  section { padding: 5.5rem 0; border-bottom: 1px solid var(--border-subtle); }
+  section:last-of-type { border-bottom: none; }
+  
+  /* Títulos em caixa alta e Inter 900 */
+  h1, h2, h3, h4 {
+    font-family: var(--fonte-titulo);
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    margin-bottom: 1rem;
+  }
 
-  /* Titulo premium: gradiente metalico no texto (mesma assinatura visual do
-     titulo "MASTER FLEX" da peca de referencia), nunca cor solida. */
+  /* Titulo premium: gradiente metálico no texto */
   .titulo-gradiente {
     background: var(--gradiente-assinatura);
     background-clip: text; -webkit-background-clip: text; color: transparent;
   }
 
-  /* Cabecalho: logo a esquerda + badge de contexto a direita */
-  .topo { display: flex; justify-content: space-between; align-items: center; padding: 1.5rem 0; position: relative; z-index: 1; }
+  /* Cabeçalho */
+  .topo { display: flex; justify-content: space-between; align-items: center; padding: 1.5rem 0; position: relative; z-index: 1; margin-bottom: 1rem; }
   .topo img.logo { max-height: 40px; }
 
+  /* Badges dourados premium: fundo com opacidade muito baixa, bordas finas e suaves */
   .badge {
-    display: inline-block; border: 1px solid var(--accent); border-radius: 999px;
-    padding: 0.35rem 1rem; font-size: 0.8rem; font-weight: 700;
-    letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); background: transparent;
+    display: inline-block;
+    background: rgba(201, 166, 85, 0.12);
+    border: 1px solid rgba(201, 166, 85, 0.35);
+    border-radius: 999px;
+    padding: 0.45rem 1.2rem; font-size: 0.8rem; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.12);
   }
-  .badge.preenchida { background: color-mix(in srgb, var(--accent) 15%, transparent); }
 
+  /* Botão primário refinado translúcido estilo badge */
   .btn-primario {
-    display: inline-block; background: var(--gradiente-assinatura); color: var(--bg);
-    font-family: var(--fonte-corpo); font-weight: 700; border: none; border-radius: 999px;
-    padding: 0.9rem 2rem; text-decoration: none;
-    transition: transform 420ms var(--ease-premium), box-shadow 420ms var(--ease-premium);
+    display: inline-block;
+    background: rgba(201, 166, 85, 0.08);
+    border: 1px solid rgba(201, 166, 85, 0.4);
+    color: var(--accent);
+    font-family: var(--fonte-corpo);
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 0.9rem 2rem;
+    border-radius: 999px;
+    text-decoration: none;
+    letter-spacing: 0.08em;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    transition: background 0.25s, border-color 0.25s, transform 0.25s var(--ease-premium);
   }
-  .btn-primario:hover { transform: translateY(-2px) scale(1.02); box-shadow: 0 12px 32px -8px rgba(201,166,85,0.45); }
+  .btn-primario:hover {
+    background: rgba(201, 166, 85, 0.16);
+    border-color: rgba(201, 166, 85, 0.6);
+    transform: translateY(-2px);
+  }
   .btn-primario:active { transform: scale(0.98); }
 
   /* HERO */
   .hero { text-align: center; padding: 6rem 0 5rem; }
-  .hero h1 { font-size: clamp(2.2rem, 5vw, 3.4rem); margin-bottom: 1rem; }
-  .hero .sub { font-size: 1.25rem; color: var(--text-muted); max-width: 60ch; margin: 0 auto 2rem; }
+  .hero h1 { font-size: clamp(2.2rem, 5vw, 3.4rem); margin-bottom: 1.2rem; }
+  .hero .sub { font-size: 1.25rem; color: var(--text-muted); max-width: 60ch; margin: 0 auto 2rem; line-height: 1.6; }
 
   /* PROBLEMA / SOLUCAO */
-  .problema-solucao { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; }
-  @media (max-width: 700px) { .problema-solucao { grid-template-columns: 1fr; } }
-  .problema-solucao h3 { color: var(--accent); margin-bottom: 0.8rem; font-size: 1.3rem; font-family: var(--fonte-titulo); }
-  .problema-solucao p { line-height: 1.6; font-size: 1.05rem; }
+  .problema-solucao { display: grid; grid-template-columns: 1fr 1fr; gap: 3.5rem; }
+  @media (max-width: 700px) { .problema-solucao { grid-template-columns: 1fr; gap: 2rem; } }
+  .problema-solucao h3 { color: var(--accent); margin-bottom: 1rem; font-size: 1.4rem; }
+  .problema-solucao p { line-height: 1.65; font-size: 1.1rem; color: var(--text-main); }
 
-  /* DESTAQUES - "double-bezel": moldura externa sutil + superficie interna */
-  .grade-destaques { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; margin-top: 2.5rem; }
+  /* DESTAQUES - "double-bezel" */
+  .grade-destaques { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 2.5rem; }
   .card {
-    background: var(--surface); border: 1px solid var(--border-subtle); border-radius: 1rem;
-    padding: 1.6rem; box-shadow: inset 0 1px 1px rgba(255,255,255,0.04);
+    background: rgba(255,255,255,0.02); border: 1px solid var(--border-subtle); border-radius: 1rem;
+    padding: 1.8rem; box-shadow: inset 0 1px 1px rgba(255,255,255,0.04);
     transition: transform 420ms var(--ease-premium), border-color 420ms var(--ease-premium);
   }
-  .card:hover { transform: translateY(-4px); border-color: rgba(201,166,85,0.35); }
-  .card h3 { color: var(--accent); font-size: 1.1rem; margin-bottom: 0.5rem; }
-  .card p { font-size: 0.98rem; line-height: 1.5; color: var(--text-main); }
+  .card:hover { transform: translateY(-4px); border-color: rgba(201,166,85,0.35); background: var(--surface-hover); }
+  .card h3 { color: var(--accent); font-size: 1.2rem; margin-bottom: 0.6rem; }
+  .card p { font-size: 1.05rem; line-height: 1.5; color: var(--text-main); }
 
   /* PROVA / COMPOSICAO */
-  .prova table { width: 100%; table-layout: fixed; border-collapse: collapse; margin-top: 1.5rem; }
-  .prova th, .prova td { text-align: left; padding: 0.6rem 0.8rem; border-bottom: 1px solid var(--border-subtle); font-size: 0.95rem; overflow-wrap: break-word; }
-  .prova th { color: var(--text-muted); }
+  .prova h2 { margin-bottom: 2rem; text-align: center; }
+  .prova .tabelas-container { display: flex; flex-direction: column; gap: 3rem; margin-top: 2rem; }
+  .prova table { width: 100%; table-layout: fixed; border-collapse: collapse; background: rgba(255,255,255,0.01); border: 1px solid var(--border-subtle); border-radius: 12px; overflow: hidden; }
+  .prova th, .prova td { text-align: left; padding: 1rem 1.2rem; border-bottom: 1px solid var(--border-subtle); font-size: 1.05rem; overflow-wrap: break-word; }
+  .prova th { background: rgba(201, 166, 85, 0.12); color: var(--accent); font-family: var(--fonte-titulo); font-weight: 700; text-transform: uppercase; border-bottom: 1px solid rgba(201, 166, 85, 0.35); }
+  .prova td { color: var(--text-main); }
+  .prova tr:last-child td { border-bottom: none; }
+  .prova tr:hover { background: rgba(255,255,255,0.02); }
 
   /* CTA FINAL */
-  .cta-final { text-align: center; }
-  .cta-final h2 { margin-bottom: 1rem; }
+  .cta-final { text-align: center; padding: 6rem 0; }
+  .cta-final h2 { margin-bottom: 1.5rem; font-size: 2.2rem; }
+  .cta-final .dica-ouro { font-size: 1.2rem; color: var(--text-muted); max-width: 60ch; margin: 2rem auto; font-style: italic; line-height: 1.6; }
 
-  footer { text-align: center; padding: 2rem 0; font-size: 0.8rem; color: var(--text-muted); position: relative; z-index: 1; }
+  footer { text-align: center; padding: 3rem 0; font-size: 0.85rem; color: var(--text-muted); position: relative; z-index: 1; border-top: 1px solid var(--border-subtle); }
 
-  /* Entrada suave ao rolar - so opacity/transform (GPU-safe) */
+  /* Entrada suave ao rolar */
   .revela { opacity: 0; transform: translateY(28px); transition: opacity 700ms var(--ease-premium), transform 700ms var(--ease-premium); }
   .revela.visivel { opacity: 1; transform: translateY(0); }
 </style>
 </head>
 <body>
+  <div class="barra-topo"></div>
+  <div class="barra-baixo"></div>
   <div class="fundo-vinheta"></div>
   <div class="glow glow-1"></div>
   <div class="glow glow-2"></div>
 
   <div class="container topo">
-    <!-- {{LOGO}} -- compilador-html substitui (opcional): <img class="logo" src="assets/logo.png"> -->
+    <!-- {{LOGO}} -- compilador-html substitui: <img class="logo" src="assets/logos/Logo_Conexão_horizontal_texto_branco.png"> -->
     <span class="badge">{{BADGE_CONTEXTO}}</span>
   </div>
 
@@ -153,7 +188,10 @@
 
   <section class="prova revela">
     <div class="container">
-      <!-- {{PROVA}} -- compilador-html substitui (opcional, so se o texto-base trouxer dados tabulares) -->
+      <h2 class="titulo-gradiente">Referência Técnica & Comercial</h2>
+      <div class="tabelas-container">
+        <!-- {{PROVA}} -- compilador-html substitui (tabelas e informações tabulares do texto-base) -->
+      </div>
     </div>
   </section>
 

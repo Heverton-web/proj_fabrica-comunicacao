@@ -245,14 +245,173 @@ def compilar_apresentacao(slug):
     return 0
 
 
+def compilar_landing(slug):
+    slug_dir = DIR_OUTPUT / slug
+    conteudo_path = slug_dir / "landing-page" / "conteudo.json"
+    template_path = DIR_PROJETO / "templates" / "landing.html"
+    dest_html = slug_dir / "landing-page" / "index.html"
+    dest_assets = slug_dir / "landing-page" / "assets"
+
+    if not conteudo_path.exists():
+        print(f"[ERRO] conteudo.json não encontrado em {conteudo_path}")
+        return 1
+
+    # Garante estrutura de assets
+    (dest_assets / "fonts").mkdir(parents=True, exist_ok=True)
+    (dest_assets / "logos").mkdir(parents=True, exist_ok=True)
+
+    # Copia fontes
+    for f in DIR_FONTS.glob("*.woff2"):
+        shutil.copy(f, dest_assets / "fonts" / f.name)
+
+    # Copia logos
+    for l in DIR_LOGOS.glob("*.png"):
+        shutil.copy(l, dest_assets / "logos" / l.name)
+
+    # Copia imagem do produto se existir
+    img_produto_src = slug_dir / "insumos" / "kit_start_flex_frontal.png"
+    if img_produto_src.exists():
+        shutil.copy(img_produto_src, dest_assets / "kit_start_flex_frontal.png")
+
+    # Carrega dados
+    dados = carregar_json(conteudo_path)
+    if not dados:
+        print(f"[ERRO] Não foi possível carregar o arquivo {conteudo_path}")
+        return 1
+
+    # 1. Monta bloco HERO
+    hero = dados.get("hero", {})
+    hero_headline = formatar_markdown(hero.get("headline", ""))
+    hero_subheadline = formatar_markdown(hero.get("subheadline", ""))
+    hero_cta = formatar_markdown(hero.get("cta", "Consultar Guia"))
+    hero_html = f"""
+      <h1 class="titulo-gradiente">{hero_headline}</h1>
+      <p class="sub">{hero_subheadline}</p>
+      <a class="btn-primario" href="#cta">{hero_cta}</a>"""
+
+    # 2. Monta bloco PROBLEMA / SOLUCAO
+    ps = dados.get("problema_solucao", {})
+    p_titulo = formatar_markdown(ps.get("problema", {}).get("titulo", "O Desafio"))
+    p_texto = formatar_markdown(ps.get("problema", {}).get("texto", ""))
+    s_titulo = formatar_markdown(ps.get("solucao", {}).get("titulo", "A Solução"))
+    s_texto = formatar_markdown(ps.get("solucao", {}).get("texto", ""))
+    ps_html = f"""
+      <div>
+        <h3>{p_titulo}</h3>
+        <p>{p_texto}</p>
+      </div>
+      <div>
+        <h3>{s_titulo}</h3>
+        <p>{s_texto}</p>
+      </div>"""
+
+    # 3. Monta bloco DESTAQUES (Cards)
+    destaques_list = dados.get("destaques", [])
+    destaques_html = []
+    for d in destaques_list:
+        d_titulo = formatar_markdown(d.get("titulo", ""))
+        d_texto = formatar_markdown(d.get("texto", ""))
+        destaques_html.append(f"""
+        <div class="card">
+          <h3>{d_titulo}</h3>
+          <p>{d_texto}</p>
+        </div>""")
+    destaques_str = "\n".join(destaques_html)
+
+    # 4. Monta bloco PROVA (Tabelas técnicas do texto-base)
+    prova = dados.get("prova", {})
+    prova_html = []
+    
+    # Imagem do produto em destaque centralizada antes das tabelas
+    prova_html.append(f"""
+      <div style="display: flex; justify-content: center; margin-bottom: 3.5rem;">
+        <img src="assets/kit_start_flex_frontal.png" alt="Kit Start Flex" style="max-height: 50vh; filter: drop-shadow(0 15px 30px rgba(0,0,0,0.4)); object-fit: contain;">
+      </div>""")
+
+    for k, v in prova.items():
+        if isinstance(v, dict) and "cabecalho" in v and "linhas" in v:
+            t_titulo = formatar_markdown(v.get("titulo", ""))
+            t_header = v.get("cabecalho", [])
+            t_rows = v.get("linhas", [])
+
+            headers_html = "".join([f"<th>{formatar_markdown(h)}</th>" for h in t_header])
+            
+            rows_html = []
+            for row in t_rows:
+                cells = "".join([f"<td>{formatar_markdown(cell)}</td>" for cell in row])
+                rows_html.append(f"<tr>{cells}</tr>")
+            rows_str = "\n".join(rows_html)
+
+            prova_html.append(f"""
+      <div style="margin-bottom: 2.5rem;">
+        <h3 style="color: var(--accent); margin-bottom: 1rem; text-transform: uppercase;">{t_titulo}</h3>
+        <table>
+          <thead>
+            <tr>{headers_html}</tr>
+          </thead>
+          <tbody>
+            {rows_str}
+          </tbody>
+        </table>
+      </div>""")
+    prova_str = "\n".join(prova_html)
+
+    # 5. Monta bloco CTA FINAL
+    cta_final = dados.get("cta_final", {})
+    cf_headline = formatar_markdown(cta_final.get("headline", ""))
+    cf_cta = formatar_markdown(cta_final.get("cta", "Consultar Guia"))
+    cf_dica = formatar_markdown(cta_final.get("dica_ouro", ""))
+    
+    cta_final_html = f"""
+      <h2 class="titulo-gradiente">{cf_headline}</h2>
+      <a class="btn-primario" href="#">{cf_cta}</a>
+      <p class="dica-ouro">{cf_dica}</p>"""
+
+    # Carrega template e substitui
+    template_content = template_path.read_text(encoding="utf-8")
+    
+    guia_title = "Landing Page: " + " ".join(word.capitalize() for word in slug.split("-")[1:])
+    html_final = template_content.replace("{{TITULO}}", guia_title)
+    
+    # Badge contexto (Uso Interno / Uso Externo)
+    brief = carregar_json(slug_dir / "brief_criativo.json")
+    badge_texto = "USO INTERNO"
+    if brief:
+        # Se escopo contiver profissional/externo, ajusta
+        nota = brief.get("nota_de_escopo", "").lower()
+        if "externo" in nota or "profissional" in nota:
+          badge_texto = "USO PROFISSIONAL"
+    
+    html_final = html_final.replace("{{BADGE_CONTEXTO}}", badge_texto)
+    html_final = html_final.replace("{{MARCA}}", "2026 © Conexão Sistemas de Próteses — Todos os direitos reservados")
+
+    # Injeta Logo
+    logo_tag = '<img class="logo" src="assets/logos/Logo_Conexão_horizontal_texto_branco.png" alt="Conexão Implantes">'
+    html_final = re.sub(r'<!--\s*\{\{LOGO\}\}.*?-->', logo_tag, html_final, flags=re.DOTALL)
+
+    # Injeta Placeholders de Bloco
+    html_final = re.sub(r'<!--\s*\{\{HERO\}\}.*?-->', hero_html, html_final, flags=re.DOTALL)
+    html_final = re.sub(r'<!--\s*\{\{PROBLEMA_SOLUCAO\}\}.*?-->', ps_html, html_final, flags=re.DOTALL)
+    html_final = re.sub(r'<!--\s*\{\{DESTAQUES\}\}.*?-->', destaques_str, html_final, flags=re.DOTALL)
+    html_final = re.sub(r'<!--\s*\{\{PROVA\}\}.*?-->', prova_str, html_final, flags=re.DOTALL)
+    html_final = re.sub(r'<!--\s*\{\{CTA_FINAL\}\}.*?-->', cta_final_html, html_final, flags=re.DOTALL)
+
+    # Salva final
+    dest_html.write_text(html_final, encoding="utf-8")
+    print(f"[OK] Landing Page compilada com sucesso em {dest_html}")
+    return 0
+
+
 def main():
     ap = argparse.ArgumentParser(description="Compila dados estruturados JSON em HTML aplicando design Conexão")
     ap.add_argument("slug")
-    ap.add_argument("tipo", choices=["apresentacao"])
+    ap.add_argument("tipo", choices=["apresentacao", "landing-page"])
     args = ap.parse_args()
 
     if args.tipo == "apresentacao":
         return compilar_apresentacao(args.slug)
+    elif args.tipo == "landing-page":
+        return compilar_landing(args.slug)
     return 0
 
 
