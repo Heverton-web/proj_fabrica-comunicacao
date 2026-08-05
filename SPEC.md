@@ -113,7 +113,12 @@ arquivo como solução interina (ver `SPEC_PDF.md`).
     "pdf": {"secoes": ["abertura", "problema", "solução", "destaques", "composição", "aplicação", "fechamento"]},
     "landing-page": {"secoes": ["hero", "problema-solução", "destaques", "prova/composição", "cta"]},
     "apresentacao": {"slides": ["capa", "problema", "solução", "destaques (1 por slide)", "cta"]},
-    "arte": {"variações": ["capa isca (headline + foto + CTA)"]},
+    // "arte" e compartilhado entre arte-01/02/03 selecionados — formato (dimensao)
+    // e copy (conceito criativo) sao eixos ortogonais (ver
+    // docs/05-plano-expansao-multi-copy-arte.md). Exatamente 3 angulos, cada um
+    // renderizado depois em TODOS os formatos selecionados (nunca 1 angulo por
+    // formato):
+    "arte": {"angulos_criativos": ["problema (capa isca)", "diferencial técnico", "versatilidade/eficiência"]},
     "textos": {"canais": ["whatsapp", "instagram", "linkedin"]}
   }
 }
@@ -125,7 +130,7 @@ arquivo como solução interina (ver `SPEC_PDF.md`).
   "slug": "kit-master-flex",
   "materiais": [
     {"tipo": "pdf", "status": "concluido_autonomo", "path": "pdf/apostila_kit-master-flex.pdf"},
-    {"tipo": "arte-01", "status": "concluido_autonomo", "path": "arte-01/arte_kit-master-flex_01.png"},
+    {"tipo": "arte-01", "status": "concluido_autonomo", "path": "arte-01/"},  // pasta com 3 PNGs (1 por copy)
     {"tipo": "textos", "status": "concluido_autonomo", "path": "textos/"}
   ],
   "decisoes_design": ["Paleta extraída da peça de referência (navy + dourado metálico)."],

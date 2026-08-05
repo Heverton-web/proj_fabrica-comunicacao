@@ -1,44 +1,103 @@
 # SPEC_ARTE.md — Contrato Técnico: Arte PNG (redes sociais)
 
-Ver `SPEC.md` para o fluxo geral. Este documento cobre os materiais `arte-01`
+Ver `SPEC.md` para o fluxo geral e `docs/05-plano-expansao-multi-copy-arte.md` para o
+histórico da decisão abaixo. Este documento cobre os materiais `arte-01`
 (1080×1080), `arte-02` (1080×1350) e `arte-03` (1080×1920).
+
+## Modelo: formato × copy (eixos ortogonais)
+
+**Formato** (a dimensão do PNG: `arte-01`/`02`/`03`) e **copy** (o conceito criativo de
+headline/subcopy/CTA) nunca são a mesma coisa. Existem sempre **3 copies
+compartilhadas** por projeto — cada uma um ângulo distinto do dossiê (ex.: problema,
+diferencial técnico, versatilidade) — e cada uma é renderizada em **todos** os formatos
+selecionados em `materiais_selecionados`:
+
+```
+                     arte-01        arte-02        arte-03
+                    (1080x1080)    (1080x1350)    (1080x1920)
+copy-01 (ângulo A)      ✅              ✅             ✅
+copy-02 (ângulo B)      ✅              ✅             ✅
+copy-03 (ângulo C)      ✅              ✅             ✅
+```
+
+Se os 3 formatos forem selecionados, o resultado são **9 PNGs no total** (3 copies × 3
+formatos). `materiais_selecionados` continua controlando só os **formatos**
+produzidos — as 3 copies são sempre geradas juntas, independente de quantos formatos
+forem pedidos.
 
 ## Pipeline
 
-`redator-arte` (headline + subcopy + CTA curtos, por variante) → `compilador-arte`
-(renderiza `templates/arte-<variante>.html` via Playwright headless, viewport exato =
-dimensão final, `page.screenshot()`) → `scripts/validar-dimensoes.py` (Pillow).
+1. `redator-arte` — roda **uma única vez por projeto**, nunca uma vez por formato.
+   Lê `brief_criativo.mapeamento_por_material.arte.angulos_criativos` (3 ângulos
+   definidos por `diretor-de-arte`) e escreve `output/<slug>/arte/copies.json` com as
+   3 copies completas (headline + subcopy + CTA cada).
+2. `compilador-arte` — para cada formato selecionado, lê `arte/copies.json` e
+   renderiza `templates/arte-<dimensao>.html` via Playwright headless (viewport exato =
+   dimensão final, `page.screenshot()`) uma vez por copy.
+3. `scripts/validar-dimensoes.py` (Pillow) — confirma exatamente 3 PNGs por formato,
+   cada um pixel-perfect e abaixo do teto de peso.
 
-Técnica portada de `fabrica-de-livros/.claude/agents/subagente-ilustrador.md` (HTML/CSS
-+ Playwright, sem API, sem custo), com o design system fixo da Conexão
-(`brand/design-system-conexao.json`) aplicado via `.claude/skills/aplicador-marca-conexao/SKILL.md`.
+Técnica de renderização portada de
+`fabrica-de-livros/.claude/agents/subagente-ilustrador.md` (HTML/CSS + Playwright, sem
+API, sem custo), com o design system fixo da Conexão
+(`brand/design-system-conexao.json`) aplicado via
+`.claude/skills/aplicador-marca-conexao/SKILL.md`.
 
-## Requisitos técnicos por variante
+**Disciplina de orquestração (crítica):** a geração de copy é um passo compartilhado e
+único, executado pelo orquestrador (`/produzir-comunicacao-completa`, Passo 2.5)
+**antes** de despachar qualquer `subagente-produtor-arte`. Gerar copy dentro de cada
+subagente de formato reintroduz o bug original desta spec (1 copy por formato,
+divergente entre subagentes paralelos) — ver seção 1 de
+`docs/05-plano-expansao-multi-copy-arte.md`.
 
-| Variante | Dimensão | Uso típico | Teto de peso |
-|---|---|---|---|
-| `arte-01` | 1080×1080 px | WhatsApp, post quadrado Instagram/LinkedIn | 1 MB |
-| `arte-02` | 1080×1350 px | Post retrato Instagram/LinkedIn (mais espaço vertical) | 1 MB |
-| `arte-03` | 1080×1920 px | Stories/Reels Instagram, Status WhatsApp | 1 MB |
+## Requisitos técnicos por formato
+
+| Formato | Dimensão | Uso típico | Teto de peso | PNGs esperados |
+|---|---|---|---|---|
+| `arte-01` | 1080×1080 px | WhatsApp, post quadrado Instagram/LinkedIn | 1 MB | 3 (1 por copy) |
+| `arte-02` | 1080×1350 px | Post retrato Instagram/LinkedIn (mais espaço vertical) | 1 MB | 3 (1 por copy) |
+| `arte-03` | 1080×1920 px | Stories/Reels Instagram, Status WhatsApp | 1 MB | 3 (1 por copy) |
 
 - Dimensão **pixel-perfect exata** — viewport do Playwright deve ser fixado exatamente
   na dimensão-alvo (sem `device_scale_factor` que gere upscale além do necessário).
 - Texto do headline/CTA deve caber sem overflow no layout — `redator-arte` respeita
-  limites de caracteres por variante (headline ≤ 60 caracteres, subcopy ≤ 120,
-  CTA ≤ 30) para garantir legibilidade em tela de celular.
+  limites de caracteres (headline ≤ 60 caracteres, subcopy ≤ 120, CTA ≤ 30) para
+  garantir legibilidade em tela de celular. Esses limites são **format-agnósticos** —
+  a mesma copy deve caber nos 3 formatos, por isso não há variação de texto por
+  dimensão.
 - Cores/fontes só via CSS custom properties do design system fixo (mesma disciplina
   de `SPEC_HTML.md`).
-- Nome do arquivo: `arte_<slug>_<variante>.png`, ex.: `arte_kit-master-flex_01.png`.
-- Cada arte funciona sozinha (sem depender de ver o PDF/landing). O conteúdo exato
-  depende do escopo confirmado em `brief_criativo.json` — pode ser uma peça pública
-  "isca visual" (nome do produto/marca + mensagem central + CTA, mirror do exemplo
-  Conexão/Kit Master Flex) ou um cartão de referência rápida de uso interno (ex.:
-  tabela de torque, código de cores) — ver exemplo real em `mapeamento_por_material.arte`
-  do teste `kit-start-flex`.
+- Nome do arquivo: `arte_<slug>_<NN>_copy<MM>.png`, onde `NN` é o formato
+  (`01`/`02`/`03`) e `MM` é a copy (`01`/`02`/`03`) — ex.:
+  `arte_kit-master-flex_01_copy02.png` = formato 1080×1080, copy 2. Os dois eixos
+  aparecem sempre juntos no nome, nunca um número solto.
+- Cada arte funciona sozinha (sem depender de ver o PDF/landing). O conteúdo exato de
+  cada copy depende do escopo confirmado em `brief_criativo.json` — pode ser uma peça
+  pública "isca visual" (nome do produto/marca + mensagem central + CTA) ou um cartão
+  de referência rápida de uso interno (ex.: tabela de torque, código de cores).
+
+## Artefato compartilhado: `output/<slug>/arte/copies.json`
+
+```jsonc
+{
+  "copies": [
+    {"id": "copy-01", "angulo": "problema", "headline": "...", "subcopy": "...", "cta": "..."},
+    {"id": "copy-02", "angulo": "diferencial-tecnico", "headline": "...", "subcopy": "...", "cta": "..."},
+    {"id": "copy-03", "angulo": "versatilidade", "headline": "...", "subcopy": "...", "cta": "..."}
+  ]
+}
+```
+
+Pasta auxiliar (`output/<slug>/arte/`, mesmo padrão de `insumos/` e `revisao/`), não é
+um dos materiais finais de R12 — os materiais finais continuam sendo `arte-01/`,
+`arte-02/`, `arte-03/` (cada um com seus próprios 3 PNGs + HTMLs).
 
 ## Validação (`scripts/validar-dimensoes.py`)
 
-- Abre o PNG com Pillow, confirma `image.size == (largura, altura)` exata da variante.
-- `size_bytes < teto` da tabela acima.
+- Abre cada PNG com Pillow, confirma `image.size == (largura, altura)` exata do
+  formato.
+- Confirma **exatamente 3 PNGs** na pasta do formato (1 por copy) — menos ou mais que
+  3 é falha.
+- `size_bytes < teto` da tabela acima, para cada PNG.
 - Falha → `revisor-marca` decide reduzir texto/otimizar compressão (auto-correção,
   REGRA 4) antes de reportar esgotado.

@@ -26,7 +26,9 @@ Uso:
 
 import argparse
 import json
+import os
 import sys
+import time
 from pathlib import Path
 
 DIR_PROJETO = Path(__file__).resolve().parent.parent
@@ -34,6 +36,7 @@ DIR_OUTPUT = DIR_PROJETO / "output"
 
 LOTE_PADRAO = 4
 MAX_TENTATIVAS = 3
+LOCK_TIMEOUT_S = 30
 BACKOFF_BASE_S = 15
 BACKOFF_MAX_S = 240
 
@@ -74,6 +77,39 @@ def gravar_estado(slug, estado):
     p.write_text(json.dumps(estado, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
+def _adquirir_lock(slug, timeout=LOCK_TIMEOUT_S, poll=0.1):
+    """Lock exclusivo por arquivo (criacao atomica via O_CREAT|O_EXCL) para
+    serializar o read-modify-write de _pool_estado.json entre subagentes
+    despachados em paralelo no mesmo lote."""
+    lock_path = caminho_estado(slug).with_suffix(".lock")
+    lock_path.parent.mkdir(parents=True, exist_ok=True)
+    deadline = time.time() + timeout
+    while True:
+        try:
+            fd = os.open(str(lock_path), os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+            os.close(fd)
+            return lock_path
+        except FileExistsError:
+            if time.time() > deadline:
+                try:
+                    if time.time() - lock_path.stat().st_mtime > timeout:
+                        lock_path.unlink()
+                        continue
+                except OSError:
+                    continue
+                raise TimeoutError(
+                    f"nao foi possivel adquirir lock de estado para {slug} "
+                    f"apos {timeout}s")
+            time.sleep(poll)
+
+
+def _liberar_lock(lock_path):
+    try:
+        lock_path.unlink()
+    except OSError:
+        pass
+
+
 def material_entregue(slug, tipo):
     """Entregue = artefato esperado existe no disco e tem tamanho > 0.
     Checagem de forma/dimensao exata fica por conta de validar-pdf.py /
@@ -91,7 +127,14 @@ def material_entregue(slug, tipo):
         return False, "index.html ainda nao gerado"
     if tipo.startswith("arte-"):
         pngs = [p for p in base.glob("*.png") if p.stat().st_size > 0]
-        return (True, "ok") if pngs else (False, "PNG ainda nao gerado")
+        if len(pngs) < 3:
+            return False, f"esperado 3 PNGs (1 por copy), encontrado {len(pngs)}"
+        return True, "ok"
+    if tipo == "textos":
+        esperados = ("whatsapp.txt", "instagram.txt", "linkedin.txt")
+        faltantes = [n for n in esperados
+                     if not (base / n).exists() or (base / n).stat().st_size == 0]
+        return (True, "ok") if not faltantes else (False, f"faltando: {', '.join(faltantes)}")
     return False, f"tipo de material desconhecido: {tipo}"
 
 
@@ -164,27 +207,35 @@ def main():
         return 1
 
     if args.registrar:
-        estado = carregar_estado(args.slug)
-        reg = estado["materiais"].setdefault(
-            args.registrar, {"tentativas": 0, "ultimo_erro": "", "estado": "pendente"})
-        reg["tentativas"] += 1
-        if args.sucesso:
-            reg["estado"] = "concluido_autonomo"
-            reg["ultimo_erro"] = ""
-            print(f"[OK] {args.registrar}: sucesso registrado "
-                  f"(tentativa {reg['tentativas']})")
-        else:
-            reg["ultimo_erro"] = args.falha or "falha nao especificada"
-            esgotado = reg["tentativas"] >= MAX_TENTATIVAS
-            reg["estado"] = "esgotado" if esgotado else "pendente"
-            espera = backoff(reg["tentativas"])
-            print(f"[FALHA] {args.registrar}: {reg['ultimo_erro']} "
-                  f"(tentativa {reg['tentativas']}/{MAX_TENTATIVAS})")
-            if esgotado:
-                print("  -> tentativas esgotadas; escalar para revisao manual")
+        try:
+            lock_path = _adquirir_lock(args.slug)
+        except TimeoutError as exc:
+            print(f"[ERRO] {exc}")
+            return 1
+        try:
+            estado = carregar_estado(args.slug)
+            reg = estado["materiais"].setdefault(
+                args.registrar, {"tentativas": 0, "ultimo_erro": "", "estado": "pendente"})
+            reg["tentativas"] += 1
+            if args.sucesso:
+                reg["estado"] = "concluido_autonomo"
+                reg["ultimo_erro"] = ""
+                print(f"[OK] {args.registrar}: sucesso registrado "
+                      f"(tentativa {reg['tentativas']})")
             else:
-                print(f"  -> retentar apos {espera}s (backoff exponencial)")
-        gravar_estado(args.slug, estado)
+                reg["ultimo_erro"] = args.falha or "falha nao especificada"
+                esgotado = reg["tentativas"] >= MAX_TENTATIVAS
+                reg["estado"] = "esgotado" if esgotado else "pendente"
+                espera = backoff(reg["tentativas"])
+                print(f"[FALHA] {args.registrar}: {reg['ultimo_erro']} "
+                      f"(tentativa {reg['tentativas']}/{MAX_TENTATIVAS})")
+                if esgotado:
+                    print("  -> tentativas esgotadas; escalar para revisao manual")
+                else:
+                    print(f"  -> retentar apos {espera}s (backoff exponencial)")
+            gravar_estado(args.slug, estado)
+        finally:
+            _liberar_lock(lock_path)
         return 0
 
     if args.reset:

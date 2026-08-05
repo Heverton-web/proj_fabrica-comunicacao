@@ -51,9 +51,12 @@ específica em `brief_criativo.mapeamento_por_material`:
   ajustável se o texto-base não sustentar alguma).
 - **landing-page** → lista de seções (ver `SPEC_HTML.md`).
 - **apresentacao** → lista de slides, 1 conceito por slide (ver `SPEC_HTML.md`).
-- **arte-01/02/03** → a variação de headline/subcopy/CTA por formato (todas puxam da
-  mesma mensagem central, adaptada ao limite de caracteres de cada variante — ver
-  `SPEC_ARTE.md`).
+- **arte** (compartilhado entre `arte-01`/`02`/`03` selecionados — formato e copy são
+  eixos ortogonais, ver `docs/05-plano-expansao-multi-copy-arte.md`) → defina
+  exatamente **3 `angulos_criativos`** (strings curtas, cada uma um ângulo distinto do
+  dossiê — ex.: problema, diferencial técnico, versatilidade). `redator-arte` escreve
+  1 copy completa por ângulo (`arte/copies.json`), e cada uma das 3 copies é depois
+  renderizada em **todos** os formatos selecionados — nunca 1 copy por formato.
 
 ### 4. Carregar as escolhas do operador (público-alvo e objetivo/tom)
 

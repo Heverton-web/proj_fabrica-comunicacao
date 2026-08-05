@@ -20,13 +20,32 @@ from pathlib import Path
 DIR_PROJETO = Path(__file__).resolve().parent.parent
 DIR_OUTPUT = DIR_PROJETO / "output"
 
+def _resolver_textos(base, slug):
+    pasta = base / "textos"
+    esperados = ("whatsapp.txt", "instagram.txt", "linkedin.txt")
+    if pasta.is_dir() and all((pasta / n).exists() and (pasta / n).stat().st_size > 0 for n in esperados):
+        return pasta
+    return None
+
+
+def _resolver_arte(tipo):
+    def resolver(base, slug):
+        pasta = base / tipo
+        pngs = [p for p in pasta.glob("*.png") if p.stat().st_size > 0] if pasta.is_dir() else []
+        # 3 PNGs esperados: 1 por copy compartilhada (arte/copies.json),
+        # ver docs/05-plano-expansao-multi-copy-arte.md
+        return pasta if len(pngs) == 3 else None
+    return resolver
+
+
 PATH_POR_TIPO = {
     "pdf": lambda base, slug: next(iter(sorted((base / "pdf").glob("*.pdf"))), None),
     "landing-page": lambda base, slug: (base / "landing-page" / "index.html"),
     "apresentacao": lambda base, slug: (base / "apresentacao" / "index.html"),
-    "arte-01": lambda base, slug: next(iter(sorted((base / "arte-01").glob("*.png"))), None),
-    "arte-02": lambda base, slug: next(iter(sorted((base / "arte-02").glob("*.png"))), None),
-    "arte-03": lambda base, slug: next(iter(sorted((base / "arte-03").glob("*.png"))), None),
+    "arte-01": _resolver_arte("arte-01"),
+    "arte-02": _resolver_arte("arte-02"),
+    "arte-03": _resolver_arte("arte-03"),
+    "textos": _resolver_textos,
 }
 
 

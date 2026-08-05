@@ -41,6 +41,21 @@ python scripts/pool-materiais.py <slug> --plano --lote 4
 
 Imprime os materiais de `materiais_selecionados` divididos em lotes de até 4.
 
+## Passo 2.5 — Copy compartilhada de arte (uma única vez, antes de qualquer fan-out de arte)
+
+Se qualquer `arte-01`/`arte-02`/`arte-03` estiver em `materiais_selecionados` e
+`output/<slug>/arte/copies.json` ainda não existir (ou não tiver exatamente 3 copies),
+invoque o skill `redator-arte` **inline, agora, uma única vez** — nunca delegue isso a
+um `subagente-produtor-arte`. Formato (dimensão do PNG) e copy (conceito criativo) são
+eixos ortogonais: as mesmas 3 copies são compartilhadas por todos os formatos
+selecionados (ver `docs/05-plano-expansao-multi-copy-arte.md`). Gerar a copy dentro de
+cada subagente de formato reintroduz o bug original — 3 subagentes paralelos
+descobrindo/escrevendo 3 copies divergentes em vez de reaproveitar as mesmas 3 em todos
+os formatos.
+
+Este passo precisa terminar **antes** de despachar o lote que contém qualquer
+`arte-0N`, mesmo que esse lote não seja o primeiro.
+
 ## Passo 3 — Fan-out em lote (disciplina de concorrência — nunca tudo de uma vez)
 
 Para cada lote do plano, **nesta ordem, sem pular etapas**:
@@ -49,7 +64,8 @@ Para cada lote do plano, **nesta ordem, sem pular etapas**:
    - `pdf` → `subagente-produtor-pdf`
    - `landing-page` → `subagente-produtor-landing`
    - `apresentacao` → `subagente-produtor-apresentacao`
-   - `arte-01`/`arte-02`/`arte-03` → `subagente-produtor-arte` (um por variante)
+   - `arte-01`/`arte-02`/`arte-03` → `subagente-produtor-arte` (um por variante —
+     requer que o Passo 2.5 já tenha gerado `arte/copies.json`)
    - `textos` → `subagente-produtor-textos`
 2. Aguarde **todos** os subagentes do lote terminarem (cada um já auto-registra sucesso
    ou falha via `pool-materiais.py --registrar`).

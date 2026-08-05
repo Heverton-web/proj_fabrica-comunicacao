@@ -24,9 +24,16 @@ ainda não tem brief criativo."
 
 1. Resolva a lista de variantes a partir de `--tamanho` (ou as 3, se omitido). Para
    cada uma não presente em `config_projeto.materiais_selecionados`, adicione-a.
-2. Despache um `subagente-produtor-arte` por variante, em paralelo.
-3. Despache `subagente-revisor-marca` só para as variantes desta rodada.
-4. Rode `python scripts/auditar-projeto.py <slug> --estrito --apenas <variantes>`.
-5. Rode `python scripts/empacotar-projeto.py <slug>`.
-6. Reporte (REGRA 2): path de cada PNG, decisões de design, faltantes, sugestões de
-   legenda por variante.
+2. Se `output/<slug>/arte/copies.json` não existir (ou não tiver exatamente 3 copies),
+   invoque `redator-arte` inline, uma única vez, ANTES do fan-out — formato e copy são
+   eixos ortogonais (ver `docs/05-plano-expansao-multi-copy-arte.md`); as mesmas 3
+   copies são compartilhadas por todas as variantes regeneradas nesta rodada. Se já
+   existir, reaproveite sem regravar.
+3. Despache um `subagente-produtor-arte` por variante, em paralelo — cada um lê
+   `arte/copies.json` e renderiza as 3 copies na sua própria dimensão (3 PNGs por
+   variante).
+4. Despache `subagente-revisor-marca` só para as variantes desta rodada.
+5. Rode `python scripts/auditar-projeto.py <slug> --estrito --apenas <variantes>`.
+6. Rode `python scripts/empacotar-projeto.py <slug>`.
+7. Reporte (REGRA 2): path de cada PNG (9 no total se as 3 variantes forem
+   regeneradas), decisões de design, faltantes, sugestões de legenda por copy×variante.

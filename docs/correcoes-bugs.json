@@ -1,0 +1,160 @@
+{
+  "status": "complete",
+  "llm": {
+    "provider": "mimo",
+    "model": "mimo-v2.5-pro"
+  },
+  "message": "Review complete: 4 finding(s) across 6 selected item(s).",
+  "summary": {
+    "files_reviewed": 6,
+    "comments": 4,
+    "total_tokens": 434938,
+    "input_tokens": 402072,
+    "output_tokens": 32866,
+    "cache_read_tokens": 310144,
+    "elapsed": "3m6s"
+  },
+  "tool_calls": {
+    "total": 32,
+    "by_tool": {
+      "code_comment": 3,
+      "code_search": 8,
+      "file_find": 2,
+      "file_read": 15,
+      "file_read_diff": 4
+    }
+  },
+  "comments": [
+    {
+      "path": "scripts/empacotar-projeto.py",
+      "content": "The new resolvers `_resolver_textos` and `_resolver_arte` return directory paths (`pasta`) when successful, while the existing resolvers for \"pdf\", \"landing-page\", and \"apresentacao\" return file paths. This creates an inconsistency in the `path` field of `manifesto_materiais.json`:\n\n- \"pdf\" → `output/\u003cslug\u003e/pdf/some_file.pdf` (file path)\n- \"landing-page\" → `output/\u003cslug\u003e/landing-page/index.html` (file path)\n- \"textos\" → `output/\u003cslug\u003e/textos` (directory path)\n- \"arte-01\" → `output/\u003cslug\u003e/arte-01` (directory path)\n\nAdditionally, the error message on line 86 (`{artefato}`) will always show `None` when these resolvers fail, rather than showing the expected path that's missing. Consider returning a representative file path (e.g., the first expected text file or the first PNG) to maintain consistency with other material types, or document the convention explicitly.",
+      "existing_code": "def _resolver_textos(base, slug):\n    pasta = base / \"textos\"\n    esperados = (\"whatsapp.txt\", \"instagram.txt\", \"linkedin.txt\")\n    if pasta.is_dir() and all((pasta / n).exists() and (pasta / n).stat().st_size \u003e 0 for n in esperados):\n        return pasta\n    return None",
+      "start_line": 23,
+      "end_line": 28,
+      "category": "maintainability",
+      "severity": "low"
+    },
+    {
+      "path": "scripts/empacotar-projeto.py",
+      "content": "The resolver returns `pasta` (directory path) when exactly 3 non-empty PNGs exist. This means line 86's error check `not artefato.exists()` will always be `True` (directory exists) when the resolver succeeds, making the check redundant for directory-based resolvers. However, this is consistent with the intent — the resolver already validated the content. Just note the `path` value in the manifest will be a directory path (`output/\u003cslug\u003e/arte-01`) rather than a specific PNG file path, which differs from the \"pdf\" type.",
+      "existing_code": "def _resolver_arte(tipo):\n    def resolver(base, slug):\n        pasta = base / tipo\n        pngs = [p for p in pasta.glob(\"*.png\") if p.stat().st_size \u003e 0] if pasta.is_dir() else []\n        # 3 PNGs esperados: 1 por copy compartilhada (arte/copies.json),\n        # ver docs/05-plano-expansao-multi-copy-arte.md\n        return pasta if len(pngs) == 3 else None\n    return resolver",
+      "start_line": 31,
+      "end_line": 38,
+      "category": "maintainability",
+      "severity": "low"
+    },
+    {
+      "path": "scripts/compilar-arte.py",
+      "content": "When `page.screenshot(path=dest_png)` fails (e.g., disk full, permission error mid-write), `dest_html` is correctly cleaned up but `dest_png` is not. If Playwright started writing the PNG before the failure, a partially-written corrupt file will remain on disk. Downstream tools (e.g., validators, consumers of the output directory) could encounter this malformed artifact between the failed run and a retry. Add `dest_png.unlink(missing_ok=True)` alongside the HTML cleanup to ensure both artifacts are removed together on failure, maintaining an atomic all-or-nothing output state.",
+      "suggestion_code": "            except Exception as e:\n                print(f\"[FALHA] Falha ao renderizar {variante}/{sufixo_copy} via Playwright ({e})\")\n                dest_html.unlink(missing_ok=True)\n                dest_png.unlink(missing_ok=True)\n                erros += 1",
+      "existing_code": "            except Exception as e:\n                print(f\"[FALHA] Falha ao renderizar {variante}/{sufixo_copy} via Playwright ({e})\")\n                dest_html.unlink(missing_ok=True)\n                erros += 1",
+      "start_line": 164,
+      "end_line": 167,
+      "category": "maintainability",
+      "severity": "medium"
+    },
+    {
+      "path": "scripts/pool-materiais.py",
+      "content": "In `_adquirir_lock`, after the deadline has passed and the stale-lock cleanup path raises `OSError`, the `except OSError: continue` creates a potential infinite loop. Once `time.time() \u003e deadline`, every subsequent iteration immediately re-enters the deadline branch, and if the `OSError` persists (e.g., permission denied on `stat()` or `unlink()`), the loop never exits. Consider re-raising `TimeoutError` from the `except OSError` handler when past the deadline:\n\n```python\nexcept OSError:\n    raise TimeoutError(\n        f\"nao foi possivel adquirir lock de estado para {slug} \"\n        f\"apos {timeout}s (erro ao inspecionar/remover lock stale)\")\n```",
+      "suggestion_code": "            except OSError:\n                raise TimeoutError(\n                    f\"nao foi possivel adquirir lock de estado para {slug} \"\n                    f\"apos {timeout}s (erro ao inspecionar/remover lock stale)\")",
+      "existing_code": "            except OSError:\n                continue",
+      "start_line": 98,
+      "end_line": 99,
+      "category": "bug",
+      "severity": "high"
+    }
+  ],
+  "session_id": "9113e2a2-d90f-49c1-a569-c1ac1b9c3e24",
+  "manifest": {
+    "schema_version": "ocr.run-manifest/v1",
+    "run_id": "9113e2a2-d90f-49c1-a569-c1ac1b9c3e24",
+    "operation": "review",
+    "terminal_state": "complete",
+    "repository": {
+      "identity_sha256": "a6466064a2d66c3a5123794d78b155e420ac429045bd4fcc5203982fe69499b5"
+    },
+    "input": {
+      "mode": "workspace",
+      "resolved_base": "1cf5bfc9bd4517de006464ce2c8ee6d0b58a03eb",
+      "source_artifact_sha256": "c7602abc4518682743a2c3bd1e5f30a5733ac8c015e066b8d96a12404bd565ed"
+    },
+    "execution": {
+      "ocr_version": "v1.8.8",
+      "provider": "mimo",
+      "model": "mimo-v2.5-pro",
+      "configured_concurrency": 8,
+      "rule_config_sha256": "522c67f777c45cca176379b80a0a691664825d8c8eae359c9e77cab49c91e92a",
+      "runtime_config_sha256": "aacb9868ffab72430bcc602d1ae5dc9a614701db0affc02b1c4f9d97fd088861"
+    },
+    "coverage": {
+      "selected": [
+        {
+          "item_id": "58bebd00a6e99708cddd5b9cd18f10dda3ada3232841b29a6e0b94a02438cc8d",
+          "path": "scripts/pool-materiais.py",
+          "fingerprint": "ba5b4026848c71bd6c8352ee8b5afcb9d1759c9a19aad1825fa434b0c74aea82"
+        },
+        {
+          "item_id": "856c7f1347060adda0c9579f715eb6e71f3e0b26f41452850a31f22d081bcfe0",
+          "path": "scripts/compilar-arte.py",
+          "fingerprint": "82f680d820373871e1d384253ad4e422282cb9b257193ae7b28121749121bd39"
+        },
+        {
+          "item_id": "b6cca7e2ab4e9bd2c56e8bd723dc2a5bd69570117cdd83ccdd2f21ae00af1896",
+          "path": "scripts/validar-dimensoes.py",
+          "fingerprint": "ef8025c355308dddf276b12c19f2921fa0536ca7c266f34c739826452f472bdb"
+        },
+        {
+          "item_id": "be56373c747623c8c30535f74501224cb940082e3b16e2cbdd083488085d0bb3",
+          "path": "templates/landing.html",
+          "fingerprint": "093a528c3d4564706b693ba6c87da7935c308d07cf3ec0811b953fbf72013bbb"
+        },
+        {
+          "item_id": "cb66ceb00027bd9d4caf953620691ddd98657654da4a4ba335116dceca497fa7",
+          "path": "scripts/empacotar-projeto.py",
+          "fingerprint": "3ad4a276eb995587dc1a3b2d1b10aae16a95799749e5e9cd807b03955c722fb6"
+        },
+        {
+          "item_id": "e89784d5a4b2fa0fbfb968e15349434dfda978bdbbdf705e95ce35bcb75ae58b",
+          "path": "docs/correcoes-bugs.json",
+          "fingerprint": "c29a6a25dd3a444ffbb6aa569ed4d31ee3799ce6fe957bc612a98b2da735e65e"
+        }
+      ],
+      "completed": [
+        {
+          "item_id": "58bebd00a6e99708cddd5b9cd18f10dda3ada3232841b29a6e0b94a02438cc8d",
+          "path": "scripts/pool-materiais.py",
+          "fingerprint": "ba5b4026848c71bd6c8352ee8b5afcb9d1759c9a19aad1825fa434b0c74aea82"
+        },
+        {
+          "item_id": "856c7f1347060adda0c9579f715eb6e71f3e0b26f41452850a31f22d081bcfe0",
+          "path": "scripts/compilar-arte.py",
+          "fingerprint": "82f680d820373871e1d384253ad4e422282cb9b257193ae7b28121749121bd39"
+        },
+        {
+          "item_id": "b6cca7e2ab4e9bd2c56e8bd723dc2a5bd69570117cdd83ccdd2f21ae00af1896",
+          "path": "scripts/validar-dimensoes.py",
+          "fingerprint": "ef8025c355308dddf276b12c19f2921fa0536ca7c266f34c739826452f472bdb"
+        },
+        {
+          "item_id": "be56373c747623c8c30535f74501224cb940082e3b16e2cbdd083488085d0bb3",
+          "path": "templates/landing.html",
+          "fingerprint": "093a528c3d4564706b693ba6c87da7935c308d07cf3ec0811b953fbf72013bbb"
+        },
+        {
+          "item_id": "cb66ceb00027bd9d4caf953620691ddd98657654da4a4ba335116dceca497fa7",
+          "path": "scripts/empacotar-projeto.py",
+          "fingerprint": "3ad4a276eb995587dc1a3b2d1b10aae16a95799749e5e9cd807b03955c722fb6"
+        },
+        {
+          "item_id": "e89784d5a4b2fa0fbfb968e15349434dfda978bdbbdf705e95ce35bcb75ae58b",
+          "path": "docs/correcoes-bugs.json",
+          "fingerprint": "c29a6a25dd3a444ffbb6aa569ed4d31ee3799ce6fe957bc612a98b2da735e65e"
+        }
+      ],
+      "reused": [],
+      "failed": [],
+      "waived": []
+    },
+    "elapsed_ms": 186391
+  }
+}

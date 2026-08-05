@@ -42,18 +42,35 @@ def formatar_markdown(texto):
 
 
 def compilar_variante_arte(slug, variante):
+    """Renderiza as 3 copies compartilhadas (output/<slug>/arte/copies.json) na
+    dimensao desta variante -- 1 render por copy, 3 PNGs no total. Formato
+    (variante/dimensao) e copy (conceito criativo) sao eixos ortogonais: as
+    mesmas 3 copies sao reaproveitadas em arte-01/02/03, nunca uma copy por
+    formato (ver docs/05-plano-expansao-multi-copy-arte.md)."""
     largura, altura = DIMENSOES[variante]
     slug_dir = DIR_OUTPUT / slug
-    conteudo_path = slug_dir / variante / "conteudo.json"
-    
-    # Template name
-    template_path = DIR_PROJETO / "templates" / f"arte-{largura}x{altura}.html"
-    dest_html = slug_dir / variante / "index.html"
-    dest_png = slug_dir / variante / f"arte_{slug}_{variante[-2:]}.png"
-    dest_assets = slug_dir / variante / "assets"
+    copies_path = slug_dir / "arte" / "copies.json"
 
-    if not conteudo_path.exists():
-        print(f"[ERRO] conteudo.json não encontrado para {variante} em {conteudo_path}")
+    template_path = DIR_PROJETO / "templates" / f"arte-{largura}x{altura}.html"
+    dest_dir = slug_dir / variante
+    dest_assets = dest_dir / "assets"
+
+    if not copies_path.exists():
+        print(f"[ERRO] {copies_path} nao encontrado -- redator-arte deve gerar as "
+              f"3 copies compartilhadas ANTES de compilar qualquer formato de arte")
+        return 1
+
+    if not template_path.exists():
+        print(f"[ERRO] template nao encontrado: {template_path}")
+        return 1
+
+    dados_copies = carregar_json(copies_path)
+    if not isinstance(dados_copies, dict):
+        print(f"[ERRO] {copies_path} nao contem um objeto JSON valido")
+        return 1
+    copies = dados_copies.get("copies", [])
+    if len(copies) != 3:
+        print(f"[ERRO] {copies_path} deve conter exatamente 3 copies, encontrado {len(copies)}")
         return 1
 
     # Garante estrutura de assets
@@ -84,26 +101,6 @@ def compilar_variante_arte(slug, variante):
         if img_produto_src_legado.exists():
             shutil.copy(img_produto_src_legado, dest_assets / "kit_start_flex_frontal.png")
 
-    # Carrega dados
-    dados = carregar_json(conteudo_path)
-    if not dados:
-        print(f"[ERRO] Não foi possível carregar o arquivo {conteudo_path}")
-        return 1
-
-    headline = formatar_markdown(dados.get("headline", ""))
-    subcopy = formatar_markdown(dados.get("subcopy", ""))
-    cta = formatar_markdown(dados.get("cta", "Fale com a Conexão"))
-
-    # Carrega template e substitui
-    template_content = template_path.read_text(encoding="utf-8")
-    
-    # Substituições
-    html_final = template_content.replace("{{TITULO}}", f"Arte {variante[-2:]} - Conexão")
-    
-    # Injeta Logo
-    logo_tag = '<img class="logo" src="assets/logos/Logo_Conexão_horizontal_texto_branco.png" alt="Conexão Implantes">'
-    html_final = re.sub(r'<!--\s*\{\{LOGO\}\}.*?-->', logo_tag, html_final, flags=re.DOTALL)
-    
     # Injeta Badge de contexto (O badge USO INTERNO é suprimido ativamente e NUNCA mais utilizado!)
     brief = carregar_json(slug_dir / "brief_criativo.json")
     badge_texto = "USO INTERNO"
@@ -111,47 +108,73 @@ def compilar_variante_arte(slug, variante):
         nota = brief.get("nota_de_escopo", "").lower()
         if "externo" in nota or "profissional" in nota:
           badge_texto = "USO PROFISSIONAL"
-    
     badge_tag = ""
     if badge_texto != "USO INTERNO":
         badge_tag = f'<span class="badge">{badge_texto}</span>'
-    
-    html_final = re.sub(r'<!--\s*\{\{BADGE_CONTEXTO\}\}.*?-->', badge_tag, html_final, flags=re.DOTALL)
 
-    # Injeta Imagem de Produto
-    produto_tag = f'<img class="produto" src="assets/{img_produto_filename}" alt="Produto">'
-    html_final = re.sub(r'<!--\s*\{\{IMAGEM_PRODUTO\}\}.*?-->', produto_tag, html_final, flags=re.DOTALL)
+    template_content = template_path.read_text(encoding="utf-8")
+    erros = 0
 
-    # Injeta Headline, Subcopy e CTA
-    html_final = re.sub(r'<!--\s*\{\{HEADLINE\}\}.*?-->', f'<h1>{headline}</h1>', html_final, flags=re.DOTALL)
-    html_final = re.sub(r'<!--\s*\{\{SUBCOPY\}\}.*?-->', f'<p class="subcopy">{subcopy}</p>', html_final, flags=re.DOTALL)
-    html_final = html_final.replace("{{NOME_MARCA}}", "Conexão Sistemas de Próteses")
-    
-    cta_tag = f'<span class="cta">{cta}</span>'
-    html_final = re.sub(r'<!--\s*\{\{CTA\}\}.*?-->', cta_tag, html_final, flags=re.DOTALL)
+    with sync_playwright() as p:
+        browser = p.chromium.launch()
 
-    # Salva HTML temporário
-    dest_html.write_text(html_final, encoding="utf-8")
+        for indice, copy in enumerate(copies, start=1):
+            sufixo_copy = f"copy{indice:02d}"
+            dest_html = dest_dir / ("index.html" if indice == 1 else f"index_{sufixo_copy}.html")
+            dest_png = dest_dir / f"arte_{slug}_{variante[-2:]}_{sufixo_copy}.png"
 
-    # Renderiza com Playwright para PNG pixel-perfect
-    print(f"Renderizando {variante} em PNG ({largura}x{altura}px)...")
-    try:
-        with sync_playwright() as p:
-            browser = p.chromium.launch()
-            page = browser.new_page(viewport={"width": largura, "height": altura})
-            page.goto(f"file:///{dest_html.resolve()}")
-            page.wait_for_timeout(500) # Aguarda transições e fontes
-            page.screenshot(path=dest_png)
-            browser.close()
-        print(f"[OK] {variante}: Arte PNG gerada em {dest_png}")
-    except Exception as e:
-        print(f"[FALHA] Falha ao renderizar {variante} via Playwright ({e})")
-        dest_html.unlink(missing_ok=True)
-        return 1
+            if not isinstance(copy, dict):
+                print(f"[ERRO] {variante}/{sufixo_copy}: copy invalida em {copies_path} "
+                      f"(esperado objeto, encontrado {type(copy).__name__})")
+                erros += 1
+                continue
 
-    # index.html é mantido (não temporário) para permitir auditoria de marca
-    # via validar-design-tokens.py, que exige o arquivo persistido no disco.
-    return 0
+            headline = formatar_markdown(copy.get("headline", ""))
+            subcopy = formatar_markdown(copy.get("subcopy", ""))
+            cta = formatar_markdown(copy.get("cta", "Fale com a Conexão"))
+
+            html_final = template_content.replace(
+                "{{TITULO}}", f"Arte {variante[-2:]} {sufixo_copy} - Conexão")
+
+            logo_tag = '<img class="logo" src="assets/logos/Logo_Conexão_horizontal_texto_branco.png" alt="Conexão Implantes">'
+            html_final = re.sub(r'<!--\s*\{\{LOGO\}\}.*?-->', logo_tag, html_final, flags=re.DOTALL)
+
+            html_final = re.sub(r'<!--\s*\{\{BADGE_CONTEXTO\}\}.*?-->', badge_tag, html_final, flags=re.DOTALL)
+
+            produto_tag = f'<img class="produto" src="assets/{img_produto_filename}" alt="Produto">'
+            html_final = re.sub(r'<!--\s*\{\{IMAGEM_PRODUTO\}\}.*?-->', produto_tag, html_final, flags=re.DOTALL)
+
+            html_final = re.sub(r'<!--\s*\{\{HEADLINE\}\}.*?-->', f'<h1>{headline}</h1>', html_final, flags=re.DOTALL)
+            html_final = re.sub(r'<!--\s*\{\{SUBCOPY\}\}.*?-->', f'<p class="subcopy">{subcopy}</p>', html_final, flags=re.DOTALL)
+            html_final = html_final.replace("{{NOME_MARCA}}", "Conexão Sistemas de Próteses")
+
+            cta_tag = f'<span class="cta">{cta}</span>'
+            html_final = re.sub(r'<!--\s*\{\{CTA\}\}.*?-->', cta_tag, html_final, flags=re.DOTALL)
+
+            dest_html.write_text(html_final, encoding="utf-8")
+
+            print(f"Renderizando {variante}/{sufixo_copy} em PNG ({largura}x{altura}px)...")
+            page = None
+            try:
+                page = browser.new_page(viewport={"width": largura, "height": altura})
+                page.goto(f"file:///{dest_html.resolve()}")
+                page.wait_for_timeout(500)  # Aguarda transições e fontes
+                page.screenshot(path=dest_png)
+                print(f"[OK] {variante}/{sufixo_copy}: Arte PNG gerada em {dest_png}")
+            except Exception as e:
+                print(f"[FALHA] Falha ao renderizar {variante}/{sufixo_copy} via Playwright ({e})")
+                dest_html.unlink(missing_ok=True)
+                erros += 1
+            finally:
+                if page is not None:
+                    page.close()
+
+        browser.close()
+
+    # index.html (copy01) e index_copyNN.html sao mantidos (nao temporarios)
+    # para permitir auditoria de marca via validar-design-tokens.py/validar-logo.py,
+    # que exigem o arquivo persistido no disco.
+    return 1 if erros else 0
 
 
 def main():

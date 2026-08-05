@@ -32,6 +32,11 @@ Compare cada claim/dado presente no material com `dossie_insumos.md`. Qualquer
 afirmação sem rastro no dossiê é um defeito — não é opinião, é checagem factual linha a
 linha.
 
+Para `arte-0N`: as 3 copies em `output/<slug>/arte/copies.json` são compartilhadas por
+todos os formatos — audite as **3**, não só a primeira (`index.html`). Confirme também
+que são 3 ângulos genuinamente distintos do dossiê, não 3 variações do mesmo ângulo
+(ver `docs/05-plano-expansao-multi-copy-arte.md`).
+
 ### 2.1. Checar aderência às escolhas do operador
 
 O dossiê registra `publico_alvo` e `objetivo_tom` escolhidos pelo operador (rodadas 2 e

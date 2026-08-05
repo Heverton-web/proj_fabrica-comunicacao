@@ -1,6 +1,6 @@
 ---
 name: compilador-arte
-description: Fase 3 da Fábrica de Materiais de Comunicação — renderiza cada variante de arte (arte-01/02/03) para PNG pixel-perfect via Playwright headless, a partir do conteudo.json e do template HTML/CSS correspondente, aplicando o design system fixo da Conexão. Use depois de redator-arte, antes de validar-dimensoes.py/revisor-marca.
+description: Fase 3 da Fábrica de Materiais de Comunicação — renderiza as 3 copies compartilhadas (arte/copies.json) em cada variante de arte (arte-01/02/03) para PNG pixel-perfect via Playwright headless, aplicando o design system fixo da Conexão. 1 render por combinação copy×formato (até 9 PNGs no total). Use depois de redator-arte, antes de validar-dimensoes.py/revisor-marca.
 ---
 
 # Skill: Compilador de Arte
@@ -10,9 +10,18 @@ Fábrica Agêntica de Livros (HTML/CSS + Playwright screenshot, sem API, sem cus
 paleta é fixa — **antes de gerar qualquer HTML/CSS, aplique
 `.claude/skills/aplicador-marca-conexao/SKILL.md`**, não invente componente aqui.
 
+Formato (dimensão) e copy (conceito criativo) são eixos ortogonais — ver
+`docs/05-plano-expansao-multi-copy-arte.md`. Você não renderiza 1 PNG por variante,
+renderiza **3** (1 por copy compartilhada), todas na mesma dimensão da variante.
+
 ## Entrada
 
-- `output/<slug>/arte-0N/conteudo.json` (headline/subcopy/cta/imagem_produto)
+- `output/<slug>/arte/copies.json` (3 copies compartilhadas: headline/subcopy/cta —
+  **falhe alto se este arquivo não existir ou não tiver exatamente 3 copies**; nunca
+  gere copy você mesmo aqui, isso é trabalho de `redator-arte`, rodado uma única vez
+  antes de qualquer formato ser compilado)
+- `output/<slug>/config_projeto.json` (`imagens[0].path` — imagem do produto,
+  compartilhada pelas 3 copies)
 - `brand/design-system-conexao.json` (fixo, mesmo para todo projeto)
 - `templates/arte-<dimensao>.html` (1080x1080 / 1080x1350 / 1080x1920) — já vêm com o
   `:root` e os `@font-face` da marca embutidos.
@@ -23,11 +32,11 @@ paleta é fixa — **antes de gerar qualquer HTML/CSS, aplique
 
 Copie `templates/fonts/*.woff2` para `output/<slug>/<variante>/assets/fonts/` (o
 template referencia esse path relativo via `@font-face` — sem isso a fonte cai
-silenciosamente em Roboto/sistema). Preencha `templates/arte-<dimensao>.html` com o
-`conteudo.json` da variante. Salve como HTML temporário dentro da pasta da variante
-(para que o path relativo das fontes resolva).
+silenciosamente em Roboto/sistema). Para **cada uma das 3 copies** de
+`arte/copies.json`, preencha `templates/arte-<dimensao>.html` com aquela copy e salve
+como HTML dentro da pasta da variante (para que o path relativo das fontes resolva).
 
-### 2. Renderizar com Playwright (viewport exato = dimensão final)
+### 2. Renderizar com Playwright (viewport exato = dimensão final), 1× por copy
 
 ```python
 from playwright.sync_api import sync_playwright
@@ -35,37 +44,49 @@ from playwright.sync_api import sync_playwright
 DIMENSOES = {"arte-01": (1080, 1080), "arte-02": (1080, 1350), "arte-03": (1080, 1920)}
 largura, altura = DIMENSOES[variante]
 
-with sync_playwright() as p:
-    browser = p.chromium.launch()
-    page = browser.new_page(viewport={"width": largura, "height": altura})
-    page.goto(f"file:///{caminho_html_absoluto}")
-    page.wait_for_timeout(300)
-    page.screenshot(path=caminho_png)
-    browser.close()
+for indice, copy in enumerate(copies, start=1):  # copies = arte/copies.json["copies"]
+    with sync_playwright() as p:
+        browser = p.chromium.launch()
+        page = browser.new_page(viewport={"width": largura, "height": altura})
+        page.goto(f"file:///{caminho_html_absoluto_da_copy}")
+        page.wait_for_timeout(300)
+        page.screenshot(path=caminho_png_da_copy)
+        browser.close()
 ```
 
 Não use `device_scale_factor` acima de 1 — geraria um PNG maior que a dimensão-alvo, o
 que `validar-dimensoes.py` vai rejeitar (R8 do `SPEC.md` exige pixel-perfect exato).
 
-### 3. Limpeza
+### 3. Persistência do HTML
 
-Delete o HTML temporário depois do screenshot.
+Ao contrário de um HTML temporário único, mantenha os 3 HTMLs (1 por copy) —
+`index.html` (copy-01) e `index_copy02.html`/`index_copy03.html` — no disco. Cores,
+fontes e logo são idênticos entre as 3 copies (mesmo template), então
+`validar-design-tokens.py`/`validar-logo.py` continuam checando só `index.html`
+(copy-01) como amostra representativa; os outros 2 ficam disponíveis para auditoria
+manual do `revisor-marca`.
 
 ### 4. Handoff
 
-`scripts/validar-dimensoes.py <slug> <variante>` confirma dimensão exata + teto de
-peso; `revisor-marca` faz a checagem de fidelidade.
+`scripts/validar-dimensoes.py <slug> <variante>` confirma exatamente 3 PNGs, dimensão
+exata e teto de peso; `revisor-marca` faz a checagem de fidelidade nas 3 copies.
 
 ## Naming
 
-- `arte_<slug>_<NN>.png` onde `NN` é `01`/`02`/`03`, salvo em `output/<slug>/arte-0N/`.
+- `arte_<slug>_<NN>_copy<MM>.png` onde `NN` é o formato (`01`=1080×1080,
+  `02`=1080×1350, `03`=1080×1920) e `MM` é a copy (`01`/`02`/`03`), salvo em
+  `output/<slug>/arte-0N/`. Nunca deixe um número solto — os dois eixos (formato e
+  copy) sempre aparecem juntos no nome do arquivo.
 
 ## Restrições
 
-- Nunca gere ilustração no lugar da imagem oficial do produto — use
-  `conteudo.imagem_produto` como está.
+- Nunca gere ilustração no lugar da imagem oficial do produto — use a imagem de
+  `config_projeto.imagens[0]` como está, igual nas 3 copies.
 - Nunca deixe o texto (headline/subcopy/cta) transbordar o layout — se
   `redator-arte` excedeu os limites de caractere de `SPEC_ARTE.md`, corrija o texto
   (REGRA 4) antes de renderizar de novo, não reduza a fonte abaixo do que a marca usa.
 - PNG deve ficar abaixo do teto de peso da variante (ver `SPEC_ARTE.md`) — otimize
   compressão antes de reportar falha.
+- Nunca compile uma variante sem as 3 copies compartilhadas já existirem — isso
+  reintroduziria o bug de 1 copy por formato (ver
+  `docs/05-plano-expansao-multi-copy-arte.md`, seção 1).

@@ -37,6 +37,11 @@ def main():
         print(f"[ERRO] nenhum PNG encontrado em {base}")
         return 1
 
+    if len(pngs) != 3:
+        print(f"[FALHA] {args.variante}: {len(pngs)} PNG(s) encontrado(s), esperado "
+              f"exatamente 3 (1 por copy — ver docs/05-plano-expansao-multi-copy-arte.md)")
+        return 1
+
     try:
         from PIL import Image
     except ImportError:
