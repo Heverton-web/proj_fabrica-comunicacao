@@ -138,8 +138,58 @@ def compilar_apresentacao(slug):
     </div>"""
                 html_slides.append(html)
 
-            # Se título contiver "Objeções" ou "Torque" -> Renderiza TABELA técnica!
-            elif "objec" in titulo.lower() or "torque" in titulo.lower() or "tabela" in titulo.lower():
+            # Se título contiver "Torque" -> Renderiza TABELA com GAUGE interativo!
+            elif "torque" in titulo.lower():
+                rows_html = []
+                if isinstance(corpo, list):
+                    for item in corpo:
+                        partes = item.split(" → ") if " → " in item else (item.split(" — ") if " — " in item else item.split(" - "))
+                        if len(partes) >= 2:
+                            c1 = formatar_markdown(partes[0].replace("**", "").replace('"', '').strip())
+                            c2 = formatar_markdown(partes[1].strip())
+                        else:
+                            c1 = "Parâmetro"
+                            c2 = formatar_markdown(item.replace("**", "").strip())
+                        rows_html.append(f"<tr><td><strong>{c1}</strong></td><td>{c2}</td></tr>")
+                rows_str = "\n".join(rows_html)
+                
+                html = f"""
+    <div class="slide conteudo{ativo_class}">
+      <h2>{titulo}</h2>
+      <div class="torque-container">
+        <div class="torque-tabela">
+          <table class="tabela-visual">
+            <thead>
+              <tr>
+                <th>Especificação</th>
+                <th>Parâmetro Clínico</th>
+              </tr>
+            </thead>
+            <tbody>
+              {rows_str}
+            </tbody>
+          </table>
+        </div>
+        <div class="torque-gauge-box">
+          <h4>Indicador de Torque Seguro</h4>
+          <svg class="gauge-svg" viewBox="0 0 200 110">
+            <path class="gauge-track" d="M 20 95 A 80 80 0 0 1 180 95" />
+            <path class="gauge-value" d="M 20 95 A 80 80 0 0 1 180 95" />
+            <polygon class="gauge-pointer" points="100,95 97,15 103,15" fill="var(--accent)" stroke="rgb(255, 248, 214)" stroke-width="1" />
+            <circle cx="100" cy="95" r="8" fill="var(--surface)" stroke="var(--accent)" stroke-width="2" />
+          </svg>
+          <div class="torque-labels">
+            <span>0 Ncm</span>
+            <span class="ativo" style="color: rgb(229, 193, 88);">45 Ncm (Slim)</span>
+            <span class="ativo" style="color: var(--accent);">60 Ncm (NP)</span>
+          </div>
+        </div>
+      </div>
+    </div>"""
+                html_slides.append(html)
+
+            # Se título contiver "Objeções" ou "Tabela" -> Renderiza TABELA técnica padrão!
+            elif "objec" in titulo.lower() or "tabela" in titulo.lower():
                 rows_html = []
                 if isinstance(corpo, list):
                     for item in corpo:

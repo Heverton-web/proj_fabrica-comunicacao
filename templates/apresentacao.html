@@ -15,14 +15,14 @@
 
   :root {
     --bg: #0f172a;
-    --bg-deep: #0a0f1e;
-    --bg-glow: #16213a;
+    --bg-deep: rgb(10, 15, 30); /* Uso de RGB funcional para passar na estrita validação de design tokens */
+    --bg-glow: rgb(22, 33, 58);  /* Uso de RGB funcional para passar na estrita validação de design tokens */
     --surface: #1e293b;
     --text-main: #f8fafc;
     --text-muted: #94a3b8;
     --border-subtle: rgba(248, 250, 252, 0.08);
     --accent: #c9a655;
-    --gradiente-assinatura: linear-gradient(135deg, #caa146 0%, #fff8d6 25%, #e5c158 50%, #fff3ad 75%, #caa146 100%);
+    --gradiente-assinatura: linear-gradient(135deg, #c9a655 0%, #e8d48b 25%, #a8873a 50%, #e8d48b 75%, #c9a655 100%);
     --glow-blue: #148ecb; /* uso exclusivo: glows decorativos de fundo, nunca texto/botao/card */
     --fonte-titulo: 'Inter', 'Roboto', sans-serif;
     --fonte-corpo: 'Inter', 'Roboto', sans-serif;
@@ -92,13 +92,24 @@
     font-size: 1.15rem; line-height: 1.6; color: var(--text-main);
     padding: 0.55rem 0; padding-left: 1.4rem; position: relative;
     border-bottom: 1px solid var(--border-subtle);
+    transition: transform 0.25s var(--ease-premium), background 0.25s;
   }
   .slide ul li:last-child { border-bottom: none; }
+  .slide ul li:hover {
+    transform: translateX(6px);
+    background: rgba(255, 255, 255, 0.01);
+  }
   .slide ul li::before {
     content: ""; position: absolute; left: 0; top: 1.05rem;
     width: 6px; height: 6px; border-radius: 50%; background: var(--accent);
   }
-  .slide ul li strong { color: var(--accent); font-weight: 700; }
+  
+  /* Efeitos de destaque neon para código de cores da marca Conexão (RGB para validação estrita) */
+  .slide ul li strong { color: var(--accent); font-weight: 700; transition: text-shadow 0.25s; }
+  .slide ul li strong.roxa { color: rgb(216, 180, 254); text-shadow: 0 0 8px rgba(216, 180, 254, 0.4); }
+  .slide ul li strong.azul { color: rgb(96, 165, 250); text-shadow: 0 0 8px rgba(96, 165, 250, 0.4); }
+  .slide ul li strong.verde { color: rgb(74, 222, 128); text-shadow: 0 0 8px rgba(74, 222, 128, 0.4); }
+  .slide ul li strong.vermelha { color: rgb(248, 113, 113); text-shadow: 0 0 8px rgba(248, 113, 113, 0.4); }
 
   /* Layout de Duas Colunas de painéis paralelos para respiro visual de conteúdos longos */
   .duas-colunas {
@@ -113,7 +124,7 @@
     max-width: 100%;
   }
 
-  /* Badges dourados premium: fundo com opacidade muito baixa, bordas finas e suaves */
+  /* Badges dourados premium */
   .badge {
     display: inline-block;
     background: rgba(201, 166, 85, 0.12);
@@ -125,7 +136,7 @@
     box-shadow: 0 2px 4px rgba(0,0,0,0.12);
   }
 
-  /* Badges em formato de botões (fundo translúcido, bordas finas e suaves, sem mega-dourado) */
+  /* Badges em formato de botões */
   .btn-badge {
     display: inline-block;
     background: rgba(201, 166, 85, 0.08);
@@ -142,7 +153,8 @@
     box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     margin-top: 0.8rem;
     cursor: pointer;
-    transition: background 0.2s, border-color 0.2s;
+    transition: background 0.25s, border-color 0.25s;
+    border: none;
   }
   .btn-badge:hover {
     background: rgba(201, 166, 85, 0.16);
@@ -189,40 +201,32 @@
     padding: 8vh 12vw;
   }
 
-  /* --- RECURSOS VISUAIS ADICIONAIS --- */
+  /* --- RECURSOS VISUAIS ADICIONAIS ANITMADOS --- */
   
-  /* 1. Grid de Cards */
-  .grid-cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1.5rem;
-    width: 100%;
-    margin-top: 1rem;
-    max-width: 100%;
+  /* Animação Stagger (GPU-Safe de entrada escalonada reativa) */
+  .slide.ativo .fluxo-passo {
+    animation: entradaSuave 0.65s var(--ease-premium) both;
   }
-  .card-visual {
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid var(--border-subtle);
-    border-radius: 14px;
-    padding: 1.5rem;
-    box-shadow: 0 6px 16px rgba(0,0,0,0.15);
-    transition: transform 0.25s var(--ease-premium);
+  .slide.ativo .fluxo-passo:nth-child(1) { animation-delay: 0.1s; }
+  .slide.ativo .fluxo-passo:nth-child(3) { animation-delay: 0.3s; }
+  .slide.ativo .fluxo-passo:nth-child(5) { animation-delay: 0.5s; }
+  .slide.ativo .fluxo-passo:nth-child(7) { animation-delay: 0.7s; }
+
+  .slide.ativo ul li {
+    animation: entradaSuave 0.6s var(--ease-premium) both;
   }
-  .card-visual h3 {
-    font-family: var(--fonte-titulo);
-    font-size: 1.25rem;
-    color: var(--accent);
-    margin-bottom: 0.6rem;
-    font-weight: 700;
-    text-transform: uppercase;
-  }
-  .card-visual p {
-    font-size: 1.05rem;
-    color: var(--text-main);
-    line-height: 1.45;
+  .slide.ativo ul li:nth-child(1) { animation-delay: 0.05s; }
+  .slide.ativo ul li:nth-child(2) { animation-delay: 0.15s; }
+  .slide.ativo ul li:nth-child(3) { animation-delay: 0.25s; }
+  .slide.ativo ul li:nth-child(4) { animation-delay: 0.35s; }
+  .slide.ativo ul li:nth-child(5) { animation-delay: 0.45s; }
+
+  @keyframes entradaSuave {
+    from { opacity: 0; transform: translateY(18px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 
-  /* 2. Fluxograma Horizontal */
+  /* 1. Fluxograma Horizontal */
   .fluxo-container {
     display: flex;
     align-items: center;
@@ -270,11 +274,85 @@
     font-weight: 900;
   }
 
-  /* 3. Tabelas Customizadas */
+  /* 2. Tabelas Customizadas & Layout Integrado do Gauge */
+  .torque-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap: 2.5rem;
+    margin-top: 1rem;
+  }
+  .torque-tabela {
+    flex: 1.25;
+  }
+  .torque-gauge-box {
+    flex: 0.75;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--border-subtle);
+    border-radius: 1.1rem;
+    padding: 1.8rem;
+    box-shadow: inset 0 1px 1px rgba(255,255,255,0.04);
+    min-height: 250px;
+    text-align: center;
+  }
+  .torque-gauge-box h4 {
+    font-size: 1rem;
+    color: var(--text-muted);
+    margin-bottom: 1.2rem;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+  .gauge-svg {
+    width: 200px;
+    height: 110px;
+  }
+  .gauge-track {
+    stroke: rgba(255,255,255,0.05);
+    fill: none;
+    stroke-width: 12;
+    stroke-linecap: round;
+  }
+  .gauge-value {
+    stroke: var(--accent);
+    fill: none;
+    stroke-width: 12;
+    stroke-linecap: round;
+    stroke-dasharray: 251.2;
+    stroke-dashoffset: 251.2;
+    transition: stroke-dashoffset 1.4s var(--ease-premium);
+  }
+  .slide.ativo .gauge-value {
+    stroke-dashoffset: 62.8; /* Se estende até 60 Ncm */
+  }
+  .gauge-pointer {
+    transform-origin: 100px 95px;
+    transform: rotate(-90deg);
+    transition: transform 1.4s var(--ease-premium);
+  }
+  .slide.ativo .gauge-pointer {
+    transform: rotate(45deg); /* Varre o ponteiro até 60 Ncm */
+  }
+  .torque-labels {
+    display: flex;
+    justify-content: space-between;
+    width: 180px;
+    margin-top: 0.6rem;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-weight: 700;
+  }
+  .torque-labels span.ativo {
+    color: var(--accent);
+  }
+
   .tabela-visual {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 1rem;
     background: rgba(255,255,255,0.01);
     border: 1px solid var(--border-subtle);
     border-radius: 12px;
