@@ -397,26 +397,55 @@ Claude Code, Antigravity, OpenCode, Freebuff, MiMoCode ou qualquer agente que le
 estes `SKILL.md` como instrução — a dependência é o arquivo de texto, não uma
 integração de ferramenta.
 
+### Grid de cards de destaque — layout PADRÃO (não é elemento-assinatura, é o piso de qualidade)
+
+Substitui a antiga lista `<ul><li>` plana como fallback de **todo** slide/seção
+sem componente de dado (`redator-*` não fez nada especial, ou o conteúdo é
+descritivo demais para gauge/donut/fluxo/etc.). Diferente das técnicas abaixo
+(que são "1 elemento-assinatura, não repetir"), este grid é o **piso mínimo de
+qualidade visual** — se um slide não tem gatilho de componente, ele ainda assim
+não deve virar bullet cru; vira card com barra de assinatura no topo. CSS grid
+`auto-fit` resolve o número de colunas sozinho (sem lógica de "duas colunas" no
+Python). Parser reaproveita o padrão `"**Título** — Texto"` já usado por
+gauge/objeções.
+
+```css
+.cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.2rem; width: 100%; margin-top: 1rem; }
+.card-destaque { position: relative; overflow: hidden; background: rgba(255,255,255,0.02); border: 1px solid var(--border-subtle); border-radius: 1rem; padding: 1.6rem 1.5rem; }
+.card-destaque::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--gradiente-assinatura); }
+@keyframes entradaEscala { from { opacity: 0; transform: scale(0.92) translateY(16px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+.slide.ativo .card-destaque { animation: entradaEscala 0.6s var(--ease-premium) both; }
+```
+
 ### Foco progressivo (blur-in) — elemento-assinatura da apresentação
 
 Só no título da capa (1 vez por apresentação, nunca repetido nos demais slides —
 "um elemento-assinatura por material"). Usa `@keyframes`, não `transition`: o
 slide 1 já nasce com a classe `ativo` no HTML estático, então uma `transition`
 nunca dispararia por falta de mudança de estado observável pelo navegador.
+Combina blur + opacidade + leve escala para ficar inconfundível.
 
 ```css
-@keyframes focoProgressivo { from { filter: blur(16px); } to { filter: blur(0); } }
-.slide.capa.ativo h1 { animation: focoProgressivo 1.1s var(--ease-premium) 0.15s both; }
+@keyframes focoProgressivo { from { filter: blur(28px); opacity: 0.15; transform: scale(1.06); } to { filter: blur(0); opacity: 1; transform: scale(1); } }
+.slide.capa.ativo h1 { animation: focoProgressivo 1.6s var(--ease-premium) 0.15s both; }
 @media (prefers-reduced-motion: reduce) { .slide.capa.ativo h1 { animation: none; } }
 ```
 
-### Tilt 3D no hover — elemento-assinatura da landing-page
+### Tilt 3D — elemento-assinatura da landing-page (hover + entrada automática)
 
-Só nos `.card` de destaques (não replicar em outros elementos — mesmo princípio de
-"1 elemento-assinatura"). Requer JS (mousemove/mouseleave); respeita
-`prefers-reduced-motion` não anexando o listener quando o usuário pediu menos
-movimento — nesse caso o `:hover` CSS simples (`translateY`) já existente continua
-funcionando como fallback.
+Nos `.card` de destaques (não replicar em outros elementos — mesmo princípio de
+"1 elemento-assinatura", mas a MESMA técnica pode ganhar dois gatilhos: entrada
+automática ao rolar + resposta contínua ao mouse depois). Ao entrar na
+viewport, os cards "assentam" com leve rotação 3D (`@keyframes`, não depende de
+hover); com o mouse por cima, o tilt passa a seguir o cursor via JS. Ambos
+respeitam `prefers-reduced-motion` — nesse caso o `:hover` CSS simples
+(`translateY`) já existente continua funcionando como fallback.
+
+```css
+@keyframes assentamento3D { from { opacity: 0; transform: perspective(800px) rotateX(-10deg) rotateY(8deg) translateY(22px); } to { opacity: 1; transform: perspective(800px) rotateX(0) rotateY(0) translateY(0); } }
+.visivel .card { animation: assentamento3D 0.7s var(--ease-premium) both; }
+@media (prefers-reduced-motion: reduce) { .visivel .card { animation: none; } }
+```
 
 ```js
 var prefereReduzido = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -432,6 +461,20 @@ if (!prefereReduzido) {
   });
 }
 ```
+
+### Badge com pulso — aplicado
+
+Aplicado de fato (não só catalogado) no badge "Uso Interno"/contexto da capa da
+apresentação e do cabeçalho da landing-page (`class="badge pulso"`) — anel
+pulsante sutil via `@keyframes pulsoAnel` já documentado acima.
+
+**Cuidado de containment:** transforms 3D (`perspective`/`rotateX`/`rotateY`) em
+elementos próximos da borda do viewport podem estourar `document.documentElement.scrollWidth`
+mesmo com `overflow-x: hidden` só no `body` — o `<html>` precisa da mesma regra
+(`html { overflow-x: hidden; }`) para `validar-html.py` não acusar overflow
+horizontal falso-positivo em mobile (bug real encontrado e corrigido nesta
+rodada: a causa não eram os `.card`, eram os `.glow` decorativos que já
+sangravam para fora da viewport por design).
 
 ### Critério de julgamento de design (resumo — texto completo nas skills de redação)
 

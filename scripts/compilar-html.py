@@ -147,6 +147,32 @@ def renderizar_barras(dados):
     return f'<div class="barras-container">{"".join(blocos)}</div>'
 
 
+def renderizar_cards_destaque(itens):
+    """Layout padrão de slides/seções sem componente de dado (substitui a
+    antiga lista <ul><li> plana): cada bullet vira um card com barra de
+    assinatura no topo, mesma linguagem visual dos demais componentes.
+    Reaproveita o padrao "**Titulo** — Texto" ja usado pelos parsers de
+    torque/objecoes."""
+    cards = []
+    for item in itens:
+        if not isinstance(item, str):
+            continue
+        partes = item.split(" — ") if " — " in item else (item.split(" - ") if " - " in item else [item])
+        if len(partes) >= 2:
+            titulo_item = formatar_markdown(partes[0].replace("**", "").strip())
+            corpo_item = formatar_markdown(" — ".join(partes[1:]).strip())
+        else:
+            titulo_item = ""
+            corpo_item = formatar_markdown(item)
+        titulo_html = f"<h4>{titulo_item}</h4>" if titulo_item else ""
+        cards.append(f"""
+        <div class="card-destaque">
+          {titulo_html}
+          <p>{corpo_item}</p>
+        </div>""")
+    return f'<div class="cards-grid">{"".join(cards)}</div>'
+
+
 COMPONENTES_RENDERIZADORES = {
     "gauge": renderizar_gauge,
     "fluxo": renderizar_fluxo,
@@ -228,7 +254,7 @@ def compilar_apresentacao(slug):
             html = f"""
     <div class="slide capa{ativo_class}">
       <div class="capa-esquerda">
-        <span class="badge">Uso Interno</span>
+        <span class="badge pulso">Uso Interno</span>
         <div style="max-width: 540px; width: 100%;">
           <h1>{titulo}</h1>
           <p style="font-size: 1.25rem; line-height: 1.5; color: var(--text-muted); max-width: 100%;">{corpo_formatado}</p>
@@ -373,42 +399,16 @@ def compilar_apresentacao(slug):
                 html_slides.append(html)
 
             else:
-                # Layout padrão: Custom Bullets Double-Bezel
-                if isinstance(corpo, list) and len(corpo) >= 4:
-                    # Divisão dinâmica em duas colunas para dar espaçamento de respiro e tamanho perfeito de fonte
-                    meio = (len(corpo) + 1) // 2
-                    c1 = corpo[:meio]
-                    c2 = corpo[meio:]
-                    bullets1 = "\n".join([f"<li>{formatar_markdown(item)}</li>" for item in c1])
-                    bullets2 = "\n".join([f"<li>{formatar_markdown(item)}</li>" for item in c2])
-                    html = f"""
+                # Layout padrão: grid de cards de destaque (substitui a antiga
+                # lista <ul><li> plana — ver renderizar_cards_destaque; CSS
+                # grid auto-fit cuida do número de colunas, sem precisar mais
+                # de divisão manual em duas-colunas por tamanho de lista).
+                itens = corpo if isinstance(corpo, list) else ([corpo] if isinstance(corpo, str) else [])
+                cards_html = renderizar_cards_destaque(itens)
+                html = f"""
     <div class="slide conteudo{ativo_class}">
       <h2>{titulo}</h2>
-      <div class="duas-colunas">
-        <ul>
-          {bullets1}
-        </ul>
-        <ul>
-          {bullets2}
-        </ul>
-      </div>
-    </div>"""
-                else:
-                    bullets_html = []
-                    if isinstance(corpo, list):
-                        for item in corpo:
-                            formatted_item = formatar_markdown(item)
-                            bullets_html.append(f"<li>{formatted_item}</li>")
-                    elif isinstance(corpo, str):
-                        formatted_item = formatar_markdown(corpo)
-                        bullets_html.append(f"<li>{formatted_item}</li>")
-                    bullets_str = "\n".join(bullets_html)
-                    html = f"""
-    <div class="slide conteudo{ativo_class}">
-      <h2>{titulo}</h2>
-      <ul>
-        {bullets_str}
-      </ul>
+      {cards_html}
     </div>"""
                 html_slides.append(html)
 
@@ -505,11 +505,11 @@ def compilar_landing(slug):
     s_titulo = formatar_markdown(ps.get("solucao", {}).get("titulo", "A Solução"))
     s_texto = formatar_markdown(ps.get("solucao", {}).get("texto", ""))
     ps_html = f"""
-      <div>
+      <div class="card">
         <h3>{p_titulo}</h3>
         <p>{p_texto}</p>
       </div>
-      <div>
+      <div class="card">
         <h3>{s_titulo}</h3>
         <p>{s_texto}</p>
       </div>"""

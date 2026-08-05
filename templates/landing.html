@@ -33,7 +33,7 @@
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
+  html { scroll-behavior: smooth; overflow-x: hidden; }
   body { font-family: var(--fonte-corpo); color: var(--text-main); background: var(--bg); overflow-x: hidden; position: relative; }
 
   /* Vinheta radial fixa */
@@ -87,25 +87,29 @@
   }
 
   /* Botão primário refinado translúcido estilo badge */
+  /* Gradiente de assinatura obrigatório — nunca accent chapado/translúcido
+     (ver aplicador-marca-conexao/SKILL.md, seção "Botão/CTA primário"). Este
+     bloco já regrediu 2x para o padrão translúcido antigo porque cada vez
+     alguém corrigia só o HTML JÁ COMPILADO de um projeto, nunca a fonte
+     compartilhada — corrigido aqui na fonte para a regressão parar de
+     voltar a cada recompilação. */
   .btn-primario {
     display: inline-block;
-    background: rgba(201, 166, 85, 0.08);
-    border: 1px solid rgba(201, 166, 85, 0.4);
-    color: var(--accent);
+    background: var(--gradiente-assinatura);
+    color: var(--bg);
     font-family: var(--fonte-corpo);
     font-weight: 700;
     text-transform: uppercase;
     padding: 0.9rem 2rem;
+    border: none;
     border-radius: 999px;
     text-decoration: none;
     letter-spacing: 0.08em;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    transition: background 0.25s, border-color 0.25s, transform 0.25s var(--ease-premium);
+    transition: transform 420ms var(--ease-premium), box-shadow 420ms var(--ease-premium);
   }
   .btn-primario:hover {
-    background: rgba(201, 166, 85, 0.16);
-    border-color: rgba(201, 166, 85, 0.6);
-    transform: translateY(-2px);
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 12px 32px -8px rgba(201,166,85,0.45);
   }
   .btn-primario:active { transform: scale(0.98); }
 
@@ -135,6 +139,25 @@
   .card:hover { transform: translateY(-4px); border-color: rgba(201,166,85,0.35); background: var(--surface-hover); }
   .card h3 { color: var(--accent); font-size: 1.2rem; margin-bottom: 0.6rem; }
   .card p { font-size: 1.05rem; line-height: 1.5; color: var(--text-main); }
+
+  /* Entrada em 3D ao rolar (mesmo elemento-assinatura do tilt, agora também
+     visível sem depender de hover): os cards "assentam" com leve rotação 3D
+     quando a seção entra na viewport, e continuam respondendo ao mouse
+     normalmente depois (ver script no fim do body). animation-fill-mode
+     "both" garante que o estado final fique neutro, sem conflitar com o
+     :hover/tilt subsequente. */
+  @keyframes assentamento3D {
+    from { opacity: 0; transform: perspective(800px) rotateX(-10deg) rotateY(8deg) translateY(22px); }
+    to   { opacity: 1; transform: perspective(800px) rotateX(0) rotateY(0) translateY(0); }
+  }
+  .visivel .card { animation: assentamento3D 0.7s var(--ease-premium) both; }
+  .visivel .card:nth-child(1) { animation-delay: 0.05s; }
+  .visivel .card:nth-child(2) { animation-delay: 0.15s; }
+  .visivel .card:nth-child(3) { animation-delay: 0.25s; }
+  .visivel .card:nth-child(4) { animation-delay: 0.35s; }
+  @media (prefers-reduced-motion: reduce) {
+    .visivel .card { animation: none; }
+  }
 
   /* PROVA / COMPOSICAO */
   .prova h2 { margin-bottom: 2rem; text-align: center; }
@@ -276,7 +299,7 @@
 
   <div class="container topo">
     <!-- {{LOGO}} -- compilador-html substitui: <img class="logo" src="assets/logos/Logo_Conexão_horizontal_texto_branco.png"> -->
-    <span class="badge">{{BADGE_CONTEXTO}}</span>
+    <span class="badge pulso">{{BADGE_CONTEXTO}}</span>
   </div>
 
   <section class="hero revela">
