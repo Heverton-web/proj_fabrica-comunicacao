@@ -78,9 +78,9 @@
   .slide p { font-size: 1.35rem; line-height: 1.55; max-width: 62ch; color: var(--text-main); }
   .slide.capa p, .slide.cta p { color: var(--text-muted); }
 
-  /* Bullets com painel double-bezel (largura otimizada para maior equilíbrio de tela) */
+  /* Bullets com painel double-bezel (largura otimizada, com pelo menos 32px de padding superior e inferior) */
   .slide ul {
-    list-style: none; padding: 1.6rem 1.8rem; margin-top: 0.4rem;
+    list-style: none; padding: 32px 1.8rem; margin-top: 0.4rem;
     background: rgba(255,255,255,0.02);
     border: 1px solid var(--border-subtle);
     border-radius: 1.1rem;
@@ -89,7 +89,7 @@
     width: 100%;
   }
   .slide ul li {
-    font-size: 1.2rem; line-height: 1.6; color: var(--text-main);
+    font-size: 1.15rem; line-height: 1.6; color: var(--text-main);
     padding: 0.55rem 0; padding-left: 1.4rem; position: relative;
     border-bottom: 1px solid var(--border-subtle);
   }
@@ -99,6 +99,19 @@
     width: 6px; height: 6px; border-radius: 50%; background: var(--accent);
   }
   .slide ul li strong { color: var(--accent); font-weight: 700; }
+
+  /* Layout de Duas Colunas de painéis paralelos para respiro visual de conteúdos longos */
+  .duas-colunas {
+    display: flex;
+    flex-direction: row;
+    gap: 1.5rem;
+    width: 100%;
+    margin-top: 0.6rem;
+  }
+  .duas-colunas ul {
+    flex: 1;
+    max-width: 100%;
+  }
 
   /* Badges dourados premium: fundo com opacidade muito baixa, bordas finas e suaves */
   .badge {

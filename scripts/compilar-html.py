@@ -176,16 +176,36 @@ def compilar_apresentacao(slug):
 
             else:
                 # Layout padrão: Custom Bullets Double-Bezel
-                bullets_html = []
-                if isinstance(corpo, list):
-                    for item in corpo:
-                        formatted_item = formatar_markdown(item)
+                if isinstance(corpo, list) and len(corpo) >= 4:
+                    # Divisão dinâmica em duas colunas para dar espaçamento de respiro e tamanho perfeito de fonte
+                    meio = (len(corpo) + 1) // 2
+                    c1 = corpo[:meio]
+                    c2 = corpo[meio:]
+                    bullets1 = "\n".join([f"<li>{formatar_markdown(item)}</li>" for item in c1])
+                    bullets2 = "\n".join([f"<li>{formatar_markdown(item)}</li>" for item in c2])
+                    html = f"""
+    <div class="slide conteudo{ativo_class}">
+      <h2>{titulo}</h2>
+      <div class="duas-colunas">
+        <ul>
+          {bullets1}
+        </ul>
+        <ul>
+          {bullets2}
+        </ul>
+      </div>
+    </div>"""
+                else:
+                    bullets_html = []
+                    if isinstance(corpo, list):
+                        for item in corpo:
+                            formatted_item = formatar_markdown(item)
+                            bullets_html.append(f"<li>{formatted_item}</li>")
+                    elif isinstance(corpo, str):
+                        formatted_item = formatar_markdown(corpo)
                         bullets_html.append(f"<li>{formatted_item}</li>")
-                elif isinstance(corpo, str):
-                    formatted_item = formatar_markdown(corpo)
-                    bullets_html.append(f"<li>{formatted_item}</li>")
-                bullets_str = "\n".join(bullets_html)
-                html = f"""
+                    bullets_str = "\n".join(bullets_html)
+                    html = f"""
     <div class="slide conteudo{ativo_class}">
       <h2>{titulo}</h2>
       <ul>
