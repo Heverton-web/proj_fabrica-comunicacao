@@ -37,6 +37,7 @@ Para cada lote do plano, **nesta ordem, sem pular etapas**:
    - `landing-page` → `subagente-produtor-landing`
    - `apresentacao` → `subagente-produtor-apresentacao`
    - `arte-01`/`arte-02`/`arte-03` → `subagente-produtor-arte` (um por variante)
+   - `textos` → `subagente-produtor-textos`
 2. Aguarde **todos** os subagentes do lote terminarem (cada um já auto-registra sucesso
    ou falha via `pool-materiais.py --registrar`).
 3. Só então consulte `python scripts/pool-materiais.py <slug> --proximo-lote --lote 4`
@@ -74,7 +75,7 @@ que já estão conformes).
 python scripts/empacotar-projeto.py <slug>
 ```
 
-Monta a estrutura final em `output/<slug>/{pdf,landing-page,apresentacao,arte-01,arte-02,arte-03}/`
+Monta a estrutura final em `output/<slug>/{pdf,landing-page,apresentacao,arte-01,arte-02,arte-03,textos}/`
 e grava `manifesto_materiais.json`.
 
 ## Passo 6 — Relatório final (REGRA 2 — telegráfico, sem preâmbulo)

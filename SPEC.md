@@ -19,7 +19,7 @@ vivem em `SPEC_PDF.md`, `SPEC_HTML.md` e `SPEC_ARTE.md`.
 | R9 | Todo material selecionado em `config_projeto.json` termina `concluido_autonomo` ou `esgotado` — nunca fica silenciosamente ausente do relatório final. |
 | R10 | Fan-out em lote de 4 (`pool-materiais.py`, `LOTE_PADRAO = 4`) — nunca despachar todos os subagentes de uma vez. |
 | R11 | Toda entrega final produz: decisões de design tomadas, informações faltantes, sugestões de legenda/CTA (REGRA 6). `revisor-marca` acumula essas 3 listas em `revisao/parecer_revisao.json`; `empacotar-projeto.py` as consolida em `manifesto_materiais.json`. |
-| R12 | `output/<slug>/` segue exatamente: `pdf/`, `landing-page/`, `apresentacao/`, `arte-01/`, `arte-02/`, `arte-03/` — nunca aninhado por marca/data. |
+| R12 | `output/<slug>/` segue exatamente: `pdf/`, `landing-page/`, `apresentacao/`, `arte-01/`, `arte-02/`, `arte-03/`, `textos/` — nunca aninhado por marca/data. |
 
 ## Máquina de estados (por material)
 
@@ -40,13 +40,12 @@ Estado persistido em `output/<slug>/_pool_estado.json`, gerido por `scripts/pool
 
 **Rodada 1 — Insumos** (`AskUserQuestion`, até 2 perguntas em 1 chamada):
 1. **Imagens** — paths/descrições das imagens do produto/marca a usar.
-2. **Texto-base** — path ou conteúdo colado com a informação a comunicar (fonte de
-   verdade de todo claim — REGRA 6).
+2. **Texto-base** — path ou conteúdo colado com a informação a comunicar (fonte de verdade de todo claim — REGRA 6).
 
 **Rodada 2 — Público-alvo** (`AskUserQuestion`, seleção única):
 - **Consultores** / **Clientes** / **Distribuidores** → gravado em `publico_alvo`.
 
-**Rodada 3 — Objetivo/tom de voz** (`AskUserQuestion`, seleção única, opções compostas):
+**Rodada 3 — Objetivo/tom de voz** (`AskUserQuestion`, selection única, opções compostas):
 - **Educacional / Comercial** → `educacional_comercial`
 - **Informacional / Técnico** → `informacional_tecnico`
 - **Comercial / Informacional técnico de parceria de venda** → `comercial_informacional_parceria`
@@ -56,30 +55,25 @@ material. Público-alvo e objetivo/tom são **decisões do operador, fonte de ve
 nunca derivadas do texto-base por `analista-insumos`/`diretor-de-arte` (REGRA 6).
 
 **Rodada 4 — Materiais** (`AskUserQuestion`, multiSelect): PDF apostila / Landing Page /
-Apresentação / Arte 1080×1080 / Arte 1080×1350 / Arte 1080×1920 (1 a 6 selecionados).
+Apresentação / Arte 1080×1080 / Arte 1080×1350 / Arte 1080×1920 / Textos de Apoio (1 a 7 selecionados).
 
 Não há pergunta de design system — é fixo (R3).
 
 Ao final da rodada 4, `/esbocar`:
 1. Grava `config_projeto.json` (schema em `## Contratos de dados` abaixo).
-2. Roda `analista-insumos` (→ `dossie_insumos.md`, registrando as escolhas do operador
-   como fonte de verdade) e `diretor-de-arte` (→ `brief_criativo.json`, decompõe
-   `objetivo_tom` em `objetivo` + `tom_de_voz`) inline, sem nova pausa.
+2. Roda `analista-insumos` (→ `dossie_insumos.md`, registrando as escolhas do operador como fonte de verdade) e `diretor-de-arte` (→ `brief_criativo.json`, decompõe `objetivo_tom` em `objetivo` + `tom_de_voz`) inline, sem nova pausa.
 3. Termina com relatório objetivo + comando sugerido: `/produzir-comunicacao-completa <slug>`.
 
 ### Passo 2 — `/produzir-comunicacao-completa <slug>` (autônomo)
 
 1. `parametros_projeto.py --validar` (R2).
 2. `pool-materiais.py <slug> --plano --lote 4` → plano de lotes.
-3. Para cada lote: despachar `subagente-produtor-<tipo>` de todos os materiais do lote
-   em paralelo, aguardar todos terminarem, cada um roda seu `redator-*` → `compilador-*`
-   → `validar-*.py` → auto-registra via `pool-materiais.py --registrar <tipo> --sucesso|--falha`.
+3. Para cada lote: despachar `subagente-produtor-<tipo>` de todos os materiais do lote em paralelo, aguardar todos terminarem, cada um roda seu `redator-*` → `compilador-*` → `validar-*.py` → auto-registra via `pool-materiais.py --registrar <tipo> --sucesso|--falha`.
 4. Drenar pendentes com backoff exponencial (15s×2^n, máx. 240s, máx. 3 tentativas).
 5. `revisor-marca` audita o lote de materiais concluídos (fidelidade de fonte + marca).
 6. `auditar-projeto.py <slug> --estrito` — gate determinístico final (R4, R5, R9).
 7. `empacotar-projeto.py <slug>` → monta `output/<slug>/` final + `manifesto_materiais.json`.
-8. Relatório final consolidado (telegráfico, REGRA 2): materiais entregues, esgotados,
-   decisões de design, faltantes, sugestões de legenda.
+8. Relatório final consolidado (telegráfico, REGRA 2): materiais entregues, esgotados, decisões de design, faltantes, sugestões de legenda.
 
 ## Contratos de dados (JSON)
 
@@ -94,7 +88,7 @@ Ao final da rodada 4, `/esbocar`:
   // Rodada 3 — escolha única do operador (objetivo/tom compostos):
   "objetivo_tom": "informacional_tecnico",
   //   educacional_comercial | informacional_tecnico | comercial_informacional_parceria
-  "materiais_selecionados": ["pdf", "landing-page", "arte-01", "arte-02", "arte-03"],
+  "materiais_selecionados": ["pdf", "landing-page", "arte-01", "arte-02", "arte-03", "textos"],
   "edicao": "1ª Edição"           // Obrigatório se 'pdf' estiver em materiais_selecionados
 }
 ```
@@ -119,7 +113,8 @@ arquivo como solução interina (ver `SPEC_PDF.md`).
     "pdf": {"secoes": ["abertura", "problema", "solução", "destaques", "composição", "aplicação", "fechamento"]},
     "landing-page": {"secoes": ["hero", "problema-solução", "destaques", "prova/composição", "cta"]},
     "apresentacao": {"slides": ["capa", "problema", "solução", "destaques (1 por slide)", "cta"]},
-    "arte": {"variações": ["capa isca (headline + foto + CTA)"]}
+    "arte": {"variações": ["capa isca (headline + foto + CTA)"]},
+    "textos": {"canais": ["whatsapp", "instagram", "linkedin"]}
   }
 }
 ```
@@ -130,7 +125,8 @@ arquivo como solução interina (ver `SPEC_PDF.md`).
   "slug": "kit-master-flex",
   "materiais": [
     {"tipo": "pdf", "status": "concluido_autonomo", "path": "pdf/apostila_kit-master-flex.pdf"},
-    {"tipo": "arte-01", "status": "concluido_autonomo", "path": "arte-01/arte_kit-master-flex_01.png"}
+    {"tipo": "arte-01", "status": "concluido_autonomo", "path": "arte-01/arte_kit-master-flex_01.png"},
+    {"tipo": "textos", "status": "concluido_autonomo", "path": "textos/"}
   ],
   "decisoes_design": ["Paleta extraída da peça de referência (navy + dourado metálico)."],
   "informacoes_faltantes": ["Torque recomendado para o modelo XL não estava no texto-base."],
@@ -140,16 +136,7 @@ arquivo como solução interina (ver `SPEC_PDF.md`).
 
 ## Edge cases
 
-- **Texto-base insuficiente para preencher todas as seções do brief:** `redator-*`
-  preenche o que tem evidência e lista o restante como faltante — nunca inventa (REGRA 6).
-- **Material esgotado após 3 tentativas:** aparece em `manifesto_materiais.json` com
-  `status: "esgotado"` e motivo; os demais materiais são entregues normalmente (R9).
-- **Fonte da marca (Poppins/Inter) não instalada na máquina de build do PDF:**
-  `scripts/parametros_projeto.py` detecta via `typst fonts` e cai para `Arial` com
-  aviso — nunca falha silenciosamente. Registrar como faltante ("instalar fonte no
-  ambiente de build") em vez de aceitar o fallback como definitivo.
-- **Texto-base ambíguo sobre escopo interno vs. externo do material** (ex.: guia de
-  vendas com script/objeções, mas materiais externos foram selecionados): não decidir
-  sozinho — `/esbocar` deve confirmar com o operador antes de produzir (excepciona a
-  autonomia da REGRA 3, é uma decisão de escopo, não de conteúdo/design) e registrar a
-  decisão em `brief_criativo.nota_de_escopo`.
+- **Texto-base insuficiente para preencher todas as seções do brief:** `redator-*` preenche o que tem evidência e lista o restante como faltante — nunca inventa (REGRA 6).
+- **Material esgotado após 3 tentativas:** aparece em `manifesto_materiais.json` com `status: "esgotado"` e motivo; os demais materiais são entregues normalmente (R9).
+- **Fonte da marca (Poppins/Inter) não instalada na máquina de build do PDF:** `scripts/parametros_projeto.py` detecta via `typst fonts` e cai para `Arial` com aviso — nunca falha silenciosamente. Registrar como faltante ("instalar fonte no ambiente de build") em vez de aceitar o fallback como definitivo.
+- **Texto-base ambíguo sobre escopo interno vs. externo do material** (ex.: guia de vendas com script/objeções, mas materiais externos foram selecionados): não decidir sozinho — `/esbocar` deve confirmar com o operador antes de produzir (excepciona a autonomia da REGRA 3, é uma decisão de escopo, não de conteúdo/design) e registrar a decisão em `brief_criativo.nota_de_escopo`.
