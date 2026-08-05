@@ -25,7 +25,7 @@ DIR_PROJETO = Path(__file__).resolve().parent.parent
 DIR_OUTPUT = DIR_PROJETO / "output"
 CAMINHO_BRAND = DIR_PROJETO / "brand" / "design-system-conexao.json"
 
-TIPOS_VALIDOS = {"pdf", "landing-page", "apresentacao", "arte-01", "arte-02", "arte-03"}
+TIPOS_VALIDOS = {"pdf", "landing-page", "apresentacao", "arte-01", "arte-02", "arte-03", "textos"}
 
 # Escolhas do operador nas rodadas 2 e 3 do /esbocar (fonte de verdade — nunca derivar).
 PUBLICOS_ALVO_VALIDOS = {"consultores", "clientes", "distribuidores"}

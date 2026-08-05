@@ -22,7 +22,7 @@ DIR_PROJETO = Path(__file__).resolve().parent.parent
 DIR_OUTPUT = DIR_PROJETO / "output"
 DIR_SCRIPTS = Path(__file__).resolve().parent
 
-TIPOS_VALIDOS = ["pdf", "landing-page", "apresentacao", "arte-01", "arte-02", "arte-03"]
+TIPOS_VALIDOS = ["pdf", "landing-page", "apresentacao", "arte-01", "arte-02", "arte-03", "textos"]
 
 
 def rodar_validador(slug, tipo):
@@ -34,6 +34,8 @@ def rodar_validador(slug, tipo):
         cmd = [py, str(DIR_SCRIPTS / "validar-html.py"), slug, tipo]
     elif tipo.startswith("arte-"):
         cmd = [py, str(DIR_SCRIPTS / "validar-dimensoes.py"), slug, tipo]
+    elif tipo == "textos":
+        cmd = [py, str(DIR_SCRIPTS / "validar-textos.py"), slug]
     else:
         return False, f"tipo desconhecido: {tipo}"
 
