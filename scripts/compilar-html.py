@@ -228,10 +228,10 @@ def compilar_apresentacao(slug):
     
     # Injeta Logo
     logo_tag = '<img class="logo" src="assets/logos/Logo_Conexão_horizontal_texto_branco.png" alt="Conexão Implantes">'
-    html_final = re.sub(r'<!--\s*\{\{LOGO\}\}.*?-->', logo_tag, html_final)
+    html_final = re.sub(r'<!--\s*\{\{LOGO\}\}.*?-->', logo_tag, html_final, flags=re.DOTALL)
 
     # Injeta Slides
-    html_final = re.sub(r'<!--\s*\{\{SLIDES\}\}.*?-->', slides_html_block, html_final)
+    html_final = re.sub(r'<!--\s*\{\{SLIDES\}\}.*?-->', slides_html_block, html_final, flags=re.DOTALL)
 
     # Salva o arquivo final
     dest_html.write_text(html_final, encoding="utf-8")
