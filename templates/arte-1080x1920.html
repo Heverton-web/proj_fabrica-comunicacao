@@ -42,24 +42,15 @@
   /* Logo um pouco maior no topo, exatamente a 24px da faixa superior (24px + 3px da faixa = 27px) */
   .logo { position: absolute; top: 27px; left: 50%; transform: translateX(-50%); max-height: 80px; max-width: 280px; z-index: 2; }
 
-  /* Badges dourados translúcidos premium */
-  .badge {
-    display: inline-block;
-    background: rgba(201, 166, 85, 0.12);
-    border: 1px solid rgba(201, 166, 85, 0.35);
-    border-radius: 999px; padding: 0.5rem 1.3rem; font-size: 1.05rem; font-weight: 700;
-    letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent);
-    box-shadow: 0 2px 4px rgba(0,0,0,0.12);
-  }
-
   /* Bloco de Conteúdo Integrado: Imagem do produto, Título e Parágrafo explicativo
-     Alinhado ao centro tanto na vertical quanto na horizontal, com largura unificada de 760px (largura da imagem)
+     Alinhado ao centro tanto na vertical quanto na horizontal, com largura expandida para 1000px para que o título
+     tenha bastante espaço horizontal para respirar (ficando mais largo que o produto)
      Mantendo 24px de padding left e right */
   .bloco-conteudo {
     position: absolute;
     top: 50%; left: 50%;
     transform: translate(-50%, -50%);
-    width: 760px;
+    width: 1000px;
     padding: 0 24px;
     display: flex;
     flex-direction: column;
@@ -69,13 +60,13 @@
     z-index: 1;
   }
 
-  /* Imagem do produto em evidência ocupando 100% do bloco de conteúdo */
+  /* Imagem do produto ampliada (foco da arte) */
   .produto {
-    width: 100%; max-height: 720px; object-fit: contain; margin-bottom: 24px;
+    width: 860px; max-height: 820px; object-fit: contain; margin-bottom: 24px;
     filter: drop-shadow(0 15px 35px rgba(0,0,0,0.5));
   }
 
-  /* Título em caixa alta, Inter 900 ocupando 100% da largura do bloco */
+  /* Título em caixa alta, Inter 900 com excelente espaço de respiro horizontal */
   .bloco-conteudo h1 {
     font-family: var(--fonte-titulo); font-weight: 900; font-size: 3.8rem; line-height: 1.15; margin-bottom: 16px;
     text-transform: uppercase; width: 100%;
@@ -100,23 +91,11 @@
     box-shadow: 0 4px 12px rgba(0,0,0,0.15);
   }
 
-  /* Bloco do Rodapé: Badges e Direitos Autorais com gap de exatamente 24px */
-  .rodape-bloco {
-    position: absolute;
-    bottom: 65px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 24px;
-    width: 100%;
-    z-index: 2;
-  }
-
+  /* Rodapé sutil de Direitos Autorais com opacidade baixa e itálico */
   .rodape-copyright {
+    position: absolute; bottom: 65px; left: 50%; transform: translateX(-50%);
     font-family: var(--fonte-corpo); font-size: 0.95rem; font-style: italic;
-    color: rgba(255, 255, 255, 0.35); text-align: center; width: 100%;
+    color: rgba(255, 255, 255, 0.35); text-align: center; z-index: 2; width: 100%;
   }
 </style>
 </head>
@@ -137,13 +116,8 @@
     </div>
   </div>
 
-  <div class="rodape-bloco">
-    <div class="badge-container">
-      <!-- {{BADGE_CONTEXTO}} -- compilador-arte substitui: <span class="badge">USO INTERNO</span> -->
-    </div>
-    <div class="rodape-copyright">
-      2026 © Todos os direitos reservados a Conexão Sistemas de Próteses
-    </div>
+  <div class="rodape-copyright">
+    2026 © Todos os direitos reservados a Conexão Sistemas de Próteses
   </div>
 </body>
 </html>
