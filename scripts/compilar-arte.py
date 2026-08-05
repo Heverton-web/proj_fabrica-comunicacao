@@ -93,7 +93,7 @@ def compilar_variante_arte(slug, variante):
     logo_tag = '<img class="logo" src="assets/logos/Logo_Conexão_horizontal_texto_branco.png" alt="Conexão Implantes">'
     html_final = re.sub(r'<!--\s*\{\{LOGO\}\}.*?-->', logo_tag, html_final, flags=re.DOTALL)
     
-    # Injeta Badge de contexto
+    # Injeta Badge de contexto (O badge USO INTERNO é suprimido ativamente e NUNCA mais utilizado!)
     brief = carregar_json(slug_dir / "brief_criativo.json")
     badge_texto = "USO INTERNO"
     if brief:
@@ -101,7 +101,10 @@ def compilar_variante_arte(slug, variante):
         if "externo" in nota or "profissional" in nota:
           badge_texto = "USO PROFISSIONAL"
     
-    badge_tag = f'<span class="badge">{badge_texto}</span>'
+    badge_tag = ""
+    if badge_texto != "USO INTERNO":
+        badge_tag = f'<span class="badge">{badge_texto}</span>'
+    
     html_final = re.sub(r'<!--\s*\{\{BADGE_CONTEXTO\}\}.*?-->', badge_tag, html_final, flags=re.DOTALL)
 
     # Injeta Imagem de Produto
