@@ -12,6 +12,7 @@ __pycache__/
 *.pyc
 *.pyo
 .crg-*.py
+.crg-hook.log
 .DS_Store
 *.bak
 

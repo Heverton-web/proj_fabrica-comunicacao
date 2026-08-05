@@ -86,13 +86,17 @@ proibidos quando o grafo puder responder — a violação desperdiça tokens sem
 de precisão. Fall back para leitura direta **somente** quando o grafo não cobrir
 o que se precisa (ex.: arquivo recém-criado ainda não indexado).
 
-**Limite de cobertura conhecido:** nesta instância, o grafo indexa apenas os scripts em
-`scripts/*.py` — **não** cobre `.claude/skills/*`, `.claude/agents/*.md`,
-`.claude/commands/*.md` nem `SPEC*.md`/`CLAUDE.md`, e a busca semântica não tem
-embeddings gerados (cai para busca textual literal). Para localizar uma skill, agente,
+**Limite de cobertura permanente (confirmado, não é um TODO):** o `code-review-graph`
+usa `tree-sitter-language-pack` para extrair entidades de código (classes, funções,
+chamadas) — este repo só tem gramáticas registradas para **python e bash**. Testado
+diretamente: `code-review-graph wiki` gera páginas exclusivamente a partir de clusters
+de funções em `scripts/*.py` (nenhuma menção a skill/agente/comando/spec); não há flag
+de CLI nem parâmetro de MCP para adicionar Markdown como linguagem indexável — a
+limitação é do pacote externo, não configurável a partir deste repositório. Portanto o
+grafo **não** cobre e **não vai cobrir** `.claude/skills/*`, `.claude/agents/*.md`,
+`.claude/commands/*.md` nem `SPEC*.md`/`CLAUDE.md`. Para localizar uma skill, agente,
 comando ou spec, vá direto para busca de arquivo/conteúdo — a REGRA 9 não se aplica a
-essas camadas até que a indexação seja expandida (ver seção "Grafo de Conhecimento"
-abaixo).
+essas camadas.
 
 ## Arquitetura em uma frase
 
@@ -153,12 +157,14 @@ de filesystem faria.
 
 ## Grafo de Conhecimento — MCP `code-review-graph` (REGRA 9)
 
-Este projeto possui um grafo de conhecimento auto-atualizado. **Cobertura atual:**
-apenas `scripts/*.py` (17 arquivos indexados) — skills, agentes, comandos e specs em
-Markdown ainda não entram no grafo (ver limite de cobertura na REGRA 9). Para o que o
-grafo cobre, toda exploração começa aqui — é mais rápido, mais barato em tokens e traz
-contexto estrutural (chamadores, dependentes, cobertura) que leitura de arquivo não
-consegue.
+Este projeto possui um grafo de conhecimento auto-atualizado. **Cobertura permanente:**
+apenas `scripts/*.py`/`.sh` (linguagens registradas: python, bash) — skills, agentes,
+comandos e specs em Markdown nunca entrarão no grafo, é limitação do parser
+`tree-sitter-language-pack` usado pelo `code-review-graph`, não configurável a partir
+deste repositório (ver limite de cobertura na REGRA 9, testado empiricamente via
+`code-review-graph wiki`). Para o que o grafo cobre, toda exploração começa aqui — é
+mais rápido, mais barato em tokens e traz contexto estrutural (chamadores,
+dependentes, cobertura) que leitura de arquivo não consegue.
 
 ### Quando usar cada tool do grafo
 
