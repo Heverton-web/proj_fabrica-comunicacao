@@ -68,12 +68,15 @@ def compilar_apresentacao(slug):
 
         if tipo == "capa":
             # Slide 1 Layout Hero de Capa (Conteúdo à esquerda, imagem do produto à direita)
+            # O título e o subtítulo ficam envoltos em um bloco de max-width: 540px para que tenham a mesma largura horizontal
             html = f"""
     <div class="slide capa{ativo_class}">
       <div class="capa-esquerda">
         <span class="badge">Uso Interno</span>
-        <h1>{titulo}</h1>
-        <p>{corpo}</p>
+        <div style="max-width: 540px; width: 100%;">
+          <h1>{titulo}</h1>
+          <p style="font-size: 1.25rem; line-height: 1.5; color: var(--text-muted); max-width: 100%;">{corpo}</p>
+        </div>
       </div>
       <div class="capa-direita">
         <img src="assets/kit_start_flex_frontal.png" alt="Start Flex">
@@ -82,7 +85,7 @@ def compilar_apresentacao(slug):
             html_slides.append(html)
 
         elif tipo == "cta":
-            # Slide CTA Centralizado com botão-badge
+            # Slide CTA Centralizado com botão-badge translúcido
             html = f"""
     <div class="slide cta{ativo_class}">
       <span class="badge">Dica de Ouro</span>
@@ -93,39 +96,9 @@ def compilar_apresentacao(slug):
             html_slides.append(html)
 
         else:
-            # Tipo Conteúdo: Auto-detecta o layout mais visual aplicável
-            # Se título contiver "Composição", "Versatilidade" ou "Diferencial" -> Renderiza Grid de CARDS!
-            if "composic" in titulo.lower() or "versatilidade" in titulo.lower() or "diferencial" in titulo.lower():
-                cards_html = []
-                # Se corpo for uma lista
-                if isinstance(corpo, list):
-                    for item in corpo:
-                        # Tenta quebrar em Título | Descrição
-                        partes = item.split(" — ") if " — " in item else item.split(" - ")
-                        if len(partes) >= 2:
-                            card_title = partes[0].replace("**", "").strip()
-                            card_desc = partes[1].strip()
-                        else:
-                            card_title = "Destaque"
-                            card_desc = item.replace("**", "").strip()
-                        
-                        cards_html.append(f"""
-        <div class="card-visual">
-          <h3>{card_title}</h3>
-          <p>{card_desc}</p>
-        </div>""")
-                cards_str = "\n".join(cards_html)
-                html = f"""
-    <div class="slide conteudo{ativo_class}">
-      <h2>{titulo}</h2>
-      <div class="grid-cards">
-        {cards_str}
-      </div>
-    </div>"""
-                html_slides.append(html)
-
+            # Tipo Conteúdo: Auto-detecta o layout mais visual aplicável (Fluxogramas ou Tabelas)
             # Se título contiver "Script" ou "SPIN" -> Renderiza FLUXOGRAMA horizontal!
-            elif "script" in titulo.lower() or "spin" in titulo.lower():
+            if "script" in titulo.lower() or "spin" in titulo.lower():
                 passos_html = []
                 if isinstance(corpo, list):
                     for i, item in enumerate(corpo):

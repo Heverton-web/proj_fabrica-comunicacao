@@ -112,23 +112,28 @@
     box-shadow: 0 2px 4px rgba(0,0,0,0.12);
   }
 
-  /* Badges em formato de botões */
+  /* Badges em formato de botões (fundo translúcido, bordas finas e suaves, sem mega-dourado) */
   .btn-badge {
     display: inline-block;
-    background: var(--gradiente-assinatura);
-    color: var(--bg);
+    background: rgba(201, 166, 85, 0.08);
+    border: 1px solid rgba(201, 166, 85, 0.4);
+    color: var(--accent);
     font-family: var(--fonte-titulo);
-    font-weight: 900;
+    font-weight: 700;
     text-transform: uppercase;
-    padding: 0.65rem 1.6rem;
+    padding: 0.65rem 1.8rem;
     border-radius: 999px;
-    font-size: 0.95rem;
-    letter-spacing: 0.05em;
+    font-size: 0.9rem;
+    letter-spacing: 0.08em;
     text-decoration: none;
-    box-shadow: 0 4px 15px rgba(201, 166, 85, 0.35);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     margin-top: 0.8rem;
-    border: none;
     cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .btn-badge:hover {
+    background: rgba(201, 166, 85, 0.16);
+    border-color: rgba(201, 166, 85, 0.6);
   }
 
   /* Slide 1 - Layout Hero de Capa (Imagem do produto à direita e conteúdos à esquerda) */
@@ -144,23 +149,23 @@
     padding: 8vh 8vw;
   }
   .capa-esquerda {
-    flex: 1.2;
+    flex: 1;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
   }
   .capa-direita {
-    flex: 0.8;
+    flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
   }
   .capa-direita img {
     max-width: 100%;
-    max-height: 55vh;
+    max-height: 68vh;
     object-fit: contain;
-    filter: drop-shadow(0 15px 30px rgba(0,0,0,0.4));
+    filter: drop-shadow(0 15px 35px rgba(0,0,0,0.5));
   }
 
   /* Slide CTA - Centralizado */
