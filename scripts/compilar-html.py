@@ -34,6 +34,141 @@ def formatar_markdown(texto):
     return texto
 
 
+# ── Componentes animados de dado (v1) ────────────────────────────────────
+# Ver .claude/skills/aplicador-marca-conexao/SKILL.md, secao "Componentes
+# animados de dado", e docs/03-plano-componentes-animados.md. Cada funcao
+# recebe apenas o dict "dados" de um bloco {"tipo": ..., "dados": {...}} e
+# devolve HTML pronto para injetar num slide (apresentacao) ou secao
+# (landing-page). CSS/animacao vive nos templates via custom properties
+# (--gauge-offset, --donut-offset, --barra-pct) para permitir varias
+# instancias na mesma pagina sem duplicar regras CSS.
+
+def renderizar_gauge(dados):
+    valor = dados.get("valor", 0)
+    minimo = dados.get("min", 0)
+    maximo = dados.get("max", 100)
+    unidade = dados.get("unidade", "")
+    titulo_indicador = formatar_markdown(dados.get("titulo_indicador", "Indicador"))
+    marcas = dados.get("marcas", [])
+    intervalo = (maximo - minimo) or 1
+    fracao = max(0.0, min(1.0, (valor - minimo) / intervalo))
+    offset = round(251.2 * (1 - fracao), 1)
+    angulo = round(-90 + 180 * fracao, 1)
+
+    labels = [f'<span>{minimo}{(" " + unidade) if unidade else ""}</span>']
+    for m in marcas:
+        m_label = formatar_markdown(m.get("label") or f'{m.get("valor", "")}{(" " + unidade) if unidade else ""}')
+        labels.append(f'<span class="ativo">{m_label}</span>')
+    labels_str = "".join(labels)
+
+    return f"""<div class="gauge-box">
+          <h4>{titulo_indicador}</h4>
+          <svg class="gauge-svg" viewBox="0 0 200 110">
+            <path class="gauge-track" d="M 20 95 A 80 80 0 0 1 180 95" />
+            <path class="gauge-value" style="--gauge-offset:{offset}" d="M 20 95 A 80 80 0 0 1 180 95" />
+            <polygon class="gauge-pointer" style="--gauge-angulo:{angulo}deg" points="100,95 97,15 103,15" fill="var(--accent)" stroke="rgb(255, 248, 214)" stroke-width="1" />
+            <circle cx="100" cy="95" r="8" fill="var(--surface)" stroke="var(--accent)" stroke-width="2" />
+          </svg>
+          <div class="gauge-labels">{labels_str}</div>
+        </div>"""
+
+
+def renderizar_fluxo(dados):
+    passos = dados.get("passos", [])
+    blocos = []
+    for i, p in enumerate(passos):
+        titulo = formatar_markdown(p.get("titulo", f"Passo {i+1}"))
+        texto = formatar_markdown(p.get("texto", ""))
+        blocos.append(f"""
+        <div class="fluxo-passo">
+          <span class="numero">{i+1}</span>
+          <h4>{titulo}</h4>
+          <p>{texto}</p>
+        </div>""")
+        if i < len(passos) - 1:
+            blocos.append('<div class="fluxo-seta">&rarr;</div>')
+    return f'<div class="fluxo-container">{"".join(blocos)}</div>'
+
+
+def renderizar_contador(dados):
+    valor_final = dados.get("valor_final", 0)
+    prefixo = dados.get("prefixo", "")
+    sufixo = dados.get("sufixo", "")
+    label = formatar_markdown(dados.get("label", ""))
+    return f"""<div class="contador-box">
+          <div class="contador-numero" data-valor="{valor_final}" data-prefixo="{prefixo}" data-sufixo="{sufixo}">{prefixo}0{sufixo}</div>
+          <div class="contador-label">{label}</div>
+        </div>"""
+
+
+def renderizar_donut(dados):
+    percentual = max(0, min(100, dados.get("percentual", 0)))
+    label = formatar_markdown(dados.get("label", ""))
+    offset = round(283 * (1 - percentual / 100), 1)
+    return f"""<div class="donut-box">
+          <svg class="donut-svg" viewBox="0 0 100 100">
+            <circle class="donut-track" cx="50" cy="50" r="45" />
+            <circle class="donut-value" style="--donut-offset:{offset}" cx="50" cy="50" r="45" />
+          </svg>
+          <div class="donut-percentual">{percentual}%</div>
+          <div class="donut-label">{label}</div>
+        </div>"""
+
+
+def renderizar_accordion(dados):
+    itens = dados.get("itens", [])
+    blocos = []
+    for item in itens:
+        pergunta = formatar_markdown(item.get("pergunta", ""))
+        resposta = formatar_markdown(item.get("resposta", ""))
+        blocos.append(f"""
+      <details class="accordion-item">
+        <summary>{pergunta}</summary>
+        <div class="accordion-resposta">{resposta}</div>
+      </details>""")
+    return "".join(blocos)
+
+
+def renderizar_barras(dados):
+    itens = dados.get("itens", [])
+    maximo = dados.get("max") or (max([i.get("valor", 0) for i in itens], default=1) or 1)
+    unidade = dados.get("unidade", "")
+    blocos = []
+    for item in itens:
+        label = formatar_markdown(item.get("label", ""))
+        valor = item.get("valor", 0)
+        u = item.get("unidade", unidade)
+        pct = round(min(100, (valor / maximo) * 100), 1) if maximo else 0
+        blocos.append(f"""
+        <div class="barra-item">
+          <div class="barra-topo-label"><span>{label}</span><strong>{valor}{(" " + u) if u else ""}</strong></div>
+          <div class="barra-trilho"><div class="barra-fill" style="--barra-pct:{pct}%"></div></div>
+        </div>""")
+    return f'<div class="barras-container">{"".join(blocos)}</div>'
+
+
+COMPONENTES_RENDERIZADORES = {
+    "gauge": renderizar_gauge,
+    "fluxo": renderizar_fluxo,
+    "contador": renderizar_contador,
+    "donut": renderizar_donut,
+    "accordion": renderizar_accordion,
+    "barras": renderizar_barras,
+}
+
+
+def renderizar_componente(componente):
+    """componente = {"tipo": "gauge"|"fluxo"|"contador"|"donut"|"accordion"|"barras", "dados": {...}}"""
+    if not componente:
+        return ""
+    tipo = componente.get("tipo")
+    fn = COMPONENTES_RENDERIZADORES.get(tipo)
+    if not fn:
+        print(f"[AVISO] tipo de componente desconhecido: {tipo!r} — ignorado")
+        return ""
+    return fn(componente.get("dados", {}))
+
+
 def compilar_apresentacao(slug):
     slug_dir = DIR_OUTPUT / slug
     slides_path = slug_dir / "apresentacao" / "slides.json"
@@ -118,38 +253,46 @@ def compilar_apresentacao(slug):
             html_slides.append(html)
 
         else:
-            # Tipo Conteúdo: Auto-detecta o layout mais visual aplicável (Fluxogramas ou Tabelas)
-            # Se título contiver "Script" ou "SPIN" -> Renderiza FLUXOGRAMA horizontal!
-            if "script" in titulo.lower() or "spin" in titulo.lower():
-                passos_html = []
-                if isinstance(corpo, list):
-                    for i, item in enumerate(corpo):
-                        partes = item.split(" — ") if " — " in item else item.split(" - ")
-                        p_num = partes[0].strip() if len(partes) >= 2 else f"P{i+1}"
-                        p_desc = partes[1].strip() if len(partes) >= 2 else item
-                        
-                        p_num = formatar_markdown(p_num.replace("**", ""))
-                        p_desc = formatar_markdown(p_desc)
-                        
-                        passos_html.append(f"""
-        <div class="fluxo-passo">
-          <span class="numero">{i+1}</span>
-          <h4>{p_num}</h4>
-          <p>{p_desc}</p>
-        </div>""")
-                        if i < len(corpo) - 1:
-                            passos_html.append('<div class="fluxo-seta">&rarr;</div>')
-                passos_str = "\n".join(passos_html)
+            # Componente explícito (v1, ver docs/03-plano-componentes-animados.md):
+            # se o slide já vem com "componente" do redator-apresentacao, usa o
+            # dado real em vez de adivinhar pelo título — precedência sobre toda
+            # heurística de palavra-chave abaixo.
+            if s.get("componente"):
+                componente_html = renderizar_componente(s["componente"])
+                tipo_componente = s["componente"].get("tipo")
+                wrapper_classe = "gauge-container" if tipo_componente == "gauge" else "componente-wrap"
                 html = f"""
     <div class="slide conteudo{ativo_class}">
       <h2>{titulo}</h2>
-      <div class="fluxo-container">
-        {passos_str}
+      <div class="{wrapper_classe}">
+        {componente_html}
       </div>
+    </div>"""
+                html_slides.append(html)
+                continue
+
+            # Tipo Conteúdo: Auto-detecta o layout mais visual aplicável (Fluxogramas ou Tabelas)
+            # Se título contiver "Script" ou "SPIN" -> Renderiza FLUXOGRAMA horizontal!
+            if "script" in titulo.lower() or "spin" in titulo.lower():
+                passos = []
+                if isinstance(corpo, list):
+                    for item in corpo:
+                        partes = item.split(" — ") if " — " in item else item.split(" - ")
+                        p_titulo = partes[0].strip().replace("**", "") if len(partes) >= 2 else item
+                        p_texto = partes[1].strip() if len(partes) >= 2 else ""
+                        passos.append({"titulo": p_titulo, "texto": p_texto})
+                fluxo_html = renderizar_fluxo({"passos": passos})
+                html = f"""
+    <div class="slide conteudo{ativo_class}">
+      <h2>{titulo}</h2>
+      {fluxo_html}
     </div>"""
                 html_slides.append(html)
 
             # Se título contiver "Torque" -> Renderiza TABELA com GAUGE interativo!
+            # (caminho legado por palavra-chave — mesmos valores hardcoded de
+            # sempre; para dado real, redator-apresentacao deve usar o campo
+            # "componente": {"tipo": "gauge", ...} explícito, ver acima)
             elif "torque" in titulo.lower():
                 rows_html = []
                 if isinstance(corpo, list):
@@ -163,12 +306,19 @@ def compilar_apresentacao(slug):
                             c2 = formatar_markdown(item.replace("**", "").strip())
                         rows_html.append(f"<tr><td><strong>{c1}</strong></td><td>{c2}</td></tr>")
                 rows_str = "\n".join(rows_html)
-                
+
+                gauge_html = renderizar_gauge({
+                    "valor": 60, "min": 0, "max": 80, "unidade": "Ncm",
+                    "titulo_indicador": "Indicador de Torque Seguro",
+                    "marcas": [{"valor": 45, "label": "45 Ncm (Slim)"},
+                               {"valor": 60, "label": "60 Ncm (NP)"}],
+                })
+
                 html = f"""
     <div class="slide conteudo{ativo_class}">
       <h2>{titulo}</h2>
-      <div class="torque-container">
-        <div class="torque-tabela">
+      <div class="gauge-container">
+        <div class="gauge-corpo">
           <table class="tabela-visual">
             <thead>
               <tr>
@@ -181,20 +331,7 @@ def compilar_apresentacao(slug):
             </tbody>
           </table>
         </div>
-        <div class="torque-gauge-box">
-          <h4>Indicador de Torque Seguro</h4>
-          <svg class="gauge-svg" viewBox="0 0 200 110">
-            <path class="gauge-track" d="M 20 95 A 80 80 0 0 1 180 95" />
-            <path class="gauge-value" d="M 20 95 A 80 80 0 0 1 180 95" />
-            <polygon class="gauge-pointer" points="100,95 97,15 103,15" fill="var(--accent)" stroke="rgb(255, 248, 214)" stroke-width="1" />
-            <circle cx="100" cy="95" r="8" fill="var(--surface)" stroke="var(--accent)" stroke-width="2" />
-          </svg>
-          <div class="torque-labels">
-            <span>0 Ncm</span>
-            <span class="ativo" style="color: rgb(229, 193, 88);">45 Ncm (Slim)</span>
-            <span class="ativo" style="color: var(--accent);">60 Ncm (NP)</span>
-          </div>
-        </div>
+        {gauge_html}
       </div>
     </div>"""
                 html_slides.append(html)
@@ -438,6 +575,30 @@ def compilar_landing(slug):
       <h2 class="titulo-gradiente">{cf_headline}</h2>
       <a class="btn-primario" href="#">{cf_cta}</a>
       <p class="dica-ouro">{cf_dica}</p>"""
+
+    # 6. Componentes animados de dado (v1, ver docs/03-plano-componentes-animados.md):
+    # cada item de "enriquecimentos" e anexado ao final da secao indicada em
+    # "secao" (destaques | prova | cta_final | problema_solucao). Ausente por
+    # padrao — so aparece quando o dossie do projeto justificar (REGRA 6).
+    enriquecimentos = dados.get("enriquecimentos", [])
+    enriquecimentos_por_secao = {"destaques": [], "prova": [], "cta_final": [], "problema_solucao": []}
+    for item in enriquecimentos:
+        secao = item.get("secao")
+        if secao in enriquecimentos_por_secao:
+            enriquecimentos_por_secao[secao].append(
+                renderizar_componente({"tipo": item.get("tipo"), "dados": item.get("dados", {})})
+            )
+        else:
+            print(f"[AVISO] enriquecimentos: secao desconhecida {secao!r} — ignorado")
+
+    if enriquecimentos_por_secao["problema_solucao"]:
+        ps_html += "".join(enriquecimentos_por_secao["problema_solucao"])
+    if enriquecimentos_por_secao["destaques"]:
+        destaques_str += "".join(enriquecimentos_por_secao["destaques"])
+    if enriquecimentos_por_secao["prova"]:
+        prova_str += "".join(enriquecimentos_por_secao["prova"])
+    if enriquecimentos_por_secao["cta_final"]:
+        cta_final_html += "".join(enriquecimentos_por_secao["cta_final"])
 
     # Carrega template e substitui
     template_content = template_path.read_text(encoding="utf-8")

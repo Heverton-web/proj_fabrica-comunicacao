@@ -52,6 +52,19 @@ corrigível pela mesma via da REGRA 4.
   mostrar `status: loaded` para os pesos usados).
 - Logo presente e legível onde o template prevê (quando disponível).
 
+### 3.1. Checar oportunidade de enriquecimento perdida (só `apresentacao`/`landing-page`)
+
+Ver `.claude/skills/aplicador-marca-conexao/SKILL.md`, seção "Componentes animados de
+dado". Se o `dossie_insumos.md` tem um dado numérico com limite, percentual do todo,
+processo sequencial ou perguntas/respostas (objeções) e o material **não** usou o
+componente correspondente (`gauge`/`donut`/`fluxo`/`accordion`/`barras`) — nem via
+`componente`/`enriquecimentos` explícito, nem via caminho legado por palavra-chave —
+isso é uma oportunidade perdida, mesmo espírito de "fundo chapado é defeito". Registre
+em `decisoes_design` do parecer, mas **não** bloqueie a aprovação por causa disso
+sozinho (não é claim incorreto nem quebra de marca, é refinamento) — só corrija você
+mesmo (REGRA 4) se for simples (o dado já está claro no dossiê e cabe no schema do
+componente sem reinterpretação).
+
 ### 4. Auto-correção (REGRA 4) antes de reportar bloqueio
 
 Se um defeito for corrigível sem re-escrever o conteúdo do zero (ex.: hex hardcoded que

@@ -298,6 +298,86 @@ def copiar_logo(dir_projeto: Path, slug: str, tipo: str):
   seção "Logo". O resto do estilo PDF é definido pelas regras próprias do PDF ("Flex
   Gold") a documentar em rodada futura.
 
+## Componentes animados de dado (v1 — apresentação e landing-page)
+
+Ver `docs/03-plano-componentes-animados.md` para o plano completo. Estes componentes
+existem porque um enriquecimento visual de alta qualidade (indicador de torque em
+`output/kit-start-flex/apresentacao/index.html`, slide 5) foi criado ad hoc e nunca
+catalogado — qualquer novo projeto reinventaria do zero ou, pior, esqueceria de
+enriquecer dado numérico/processo/objeção com algo além de lista/tabela plana.
+
+**Só valem para `apresentacao`/`landing-page`** (HTML vivo) — nunca `arte-*` (vira PNG
+estático, animação não sobrevive ao screenshot) nem `pdf` (regras próprias, "Flex
+Gold", ainda não definidas).
+
+**Regra de ouro (REGRA 6): nunca force um componente sem dado real do dossiê.** Cada
+linha da tabela abaixo lista o gatilho de conteúdo — se o dossiê não tem esse tipo de
+dado, o slide/seção continua como lista ou tabela simples. Enriquecer não é decorar.
+
+| Componente | Gatilho de conteúdo | Implementado em |
+|---|---|---|
+| `gauge` | Dado numérico com limite/faixa de segurança (torque, dosagem, especificação com teto) | `renderizar_gauge()` em `scripts/compilar-html.py` |
+| `fluxo` | Processo sequencial (script de vendas, "como funciona em N passos") | `renderizar_fluxo()` |
+| `contador` | Estatística isolada de destaque ("50% menos tempo", "35+ anos") | `renderizar_contador()` |
+| `donut` | Percentual do todo (cobertura, redução, taxa) | `renderizar_donut()` |
+| `accordion` | Perguntas/respostas (objeções, dúvidas frequentes) — zero JS, `<details>/<summary>` nativo | `renderizar_accordion()` |
+| `barras` | Múltiplas especificações do mesmo tipo comparadas lado a lado | `renderizar_barras()` |
+
+### Como o `redator-*` aciona um componente
+
+Em `slides.json` (apresentação), acrescente `componente` ao slide — tem precedência
+sobre qualquer heurística de palavra-chave no título:
+```jsonc
+{
+  "tipo": "conteudo", "titulo": "Contorno de Objeções",
+  "componente": { "tipo": "accordion",
+    "dados": { "itens": [{"pergunta": "...", "resposta": "..."}] } }
+}
+```
+Em `conteudo.json` (landing-page), acrescente um array `enriquecimentos` de topo —
+cada item é anexado ao final da seção indicada em `secao`
+(`destaques`|`prova`|`cta_final`|`problema_solucao`):
+```jsonc
+"enriquecimentos": [
+  { "secao": "prova", "tipo": "donut",
+    "dados": { "percentual": 50, "label": "Redução no tempo de cadeira" } }
+]
+```
+
+Schemas de `dados` por tipo (campos aceitos por cada `renderizar_*`):
+- `gauge`: `valor, min, max, unidade, titulo_indicador, marcas: [{valor, label}]`
+- `fluxo`: `passos: [{titulo, texto}]`
+- `contador`: `valor_final, prefixo, sufixo, label`
+- `donut`: `percentual, label`
+- `accordion`: `itens: [{pergunta, resposta}]`
+- `barras`: `itens: [{label, valor, unidade}], max, unidade`
+
+### Badge com pulso (variante, sem JSON próprio)
+
+Para selo/certificação que merece destaque sutil, acrescente a classe `pulso` a um
+`<span class="badge">` já existente (ex.: `class="badge pulso"`) — anel pulsante via
+`@keyframes pulsoAnel`, já no template. Não precisa de campo em `slides.json`/`conteudo.json`.
+
+### Divisor de seção (landing-page, automático)
+
+Já embutido em `templates/landing.html` entre cada seção — decorativo, sem dado,
+nenhuma ação do `redator-landing` necessária.
+
+## Componentes v2 (catalogados, sem função Python nesta rodada)
+
+Documentados aqui como padrão pronto para quando a demanda justificar implementar —
+**não** invente a implementação ad hoc; se precisar de um destes antes de virarem v1,
+peça para formalizar em `scripts/compilar-html.py` primeiro (mesma disciplina do v1).
+
+| Componente | Por que ficou em v2 |
+|---|---|
+| Matriz/grade de compatibilidade | Nº de linhas/colunas varia demais por projeto para um schema genérico simples |
+| Comparativo antes/depois (wipe) | Precisa de 2 blocos de conteúdo espelhados — schema mais complexo |
+| Timeline horizontal com traço progressivo | Sobreposição parcial com `fluxo` — avaliar demanda real antes de manter os dois |
+| Diagrama técnico "desenhado" (line-draw) | Exige arte SVG bespoke por produto, não é template genérico |
+| Card com flip (frente/verso) | Precisa de conteúdo real nas duas faces (REGRA 6) — nem todo dado do dossiê sustenta isso |
+| Cápsula/pílula de nível (fill) | Sobreposição funcional com gauge/donut — mesmo dado, forma alternativa |
+
 ## Cores que NÃO vêm desta skill (exceção legítima)
 
 Cores que representam um **fato físico do produto** (ex.: código de cor real de

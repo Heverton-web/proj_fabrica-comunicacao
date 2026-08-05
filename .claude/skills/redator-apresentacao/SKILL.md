@@ -16,8 +16,8 @@ suficiente para leitura em tela durante uma reunião. Ver `SPEC_HTML.md`.
 ## Saída
 
 - `output/<slug>/apresentacao/slides.json` — lista de slides, schema:
-  `{slides: [{tipo: "capa"|"conteudo"|"cta", titulo, corpo?, imagem?}]}`, consumido por
-  `compilador-html`.
+  `{slides: [{tipo: "capa"|"conteudo"|"cta", titulo, corpo?, imagem?, componente?}]}`,
+  consumido por `compilador-html`.
 
 ## Procedimento
 
@@ -25,11 +25,26 @@ suficiente para leitura em tela durante uma reunião. Ver `SPEC_HTML.md`.
 2. **1 slide por item da hierarquia de conteúdo** (problema, solução, cada destaque
    técnico relevante) — texto curto (headline + até 3 bullets), nunca parágrafo denso;
    um slide é lido em segundos, não estudado.
-3. **Gatilhos Visuais de Título:** O compilador HTML é inteligente e auto-detecta o melhor layout com base em palavras-chave no título do slide. Escreva títulos que utilizem explicitamente estes termos:
-   - Use **"Script"**, **"SPIN"** ou **"Passos"** no título para acionar o layout de **Fluxograma Horizontal Animado** (ex: *"Script de Vendas: SPIN Selling"*).
-   - Use **"Torque"** ou **"Limites"** no título para acionar a **Tabela Técnica com Gauge SVG Animado** (ex: *"Tabela de Torques e Diretrizes"*).
-   - Use **"Objeções"** no título para acionar a **Tabela de Contorno de Objeções** (ex: *"Tabela de Contorno de Objeções"*).
-   - Use **"Composição"**, **"Versatilidade"** ou **"Diferenciais"** para acionar os bullets em painel double-bezel. Se a lista contiver 4 ou mais itens, ela será dividida automaticamente em **duas colunas paralelas**, garantindo perfeito respiro.
+3. **Componentes animados de dado (preferencial — ver
+   `.claude/skills/aplicador-marca-conexao/SKILL.md`, seção "Componentes animados de
+   dado"):** quando o dossiê tiver um dos gatilhos abaixo, acrescente o campo
+   `componente` explícito ao slide — **nunca invente dado para caber num componente,
+   REGRA 6**:
+   - Dado numérico com limite/faixa de segurança → `componente: {"tipo": "gauge", ...}`.
+   - Processo sequencial (script de vendas, "como funciona em N passos") →
+     `componente: {"tipo": "fluxo", ...}`.
+   - Estatística isolada de destaque ("50% menos tempo") → `componente: {"tipo": "contador", ...}`.
+   - Percentual do todo (cobertura, redução, taxa) → `componente: {"tipo": "donut", ...}`.
+   - Perguntas/respostas (objeções, dúvidas) → `componente: {"tipo": "accordion", ...}`
+     — substitui a tabela plana de objeções.
+   - Múltiplas specs do mesmo tipo comparadas lado a lado → `componente: {"tipo": "barras", ...}`.
+
+   **Caminho legado (sem `componente`):** o compilador ainda auto-detecta pelo título
+   ("Script"/"SPIN" → fluxo, "Torque" → gauge, "Objeções"/"Tabela" → tabela) para
+   compatibilidade — mas usa valores fixos, não o dado real do seu projeto. Prefira
+   sempre o campo `componente` explícito.
+   - **Composição/Versatilidade/Diferenciais** sem gatilho de componente continuam como
+     bullets em painel double-bezel — 4+ itens dividem automaticamente em duas colunas.
 4. **Sem Hífens nos Títulos:** É expressamente proibido usar hífens (-) nos títulos de slides. Use sempre dois-pontos (:) para divisões ou subtítulos.
 5. **Slide de fechamento** — CTA + assinatura de marca.
 

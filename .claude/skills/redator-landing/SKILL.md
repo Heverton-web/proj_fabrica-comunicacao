@@ -16,7 +16,7 @@ didático que a apostila. Ver `SPEC_HTML.md`.
 ## Saída
 
 - `output/<slug>/landing-page/conteudo.json` — schema:
-  `{hero: {headline, subheadline, cta}, problema_solucao: {...}, destaques: [...], prova: {...}, cta_final: {...}}`,
+  `{hero: {headline, subheadline, cta}, problema_solucao: {...}, destaques: [...], prova: {...}, cta_final: {...}, enriquecimentos?: [...]}`,
   consumido por `compilador-html`.
 
 ## Procedimento
@@ -31,6 +31,14 @@ didático que a apostila. Ver `SPEC_HTML.md`.
    ou dados concretos, uma seção escaneável com eles (aumenta credibilidade sem
    inventar nada).
 5. **CTA final** — reforço da mensagem central + botão de ação.
+6. **Componentes animados de dado (opcional — ver
+   `.claude/skills/aplicador-marca-conexao/SKILL.md`, seção "Componentes animados de
+   dado"):** se o dossiê tiver percentual do todo, estatística de destaque, processo
+   sequencial ou perguntas/respostas, acrescente ao `conteudo.json` um array de topo
+   `enriquecimentos: [{"secao": "destaques"|"prova"|"cta_final"|"problema_solucao",
+   "tipo": "donut"|"contador"|"fluxo"|"accordion"|"barras"|"gauge", "dados": {...}}]`.
+   **Nunca invente dado para caber num componente (REGRA 6)** — se o dossiê não
+   sustenta nenhum gatilho, a seção continua como card/tabela simples.
 
 ## Tom de voz por público-alvo (obrigatório — REGRA 6)
 

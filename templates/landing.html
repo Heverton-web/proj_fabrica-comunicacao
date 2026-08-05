@@ -151,9 +151,118 @@
   /* Entrada suave ao rolar */
   .revela { opacity: 0; transform: translateY(28px); transition: opacity 700ms var(--ease-premium), transform 700ms var(--ease-premium); }
   .revela.visivel { opacity: 1; transform: translateY(0); }
+
+  /* Componentes animados de dado (mesma família de aplicador-marca-conexao/SKILL.md,
+     disparados por .revela.visivel em vez de .slide.ativo — landing-page rola, não
+     tem "slide ativo"). Custom properties (--gauge-offset, --donut-offset, --barra-pct)
+     parametrizam cada instância sem duplicar CSS. */
+
+  /* Gauge circular */
+  .gauge-container { display: flex; align-items: center; justify-content: space-between; gap: 2.5rem; margin-top: 1.5rem; flex-wrap: wrap; }
+  .gauge-container .gauge-corpo { flex: 1.25; min-width: 260px; }
+  .gauge-box {
+    flex: 0.75; min-width: 220px; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    background: rgba(255,255,255,0.02); border: 1px solid var(--border-subtle); border-radius: 1.1rem;
+    padding: 1.8rem; box-shadow: inset 0 1px 1px rgba(255,255,255,0.04); min-height: 250px; text-align: center;
+  }
+  .gauge-box h4 { font-size: 1rem; color: var(--text-muted); margin-bottom: 1.2rem; text-transform: uppercase; font-weight: 700; }
+  .gauge-svg { width: 200px; height: 110px; }
+  .gauge-track { stroke: rgba(255,255,255,0.05); fill: none; stroke-width: 12; stroke-linecap: round; }
+  .gauge-value {
+    stroke: var(--accent); fill: none; stroke-width: 12; stroke-linecap: round;
+    stroke-dasharray: 251.2; stroke-dashoffset: 251.2;
+    transition: stroke-dashoffset 1.4s var(--ease-premium);
+  }
+  .visivel .gauge-value { stroke-dashoffset: var(--gauge-offset, 251.2); }
+  .gauge-pointer { transform-origin: 100px 95px; transform: rotate(-90deg); transition: transform 1.4s var(--ease-premium); }
+  .visivel .gauge-pointer { transform: rotate(var(--gauge-angulo, -90deg)); }
+  .gauge-labels { display: flex; justify-content: space-between; width: 180px; margin-top: 0.6rem; font-size: 0.85rem; color: var(--text-muted); font-weight: 700; }
+  .gauge-labels span.ativo { color: var(--accent); }
+
+  /* Rosca/donut percentual */
+  .donut-box {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    background: rgba(255,255,255,0.02); border: 1px solid var(--border-subtle);
+    border-radius: 1.1rem; padding: 1.8rem; text-align: center;
+  }
+  .donut-svg { width: 160px; height: 160px; }
+  .donut-track { stroke: rgba(255,255,255,0.05); fill: none; stroke-width: 14; }
+  .donut-value {
+    stroke: var(--accent); fill: none; stroke-width: 14; stroke-linecap: round;
+    stroke-dasharray: 283; stroke-dashoffset: 283;
+    transform: rotate(-90deg); transform-origin: 50% 50%;
+    transition: stroke-dashoffset 1.4s var(--ease-premium);
+  }
+  .visivel .donut-value { stroke-dashoffset: var(--donut-offset, 283); }
+  .donut-percentual { font-family: var(--fonte-titulo); font-size: 1.8rem; font-weight: 900; color: var(--accent); }
+  .donut-label { font-size: 0.95rem; color: var(--text-muted); margin-top: 0.8rem; max-width: 22ch; }
+
+  /* Accordion nativo (details/summary) — zero JS */
+  .accordion-item {
+    background: rgba(255,255,255,0.015); border: 1px solid var(--border-subtle);
+    border-radius: 12px; margin-bottom: 0.8rem; overflow: hidden;
+  }
+  .accordion-item summary {
+    cursor: pointer; list-style: none; padding: 1rem 1.4rem;
+    font-family: var(--fonte-titulo); font-weight: 700; color: var(--text-main);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .accordion-item summary::-webkit-details-marker { display: none; }
+  .accordion-item summary::after {
+    content: "+"; color: var(--accent); font-size: 1.4rem; font-weight: 900;
+    transition: transform 0.3s var(--ease-premium);
+  }
+  .accordion-item[open] summary::after { transform: rotate(45deg); }
+  .accordion-item .accordion-resposta { padding: 0 1.4rem 1.1rem; color: var(--text-muted); font-size: 1rem; line-height: 1.5; }
+
+  /* Comparativo de barras */
+  .barras-container { width: 100%; margin-top: 1rem; }
+  .barra-item { margin-bottom: 1.2rem; }
+  .barra-item .barra-topo-label { display: flex; justify-content: space-between; font-size: 0.95rem; color: var(--text-muted); margin-bottom: 0.4rem; }
+  .barra-item .barra-topo-label strong { color: var(--accent); }
+  .barra-trilho { width: 100%; height: 14px; border-radius: 999px; background: rgba(255,255,255,0.05); overflow: hidden; }
+  .barra-fill { height: 100%; width: 0%; border-radius: 999px; background: var(--gradiente-assinatura); transition: width 1.2s var(--ease-premium); }
+  .visivel .barra-fill { width: var(--barra-pct, 0%); }
+
+  /* Badge com pulso */
+  .badge.pulso { position: relative; }
+  .badge.pulso::before {
+    content: ""; position: absolute; inset: -3px; border-radius: 999px;
+    border: 1px solid var(--accent); opacity: 0;
+    animation: pulsoAnel 2.2s var(--ease-premium) infinite;
+  }
+  @keyframes pulsoAnel { 0% { transform: scale(1); opacity: 0.6; } 100% { transform: scale(1.18); opacity: 0; } }
+
+  /* Contador animado (count-up) */
+  .contador-box { text-align: center; }
+  .contador-numero {
+    font-family: var(--fonte-titulo); font-size: 3.4rem; font-weight: 900;
+    background: var(--gradiente-assinatura);
+    background-clip: text; -webkit-background-clip: text; color: transparent;
+  }
+  .contador-label { font-size: 1.05rem; color: var(--text-muted); margin-top: 0.6rem; }
+
+  /* Divisor de seção animado — separador decorativo entre seções longas */
+  .divisor-secao { display: flex; justify-content: center; padding: 1rem 0; }
+  .divisor-secao svg { width: 220px; height: 12px; overflow: visible; }
+  .divisor-secao path {
+    stroke: url(#divisorGradiente); stroke-width: 2; fill: none; stroke-linecap: round;
+    stroke-dasharray: 220; stroke-dashoffset: 220;
+    transition: stroke-dashoffset 1.1s var(--ease-premium);
+  }
+  .visivel .divisor-secao path { stroke-dashoffset: 0; }
 </style>
 </head>
 <body>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <linearGradient id="divisorGradiente" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#c9a655"/>
+        <stop offset="50%" stop-color="#e8d48b"/>
+        <stop offset="100%" stop-color="#c9a655"/>
+      </linearGradient>
+    </defs>
+  </svg>
   <div class="barra-topo"></div>
   <div class="barra-baixo"></div>
   <div class="fundo-vinheta"></div>
@@ -172,32 +281,38 @@
   </section>
 
   <section class="problema-solucao-wrap revela">
-    <div class="container problema-solucao">
+    <div class="container">
+      <div class="divisor-secao"><svg viewBox="0 0 220 12"><path d="M0,6 L220,6"/></svg></div>
+      <div class="problema-solucao">
       <!-- {{PROBLEMA_SOLUCAO}} -- compilador-html substitui: 2 blocos <div><h3>Problema</h3><p>...</p></div><div><h3>Solução</h3><p>...</p></div> -->
+      </div>
     </div>
   </section>
 
   <section class="destaques revela">
     <div class="container">
+      <div class="divisor-secao"><svg viewBox="0 0 220 12"><path d="M0,6 L220,6"/></svg></div>
       <h2 class="titulo-gradiente">Destaques</h2>
       <div class="grade-destaques">
-        <!-- {{DESTAQUES}} -- compilador-html substitui: N <div class="card"><h3>...</h3><p>...</p></div> -->
+        <!-- {{DESTAQUES}} -- compilador-html substitui: N <div class="card"><h3>...</h3><p>...</p></div>, mais {{ENRIQUECIMENTOS:destaques}} quando slug/tipo tiver enriquecimentos.secao == "destaques" -->
       </div>
     </div>
   </section>
 
   <section class="prova revela">
     <div class="container">
+      <div class="divisor-secao"><svg viewBox="0 0 220 12"><path d="M0,6 L220,6"/></svg></div>
       <h2 class="titulo-gradiente">Referência Técnica & Comercial</h2>
       <div class="tabelas-container">
-        <!-- {{PROVA}} -- compilador-html substitui (tabelas e informações tabulares do texto-base) -->
+        <!-- {{PROVA}} -- compilador-html substitui (tabelas e informações tabulares do texto-base), mais {{ENRIQUECIMENTOS:prova}} -->
       </div>
     </div>
   </section>
 
   <section class="cta-final revela" id="cta">
     <div class="container">
-      <!-- {{CTA_FINAL}} -- compilador-html substitui: <h2 class="titulo-gradiente">mensagem central</h2><a class="btn-primario" href="#">cta</a> -->
+      <div class="divisor-secao"><svg viewBox="0 0 220 12"><path d="M0,6 L220,6"/></svg></div>
+      <!-- {{CTA_FINAL}} -- compilador-html substitui: <h2 class="titulo-gradiente">mensagem central</h2><a class="btn-primario" href="#">cta</a>, mais {{ENRIQUECIMENTOS:cta_final}} -->
     </div>
   </section>
 
@@ -205,14 +320,40 @@
 
   <script>
     (function () {
+      function animarContadores(escopo) {
+        if (!escopo) return;
+        var alvos2 = escopo.querySelectorAll(".contador-numero[data-valor]");
+        Array.prototype.forEach.call(alvos2, function (el) {
+          if (el.dataset.animado === "1") return;
+          el.dataset.animado = "1";
+          var valorFinal = parseFloat(el.dataset.valor) || 0;
+          var prefixo = el.dataset.prefixo || "";
+          var sufixo = el.dataset.sufixo || "";
+          var duracao = 1200;
+          var inicio = null;
+          function passo(ts) {
+            if (!inicio) inicio = ts;
+            var progresso = Math.min(1, (ts - inicio) / duracao);
+            var valorAtual = Math.round(valorFinal * progresso);
+            el.textContent = prefixo + valorAtual + sufixo;
+            if (progresso < 1) requestAnimationFrame(passo);
+          }
+          requestAnimationFrame(passo);
+        });
+      }
+
       var alvos = document.querySelectorAll('.revela');
       if (!('IntersectionObserver' in window)) {
-        alvos.forEach(function (el) { el.classList.add('visivel'); });
+        alvos.forEach(function (el) { el.classList.add('visivel'); animarContadores(el); });
         return;
       }
       var obs = new IntersectionObserver(function (entradas) {
         entradas.forEach(function (e) {
-          if (e.isIntersecting) { e.target.classList.add('visivel'); obs.unobserve(e.target); }
+          if (e.isIntersecting) {
+            e.target.classList.add('visivel');
+            animarContadores(e.target);
+            obs.unobserve(e.target);
+          }
         });
       }, { threshold: 0.15 });
       alvos.forEach(function (el) { obs.observe(el); });

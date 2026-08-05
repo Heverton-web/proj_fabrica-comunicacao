@@ -274,81 +274,11 @@
     font-weight: 900;
   }
 
-  /* 2. Tabelas Customizadas & Layout Integrado do Gauge */
-  .torque-container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    gap: 2.5rem;
-    margin-top: 1rem;
-  }
-  .torque-tabela {
-    flex: 1.25;
-  }
-  .torque-gauge-box {
-    flex: 0.75;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background: rgba(255,255,255,0.02);
-    border: 1px solid var(--border-subtle);
-    border-radius: 1.1rem;
-    padding: 1.8rem;
-    box-shadow: inset 0 1px 1px rgba(255,255,255,0.04);
-    min-height: 250px;
-    text-align: center;
-  }
-  .torque-gauge-box h4 {
-    font-size: 1rem;
-    color: var(--text-muted);
-    margin-bottom: 1.2rem;
-    text-transform: uppercase;
-    font-weight: 700;
-  }
-  .gauge-svg {
-    width: 200px;
-    height: 110px;
-  }
-  .gauge-track {
-    stroke: rgba(255,255,255,0.05);
-    fill: none;
-    stroke-width: 12;
-    stroke-linecap: round;
-  }
-  .gauge-value {
-    stroke: var(--accent);
-    fill: none;
-    stroke-width: 12;
-    stroke-linecap: round;
-    stroke-dasharray: 251.2;
-    stroke-dashoffset: 251.2;
-    transition: stroke-dashoffset 1.4s var(--ease-premium);
-  }
-  .slide.ativo .gauge-value {
-    stroke-dashoffset: 62.8; /* Se estende até 60 Ncm */
-  }
-  .gauge-pointer {
-    transform-origin: 100px 95px;
-    transform: rotate(-90deg);
-    transition: transform 1.4s var(--ease-premium);
-  }
-  .slide.ativo .gauge-pointer {
-    transform: rotate(45deg); /* Varre o ponteiro até 60 Ncm */
-  }
-  .torque-labels {
-    display: flex;
-    justify-content: space-between;
-    width: 180px;
-    margin-top: 0.6rem;
-    font-size: 0.85rem;
-    color: var(--text-muted);
-    font-weight: 700;
-  }
-  .torque-labels span.ativo {
-    color: var(--accent);
-  }
+  /* Gauge/donut/barras/accordion/contador genéricos: ver bloco "3-8" mais
+     abaixo (após .tabela-visual) — .torque-* foi descontinuado nesta versão,
+     compilar-html.py agora emite as classes genéricas .gauge-*/.donut-*
+     mesmo no caminho legado por palavra-chave "torque" (mesmos valores,
+     output visual idêntico). */
 
   .tabela-visual {
     width: 100%;
@@ -381,6 +311,142 @@
   .tabela-visual tr:hover {
     background: rgba(255,255,255,0.02);
   }
+
+  /* 3. Gauge genérico (medidor circular com faixa/limite) — generaliza o
+     indicador de torque original: valor/marcas vêm de dado real via custom
+     properties CSS (--gauge-offset / --gauge-angulo), setadas inline por
+     slide, para permitir várias instâncias com valores diferentes na mesma
+     página sem duplicar CSS. */
+  .gauge-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap: 2.5rem;
+    margin-top: 1rem;
+  }
+  .gauge-container .gauge-corpo { flex: 1.25; }
+  .gauge-box {
+    flex: 0.75;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--border-subtle);
+    border-radius: 1.1rem;
+    padding: 1.8rem;
+    box-shadow: inset 0 1px 1px rgba(255,255,255,0.04);
+    min-height: 250px;
+    text-align: center;
+  }
+  .gauge-box h4 {
+    font-size: 1rem;
+    color: var(--text-muted);
+    margin-bottom: 1.2rem;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+  .gauge-svg { width: 200px; height: 110px; }
+  .gauge-track { stroke: rgba(255,255,255,0.05); fill: none; stroke-width: 12; stroke-linecap: round; }
+  .gauge-value {
+    stroke: var(--accent); fill: none; stroke-width: 12; stroke-linecap: round;
+    stroke-dasharray: 251.2; stroke-dashoffset: 251.2;
+    transition: stroke-dashoffset 1.4s var(--ease-premium);
+  }
+  .slide.ativo .gauge-value { stroke-dashoffset: var(--gauge-offset, 251.2); }
+  .gauge-pointer {
+    transform-origin: 100px 95px;
+    transform: rotate(-90deg);
+    transition: transform 1.4s var(--ease-premium);
+  }
+  .slide.ativo .gauge-pointer { transform: rotate(var(--gauge-angulo, -90deg)); }
+  .gauge-labels {
+    display: flex; justify-content: space-between; width: 180px;
+    margin-top: 0.6rem; font-size: 0.85rem; color: var(--text-muted); font-weight: 700;
+  }
+  .gauge-labels span.ativo { color: var(--accent); }
+
+  /* 4. Rosca/donut percentual — mesma técnica do gauge, círculo completo */
+  .donut-box {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    background: rgba(255,255,255,0.02); border: 1px solid var(--border-subtle);
+    border-radius: 1.1rem; padding: 1.8rem; text-align: center;
+  }
+  .donut-svg { width: 160px; height: 160px; }
+  .donut-track { stroke: rgba(255,255,255,0.05); fill: none; stroke-width: 14; }
+  .donut-value {
+    stroke: var(--accent); fill: none; stroke-width: 14; stroke-linecap: round;
+    stroke-dasharray: 283; stroke-dashoffset: 283;
+    transform: rotate(-90deg); transform-origin: 50% 50%;
+    transition: stroke-dashoffset 1.4s var(--ease-premium);
+  }
+  .slide.ativo .donut-value { stroke-dashoffset: var(--donut-offset, 283); }
+  .donut-percentual {
+    font-family: var(--fonte-titulo); font-size: 1.8rem; font-weight: 900; color: var(--accent);
+  }
+  .donut-label { font-size: 0.95rem; color: var(--text-muted); margin-top: 0.8rem; max-width: 22ch; }
+
+  /* 5. Accordion nativo (details/summary) — zero JS */
+  .accordion-item {
+    background: rgba(255,255,255,0.015); border: 1px solid var(--border-subtle);
+    border-radius: 12px; margin-bottom: 0.8rem; overflow: hidden;
+  }
+  .accordion-item summary {
+    cursor: pointer; list-style: none; padding: 1rem 1.4rem;
+    font-family: var(--fonte-titulo); font-weight: 700; color: var(--text-main);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .accordion-item summary::-webkit-details-marker { display: none; }
+  .accordion-item summary::after {
+    content: "+"; color: var(--accent); font-size: 1.4rem; font-weight: 900;
+    transition: transform 0.3s var(--ease-premium);
+  }
+  .accordion-item[open] summary::after { transform: rotate(45deg); }
+  .accordion-item .accordion-resposta {
+    padding: 0 1.4rem 1.1rem; color: var(--text-muted); font-size: 1rem; line-height: 1.5;
+  }
+
+  /* 6. Comparativo de barras — largura animada via custom property */
+  .barras-container { width: 100%; margin-top: 1rem; }
+  .barra-item { margin-bottom: 1.2rem; }
+  .barra-item .barra-topo-label {
+    display: flex; justify-content: space-between; font-size: 0.95rem;
+    color: var(--text-muted); margin-bottom: 0.4rem;
+  }
+  .barra-item .barra-topo-label strong { color: var(--accent); }
+  .barra-trilho {
+    width: 100%; height: 14px; border-radius: 999px;
+    background: rgba(255,255,255,0.05); overflow: hidden;
+  }
+  .barra-fill {
+    height: 100%; width: 0%; border-radius: 999px;
+    background: var(--gradiente-assinatura);
+    transition: width 1.2s var(--ease-premium);
+  }
+  .slide.ativo .barra-fill { width: var(--barra-pct, 0%); }
+
+  /* 7. Badge com pulso — variante de .badge para selo/certificação */
+  .badge.pulso { position: relative; }
+  .badge.pulso::before {
+    content: ""; position: absolute; inset: -3px; border-radius: 999px;
+    border: 1px solid var(--accent); opacity: 0;
+    animation: pulsoAnel 2.2s var(--ease-premium) infinite;
+  }
+  @keyframes pulsoAnel {
+    0% { transform: scale(1); opacity: 0.6; }
+    100% { transform: scale(1.18); opacity: 0; }
+  }
+
+  /* 8. Contador animado (count-up) — número final vem de data-valor,
+     JS abaixo anima de 0 até lá quando o slide fica ativo */
+  .contador-box { text-align: center; }
+  .contador-numero {
+    font-family: var(--fonte-titulo); font-size: 3.4rem; font-weight: 900;
+    background: var(--gradiente-assinatura);
+    background-clip: text; -webkit-background-clip: text; color: transparent;
+  }
+  .contador-label { font-size: 1.05rem; color: var(--text-muted); margin-top: 0.6rem; }
 
   /* Cabeçalho fixo */
   .topo-deck { position: fixed; top: 0; left: 0; right: 0; z-index: 5; display: flex; justify-content: space-between; align-items: center; padding: 1.6rem 2rem; pointer-events: none; }
@@ -424,11 +490,34 @@
       var atual = slides.findIndex(function (s) { return s.classList.contains("ativo"); });
       if (atual < 0) { atual = 0; if (slides[0]) slides[0].classList.add("ativo"); }
 
+      function animarContadores(escopo) {
+        if (!escopo) return;
+        var alvos = escopo.querySelectorAll(".contador-numero[data-valor]");
+        Array.prototype.forEach.call(alvos, function (el) {
+          if (el.dataset.animado === "1") return;
+          el.dataset.animado = "1";
+          var valorFinal = parseFloat(el.dataset.valor) || 0;
+          var prefixo = el.dataset.prefixo || "";
+          var sufixo = el.dataset.sufixo || "";
+          var duracao = 1200;
+          var inicio = null;
+          function passo(ts) {
+            if (!inicio) inicio = ts;
+            var progresso = Math.min(1, (ts - inicio) / duracao);
+            var valorAtual = Math.round(valorFinal * progresso);
+            el.textContent = prefixo + valorAtual + sufixo;
+            if (progresso < 1) requestAnimationFrame(passo);
+          }
+          requestAnimationFrame(passo);
+        });
+      }
+
       function mostrar(i) {
         slides.forEach(function (s) { s.classList.remove("ativo"); });
         atual = Math.max(0, Math.min(slides.length - 1, i));
         if (slides[atual]) slides[atual].classList.add("ativo");
         document.getElementById("contador").textContent = (atual + 1) + " / " + slides.length;
+        animarContadores(slides[atual]);
       }
 
       document.addEventListener("keydown", function (e) {
