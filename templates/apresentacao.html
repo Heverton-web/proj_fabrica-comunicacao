@@ -326,6 +326,13 @@
     margin-top: 1rem;
   }
   .gauge-container .gauge-corpo { flex: 1.25; }
+
+  /* Wrapper genérico dos demais componentes (donut/accordion/barras/contador)
+     quando usados sozinhos num slide (sem o layout lado-a-lado do gauge) —
+     sem isto, o .slide (flex-column, align-items:flex-start) encolhe o
+     wrapper para o tamanho mínimo do conteúdo em vez de ocupar a largura
+     disponível. */
+  .componente-wrap { width: 100%; max-width: 900px; margin-top: 1.5rem; }
   .gauge-box {
     flex: 0.75;
     display: flex;
