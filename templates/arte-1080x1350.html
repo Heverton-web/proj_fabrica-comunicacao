@@ -39,17 +39,15 @@
   .barra-topo { position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: var(--gradiente-assinatura); box-shadow: 0 0 8px rgba(255, 243, 173, 0.4); z-index: 10; }
   .barra-baixo { position: absolute; bottom: 0; left: 0; width: 100%; height: 3px; background: var(--gradiente-assinatura); box-shadow: 0 0 8px rgba(255, 243, 173, 0.4); z-index: 10; }
 
-  /* Logo um pouco maior no topo, exatamente a 24px da faixa superior (24px + 3px da faixa = 27px) */
-  .logo { position: absolute; top: 27px; left: 50%; transform: translateX(-50%); max-height: 70px; max-width: 260px; z-index: 2; }
-
-  /* Badges dourados translúcidos premium */
-  .badge {
-    display: inline-block;
-    background: rgba(201, 166, 85, 0.12);
-    border: 1px solid rgba(201, 166, 85, 0.35);
-    border-radius: 999px; padding: 0.45rem 1.2rem; font-size: 0.9rem; font-weight: 700;
-    letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent);
-    box-shadow: 0 2px 4px rgba(0,0,0,0.12);
+  /* Logo posicionado absolutamente a exatos 48px da faixa superior (48px + 3px de faixa = 51px) */
+  .logo {
+    position: absolute;
+    top: 51px;
+    left: 50%;
+    transform: translateX(-50%);
+    max-height: 70px;
+    max-width: 260px;
+    z-index: 10;
   }
 
   /* Bloco de Conteúdo Integrado: Imagem do produto, Título e Parágrafo explicativo
@@ -118,12 +116,20 @@
     display: flex; align-items: center; justify-content: center;
     z-index: 10;
   }
+  /* Badges dourados translúcidos premium */
+  .badge {
+    background: rgba(201, 166, 85, 0.12);
+    border: 1px solid rgba(201, 166, 85, 0.35);
+    border-radius: 999px; padding: 0.45rem 1.2rem; font-size: 0.95rem; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.12);
+  }
 
   /* Rodapé sutil de Direitos Autorais com opacidade baixa e itálico */
   .rodape-copyright {
     position: absolute; bottom: 45px; left: 50%; transform: translateX(-50%);
     font-family: var(--fonte-corpo); font-size: 0.9rem; font-style: italic;
-    color: rgba(255, 255, 255, 0.35); text-align: center; width: 100%;
+    color: rgba(255, 255, 255, 0.35); text-align: center; z-index: 2; width: 100%;
   }
 </style>
 </head>
@@ -133,9 +139,7 @@
   <div class="barra-topo"></div>
   <div class="barra-baixo"></div>
 
-  <div class="regiao-topo">
-    <!-- {{LOGO}} -- compilador-arte substitui: <img class="logo" src="..."> -->
-  </div>
+  <!-- {{LOGO}} -- compilador-arte substitui: <img class="logo" src="..."> -->
 
   <div class="bloco-conteudo">
     <!-- {{IMAGEM_PRODUTO}} -- compilador-arte substitui: <img class="produto" src="..."> -->
