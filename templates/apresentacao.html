@@ -193,6 +193,20 @@
     filter: drop-shadow(0 15px 35px rgba(0,0,0,0.5));
   }
 
+  /* Elemento-assinatura da apresentação: título da capa entra com foco
+     progressivo (blur-in) — 1 momento de destaque deliberado, não repetido
+     nos demais slides (ver "Critério de julgamento de design" em
+     redator-apresentacao/SKILL.md: um elemento-assinatura por material).
+     Usa @keyframes (nao transition): o slide 1 ja nasce com a classe
+     "ativo" no HTML estatico, entao uma transition nunca dispararia por
+     falta de mudanca de estado observavel - animation toca sempre, mesmo
+     quando a classe alvo ja esta presente desde o primeiro paint. */
+  @keyframes focoProgressivo { from { filter: blur(16px); } to { filter: blur(0); } }
+  .slide.capa.ativo h1 { animation: focoProgressivo 1.1s var(--ease-premium) 0.15s both; }
+  @media (prefers-reduced-motion: reduce) {
+    .slide.capa.ativo h1 { animation: none; }
+  }
+
   /* Slide CTA - Centralizado */
   .slide.cta {
     justify-content: center;

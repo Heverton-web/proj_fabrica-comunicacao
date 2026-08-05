@@ -48,6 +48,25 @@ suficiente para leitura em tela durante uma reunião. Ver `SPEC_HTML.md`.
 4. **Sem Hífens nos Títulos:** É expressamente proibido usar hífens (-) nos títulos de slides. Use sempre dois-pontos (:) para divisões ou subtítulos.
 5. **Slide de fechamento** — CTA + assinatura de marca.
 
+### Critério de julgamento de design (embutido — funciona em qualquer harness)
+
+Esta orientação está escrita aqui, não referenciada de uma skill externa, para
+funcionar igual em Claude Code, Antigravity, OpenCode, Freebuff, MiMoCode ou
+qualquer outro ambiente que apenas leia este arquivo como instrução:
+
+- **Marcador numerado (1/2/3...) só se a ordem carregar informação real**
+  (`fluxo` do script SPIN, processo com etapas) — nunca aplique numeração a uma
+  lista que não é sequência, só para "parecer mais dinâmico".
+- **Cada componente animado precisa ganhar o slide por servir o conteúdo, não
+  por estar disponível no catálogo.** Nem todo dado numérico do dossiê precisa
+  virar gauge/donut/barras — se a visualização não adiciona clareza sobre o
+  texto puro, bullets simples são a escolha certa (REGRA 6: enriquecer não é
+  decorar).
+- **Um elemento-assinatura por material, não animação espalhada por toda
+  parte.** Motion demais é o que faz um material parecer "gerado por IA" em
+  vez de profissional — prefira 1 momento de destaque real bem executado a
+  vários efeitos medianos.
+
 Cada slide deve caber sem scroll no template de apresentação (ver `SPEC_HTML.md`) —
 prefira cortar conteúdo secundário a espremer texto. Se uma imagem fornecida pelo
 operador ilustra bem um slide, referencie-a; nunca gere ilustração no lugar dela.

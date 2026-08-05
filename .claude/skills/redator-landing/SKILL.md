@@ -40,6 +40,22 @@ didático que a apostila. Ver `SPEC_HTML.md`.
    **Nunca invente dado para caber num componente (REGRA 6)** — se o dossiê não
    sustenta nenhum gatilho, a seção continua como card/tabela simples.
 
+### Critério de julgamento de design e copy (embutido — funciona em qualquer harness)
+
+Esta orientação está escrita aqui, não referenciada de uma skill externa, para
+funcionar igual em Claude Code, Antigravity, OpenCode, Freebuff, MiMoCode ou
+qualquer outro ambiente que apenas leia este arquivo como instrução:
+
+- **Marcador numerado só se a ordem carregar informação real** — não decore
+  uma lista de destaques com números só para parecer mais estruturada.
+- **Cada componente animado precisa servir o conteúdo, não decorar por
+  decorar** — se um `enriquecimento` não deixa a informação mais clara que o
+  texto puro, não force (REGRA 6).
+- **Copy específico vence copy genérico:** escreva do ponto de vista de quem
+  lê (consultor, cliente, distribuidor), nomeando o que a pessoa reconhece e
+  controla — nunca do ponto de vista de como o material foi montado. CTA em
+  voz ativa e específica ("Consultar guia completo", não "Saiba mais").
+
 ## Tom de voz por público-alvo (obrigatório — REGRA 6)
 
 Leia `brief_criativo.publico_alvo` e aplique o registro de linguagem definido em

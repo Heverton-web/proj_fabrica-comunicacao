@@ -148,6 +148,17 @@ Todos os materiais passam por `revisor-marca` (fidelidade de fonte + marca) e
 manipulação de PDF quando o Pandoc+Typst não bastar. Nenhum desses precisa ser
 reimplementado neste projeto.
 
+**Exceção deliberada — `frontend-design`:** seus critérios de julgamento mais
+acionáveis (marcador numerado só se a ordem for real; componente/motion só se
+servir o conteúdo; um elemento-assinatura por material) foram **parafraseados e
+embutidos como texto simples** em `redator-apresentacao`/`redator-landing`/
+`revisor-marca`/`aplicador-marca-conexao` (ver "Técnicas de motion adicionais" no
+skill de marca) — não ficaram como dependência de invocar a skill externa via
+tool. Isso garante que a orientação funciona igual em qualquer harness (Claude
+Code, Antigravity, OpenCode, Freebuff, MiMoCode etc.), já que a dependência real é
+um arquivo de texto lido como instrução, não uma integração específica de
+ferramenta.
+
 ## Pré-requisitos de ambiente
 
 Pandoc, Typst (CLI) e Playwright (Python) precisam estar instalados. Nenhum MCP

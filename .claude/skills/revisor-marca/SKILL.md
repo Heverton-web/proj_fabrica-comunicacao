@@ -52,6 +52,23 @@ corrigível pela mesma via da REGRA 4.
   mostrar `status: loaded` para os pesos usados).
 - Logo presente e legível onde o template prevê (quando disponível).
 
+### 2.2. Julgamento de design (embutido — funciona em qualquer harness)
+
+Orientação escrita aqui, não referenciada de skill externa, para valer igual em
+Claude Code, Antigravity, OpenCode, Freebuff, MiMoCode ou qualquer outro
+ambiente que apenas leia este arquivo:
+
+- Marcador numerado presente no material corresponde a uma sequência real
+  (script SPIN, processo por etapas)? Numeração decorativa sobre lista sem
+  ordem que importa é defeito de julgamento, registre em `decisoes_design`.
+- Cada componente animado usado (gauge/donut/fluxo/accordion/barras/contador)
+  serve o conteúdo — deixa a informação mais clara que o texto puro faria —
+  ou está ali só porque o catálogo permite? Componente decorativo sem ganho de
+  clareza é a mesma categoria de defeito que fundo chapado/título sólido.
+- O material tem 1 elemento-assinatura de destaque, ou motion espalhado por
+  toda parte sem hierarquia? Motion demais é o que faz o material parecer
+  "gerado por IA" em vez de profissional.
+
 ### 3.1. Checar oportunidade de enriquecimento perdida (só `apresentacao`/`landing-page`)
 
 Ver `.claude/skills/aplicador-marca-conexao/SKILL.md`, seção "Componentes animados de

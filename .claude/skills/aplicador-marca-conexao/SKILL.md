@@ -378,6 +378,71 @@ peça para formalizar em `scripts/compilar-html.py` primeiro (mesma disciplina d
 | Card com flip (frente/verso) | Precisa de conteúdo real nas duas faces (REGRA 6) — nem todo dado do dossiê sustenta isso |
 | Cápsula/pílula de nível (fill) | Sobreposição funcional com gauge/donut — mesmo dado, forma alternativa |
 
+## Técnicas de motion adicionais (elemento-assinatura, 1 por material)
+
+Origem: análise comparativa de skills de design externas (`huashu-design`,
+`dashi-ppt`, `mira-animator`, `open-design`, `frontend-slides`, e a skill oficial
+`frontend-design` da Anthropic). Nenhuma dessas foi adotada como dependência — os
+motivos (gate humano incompatível com REGRA 3, temas prontos incompatíveis com
+REGRA 6, infraestrutura externa desnecessária) estão fora deste arquivo. O que
+sobreviveu da análise foram 2 técnicas de CSS/JS puro, genéricas o bastante para
+reescrever com nossos próprios tokens, mais um critério de julgamento de design.
+
+**Importante — funciona em qualquer harness:** as técnicas abaixo e o critério de
+julgamento em `redator-apresentacao`/`redator-landing`/`revisor-marca` estão
+**embutidos como texto simples** nos próprios arquivos de skill deste projeto —
+nenhuma delas depende de invocar `frontend-design` (ou qualquer skill externa) via
+tool específica de um harness. Isso significa que a orientação funciona igual em
+Claude Code, Antigravity, OpenCode, Freebuff, MiMoCode ou qualquer agente que leia
+estes `SKILL.md` como instrução — a dependência é o arquivo de texto, não uma
+integração de ferramenta.
+
+### Foco progressivo (blur-in) — elemento-assinatura da apresentação
+
+Só no título da capa (1 vez por apresentação, nunca repetido nos demais slides —
+"um elemento-assinatura por material"). Usa `@keyframes`, não `transition`: o
+slide 1 já nasce com a classe `ativo` no HTML estático, então uma `transition`
+nunca dispararia por falta de mudança de estado observável pelo navegador.
+
+```css
+@keyframes focoProgressivo { from { filter: blur(16px); } to { filter: blur(0); } }
+.slide.capa.ativo h1 { animation: focoProgressivo 1.1s var(--ease-premium) 0.15s both; }
+@media (prefers-reduced-motion: reduce) { .slide.capa.ativo h1 { animation: none; } }
+```
+
+### Tilt 3D no hover — elemento-assinatura da landing-page
+
+Só nos `.card` de destaques (não replicar em outros elementos — mesmo princípio de
+"1 elemento-assinatura"). Requer JS (mousemove/mouseleave); respeita
+`prefers-reduced-motion` não anexando o listener quando o usuário pediu menos
+movimento — nesse caso o `:hover` CSS simples (`translateY`) já existente continua
+funcionando como fallback.
+
+```js
+var prefereReduzido = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+if (!prefereReduzido) {
+  document.querySelectorAll('.card').forEach(function (card) {
+    card.addEventListener('mousemove', function (e) {
+      var r = card.getBoundingClientRect();
+      var x = (e.clientX - r.left) / r.width - 0.5;
+      var y = (e.clientY - r.top) / r.height - 0.5;
+      card.style.transform = 'perspective(800px) rotateY(' + (x * 8).toFixed(2) + 'deg) rotateX(' + (-y * 8).toFixed(2) + 'deg) translateY(-4px)';
+    });
+    card.addEventListener('mouseleave', function () { card.style.transform = ''; });
+  });
+}
+```
+
+### Critério de julgamento de design (resumo — texto completo nas skills de redação)
+
+Paráfrase adaptada dos pontos mais acionáveis da skill `frontend-design` da
+Anthropic, reescritos para não depender dela como dependência externa:
+marcador numerado só se a ordem for real; componente animado só se servir o
+conteúdo, nunca por estar disponível; um elemento-assinatura por material, não
+motion espalhado por toda parte. Texto completo (para quem grava conteúdo) em
+`redator-apresentacao/SKILL.md` e `redator-landing/SKILL.md`; checklist de
+verificação em `revisor-marca/SKILL.md`.
+
 ## Cores que NÃO vêm desta skill (exceção legítima)
 
 Cores que representam um **fato físico do produto** (ex.: código de cor real de
