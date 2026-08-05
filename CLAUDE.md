@@ -69,9 +69,10 @@ embutido, transparência de imagem) é feita por script determinístico em `scri
 nunca por afirmação do agente. Gates de fase são exit codes (`--estrito` → exit 1 se
 não conforme), não julgamento subjetivo.
 
-**REGRA 9 — Grafo Primeiro, Arquivo Depois (economia de tokens inviolável):**
-toda exploração do projeto começa pelo grafo de conhecimento (`code-review-graph`),
-não por leitura direta de arquivo. A ordem obrigatória é:
+**REGRA 9 — Grafo Primeiro, Arquivo Depois (economia de tokens inviolável) — escopo:
+`scripts/*.py`:** toda exploração de **código Python do pipeline** começa pelo grafo de
+conhecimento (`code-review-graph`), não por leitura direta de arquivo. A ordem
+obrigatória é:
 1. **Grafo** — `semantic_search_nodes_tool`, `query_graph_tool`,
    `get_architecture_overview_tool` para localizar o que se precisa.
 2. **Trecho cirúrgico** — `get_review_context_tool` ou `view_file` com
@@ -84,6 +85,14 @@ Grep, `list_dir` e leitura de arquivo inteiro sem passar pelo grafo primeiro sã
 proibidos quando o grafo puder responder — a violação desperdiça tokens sem ganho
 de precisão. Fall back para leitura direta **somente** quando o grafo não cobrir
 o que se precisa (ex.: arquivo recém-criado ainda não indexado).
+
+**Limite de cobertura conhecido:** nesta instância, o grafo indexa apenas os scripts em
+`scripts/*.py` — **não** cobre `.claude/skills/*`, `.claude/agents/*.md`,
+`.claude/commands/*.md` nem `SPEC*.md`/`CLAUDE.md`, e a busca semântica não tem
+embeddings gerados (cai para busca textual literal). Para localizar uma skill, agente,
+comando ou spec, vá direto para busca de arquivo/conteúdo — a REGRA 9 não se aplica a
+essas camadas até que a indexação seja expandida (ver seção "Grafo de Conhecimento"
+abaixo).
 
 ## Arquitetura em uma frase
 
@@ -107,14 +116,21 @@ brand/design-system-conexao.json (FIXO, mesmo para todo projeto)
 
 ## Tabela de módulos por tipo de material
 
-| Material | Skill de redação | Compilador | Script de validação | Pasta de saída |
-|---|---|---|---|---|
-| PDF (apostila) | `redator-apostila` | `compilador-pdf` (Pandoc→Typst) | `validar-pdf.py` | `output/<slug>/pdf/` |
-| Landing Page | `redator-landing` | `compilador-html` | `validar-html.py` | `output/<slug>/landing-page/` |
-| Apresentação | `redator-apresentacao` | `compilador-html` | `validar-html.py` | `output/<slug>/apresentacao/` |
-| Arte 1080×1080 | `redator-arte` | `compilador-arte` (Playwright) | `validar-dimensoes.py` | `output/<slug>/arte-01/` |
-| Arte 1080×1350 | `redator-arte` | `compilador-arte` (Playwright) | `validar-dimensoes.py` | `output/<slug>/arte-02/` |
-| Arte 1080×1920 | `redator-arte` | `compilador-arte` (Playwright) | `validar-dimensoes.py` | `output/<slug>/arte-03/` |
+| Material | Selecionável via `/esbocar` | Skill de redação | Compilador | Script de validação | Pasta de saída |
+|---|---|---|---|---|---|
+| PDF (apostila) | Sim (Passo 4) | `redator-apostila` | `compilador-pdf` (Pandoc→Typst) | `validar-pdf.py` | `output/<slug>/pdf/` |
+| Landing Page | Sim (Passo 4) | `redator-landing` | `compilador-html` | `validar-html.py` | `output/<slug>/landing-page/` |
+| Apresentação | Sim (Passo 4) | `redator-apresentacao` | `compilador-html` | `validar-html.py` | `output/<slug>/apresentacao/` |
+| Arte 1080×1080 | Sim (Passo 4) | `redator-arte` | `compilador-arte` (Playwright) | `validar-dimensoes.py` | `output/<slug>/arte-01/` |
+| Arte 1080×1350 | Sim (Passo 4) | `redator-arte` | `compilador-arte` (Playwright) | `validar-dimensoes.py` | `output/<slug>/arte-02/` |
+| Arte 1080×1920 | Sim (Passo 4) | `redator-arte` | `compilador-arte` (Playwright) | `validar-dimensoes.py` | `output/<slug>/arte-03/` |
+| Textos de Apoio | Sim (Passo 4) | `redator-textos` | (sem compilador — grava `.txt` direto) | `validar-textos.py` | `output/<slug>/textos/` |
+
+Toda vez que um material for adicionado/removido desta tabela, rode
+`python scripts/verificar-consistencia-pipeline.py --estrito` — ele confirma que o tipo
+está presente em `esbocar.md`, no dispatch de `produzir-comunicacao-completa.md`, na
+skill `redator-*`, no agente `subagente-produtor-*` e no validador correspondente antes
+de considerar a integração completa.
 
 Todos os materiais passam por `revisor-marca` (fidelidade de fonte + marca) e
 `auditar-projeto.py --estrito` antes de `empacotar-projeto.py`.
@@ -137,9 +153,12 @@ de filesystem faria.
 
 ## Grafo de Conhecimento — MCP `code-review-graph` (REGRA 9)
 
-Este projeto possui um grafo de conhecimento auto-atualizado (via hooks em `.gemini/hooks/`).
-Toda exploração começa aqui — é mais rápido, mais barato em tokens e traz contexto
-estrutural (chamadores, dependentes, cobertura) que leitura de arquivo não consegue.
+Este projeto possui um grafo de conhecimento auto-atualizado. **Cobertura atual:**
+apenas `scripts/*.py` (17 arquivos indexados) — skills, agentes, comandos e specs em
+Markdown ainda não entram no grafo (ver limite de cobertura na REGRA 9). Para o que o
+grafo cobre, toda exploração começa aqui — é mais rápido, mais barato em tokens e traz
+contexto estrutural (chamadores, dependentes, cobertura) que leitura de arquivo não
+consegue.
 
 ### Quando usar cada tool do grafo
 
@@ -167,8 +186,17 @@ estrutural (chamadores, dependentes, cobertura) que leitura de arquivo não cons
 são proibidos quando o grafo puder responder. Fall back para leitura direta apenas
 quando o arquivo for recém-criado e ainda não indexado pelo grafo.
 
-### O grafo se auto-atualiza
+### O grafo se auto-atualiza — dois mecanismos, um por ambiente
 
-Hooks em `.gemini/hooks/crg-update.sh` e `.gemini/hooks/crg-session-start.sh`
-atualizam o grafo a cada mudança de arquivo — após editar um skill ou script,
-o grafo reflete a mudança sem intervenção manual.
+**No Claude Code (ambiente autoritativo para este `CLAUDE.md`):** hooks
+`PostToolUse`/`SessionStart` inline em `.claude/settings.json` rodam
+`code-review-graph update`/`status` a cada `Edit`/`Write` e a cada início de sessão —
+é este mecanismo que efetivamente mantém o grafo fresco quando se trabalha via Claude
+Code.
+
+**No Gemini CLI:** os scripts equivalentes vivem em `.gemini/hooks/crg-update.sh` e
+`.gemini/hooks/crg-session-start.sh` (o comentário de cabeçalho de cada um os
+identifica explicitamente como "Gemini CLI hook") — mesma função, ambiente diferente.
+
+Um mantenedor debugando por que o grafo não atualizou deve checar o hook do ambiente
+que está usando, não assumir que `.gemini/hooks/` é sempre o responsável.

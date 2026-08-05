@@ -20,7 +20,20 @@ Se `brief_criativo.json` ainda não existir (ex.: operador rodou `/esbocar` mas 
 foi interrompida antes do Passo 5 dele — gravação e preparação), invoque
 `analista-insumos` e `diretor-de-arte` agora, sem perguntar nada ao operador.
 
-## Passo 1 — Plano de lotes
+## Passo 1 — Pre-flight de compatibilidade de slug
+
+```
+python scripts/preflight-compatibilidade-slug.py <slug> --estrito
+```
+
+Roda uma única vez, antes de qualquer fan-out, para detectar se algum
+`scripts/compilar-*.py` compartilhado tem string de outro projeto hardcoded (mesma
+causa raiz do bug de path de imagem já corrigido em `compilar-html.py`/
+`compilar-arte.py`/`compilar-pdf.py`). Se retornar não-conforme, corrija o compilador
+apontado (REGRA 4) antes de prosseguir — evita que múltiplos subagentes descubram o
+mesmo problema de forma redundante durante a produção real.
+
+## Passo 2 — Plano de lotes
 
 ```
 python scripts/pool-materiais.py <slug> --plano --lote 4
@@ -28,7 +41,7 @@ python scripts/pool-materiais.py <slug> --plano --lote 4
 
 Imprime os materiais de `materiais_selecionados` divididos em lotes de até 4.
 
-## Passo 2 — Fan-out em lote (disciplina de concorrência — nunca tudo de uma vez)
+## Passo 3 — Fan-out em lote (disciplina de concorrência — nunca tudo de uma vez)
 
 Para cada lote do plano, **nesta ordem, sem pular etapas**:
 
@@ -53,12 +66,15 @@ Retentar com o backoff indicado (15s × 2^tentativas, máx. 240s), máximo 3 ten
 por material — depois disso o material fica `esgotado` e é reportado, não bloqueia os
 demais (R9 do `SPEC.md`).
 
-## Passo 3 — Revisão de marca em lote
+## Passo 4 — Revisão de marca em lote
 
-Divida os materiais `concluido_autonomo` em lotes de até 4 e despache
-`subagente-revisor-marca` (um por lote, cada um só toca nos tipos do seu próprio lote).
+Se o total de materiais `concluido_autonomo` for **até 6**, despache **1 único**
+`subagente-revisor-marca` cobrindo todos eles — reduz overhead de reconstrução de
+contexto por subagente sem abrir mão da REGRA 7 (o subagente ainda lê tudo por
+completo, só há menos subagentes no total). Se o total for **maior que 6**, divida em
+lotes de até 6 (cada um só toca nos tipos do seu próprio lote, nunca todos de uma vez).
 
-## Passo 4 — Auditoria final determinística
+## Passo 5 — Auditoria final determinística
 
 ```
 python scripts/auditar-projeto.py <slug> --estrito
@@ -69,7 +85,7 @@ até 3 rodadas. Se ainda não-conforme na 3ª rodada, siga para o empacotamento 
 assim, reportando as não-conformidades residuais (nunca trave a entrega dos materiais
 que já estão conformes).
 
-## Passo 5 — Empacotamento final
+## Passo 6 — Empacotamento final
 
 ```
 python scripts/empacotar-projeto.py <slug>
@@ -78,7 +94,7 @@ python scripts/empacotar-projeto.py <slug>
 Monta a estrutura final em `output/<slug>/{pdf,landing-page,apresentacao,arte-01,arte-02,arte-03,textos}/`
 e grava `manifesto_materiais.json`.
 
-## Passo 6 — Relatório final (REGRA 2 — telegráfico, sem preâmbulo)
+## Passo 7 — Relatório final (REGRA 2 — telegráfico, sem preâmbulo)
 
 Reporte: materiais entregues (com path), materiais esgotados (com motivo), decisões de
 design tomadas, informações faltantes, sugestões de legenda/CTA para compartilhamento

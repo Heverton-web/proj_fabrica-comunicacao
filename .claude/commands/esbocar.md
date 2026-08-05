@@ -65,7 +65,7 @@ escrito em cada material — nunca o rederive do texto-base.
 
 ## Passo 4 — Entrevista de materiais (`AskUserQuestion`, rodada 4, multiSelect)
 
-Uma única pergunta, multiSelect, com as 6 opções:
+Uma única pergunta, multiSelect, com as 7 opções:
 
 - PDF (apostila)
 - Landing Page
@@ -73,8 +73,9 @@ Uma única pergunta, multiSelect, com as 6 opções:
 - Arte 1080×1080 (WhatsApp/Instagram quadrado)
 - Arte 1080×1350 (Instagram/LinkedIn retrato)
 - Arte 1080×1920 (Stories/Reels)
+- Textos de Apoio (WhatsApp/Instagram/LinkedIn)
 
-Exija pelo menos 1 selecionado — se vier vazio, assuma todos os 6 (nunca pare para
+Exija pelo menos 1 selecionado — se vier vazio, assuma todos os 7 (nunca pare para
 confirmar, REGRA 3).
 
 **Se o material 'PDF (apostila)' for selecionado:** pergunte adicionalmente na mesma rodada (ou em uma pergunta subsequente) para o operador definir a **edição do material** (ex: '1ª Edição', '2ª Edição Revisada'). Esse valor deve ser gravado obrigatoriamente no campo `edicao` de `config_projeto.json` para que os validadores e templates o processem de forma correta.

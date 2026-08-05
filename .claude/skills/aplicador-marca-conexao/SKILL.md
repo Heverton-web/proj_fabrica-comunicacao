@@ -61,6 +61,15 @@ de apoio, peso 600 ênfase).
 
 ## Bloco `:root` obrigatório em todo material
 
+**Este bloco é o digest estático e intencional de `brand/design-system-conexao.json`**
+— existe para que `compilador-html`/`compilador-arte` não precisem reabrir/reparsear o
+JSON completo a cada compilação (o design system é idêntico entre projetos, então
+cachear esses valores aqui não viola a REGRA 7 do `CLAUDE.md`, que protege insumos de
+projeto, não o design system fixo). **Contrato de sincronização:** se
+`brand/design-system-conexao.json` mudar, este bloco e os `:root` já embutidos em
+`templates/apresentacao.html`/`templates/landing.html` precisam ser atualizados juntos,
+na mesma alteração — nunca deixe o JSON divergir do digest documentado aqui.
+
 ```css
 :root {
   --bg: #0f172a;

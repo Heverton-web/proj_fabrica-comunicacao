@@ -57,10 +57,21 @@ def compilar_apresentacao(slug):
     for l in DIR_LOGOS.glob("*.png"):
         shutil.copy(l, dest_assets / "logos" / l.name)
 
-    # Copia imagem do produto se existir
-    img_produto_src = slug_dir / "insumos" / "kit_start_flex_frontal.png"
-    if img_produto_src.exists():
-        shutil.copy(img_produto_src, dest_assets / "kit_start_flex_frontal.png")
+    # Copia imagem do produto (path real vem de config_projeto.json, nunca
+    # hardcoded — cada projeto tem seu próprio nome/local de imagem)
+    img_produto_filename = "kit_start_flex_frontal.png"  # fallback histórico
+    config_para_imagem = carregar_json(slug_dir / "config_projeto.json")
+    if config_para_imagem and config_para_imagem.get("imagens"):
+        primeira_imagem = config_para_imagem["imagens"][0].get("path", "")
+        if primeira_imagem:
+            img_produto_src = DIR_PROJETO / primeira_imagem
+            if img_produto_src.exists():
+                img_produto_filename = img_produto_src.name
+                shutil.copy(img_produto_src, dest_assets / img_produto_filename)
+    else:
+        img_produto_src_legado = slug_dir / "insumos" / "kit_start_flex_frontal.png"
+        if img_produto_src_legado.exists():
+            shutil.copy(img_produto_src_legado, dest_assets / "kit_start_flex_frontal.png")
 
     # Carrega dados
     dados = carregar_json(slides_path)
@@ -89,7 +100,7 @@ def compilar_apresentacao(slug):
         </div>
       </div>
       <div class="capa-direita">
-        <img src="assets/kit_start_flex_frontal.png" alt="Start Flex">
+        <img src="assets/{img_produto_filename}" alt="Produto">
       </div>
     </div>"""
             html_slides.append(html)
@@ -318,10 +329,21 @@ def compilar_landing(slug):
     for l in DIR_LOGOS.glob("*.png"):
         shutil.copy(l, dest_assets / "logos" / l.name)
 
-    # Copia imagem do produto se existir
-    img_produto_src = slug_dir / "insumos" / "kit_start_flex_frontal.png"
-    if img_produto_src.exists():
-        shutil.copy(img_produto_src, dest_assets / "kit_start_flex_frontal.png")
+    # Copia imagem do produto se existir (path real vem de config_projeto.json,
+    # nunca hardcoded — cada projeto tem seu próprio nome/local de imagem)
+    img_produto_filename = "kit_start_flex_frontal.png"  # fallback histórico
+    config_para_imagem = carregar_json(slug_dir / "config_projeto.json")
+    if config_para_imagem and config_para_imagem.get("imagens"):
+        primeira_imagem = config_para_imagem["imagens"][0].get("path", "")
+        if primeira_imagem:
+            img_produto_src = DIR_PROJETO / primeira_imagem
+            if img_produto_src.exists():
+                img_produto_filename = img_produto_src.name
+                shutil.copy(img_produto_src, dest_assets / img_produto_filename)
+    else:
+        img_produto_src_legado = slug_dir / "insumos" / "kit_start_flex_frontal.png"
+        if img_produto_src_legado.exists():
+            shutil.copy(img_produto_src_legado, dest_assets / "kit_start_flex_frontal.png")
 
     # Carrega dados
     dados = carregar_json(conteudo_path)
@@ -375,7 +397,7 @@ def compilar_landing(slug):
     # Imagem do produto em destaque centralizada antes das tabelas
     prova_html.append(f"""
       <div style="display: flex; justify-content: center; margin-bottom: 3.5rem;">
-        <img src="assets/kit_start_flex_frontal.png" alt="Kit Start Flex" style="max-height: 50vh; filter: drop-shadow(0 15px 30px rgba(0,0,0,0.4)); object-fit: contain;">
+        <img src="assets/{img_produto_filename}" alt="Produto" style="max-height: 50vh; filter: drop-shadow(0 15px 30px rgba(0,0,0,0.4)); object-fit: contain;">
       </div>""")
 
     for k, v in prova.items():

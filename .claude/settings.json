@@ -8,6 +8,11 @@
             "type": "command",
             "command": "cat >/dev/null || true; command -v code-review-graph >/dev/null 2>&1 || exit 0; git rev-parse --git-dir >/dev/null 2>&1 && code-review-graph update --skip-flows --repo \"$(git rev-parse --show-toplevel 2>/dev/null)\" || true",
             "timeout": 30
+          },
+          {
+            "type": "command",
+            "command": "python -c \"import sys,json,subprocess; d=json.load(sys.stdin); p=(d.get('tool_input') or {}).get('file_path','') or ''; p=p.replace(chr(92),'/'); a=('commands/esbocar.md','commands/produzir-comunicacao-completa.md','SPEC.md'); (subprocess.run(['python','scripts/verificar-consistencia-pipeline.py','--estrito']) if any(p.endswith(x) for x in a) else None)\" 2>/dev/null || true",
+            "timeout": 15
           }
         ]
       }

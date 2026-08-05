@@ -5,6 +5,8 @@ e aplicando o design system da Conexão.
 """
 
 import argparse
+import re
+import shutil
 import sys
 import json
 from pathlib import Path
@@ -16,6 +18,7 @@ from pdf_typst import executar
 DIR_PROJETO = Path(__file__).resolve().parent.parent
 DIR_OUTPUT = DIR_PROJETO / "output"
 CAMINHO_BRAND = DIR_PROJETO / "brand" / "design-system-conexao.json"
+DIR_LOGOS = DIR_PROJETO / "assets" / "logos-marca"
 
 
 def carregar_json(caminho):
@@ -23,6 +26,76 @@ def carregar_json(caminho):
         return json.loads(Path(caminho).read_text(encoding="utf-8"))
     except Exception:
         return None
+
+
+def extrair_nome_produto(slug_dir, slug):
+    """Nome do produto para o título — lido do cabeçalho do dossiê de insumos
+    ('# Dossiê de Insumos — Kit X'), nunca hardcoded por slug."""
+    dossie = slug_dir / "insumos" / "dossie_insumos.md"
+    if dossie.exists():
+        try:
+            primeira_linha = dossie.read_text(encoding="utf-8").splitlines()[0]
+            if "—" in primeira_linha:
+                nome = primeira_linha.split("—", 1)[-1].strip()
+                if nome:
+                    return nome
+        except Exception:
+            pass
+    # Fallback: deriva do slug (ex.: kit-start-flex -> Kit Start Flex)
+    return " ".join(p.capitalize() for p in slug.split("-"))
+
+
+def extrair_imagem_produto(config, slug_dir, slug):
+    """Path da imagem do produto, relativo a slug_dir (root de compilação do Typst).
+    Fonte de verdade: config_projeto.json.imagens[0].path (nunca hardcoded)."""
+    if config:
+        imagens = config.get("imagens", [])
+        if imagens:
+            path = str(imagens[0].get("path", "")).replace("\\", "/")
+            if path:
+                prefixo = f"output/{slug}/"
+                if path.startswith(prefixo):
+                    return path[len(prefixo):]
+                return path
+    # Fallback: procura a primeira imagem em insumos/
+    insumos_dir = slug_dir / "insumos"
+    if insumos_dir.exists():
+        for ext in ("*.png", "*.jpg", "*.jpeg"):
+            achados = sorted(insumos_dir.rglob(ext))
+            if achados:
+                return str(achados[0].relative_to(slug_dir)).replace("\\", "/")
+    return None
+
+
+def extrair_cta_final(md_path):
+    """CTA final — texto da última seção '## ' da apostila (Fechamento, por
+    contrato de redator-apostila), nunca hardcoded por projeto."""
+    fallback = (
+        "Fale com o time de produto Conexão para dúvidas técnicas adicionais. "
+        "— Conexão Sistemas de Próteses"
+    )
+    try:
+        texto = md_path.read_text(encoding="utf-8")
+    except Exception:
+        return fallback
+
+    secoes = re.split(r"(?m)^## .*$", texto)
+    if len(secoes) > 1:
+        corpo = secoes[-1].strip()
+        corpo = re.sub(r"<!--.*?-->", "", corpo, flags=re.S).strip()
+        if corpo:
+            return corpo
+    return fallback
+
+
+def preparar_assets_logo(slug_dir):
+    """Copia os logos de marca fixos para pdf/assets/logos/, mesmo padrão usado
+    por landing-page/apresentacao/arte (compilar-html.py / compilar-arte.py)."""
+    dest = slug_dir / "pdf" / "assets" / "logos"
+    dest.mkdir(parents=True, exist_ok=True)
+    if DIR_LOGOS.exists():
+        for logo in DIR_LOGOS.glob("*.png"):
+            shutil.copy(logo, dest / logo.name)
 
 
 def main():
@@ -47,39 +120,34 @@ def main():
     cores = brand.get("cores", {})
     tipografia = brand.get("tipografia", {})
 
-    # Título e descrição do brief
-    brief = carregar_json(slug_dir / "brief_criativo.json")
-    title = "Kit de Treinamento Técnico: Start Flex"
-    subtitle = "O GPS cirúrgico para os casos mais frequentes do consultório."
-
-    if brief:
-        msg = brief.get("mensagem_central", "")
-        if msg:
-            subtitle = msg
-        # Capitaliza o slug de forma bonita
-        title = "Guia de Treinamento Técnico: " + " ".join(word.capitalize() for word in args.slug.split("-")[1:])
-    
-    # Substitui qualquer hífen por dois-pontos de forma garantida
-    title = title.replace(" - ", ": ").replace("-", ":")
-
-    # CTA Final da apostila
-    cta_final = (
-        "O Kit Start Flex é o principal aliado do consultor para fidelizar o cliente. "
-        "Ao vendê-lo, você não entrega apenas metal — entrega segurança clínica e previsibilidade.\n\n"
-        "Fale com o time de produto Conexão para dúvidas técnicas adicionais. — Conexão Implantes"
-    )
-
-    # Recupera edição do config_projeto.json
+    # Recupera edição/config do config_projeto.json
     config = carregar_json(slug_dir / "config_projeto.json")
     edicao = config.get("edicao", "1ª Edição") if config else "1ª Edição"
+
+    # Título e subtítulo — nome do produto vem do dossiê, mensagem central do brief
+    brief = carregar_json(slug_dir / "brief_criativo.json")
+    nome_produto = extrair_nome_produto(slug_dir, args.slug)
+    title = f"Guia de Treinamento Técnico: {nome_produto}"
+    subtitle = (brief or {}).get("mensagem_central") or (
+        "Guia de treinamento técnico e de vendas para o consultor Conexão."
+    )
+
+    # Substitui qualquer hífen por dois-pontos de forma garantida (SPEC_PDF: sem hífens em títulos)
+    title = title.replace(" - ", ": ").replace("-", ":")
+
+    # CTA final — extraído da última seção ('## Fechamento') da própria apostila
+    cta_final = extrair_cta_final(md)
 
     # Cores e fontes da marca
     fonte_titulo = tipografia.get("titulo", {}).get("familia", "Inter")
     fonte_corpo = tipografia.get("corpo", {}).get("familia", "Inter")
 
+    # Logos de marca (fixos) precisam existir em pdf/assets/logos/ antes da compilação
+    preparar_assets_logo(slug_dir)
+
     # Paths relativos para o Typst (em relação ao slug_dir / `--root` de compilação)
     logo_imagem = "pdf/assets/logos/Logo_Conexão_horizontal_texto_branco.png"
-    imagem_produto = "insumos/kit_start_flex_frontal.png"
+    imagem_produto = extrair_imagem_produto(config, slug_dir, args.slug)
 
     # Monta as flags -V
     lista_de_flags_V = [
@@ -94,10 +162,14 @@ def main():
         "-V", f"subtitle={subtitle}",
         "-V", f"author=Conexão Sistemas de Próteses",
         "-V", f"logo_imagem={logo_imagem}",
-        "-V", f"imagem_produto={imagem_produto}",
         "-V", f"cta_final={cta_final}",
         "-V", f"edicao={edicao}",
     ]
+    if imagem_produto:
+        lista_de_flags_V += ["-V", f"imagem_produto={imagem_produto}"]
+    else:
+        print("[AVISO] Nenhuma imagem de produto encontrada (config_projeto.json/insumos) — "
+              "capa usará o fallback do template. Registrar como faltante.")
 
     comando = [
         "pandoc", str(md),

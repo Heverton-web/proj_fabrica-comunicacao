@@ -48,7 +48,7 @@ def compilar_variante_arte(slug, variante):
     
     # Template name
     template_path = DIR_PROJETO / "templates" / f"arte-{largura}x{altura}.html"
-    dest_html = slug_dir / variante / "temp_arte.html"
+    dest_html = slug_dir / variante / "index.html"
     dest_png = slug_dir / variante / f"arte_{slug}_{variante[-2:]}.png"
     dest_assets = slug_dir / variante / "assets"
 
@@ -68,10 +68,21 @@ def compilar_variante_arte(slug, variante):
     for l in DIR_LOGOS.glob("*.png"):
         shutil.copy(l, dest_assets / "logos" / l.name)
 
-    # Copia imagem do produto se existir
-    img_produto_src = slug_dir / "insumos" / "kit_start_flex_frontal.png"
-    if img_produto_src.exists():
-        shutil.copy(img_produto_src, dest_assets / "kit_start_flex_frontal.png")
+    # Copia imagem do produto (path real vem de config_projeto.json, nunca
+    # hardcoded — cada projeto tem seu próprio nome/local de imagem)
+    img_produto_filename = "kit_start_flex_frontal.png"  # fallback histórico
+    config_para_imagem = carregar_json(slug_dir / "config_projeto.json")
+    if config_para_imagem and config_para_imagem.get("imagens"):
+        primeira_imagem = config_para_imagem["imagens"][0].get("path", "")
+        if primeira_imagem:
+            img_produto_src = DIR_PROJETO / primeira_imagem
+            if img_produto_src.exists():
+                img_produto_filename = img_produto_src.name
+                shutil.copy(img_produto_src, dest_assets / img_produto_filename)
+    else:
+        img_produto_src_legado = slug_dir / "insumos" / "kit_start_flex_frontal.png"
+        if img_produto_src_legado.exists():
+            shutil.copy(img_produto_src_legado, dest_assets / "kit_start_flex_frontal.png")
 
     # Carrega dados
     dados = carregar_json(conteudo_path)
@@ -108,7 +119,7 @@ def compilar_variante_arte(slug, variante):
     html_final = re.sub(r'<!--\s*\{\{BADGE_CONTEXTO\}\}.*?-->', badge_tag, html_final, flags=re.DOTALL)
 
     # Injeta Imagem de Produto
-    produto_tag = '<img class="produto" src="assets/kit_start_flex_frontal.png" alt="Kit Start Flex">'
+    produto_tag = f'<img class="produto" src="assets/{img_produto_filename}" alt="Produto">'
     html_final = re.sub(r'<!--\s*\{\{IMAGEM_PRODUTO\}\}.*?-->', produto_tag, html_final, flags=re.DOTALL)
 
     # Injeta Headline, Subcopy e CTA
@@ -138,8 +149,8 @@ def compilar_variante_arte(slug, variante):
         dest_html.unlink(missing_ok=True)
         return 1
 
-    # Deleta HTML temporário
-    dest_html.unlink(missing_ok=True)
+    # index.html é mantido (não temporário) para permitir auditoria de marca
+    # via validar-design-tokens.py, que exige o arquivo persistido no disco.
     return 0
 
 
