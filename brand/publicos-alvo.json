@@ -52,6 +52,20 @@
         "apresentacao": "Pitch de parceria: mercado → produto → programa de distribuição → próximos passos",
         "arte": "Headline de oportunidade (ex.: 'Amplie seu portfólio com a linha Conexão Implantes.')"
       }
+    },
+
+    "dentista_implantodontista": {
+      "_descricao": "KIT-ONLY — nunca selecionável nas rodadas 2/3 do /esbocar (não é opção de config_projeto.publico_alvo). Público fixo de kit-consultor/kit-distribuidor (ver brand/kits-conexao.json e SPEC_KITS.md): o profissional que vai efetivamente usar o produto na cadeira clínica. Querem autoridade técnica direta, sem intermediação de consultor/distribuidor no tom (o CTA/assinatura de quem ENVIA a peça é que muda por kit, não o registro de quem a peça FALA COM).",
+      "toms_de_voz_compativeis": ["N/A — os kits usam os 5 tons fixos de brand/tons-kit.json, não objetivo_tom"],
+      "registro_de_linguagem": {
+        "vocabulario": "técnico-clínico direto, mesmo registro de 'consultores' mas em 2ª pessoa (fala COM o dentista, não SOBRE ele)",
+        "postura": "par técnico que respeita o tempo do dentista — 1 ideia por peça, sem preâmbulo",
+        "evitar": "jargão de vendas/parceria (isso fica só no CTA final, nunca no corpo da copy)",
+        "cta_padrao": "ver brand/kits-conexao.json (varia por variante de kit, não por este público)"
+      },
+      "enfase_por_material": {
+        "kit": "1 copy = 1 tom de brand/tons-kit.json = 1 ângulo do dossiê — nunca uma mistura de tons na mesma peça"
+      }
     }
   },
 

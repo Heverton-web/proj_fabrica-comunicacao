@@ -25,7 +25,8 @@ DIR_PROJETO = Path(__file__).resolve().parent.parent
 DIR_OUTPUT = DIR_PROJETO / "output"
 CAMINHO_BRAND = DIR_PROJETO / "brand" / "design-system-conexao.json"
 
-TIPOS_VALIDOS = {"pdf", "landing-page", "apresentacao", "arte-01", "arte-02", "arte-03", "textos"}
+TIPOS_VALIDOS = {"pdf", "landing-page", "apresentacao", "arte-01", "arte-02", "arte-03",
+                  "textos", "kit-consultor", "kit-distribuidor"}
 
 # Escolhas do operador nas rodadas 2 e 3 do /esbocar (fonte de verdade — nunca derivar).
 PUBLICOS_ALVO_VALIDOS = {"consultores", "clientes", "distribuidores"}
@@ -82,6 +83,9 @@ def validar_config(slug):
     if "pdf" in materiais:
         if "edicao" not in config or not str(config.get("edicao", "")).strip():
             erros.append("campo 'edicao' de preenchimento obrigatorio quando o material 'pdf' esta selecionado")
+
+    if "elementos_decorativos" in config and not isinstance(config["elementos_decorativos"], bool):
+        erros.append("campo 'elementos_decorativos' deve ser booleano (true/false) quando presente")
 
     imagens = config.get("imagens", [])
     for img in imagens:

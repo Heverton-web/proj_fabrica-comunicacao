@@ -67,6 +67,31 @@ divergente entre subagentes paralelos) — ver seção 1 de
   dimensão.
 - Cores/fontes só via CSS custom properties do design system fixo (mesma disciplina
   de `SPEC_HTML.md`).
+- **Título (headline) em no máximo 2 linhas, nunca com 1 única palavra sozinha numa
+  linha**, e com largura igual à do parágrafo (mesmo `max-width` de `.subcopy`), para
+  causar a impressão de um bloco compacto em harmonia com o parágrafo abaixo — não
+  garantido só por CSS (`text-wrap: balance` como 1ª camada); os templates embutem um
+  script que mede as linhas renderizadas e reduz o `font-size` em passos pequenos até
+  cumprir as 2 regras (nunca aumenta o tamanho definido no CSS). Ver `templates/arte-*.html`.
+- **Elementos geométricos/wave decorativos de fundo** (bordas finas douradas —
+  `stroke-width` ~0.35 num viewBox 0-100, nunca grosso —, `stroke` sem `fill`,
+  opacidade baixa ~0.06-0.15, tamanho grande sangrando por um canto do canvas) para
+  dar profundidade, **opt-out via `config_projeto.elementos_decorativos: false`**
+  (Passo 5 do `/esbocar` — default ativo). 1 combinação (forma + canto/diagonal +
+  tamanho + deslocamento + opacidade) por **bloco** de artes (o bloco é o formato em
+  `arte-01/02/03` — as 3 copies de 1 formato compartilham a combinação; em
+  `kit-consultor`/`kit-distribuidor` é o par kit-variante×tom — as 2 artes de 1 tom de
+  1 kit compartilham a combinação). Catálogo de formas (`quadrado`, `circulo`,
+  `triangulo`, `hexagono`, `wave`) e sorteio determinístico por chave
+  (`escolher_decoracao_fundo`) em `scripts/_arte_common.py`; nunca aleatoriedade real
+  — mesma chave (mesmo bloco) sempre resulta na mesma forma/posição/tamanho/opacidade
+  (recompilar não muda o visual), chaves diferentes (blocos diferentes) tendem a
+  variar em todos os eixos (forma, canto usado, tamanho, deslocamento, opacidade) —
+  nunca sempre no mesmo canto, para não cansar visualmente quem vê vários materiais
+  do mesmo projeto em sequência. **Sempre na camada de fundo**: `z-index` explicitamente
+  abaixo do logo, do bloco de conteúdo (título/produto/parágrafo/CTA) e das faixas —
+  nunca pode prejudicar a legibilidade do texto, a visibilidade do logo ou a percepção
+  da imagem do produto.
 - Nome do arquivo: `arte_<slug>_<NN>_copy<MM>.png`, onde `NN` é o formato
   (`01`/`02`/`03`) e `MM` é a copy (`01`/`02`/`03`) — ex.:
   `arte_kit-master-flex_01_copy02.png` = formato 1080×1080, copy 2. Os dois eixos

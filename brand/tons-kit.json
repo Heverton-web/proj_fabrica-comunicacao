@@ -1,0 +1,32 @@
+{
+  "_fonte": "Fixo — mesmo papel que publicos-alvo.json tem para registro/voz, mas para os 5 tons dos Kits (Consultor/Distribuidor). Nunca derivar tom do texto-base; os 5 tons abaixo são sempre os mesmos, para todo projeto.",
+  "_uso": "Lido por redator-kit-copy para produzir 2 ângulos genuinamente distintos por tom (10 ângulos no total). Cada tom precisa soar diferente dos outros 4 — headlines de exemplo aqui são guia de registro, nunca copiadas literalmente para um projeto real.",
+
+  "tons": {
+    "informativa": {
+      "_descricao": "Apresenta um fato/dado direto sobre o produto ou o problema que ele resolve, sem tentar surpreender nem ensinar um processo — só informa com objetividade.",
+      "registro": "direto, neutro, sem floreio; 1 fato por peça",
+      "exemplo_headline": "Kit inLego é compatível com sistemas MU e MB."
+    },
+    "contra-intuitiva": {
+      "_descricao": "Desafia uma crença comum do dentista/implantodontista sobre o processo ou o produto — quebra uma expectativa, gera uma pequena tensão de \"não é o que eu pensava\".",
+      "registro": "abre com a crença comum (implícita ou explícita) e a contradiz com um fato do dossiê",
+      "exemplo_headline": "Mais peças no kit não significa mais complexidade na cadeira."
+    },
+    "tecnica": {
+      "_descricao": "Foco em especificação ou mecanismo técnico preciso (material, dimensão, torque, compatibilidade, princípio de funcionamento).",
+      "registro": "vocabulário clínico-técnico, sem simplificação, número/spec exato quando o dossiê tiver",
+      "exemplo_headline": "PEEK Grau Médico, sem parafuso passante, rosqueamento manual horário."
+    },
+    "efeito-uau": {
+      "_descricao": "Um resultado ou número surpreendente do dossiê, com impacto imediato — a peça deve gerar uma reação de \"uau\" em quem lê em 2 segundos.",
+      "registro": "curto, de impacto, 1 número ou resultado forte em destaque",
+      "exemplo_headline": "Metade do tempo de escaneamento. Um clique, dois problemas resolvidos."
+    },
+    "educativa": {
+      "_descricao": "Ensina um conceito ou explica o \"porquê\" por trás de uma prática clínica ou de um problema do dossiê, com tom didático.",
+      "registro": "pergunta ou afirmação que abre uma explicação; ensina antes de vender",
+      "exemplo_headline": "Por que a mandíbula é o \"deserto anatômico\" do escaneamento digital?"
+    }
+  }
+}

@@ -21,10 +21,12 @@ renderiza **3** (1 por copy compartilhada), todas na mesma dimensão da variante
   gere copy você mesmo aqui, isso é trabalho de `redator-arte`, rodado uma única vez
   antes de qualquer formato ser compilado)
 - `output/<slug>/config_projeto.json` (`imagens[0].path` — imagem do produto,
-  compartilhada pelas 3 copies)
+  compartilhada pelas 3 copies; `elementos_decorativos` — booleano, default `true`,
+  ver Passo 3.5 abaixo)
 - `brand/design-system-conexao.json` (fixo, mesmo para todo projeto)
 - `templates/arte-<dimensao>.html` (1080x1080 / 1080x1350 / 1080x1920) — já vêm com o
-  `:root` e os `@font-face` da marca embutidos.
+  `:root`, os `@font-face` da marca, o script de ajuste de título (máx. 2 linhas, sem
+  linha órfã — ver `SPEC_ARTE.md`) e o placeholder `{{FORMA_DECORATIVA}}` embutidos.
 
 ## Procedimento
 
@@ -44,18 +46,30 @@ from playwright.sync_api import sync_playwright
 DIMENSOES = {"arte-01": (1080, 1080), "arte-02": (1080, 1350), "arte-03": (1080, 1920)}
 largura, altura = DIMENSOES[variante]
 
-for indice, copy in enumerate(copies, start=1):  # copies = arte/copies.json["copies"]
-    with sync_playwright() as p:
-        browser = p.chromium.launch()
+with sync_playwright() as p:
+    browser = p.chromium.launch()  # 1 browser reaproveitado nas 3 copies, nunca 1 por copy
+    for indice, copy in enumerate(copies, start=1):  # copies = arte/copies.json["copies"]
         page = browser.new_page(viewport={"width": largura, "height": altura})
         page.goto(f"file:///{caminho_html_absoluto_da_copy}")
-        page.wait_for_timeout(300)
+        page.wait_for_timeout(500)  # da tempo ao script de ajuste de titulo rodar
         page.screenshot(path=caminho_png_da_copy)
-        browser.close()
+        page.close()
+    browser.close()
 ```
 
 Não use `device_scale_factor` acima de 1 — geraria um PNG maior que a dimensão-alvo, o
 que `validar-dimensoes.py` vai rejeitar (R8 do `SPEC.md` exige pixel-perfect exato).
+
+### 3.5. Elementos decorativos de fundo (opt-out)
+
+Leia `config_projeto.elementos_decorativos` (default `true` se ausente). Se `true`,
+chame `escolher_decoracao_fundo(f"{slug}:arte:{variante}")` +
+`gerar_forma_decorativa_html(...)` de `scripts/_arte_common.py` **uma vez por
+variante** (não por copy — as 3 copies do mesmo formato compartilham a mesma
+combinação de forma/posição/tamanho) e injete no placeholder `{{FORMA_DECORATIVA}}`.
+Se `false`, injete string vazia. Nunca gere a forma você mesmo fora desse helper —
+é o que garante bordas finas, opacidade baixa e posição sempre variando por bloco
+(ver `SPEC_ARTE.md`).
 
 ### 3. Persistência do HTML
 

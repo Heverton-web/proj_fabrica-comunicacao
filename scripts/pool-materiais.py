@@ -47,6 +47,9 @@ TITULOS_MATERIAL = {
     "arte-01": "Arte 1080x1080",
     "arte-02": "Arte 1080x1350",
     "arte-03": "Arte 1080x1920",
+    "textos": "Textos de Apoio",
+    "kit-consultor": "Kit do Consultor",
+    "kit-distribuidor": "Kit Distribuidor",
 }
 
 
@@ -135,6 +138,29 @@ def material_entregue(slug, tipo):
         faltantes = [n for n in esperados
                      if not (base / n).exists() or (base / n).stat().st_size == 0]
         return (True, "ok") if not faltantes else (False, f"faltando: {', '.join(faltantes)}")
+    if tipo in ("kit-consultor", "kit-distribuidor"):
+        # 5 tons x 2 itens x {PNG, conteudo.json, texto_whatsapp.txt} = 10 de cada,
+        # ver SPEC_KITS.md. Checagem de forma/dimensao exata fica com validar-kit.py.
+        tons_pastas = ["artes-informativas", "artes-contra-intuitivas", "artes-tecnicas",
+                       "artes-efeito-uau", "artes-educativas"]
+        pngs = conteudos = textos = 0
+        for tom_pasta in tons_pastas:
+            for item in ("arte-01", "arte-02"):
+                pasta_item = base / tom_pasta / item
+                if not pasta_item.is_dir():
+                    continue
+                if any(p.stat().st_size > 0 for p in pasta_item.glob("*.png")):
+                    pngs += 1
+                conteudo = pasta_item / "conteudo.json"
+                if conteudo.exists() and conteudo.stat().st_size > 0:
+                    conteudos += 1
+                texto = pasta_item / "texto_whatsapp.txt"
+                if texto.exists() and texto.stat().st_size > 0:
+                    textos += 1
+        if (pngs, conteudos, textos) != (10, 10, 10):
+            return False, (f"esperado 10 PNGs/conteudo.json/texto_whatsapp.txt, "
+                            f"encontrado {pngs}/{conteudos}/{textos}")
+        return True, "ok"
     return False, f"tipo de material desconhecido: {tipo}"
 
 

@@ -56,6 +56,20 @@ os formatos.
 Este passo precisa terminar **antes** de despachar o lote que contém qualquer
 `arte-0N`, mesmo que esse lote não seja o primeiro.
 
+## Passo 2.7 — Copy compartilhada de kit (uma única vez, antes de qualquer fan-out de kit)
+
+Se qualquer `kit-consultor`/`kit-distribuidor` estiver em `materiais_selecionados` e
+`output/<slug>/kits/copies.json` ainda não existir (ou não tiver exatamente 10
+copies), invoque o skill `redator-kit-copy` **inline, agora, uma única vez** — nunca
+delegue isso a um `subagente-produtor-kit`. Kit-variante (consultor/distribuidor) é
+eixo ortogonal a copy: as mesmas 10 copies são compartilhadas pelos 2 kits, só o CTA
+final muda (`brand/kits-conexao.json`, resolvido por `compilador-kit`, sem 2ª chamada
+de LLM). Ver `SPEC_KITS.md`. Gerar copy dentro de cada subagente de kit reintroduziria
+divergência de conteúdo entre `kit-consultor` e `kit-distribuidor`.
+
+Este passo precisa terminar **antes** de despachar o lote que contém qualquer
+`kit-consultor`/`kit-distribuidor`, mesmo que esse lote não seja o primeiro.
+
 ## Passo 3 — Fan-out em lote (disciplina de concorrência — nunca tudo de uma vez)
 
 Para cada lote do plano, **nesta ordem, sem pular etapas**:
@@ -67,6 +81,8 @@ Para cada lote do plano, **nesta ordem, sem pular etapas**:
    - `arte-01`/`arte-02`/`arte-03` → `subagente-produtor-arte` (um por variante —
      requer que o Passo 2.5 já tenha gerado `arte/copies.json`)
    - `textos` → `subagente-produtor-textos`
+   - `kit-consultor`/`kit-distribuidor` → `subagente-produtor-kit` (um por kit —
+     requer que o Passo 2.7 já tenha gerado `kits/copies.json`)
 2. Aguarde **todos** os subagentes do lote terminarem (cada um já auto-registra sucesso
    ou falha via `pool-materiais.py --registrar`).
 3. Só então consulte `python scripts/pool-materiais.py <slug> --proximo-lote --lote 4`
@@ -107,7 +123,8 @@ que já estão conformes).
 python scripts/empacotar-projeto.py <slug>
 ```
 
-Monta a estrutura final em `output/<slug>/{pdf,landing-page,apresentacao,arte-01,arte-02,arte-03,textos}/`
+Monta a estrutura final em
+`output/<slug>/{pdf,landing-page,apresentacao,arte-01,arte-02,arte-03,textos,kit-consultor,kit-distribuidor}/`
 e grava `manifesto_materiais.json`.
 
 ## Passo 7 — Relatório final (REGRA 2 — telegráfico, sem preâmbulo)

@@ -2,8 +2,10 @@
 
 Fábrica agêntica que transforma (imagens + texto-base fornecidos por um operador) em um
 conjunto de materiais de comunicação de marca — PDF (apostila), HTML (apresentação e
-landing page) e Arte PNG (1080×1080, 1080×1350, 1080×1920) — de forma 100% autônoma
-após uma única entrevista inicial.
+landing page), Arte PNG (1080×1080, 1080×1350, 1080×1920), Textos de Apoio e os Kits do
+Consultor/Distribuidor (10 artes 1080×1350 + copies + textos de WhatsApp cada, público
+fixo Dentista/Implantodontista — ver `SPEC_KITS.md`) — de forma 100% autônoma após uma
+única entrevista inicial.
 
 **O design system é fixo, não extraído por projeto.** Landing page, apresentação e
 arte seguem sempre `brand/design-system-conexao.json`, aplicado por
@@ -91,7 +93,8 @@ brand/design-system-conexao.json (FIXO, mesmo para todo projeto)
    ├─► redator-apostila      ─► compilador-pdf     ─► output/<slug>/pdf/          (interim: usa o mesmo brand fixo)
    ├─► redator-landing       ─► compilador-html    ─► output/<slug>/landing-page/
    ├─► redator-apresentacao  ─► compilador-html    ─► output/<slug>/apresentacao/
-   └─► redator-arte (×3)     ─► compilador-arte    ─► output/<slug>/arte-01|02|03/
+   ├─► redator-arte (×3)     ─► compilador-arte    ─► output/<slug>/arte-01|02|03/
+   └─► redator-kit-copy (×1) ─► compilador-kit (×2)─► output/<slug>/kit-consultor|distribuidor/
                                                           │
                                                     revisor-marca (auditar-projeto.py --estrito)
                                                           │
@@ -109,6 +112,8 @@ brand/design-system-conexao.json (FIXO, mesmo para todo projeto)
 | Arte 1080×1350 | Sim (Passo 4) | `redator-arte` | `compilador-arte` (Playwright) | `validar-dimensoes.py` | `output/<slug>/arte-02/` |
 | Arte 1080×1920 | Sim (Passo 4) | `redator-arte` | `compilador-arte` (Playwright) | `validar-dimensoes.py` | `output/<slug>/arte-03/` |
 | Textos de Apoio | Sim (Passo 4) | `redator-textos` | (sem compilador — grava `.txt` direto) | `validar-textos.py` | `output/<slug>/textos/` |
+| Kit do Consultor | Sim (Passo 4) | `redator-kit-copy` (10 copies compartilhadas, 1x/projeto) | `compilador-kit` (Playwright) | `validar-kit.py` | `output/<slug>/kit-consultor/` |
+| Kit Distribuidor | Sim (Passo 4) | `redator-kit-copy` (mesma copy de `kit-consultor`, ver `SPEC_KITS.md`) | `compilador-kit` (Playwright) | `validar-kit.py` | `output/<slug>/kit-distribuidor/` |
 
 Toda vez que um material for adicionado/removido desta tabela, rode `python scripts/verificar-consistencia-pipeline.py --estrito` para validar a consistência entre todos os módulos.
 

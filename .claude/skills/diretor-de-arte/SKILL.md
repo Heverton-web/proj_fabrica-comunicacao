@@ -57,6 +57,16 @@ específica em `brief_criativo.mapeamento_por_material`:
   dossiê — ex.: problema, diferencial técnico, versatilidade). `redator-arte` escreve
   1 copy completa por ângulo (`arte/copies.json`), e cada uma das 3 copies é depois
   renderizada em **todos** os formatos selecionados — nunca 1 copy por formato.
+- **kit** (compartilhado entre `kit-consultor`/`kit-distribuidor` selecionados —
+  kit-variante e copy são eixos ortogonais, ver `SPEC_KITS.md`) → defina
+  `angulos_por_tom`: exatamente **2 ângulos por tom**, para os 5 tons fixos de
+  `brand/tons-kit.json` (`informativa`, `contra-intuitiva`, `tecnica`, `efeito-uau`,
+  `educativa`) — 10 ângulos no total, cada um um ponto distinto do dossiê, público
+  sempre fixo `dentista_implantodontista` (nunca o `publico_alvo` do operador).
+  `redator-kit-copy` escreve 1 copy completa por ângulo (`kits/copies.json`, sem CTA),
+  e cada uma das 10 copies é depois renderizada em **todos** os kits selecionados —
+  nunca 1 copy por kit (o que muda entre `kit-consultor`/`kit-distribuidor` é só o CTA,
+  resolvido por `compilador-kit` via `brand/kits-conexao.json`).
 
 ### 4. Carregar as escolhas do operador (público-alvo e objetivo/tom)
 

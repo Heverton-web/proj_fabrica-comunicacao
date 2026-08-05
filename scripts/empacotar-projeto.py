@@ -38,6 +38,35 @@ def _resolver_arte(tipo):
     return resolver
 
 
+TONS_PASTAS_KIT = ["artes-informativas", "artes-contra-intuitivas", "artes-tecnicas",
+                   "artes-efeito-uau", "artes-educativas"]
+
+
+def _resolver_kit(tipo):
+    def resolver(base, slug):
+        pasta = base / tipo
+        if not pasta.is_dir():
+            return None
+        pngs = conteudos = textos = 0
+        for tom_pasta in TONS_PASTAS_KIT:
+            for item in ("arte-01", "arte-02"):
+                pasta_item = pasta / tom_pasta / item
+                if not pasta_item.is_dir():
+                    continue
+                if any(p.stat().st_size > 0 for p in pasta_item.glob("*.png")):
+                    pngs += 1
+                conteudo = pasta_item / "conteudo.json"
+                if conteudo.exists() and conteudo.stat().st_size > 0:
+                    conteudos += 1
+                texto = pasta_item / "texto_whatsapp.txt"
+                if texto.exists() and texto.stat().st_size > 0:
+                    textos += 1
+        # 10 PNGs + 10 conteudo.json + 10 texto_whatsapp.txt esperados (5 tons x 2
+        # itens), ver SPEC_KITS.md.
+        return pasta if (pngs, conteudos, textos) == (10, 10, 10) else None
+    return resolver
+
+
 PATH_POR_TIPO = {
     "pdf": lambda base, slug: next(iter(sorted((base / "pdf").glob("*.pdf"))), None),
     "landing-page": lambda base, slug: (base / "landing-page" / "index.html"),
@@ -46,6 +75,8 @@ PATH_POR_TIPO = {
     "arte-02": _resolver_arte("arte-02"),
     "arte-03": _resolver_arte("arte-03"),
     "textos": _resolver_textos,
+    "kit-consultor": _resolver_kit("kit-consultor"),
+    "kit-distribuidor": _resolver_kit("kit-distribuidor"),
 }
 
 

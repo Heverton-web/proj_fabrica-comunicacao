@@ -27,7 +27,7 @@ DIR_PROJETO = Path(__file__).resolve().parent.parent
 DIR_OUTPUT = DIR_PROJETO / "output"
 DIR_SCRIPTS = DIR_PROJETO / "scripts"
 
-COMPILADORES = ["compilar-html.py", "compilar-arte.py", "compilar-pdf.py"]
+COMPILADORES = ["compilar-html.py", "compilar-arte.py", "compilar-pdf.py", "compilar-kit.py"]
 
 
 def outros_slugs(slug_atual):

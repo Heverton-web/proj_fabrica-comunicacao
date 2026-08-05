@@ -65,28 +65,55 @@ escrito em cada material — nunca o rederive do texto-base.
 
 ## Passo 4 — Entrevista de materiais (`AskUserQuestion`, rodada 4, multiSelect)
 
-Uma única pergunta, multiSelect, com as 7 opções:
+9 opções no total — acima do limite de 4 opções por pergunta de `AskUserQuestion` — por
+isso a rodada 4 é **1 única chamada de `AskUserQuestion`, com 3 perguntas multiSelect**
+(máx. 4 perguntas por chamada, dentro do limite):
 
-- PDF (apostila)
-- Landing Page
-- Apresentação
-- Arte 1080×1080 (WhatsApp/Instagram quadrado)
-- Arte 1080×1350 (Instagram/LinkedIn retrato)
-- Arte 1080×1920 (Stories/Reels)
-- Textos de Apoio (WhatsApp/Instagram/LinkedIn)
+- Parte 1/3: PDF (apostila), Landing Page, Apresentação
+- Parte 2/3: Arte 1080×1080 (WhatsApp/Instagram quadrado), Arte 1080×1350
+  (Instagram/LinkedIn retrato), Arte 1080×1920 (Stories/Reels)
+- Parte 3/3: Textos de Apoio (WhatsApp/Instagram/LinkedIn), Kit do Consultor (10
+  artes 1080×1350 + copies + textos de WhatsApp, para Dentista/Implantodontista), Kit
+  Distribuidor (mesmo conteúdo do Kit do Consultor, CTA/assinatura de distribuidor —
+  ver `SPEC_KITS.md`)
 
-Exija pelo menos 1 selecionado — se vier vazio, assuma todos os 7 (nunca pare para
-confirmar, REGRA 3).
+Exija pelo menos 1 selecionado no total (soma das 3 partes) — se vier vazio, assuma
+todos os 9 (nunca pare para confirmar, REGRA 3).
+
+**Kit do Consultor e Kit Distribuidor não têm predefinições próprias a perguntar** —
+público (Dentista/Implantodontista), produto (o do projeto atual), 5 tons de voz e
+formato (1080×1350) são sempre fixos (`brand/tons-kit.json`, `brand/kits-conexao.json`,
+`brand/publicos-alvo.json`). Selecionar qualquer um dos 2 já é suficiente para o
+`/produzir-comunicacao-completa` gerar o kit completo (10 itens) sem nova pergunta.
 
 **Se o material 'PDF (apostila)' for selecionado:** pergunte adicionalmente na mesma rodada (ou em uma pergunta subsequente) para o operador definir a **edição do material** (ex: '1ª Edição', '2ª Edição Revisada'). Esse valor deve ser gravado obrigatoriamente no campo `edicao` de `config_projeto.json` para que os validadores e templates o processem de forma correta.
 
-## Passo 5 — Gravar e preparar (sem nova pausa)
+## Passo 5 — Elementos gráficos decorativos (opcional, mesma rodada 4)
+
+Se qualquer material de arte estiver selecionado (`arte-01`/`arte-02`/`arte-03`/
+`kit-consultor`/`kit-distribuidor`), pergunte adicionalmente — mesma disciplina da
+edição do PDF acima, dentro da rodada 4 ou como pergunta subsequente, **nunca como
+uma 5ª rodada nova** (R1 do `SPEC.md` continua valendo: são sempre 4 rodadas de
+`AskUserQuestion`) — se o operador quer ativar os elementos gráficos decorativos de
+fundo (formas geométricas/waves com borda fina dourada e opacidade baixa, para dar
+profundidade — ver `SPEC_ARTE.md`):
+
+- Sim, ativar elementos decorativos (padrão recomendado)
+- Não, manter fundo limpo (sem elementos decorativos)
+
+Grave a escolha em `config_projeto.elementos_decorativos` (booleano). Se o operador
+não selecionar nenhum material de arte, não pergunte isso (campo fica ausente do
+JSON). Se pular a pergunta ou não especificar, assuma `true` (nunca trave por
+ausência de resposta, REGRA 3) — `compilador-arte`/`compilador-kit` só omitem os
+elementos decorativos quando o campo existir e for explicitamente `false`.
+
+## Passo 6 — Gravar e preparar (sem nova pausa)
 
 1. Crie `output/<slug>/insumos/` e copie/referencie os arquivos de imagem/texto-base
    informados.
 2. Grave `output/<slug>/config_projeto.json` (schema em `SPEC.md` — sem campo
    `design_system`, ele não existe mais; com `publico_alvo` e `objetivo_tom` das
-   rodadas 2 e 3).
+   rodadas 2 e 3; com `elementos_decorativos` se o Passo 5 se aplicou).
 3. Rode `python scripts/parametros_projeto.py <slug> --validar` — se falhar, corrija o
    JSON você mesmo antes de seguir (REGRA 4), nunca devolva o erro bruto ao operador.
 4. Invoque o skill `analista-insumos` → gera `dossie_insumos.md` (fatos do texto-base +
@@ -94,7 +121,7 @@ confirmar, REGRA 3).
 5. Invoque o skill `diretor-de-arte` → gera `brief_criativo.json` (decompõe
    `objetivo_tom` em `objetivo` + `tom_de_voz`; carrega `publico_alvo` do operador).
 
-## Passo 6 — Relatório objetivo (REGRA 2 — sem preâmbulo)
+## Passo 7 — Relatório objetivo (REGRA 2 — sem preâmbulo)
 
 Reporte, de forma telegráfica:
 - Slug do projeto e onde ficou salvo.

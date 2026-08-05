@@ -29,7 +29,8 @@ CAMINHO_ESBOCAR = DIR_PROJETO / ".claude" / "commands" / "esbocar.md"
 CAMINHO_PRODUZIR = DIR_PROJETO / ".claude" / "commands" / "produzir-comunicacao-completa.md"
 
 # Fonte de verdade dos tipos validos: os proprios scripts de validacao/auditoria.
-TIPOS_VALIDOS = {"pdf", "landing-page", "apresentacao", "arte-01", "arte-02", "arte-03", "textos"}
+TIPOS_VALIDOS = {"pdf", "landing-page", "apresentacao", "arte-01", "arte-02", "arte-03",
+                  "textos", "kit-consultor", "kit-distribuidor"}
 
 # Mapeamento tipo -> o que cada camada precisa conter/ter, para permitir nomes
 # nao-uniformes (ex.: arte-01/02/03 compartilham 1 skill e 1 validador).
@@ -41,6 +42,8 @@ MAPA_ESBOCAR = {
     "arte-02": "1080×1350",
     "arte-03": "1080×1920",
     "textos": "Textos de Apoio",
+    "kit-consultor": "Kit do Consultor",
+    "kit-distribuidor": "Kit Distribuidor",
 }
 
 MAPA_DISPATCH = {
@@ -51,6 +54,8 @@ MAPA_DISPATCH = {
     "arte-02": "subagente-produtor-arte",
     "arte-03": "subagente-produtor-arte",
     "textos": "subagente-produtor-textos",
+    "kit-consultor": "subagente-produtor-kit",
+    "kit-distribuidor": "subagente-produtor-kit",
 }
 
 MAPA_SKILL = {
@@ -61,6 +66,8 @@ MAPA_SKILL = {
     "arte-02": "redator-arte",
     "arte-03": "redator-arte",
     "textos": "redator-textos",
+    "kit-consultor": "redator-kit-copy",
+    "kit-distribuidor": "redator-kit-copy",
 }
 
 MAPA_AGENTE = {
@@ -71,6 +78,8 @@ MAPA_AGENTE = {
     "arte-02": "subagente-produtor-arte.md",
     "arte-03": "subagente-produtor-arte.md",
     "textos": "subagente-produtor-textos.md",
+    "kit-consultor": "subagente-produtor-kit.md",
+    "kit-distribuidor": "subagente-produtor-kit.md",
 }
 
 MAPA_VALIDADOR = {
@@ -81,6 +90,8 @@ MAPA_VALIDADOR = {
     "arte-02": "validar-dimensoes.py",
     "arte-03": "validar-dimensoes.py",
     "textos": "validar-textos.py",
+    "kit-consultor": "validar-kit.py",
+    "kit-distribuidor": "validar-kit.py",
 }
 
 

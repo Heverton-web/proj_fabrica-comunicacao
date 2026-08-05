@@ -24,6 +24,7 @@ python scripts/validar-design-tokens.py <slug> <tipo>
 python scripts/validar-pdf.py <slug>            # só se tipo == pdf
 python scripts/validar-html.py <slug> <tipo>    # só se tipo in (landing-page, apresentacao)
 python scripts/validar-dimensoes.py <slug> <tipo>  # só se tipo startswith arte-
+python scripts/validar-kit.py <slug> <tipo>     # só se tipo in (kit-consultor, kit-distribuidor)
 ```
 
 ### 2. Checar fidelidade à fonte (REGRA 6)
@@ -36,6 +37,14 @@ Para `arte-0N`: as 3 copies em `output/<slug>/arte/copies.json` são compartilha
 todos os formatos — audite as **3**, não só a primeira (`index.html`). Confirme também
 que são 3 ângulos genuinamente distintos do dossiê, não 3 variações do mesmo ângulo
 (ver `docs/05-plano-expansao-multi-copy-arte.md`).
+
+Para `kit-consultor`/`kit-distribuidor`: as 10 copies em `output/<slug>/kits/copies.json`
+são compartilhadas pelos 2 kits — audite as **10**, cobrindo os 5 tons de
+`brand/tons-kit.json`, 2 ângulos genuinamente distintos por tom (ver `SPEC_KITS.md`).
+Compare também `kit-consultor/` e `kit-distribuidor/` item a item: headline e subcopy
+devem ser **idênticos** entre os 2 kits — só CTA e assinatura podem diferir (vindos de
+`brand/kits-conexao.json`). Qualquer outra divergência de conteúdo entre os 2 kits é
+defeito, não variação aceitável.
 
 ### 2.1. Checar aderência às escolhas do operador
 

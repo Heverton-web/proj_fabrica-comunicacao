@@ -1,44 +1,28 @@
 #!/usr/bin/env python3
 """
 Compilador de Artes PNG (WhatsApp/Instagram/LinkedIn) via Playwright headless,
-aplicando o design system fixo da Conexão.
+aplicando o design system fixo da Conexão. Reaproveita a tecnica de
+renderizacao compartilhada em scripts/_arte_common.py (mesmo helper usado
+por compilar-kit.py).
 """
 
 import argparse
 import sys
-import json
-import re
-import shutil
 from pathlib import Path
 from playwright.sync_api import sync_playwright
 
-DIR_PROJETO = Path(__file__).resolve().parent.parent
-DIR_OUTPUT = DIR_PROJETO / "output"
-DIR_FONTS = DIR_PROJETO / "templates" / "fonts"
-DIR_LOGOS = DIR_PROJETO / "assets" / "logos-marca"
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _arte_common import (
+    DIR_OUTPUT, DIR_PROJETO, carregar_json, preparar_assets, resolver_badge,
+    preencher_template, renderizar_pagina, escolher_decoracao_fundo,
+    gerar_forma_decorativa_html,
+)
 
 DIMENSOES = {
     "arte-01": (1080, 1080),
     "arte-02": (1080, 1350),
     "arte-03": (1080, 1920)
 }
-
-
-def carregar_json(caminho):
-    try:
-        return json.loads(Path(caminho).read_text(encoding="utf-8"))
-    except Exception:
-        return None
-
-
-def formatar_markdown(texto):
-    if not isinstance(texto, str):
-        return texto
-    # Substitui **texto** por <strong>texto</strong>
-    texto = re.sub(r'\*\*(.*?)\*\*', r'<strong>\1</strong>', texto)
-    # Substitui *texto* por <em>texto</em>
-    texto = re.sub(r'\*(.*?)\*', r'<em>\1</em>', texto)
-    return texto
 
 
 def compilar_variante_arte(slug, variante):
@@ -53,7 +37,6 @@ def compilar_variante_arte(slug, variante):
 
     template_path = DIR_PROJETO / "templates" / f"arte-{largura}x{altura}.html"
     dest_dir = slug_dir / variante
-    dest_assets = dest_dir / "assets"
 
     if not copies_path.exists():
         print(f"[ERRO] {copies_path} nao encontrado -- redator-arte deve gerar as "
@@ -73,47 +56,23 @@ def compilar_variante_arte(slug, variante):
         print(f"[ERRO] {copies_path} deve conter exatamente 3 copies, encontrado {len(copies)}")
         return 1
 
-    # Garante estrutura de assets
-    (dest_assets / "fonts").mkdir(parents=True, exist_ok=True)
-    (dest_assets / "logos").mkdir(parents=True, exist_ok=True)
-
-    # Copia fontes
-    for f in DIR_FONTS.glob("*.woff2"):
-        shutil.copy(f, dest_assets / "fonts" / f.name)
-
-    # Copia logos
-    for l in DIR_LOGOS.glob("*.png"):
-        shutil.copy(l, dest_assets / "logos" / l.name)
-
-    # Copia imagem do produto (path real vem de config_projeto.json, nunca
-    # hardcoded — cada projeto tem seu próprio nome/local de imagem)
-    img_produto_filename = "kit_start_flex_frontal.png"  # fallback histórico
-    config_para_imagem = carregar_json(slug_dir / "config_projeto.json")
-    if config_para_imagem and config_para_imagem.get("imagens"):
-        primeira_imagem = config_para_imagem["imagens"][0].get("path", "")
-        if primeira_imagem:
-            img_produto_src = DIR_PROJETO / primeira_imagem
-            if img_produto_src.exists():
-                img_produto_filename = img_produto_src.name
-                shutil.copy(img_produto_src, dest_assets / img_produto_filename)
-    else:
-        img_produto_src_legado = slug_dir / "insumos" / "kit_start_flex_frontal.png"
-        if img_produto_src_legado.exists():
-            shutil.copy(img_produto_src_legado, dest_assets / "kit_start_flex_frontal.png")
-
-    # Injeta Badge de contexto (O badge USO INTERNO é suprimido ativamente e NUNCA mais utilizado!)
-    brief = carregar_json(slug_dir / "brief_criativo.json")
-    badge_texto = "USO INTERNO"
-    if brief:
-        nota = brief.get("nota_de_escopo", "").lower()
-        if "externo" in nota or "profissional" in nota:
-          badge_texto = "USO PROFISSIONAL"
-    badge_tag = ""
-    if badge_texto != "USO INTERNO":
-        badge_tag = f'<span class="badge">{badge_texto}</span>'
-
+    img_produto_filename = preparar_assets(dest_dir, slug_dir)
+    badge_tag = resolver_badge(slug_dir)
     template_content = template_path.read_text(encoding="utf-8")
     erros = 0
+
+    # Elementos decorativos de fundo sao opt-out via config_projeto.elementos_decorativos
+    # (Passo 5 do /esbocar) -- default True se o campo nao existir (REGRA 3).
+    config_projeto = carregar_json(slug_dir / "config_projeto.json")
+    decorativos_ativos = (config_projeto or {}).get("elementos_decorativos", True)
+
+    forma_html = ""
+    if decorativos_ativos:
+        # 1 tipo de forma/wave decorativa por bloco -- aqui o bloco e o FORMATO
+        # (as 3 copies de arte-01, por exemplo, compartilham a mesma forma/posicao;
+        # arte-02 e arte-03 tendem a sortear forma E posicionamento diferentes).
+        forma_nome, instancias = escolher_decoracao_fundo(f"{slug}:arte:{variante}")
+        forma_html = gerar_forma_decorativa_html(forma_nome, instancias)
 
     with sync_playwright() as p:
         browser = p.chromium.launch()
@@ -129,45 +88,22 @@ def compilar_variante_arte(slug, variante):
                 erros += 1
                 continue
 
-            headline = formatar_markdown(copy.get("headline", ""))
-            subcopy = formatar_markdown(copy.get("subcopy", ""))
-            cta = formatar_markdown(copy.get("cta", "Fale com a Conexão"))
-
-            html_final = template_content.replace(
-                "{{TITULO}}", f"Arte {variante[-2:]} {sufixo_copy} - Conexão")
-
-            logo_tag = '<img class="logo" src="assets/logos/Logo_Conexão_horizontal_texto_branco.png" alt="Conexão Implantes">'
-            html_final = re.sub(r'<!--\s*\{\{LOGO\}\}.*?-->', logo_tag, html_final, flags=re.DOTALL)
-
-            html_final = re.sub(r'<!--\s*\{\{BADGE_CONTEXTO\}\}.*?-->', badge_tag, html_final, flags=re.DOTALL)
-
-            produto_tag = f'<img class="produto" src="assets/{img_produto_filename}" alt="Produto">'
-            html_final = re.sub(r'<!--\s*\{\{IMAGEM_PRODUTO\}\}.*?-->', produto_tag, html_final, flags=re.DOTALL)
-
-            html_final = re.sub(r'<!--\s*\{\{HEADLINE\}\}.*?-->', f'<h1>{headline}</h1>', html_final, flags=re.DOTALL)
-            html_final = re.sub(r'<!--\s*\{\{SUBCOPY\}\}.*?-->', f'<p class="subcopy">{subcopy}</p>', html_final, flags=re.DOTALL)
-            html_final = html_final.replace("{{NOME_MARCA}}", "Conexão Sistemas de Próteses")
-
-            cta_tag = f'<span class="cta">{cta}</span>'
-            html_final = re.sub(r'<!--\s*\{\{CTA\}\}.*?-->', cta_tag, html_final, flags=re.DOTALL)
-
+            html_final = preencher_template(
+                template_content,
+                titulo=f"Arte {variante[-2:]} {sufixo_copy} - Conexão",
+                headline=copy.get("headline", ""),
+                subcopy=copy.get("subcopy", ""),
+                cta=copy.get("cta", "Fale com a Conexão"),
+                img_produto_filename=img_produto_filename,
+                badge_tag=badge_tag,
+                forma_decorativa_html=forma_html,
+            )
             dest_html.write_text(html_final, encoding="utf-8")
 
             print(f"Renderizando {variante}/{sufixo_copy} em PNG ({largura}x{altura}px)...")
-            page = None
-            try:
-                page = browser.new_page(viewport={"width": largura, "height": altura})
-                page.goto(f"file:///{dest_html.resolve()}")
-                page.wait_for_timeout(500)  # Aguarda transições e fontes
-                page.screenshot(path=dest_png)
-                print(f"[OK] {variante}/{sufixo_copy}: Arte PNG gerada em {dest_png}")
-            except Exception as e:
-                print(f"[FALHA] Falha ao renderizar {variante}/{sufixo_copy} via Playwright ({e})")
-                dest_html.unlink(missing_ok=True)
+            if not renderizar_pagina(browser, dest_html, dest_png, largura, altura,
+                                      rotulo=f"{variante}/{sufixo_copy}"):
                 erros += 1
-            finally:
-                if page is not None:
-                    page.close()
 
         browser.close()
 
@@ -184,7 +120,7 @@ def main():
     args = ap.parse_args()
 
     variantes = ["arte-01", "arte-02", "arte-03"] if args.variante == "todas" else [args.variante]
-    
+
     erros = 0
     for var in variantes:
         ret = compilar_variante_arte(args.slug, var)

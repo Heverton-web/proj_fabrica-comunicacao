@@ -1,0 +1,21 @@
+{
+  "_fonte": "Fixo — config determinística da ÚNICA diferença de conteúdo entre kit-consultor e kit-distribuidor (CTA final + assinatura de rodapé). Nunca gerado por LLM; lido por compilador-kit no momento da renderização de cada item.",
+  "_uso": "As 10 copies de output/<slug>/kits/copies.json são kit-agnósticas (sem CTA). compilador-kit aplica variantes.<kit>.cta_padrao e .assinatura ao renderizar cada PNG e ao escrever cada texto_whatsapp.txt.",
+
+  "publico_fixo": "dentista_implantodontista",
+  "formato_fixo": "1080x1350",
+  "tons": ["informativa", "contra-intuitiva", "tecnica", "efeito-uau", "educativa"],
+
+  "variantes": {
+    "kit-consultor": {
+      "_descricao": "Materiais que o consultor de campo da Conexão envia diretamente ao dentista/implantodontista.",
+      "cta_padrao": "Fale com seu consultor Conexão",
+      "assinatura": "Consultor Conexão"
+    },
+    "kit-distribuidor": {
+      "_descricao": "Materiais que o distribuidor/revendedor autorizado envia ao dentista/implantodontista.",
+      "cta_padrao": "Peça ao seu distribuidor Conexão",
+      "assinatura": "Distribuidor Autorizado Conexão"
+    }
+  }
+}

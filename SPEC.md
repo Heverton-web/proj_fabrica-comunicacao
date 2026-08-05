@@ -2,9 +2,9 @@
 
 Ver `PRD.md` para a visão de produto e `CLAUDE.md` para as REGRAs invioláveis. Este
 documento é o contrato técnico de orquestração. Contratos técnicos por tipo de material
-vivem em `SPEC_PDF.md`, `SPEC_HTML.md` e `SPEC_ARTE.md`.
+vivem em `SPEC_PDF.md`, `SPEC_HTML.md`, `SPEC_ARTE.md` e `SPEC_KITS.md`.
 
-## Requisitos contratuais (R1–R12) — não-negociáveis
+## Requisitos contratuais (R1–R13) — não-negociáveis
 
 | # | Requisito |
 |---|---|
@@ -19,7 +19,8 @@ vivem em `SPEC_PDF.md`, `SPEC_HTML.md` e `SPEC_ARTE.md`.
 | R9 | Todo material selecionado em `config_projeto.json` termina `concluido_autonomo` ou `esgotado` — nunca fica silenciosamente ausente do relatório final. |
 | R10 | Fan-out em lote de 4 (`pool-materiais.py`, `LOTE_PADRAO = 4`) — nunca despachar todos os subagentes de uma vez. |
 | R11 | Toda entrega final produz: decisões de design tomadas, informações faltantes, sugestões de legenda/CTA (REGRA 6). `revisor-marca` acumula essas 3 listas em `revisao/parecer_revisao.json`; `empacotar-projeto.py` as consolida em `manifesto_materiais.json`. |
-| R12 | `output/<slug>/` segue exatamente: `pdf/`, `landing-page/`, `apresentacao/`, `arte-01/`, `arte-02/`, `arte-03/`, `textos/` — nunca aninhado por marca/data. |
+| R12 | `output/<slug>/` segue exatamente: `pdf/`, `landing-page/`, `apresentacao/`, `arte-01/`, `arte-02/`, `arte-03/`, `textos/`, `kit-consultor/`, `kit-distribuidor/` — nunca aninhado por marca/data. |
+| R13 | Kit do Consultor/Distribuidor: 5 tons fixos × 2 itens, cada um com PNG 1080×1350 pixel-perfect (<1MB) + copy + texto de WhatsApp — 10 de cada por kit. As 10 copies são compartilhadas entre os 2 kits (idênticas exceto CTA/assinatura). Ver `SPEC_KITS.md`. |
 
 ## Máquina de estados (por material)
 
@@ -68,7 +69,11 @@ Ao final da rodada 4, `/esbocar`:
 
 1. `parametros_projeto.py --validar` (R2).
 2. `pool-materiais.py <slug> --plano --lote 4` → plano de lotes.
-3. Para cada lote: despachar `subagente-produtor-<tipo>` de todos os materiais do lote em paralelo, aguardar todos terminarem, cada um roda seu `redator-*` → `compilador-*` → `validar-*.py` → auto-registra via `pool-materiais.py --registrar <tipo> --sucesso|--falha`.
+2.5/2.7. Se `arte-0N`/`kit-*` estiver selecionado, gera a copy compartilhada
+   (`arte/copies.json` / `kits/copies.json`) **uma única vez**, inline, ANTES de
+   despachar qualquer subagente de arte/kit — nunca dentro do subagente (ver
+   `SPEC_ARTE.md`/`SPEC_KITS.md`).
+3. Para cada lote: despachar `subagente-produtor-<tipo>` de todos os materiais do lote em paralelo, aguardar todos terminarem, cada um roda seu `compilador-*` → `validar-*.py` → auto-registra via `pool-materiais.py --registrar <tipo> --sucesso|--falha` (`redator-*` só roda dentro do subagente para tipos SEM copy compartilhada — pdf, landing-page, apresentacao, textos).
 4. Drenar pendentes com backoff exponencial (15s×2^n, máx. 240s, máx. 3 tentativas).
 5. `revisor-marca` audita o lote de materiais concluídos (fidelidade de fonte + marca).
 6. `auditar-projeto.py <slug> --estrito` — gate determinístico final (R4, R5, R9).
@@ -88,8 +93,12 @@ Ao final da rodada 4, `/esbocar`:
   // Rodada 3 — escolha única do operador (objetivo/tom compostos):
   "objetivo_tom": "informacional_tecnico",
   //   educacional_comercial | informacional_tecnico | comercial_informacional_parceria
-  "materiais_selecionados": ["pdf", "landing-page", "arte-01", "arte-02", "arte-03", "textos"],
-  "edicao": "1ª Edição"           // Obrigatório se 'pdf' estiver em materiais_selecionados
+  "materiais_selecionados": ["pdf", "landing-page", "arte-01", "arte-02", "arte-03", "textos",
+                              "kit-consultor", "kit-distribuidor"],
+  "edicao": "1ª Edição",          // Obrigatório se 'pdf' estiver em materiais_selecionados
+  // Passo 5 do /esbocar — opcional, só perguntado se algum material de arte foi
+  // selecionado. Ausente ou true = elementos decorativos ativos (default, REGRA 3).
+  "elementos_decorativos": true  // true | false — ver SPEC_ARTE.md
 }
 ```
 
@@ -119,7 +128,20 @@ arquivo como solução interina (ver `SPEC_PDF.md`).
     // renderizado depois em TODOS os formatos selecionados (nunca 1 angulo por
     // formato):
     "arte": {"angulos_criativos": ["problema (capa isca)", "diferencial técnico", "versatilidade/eficiência"]},
-    "textos": {"canais": ["whatsapp", "instagram", "linkedin"]}
+    "textos": {"canais": ["whatsapp", "instagram", "linkedin"]},
+    // "kit" e compartilhado entre kit-consultor/kit-distribuidor selecionados —
+    // kit-variante (consultor/distribuidor) e copy sao eixos ortogonais (ver
+    // SPEC_KITS.md). Publico e tons sao SEMPRE fixos (dentista_implantodontista,
+    // brand/tons-kit.json) — nunca escolha do operador. 2 angulos por tom, 10 no
+    // total, cada um renderizado depois nos 2 kits selecionados (nunca 1 angulo
+    // por kit — o que muda entre os 2 e so o CTA, resolvido por compilador-kit):
+    "kit": {"angulos_por_tom": {
+      "informativa": ["compatibilidade MU/MB", "ausência de gambiarra"],
+      "contra-intuitiva": ["mais peças não é mais complexidade", "menos etapas, não menos precisão"],
+      "tecnica": ["PEEK Grau Médico sem parafuso passante", "assentamento passivo via match digital"],
+      "efeito-uau": ["metade do tempo de escaneamento", "1 escaneamento resolve gengiva e pilar"],
+      "educativa": ["por que a mandíbula é o deserto anatômico", "como funciona a conexão dupla"]
+    }}
   }
 }
 ```
@@ -131,7 +153,9 @@ arquivo como solução interina (ver `SPEC_PDF.md`).
   "materiais": [
     {"tipo": "pdf", "status": "concluido_autonomo", "path": "pdf/apostila_kit-master-flex.pdf"},
     {"tipo": "arte-01", "status": "concluido_autonomo", "path": "arte-01/"},  // pasta com 3 PNGs (1 por copy)
-    {"tipo": "textos", "status": "concluido_autonomo", "path": "textos/"}
+    {"tipo": "textos", "status": "concluido_autonomo", "path": "textos/"},
+    {"tipo": "kit-consultor", "status": "concluido_autonomo", "path": "kit-consultor/"},  // pasta com 10 PNGs+conteudo+textos
+    {"tipo": "kit-distribuidor", "status": "concluido_autonomo", "path": "kit-distribuidor/"}
   ],
   "decisoes_design": ["Paleta extraída da peça de referência (navy + dourado metálico)."],
   "informacoes_faltantes": ["Torque recomendado para o modelo XL não estava no texto-base."],
