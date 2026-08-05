@@ -69,21 +69,14 @@ embutido, transparência de imagem) é feita por script determinístico em `scri
 nunca por afirmação do agente. Gates de fase são exit codes (`--estrito` → exit 1 se
 não conforme), não julgamento subjetivo.
 
-**REGRA 9 — Grafo Primeiro, Arquivo Depois (economia de tokens inviolável):**
-toda exploração do projeto começa pelo grafo de conhecimento (`code-review-graph`),
+**REGRA 9 — Grafo Primeiro, Arquivo Depois (economia de tokens inviolável) — escopo: `scripts/*.py`:**
+toda exploração de **código Python do pipeline** começa pelo grafo de conhecimento (`code-review-graph`),
 não por leitura direta de arquivo. A ordem obrigatória é:
-1. **Grafo** — `semantic_search_nodes_tool`, `query_graph_tool`,
-   `get_architecture_overview_tool` para localizar o que se precisa.
-2. **Trecho cirúrgico** — `get_review_context_tool` ou `view_file` com
-   `StartLine`/`EndLine` precisos, só se o grafo não trouxer o trecho completo.
-3. **Arquivo inteiro** — apenas para os documentos que a REGRA 7 lista como
-   obrigatórios de leitura integral (texto-base, `brief_criativo.json`,
-   `_pool_estado.json`, `relatorio_auditoria.json`, `manifesto_materiais.json`).
+1. **Grafo** — `semantic_search_nodes_tool`, `query_graph_tool`, `get_architecture_overview_tool` para localizar o que se precisa.
+2. **Trecho cirúrgico** — `get_review_context_tool` ou `view_file` com `StartLine`/`EndLine` precisos, só se o grafo não trouxer o trecho completo.
+3. **Arquivo inteiro** — apenas para os documentos que a REGRA 7 lista como obrigatórios de leitura integral (texto-base, `brief_criativo.json`, `_pool_estado.json`, `relatorio_auditoria.json`, `manifesto_materiais.json`).
 
-Grep, `list_dir` e leitura de arquivo inteiro sem passar pelo grafo primeiro são
-proibidos quando o grafo puder responder — a violação desperdiça tokens sem ganho
-de precisão. Fall back para leitura direta **somente** quando o grafo não cobrir
-o que se precisa (ex.: arquivo recém-criado ainda não indexado).
+Grep, `list_dir` e leitura de arquivo inteiro sem passar pelo grafo primeiro são proibidos quando o grafo puder responder. Fall back para leitura direta **somente** quando o grafo não cobrir o que se precisa (ex.: arquivo recém-criado ainda não indexado).
 
 ## Arquitetura em uma frase
 
@@ -107,51 +100,31 @@ brand/design-system-conexao.json (FIXO, mesmo para todo projeto)
 
 ## Tabela de módulos por tipo de material
 
-| Material | Skill de redação | Compilador | Script de validação | Pasta de saída |
-|---|---|---|---|---|
-| PDF (apostila) | `redator-apostila` | `compilador-pdf` (Pandoc→Typst) | `validar-pdf.py` | `output/<slug>/pdf/` |
-| Landing Page | `redator-landing` | `compilador-html` | `validar-html.py` | `output/<slug>/landing-page/` |
-| Apresentação | `redator-apresentacao` | `compilador-html` | `validar-html.py` | `output/<slug>/apresentacao/` |
-| Arte 1080×1080 | `redator-arte` | `compilador-arte` (Playwright) | `validar-dimensoes.py` | `output/<slug>/arte-01/` |
-| Arte 1080×1350 | `redator-arte` | `compilador-arte` (Playwright) | `validar-dimensoes.py` | `output/<slug>/arte-02/` |
-| Arte 1080×1920 | `redator-arte` | `compilador-arte` (Playwright) | `validar-dimensoes.py` | `output/<slug>/arte-03/` |
+| Material | Selecionável via `/esbocar` | Skill de redação | Compilador | Script de validação | Pasta de saída |
+|---|---|---|---|---|---|
+| PDF (apostila) | Sim (Passo 4) | `redator-apostila` | `compilador-pdf` (Pandoc→Typst) | `validar-pdf.py` | `output/<slug>/pdf/` |
+| Landing Page | Sim (Passo 4) | `redator-landing` | `compilador-html` | `validar-html.py` | `output/<slug>/landing-page/` |
+| Apresentação | Sim (Passo 4) | `redator-apresentacao` | `compilador-html` | `validar-html.py` | `output/<slug>/apresentacao/` |
+| Arte 1080×1080 | Sim (Passo 4) | `redator-arte` | `compilador-arte` (Playwright) | `validar-dimensoes.py` | `output/<slug>/arte-01/` |
+| Arte 1080×1350 | Sim (Passo 4) | `redator-arte` | `compilador-arte` (Playwright) | `validar-dimensoes.py` | `output/<slug>/arte-02/` |
+| Arte 1080×1920 | Sim (Passo 4) | `redator-arte` | `compilador-arte` (Playwright) | `validar-dimensoes.py` | `output/<slug>/arte-03/` |
+| Textos de Apoio | Sim (Passo 4) | `redator-textos` | (sem compilador — grava `.txt` direto) | `validar-textos.py` | `output/<slug>/textos/` |
 
-Todos os materiais passam por `revisor-marca` (fidelidade de fonte + marca) e
-`auditar-projeto.py --estrito` antes de `empacotar-projeto.py`.
+Toda vez que um material for adicionado/removido desta tabela, rode `python scripts/verificar-consistencia-pipeline.py --estrito` para validar a consistência entre todos os módulos.
+
+Todos os materiais passam por `revisor-marca` (fidelidade de fonte + marca) e `auditar-projeto.py --estrito` antes de `empacotar-projeto.py`.
 
 ## Skills globais reaproveitados (catálogo já disponível, não copiar)
 
-`compilador-html` e `redator-landing` podem se apoiar em `frontend-design` /
-`web-artifacts-builder` / `high-end-visual-design` para qualidade visual de HTML;
-`revisor-marca` pode se apoiar em `dataviz`/`image` para checagens visuais adicionais;
-`compilador-pdf` pode consultar o skill `pdf` genérico para técnicas auxiliares de
-manipulação de PDF quando o Pandoc+Typst não bastar. Nenhum desses precisa ser
-reimplementado neste projeto.
+`compilador-html` e `redator-landing` podem se apoiar em `frontend-design` / `web-artifacts-builder` / `high-end-visual-design` para qualidade visual de HTML; `revisor-marca` pode se apoiar em `dataviz`/`image` para checagens visuais adicionais; `compilador-pdf` pode consultar o skill `pdf` genérico para técnicas auxiliares de manipulação de PDF quando o Pandoc+Typst não bastar.
 
 ## Pré-requisitos de ambiente
 
-Pandoc, Typst (CLI) e Playwright (Python) precisam estar instalados. Nenhum MCP
-customizado é necessário — o estado do pipeline é 100% arquivo JSON (ver REGRA 8), e as
-ferramentas nativas de leitura/escrita de arquivo do Claude Code já cobrem o que um MCP
-de filesystem faria.
+Pandoc, Typst (CLI) e Playwright (Python) precisam estar instalados. O estado do pipeline é 100% arquivo JSON (ver REGRA 8).
 
 ## Grafo de Conhecimento — MCP `code-review-graph` (REGRA 9)
 
-Este projeto possui um grafo de conhecimento auto-atualizado (via hooks em `.gemini/hooks/`).
-Toda exploração começa aqui — é mais rápido, mais barato em tokens e traz contexto
-estrutural (chamadores, dependentes, cobertura) que leitura de arquivo não consegue.
-
-### Quando usar cada tool do grafo
-
-| Situação no pipeline | Tool a usar |
-|---|---|
-| Localizar uma skill, script ou agente por nome/função | `semantic_search_nodes_tool` |
-| Entender o que chama / é chamado por um módulo | `query_graph_tool` (callers_of / callees_of) |
-| Avaliar impacto de mudar um script de validação | `get_impact_radius_tool` |
-| Revisar o que o FreeBuff (ou outro agente) alterou | `detect_changes_tool` + `get_review_context_tool` |
-| Entender quais fluxos do pipeline são afetados por uma mudança | `get_affected_flows_tool` |
-| Visão de alto nível da arquitetura (skills × agentes × scripts) | `get_architecture_overview_tool` + `list_communities_tool` |
-| Planejar renomeação ou encontrar código morto | `refactor_tool` |
+Este projeto possui um grafo de conhecimento auto-atualizado (`scripts/*.py`). Para o que o grafo cobre, toda exploração começa por ele.
 
 ### Hierarquia de acesso — ordem obrigatória (REGRA 9)
 
@@ -162,13 +135,3 @@ estrutural (chamadores, dependentes, cobertura) que leitura de arquivo não cons
                       (texto-base, brief_criativo.json, _pool_estado.json,
                        relatorio_auditoria.json, manifesto_materiais.json)
 ```
-
-`grep_search`, `list_dir` e leitura de arquivo inteiro sem passar pelo grafo primeiro
-são proibidos quando o grafo puder responder. Fall back para leitura direta apenas
-quando o arquivo for recém-criado e ainda não indexado pelo grafo.
-
-### O grafo se auto-atualiza
-
-Hooks em `.gemini/hooks/crg-update.sh` e `.gemini/hooks/crg-session-start.sh`
-atualizam o grafo a cada mudança de arquivo — após editar um skill ou script,
-o grafo reflete a mudança sem intervenção manual.

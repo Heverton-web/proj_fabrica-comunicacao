@@ -6,7 +6,8 @@
         "code-review-graph",
         "serve"
       ],
-      "cwd": "C:\\Users\\trcnologia\\Desktop\\proj_fabrica-comunicacao"
+      "cwd": ".",
+      "type": "stdio"
     }
   },
   "hooks": {

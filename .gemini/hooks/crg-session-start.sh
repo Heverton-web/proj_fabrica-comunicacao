@@ -1,17 +1,16 @@
 #!/usr/bin/env bash
 # code-review-graph: session start status (Gemini CLI hook)
 # Must output ONLY JSON on stdout. Logs go to file. Never blocks the session.
-# Falha completa de "status" so aparecia truncada (1a linha) no systemMessage,
-# sem registro persistente - agora tambem grava em .crg-hook.log (ver
-# relatorio 01-relatorio-de-melhorias.md, Secao 2).
 set -euo pipefail
 
 cat > /dev/null || true
 
-LOG_FILE="C:/Users/trcnologia/Desktop/proj_fabrica-comunicacao/.crg-hook.log"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_DIR="$(cd "${SCRIPT_DIR}/../.." && pwd)"
+LOG_FILE="${REPO_DIR}/.crg-hook.log"
 
 set +e
-msg_raw="$(code-review-graph status --repo "C:/Users/trcnologia/Desktop/proj_fabrica-comunicacao" 2>&1)"
+msg_raw="$(code-review-graph status --repo "${REPO_DIR}" 2>&1)"
 status_code=$?
 set -e
 

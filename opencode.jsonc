@@ -7,7 +7,7 @@
         "code-review-graph",
         "serve",
         "--repo",
-        "C:\\Users\\trcnologia\\Desktop\\proj_fabrica-comunicacao"
+        "."
       ]
     }
   }

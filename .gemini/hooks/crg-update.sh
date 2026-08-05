@@ -1,17 +1,16 @@
 #!/usr/bin/env bash
 # code-review-graph: incremental update after write/replace (Gemini CLI hook)
 # Must output ONLY JSON on stdout. Low-noise: no systemMessage.
-# Falhas nao bloqueiam a sessao, mas sao logadas em .crg-hook.log (antes eram
-# descartadas por completo via >/dev/null 2>&1, tornando qualquer falha de
-# indexacao indetectavel - ver relatorio 01-relatorio-de-melhorias.md, Secao 2).
 set -euo pipefail
 
 cat > /dev/null || true
 
-LOG_FILE="C:/Users/trcnologia/Desktop/proj_fabrica-comunicacao/.crg-hook.log"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_DIR="$(cd "${SCRIPT_DIR}/../.." && pwd)"
+LOG_FILE="${REPO_DIR}/.crg-hook.log"
 
 set +e
-update_out="$(code-review-graph update --skip-flows --repo "C:/Users/trcnologia/Desktop/proj_fabrica-comunicacao" 2>&1)"
+update_out="$(code-review-graph update --skip-flows --repo "${REPO_DIR}" 2>&1)"
 update_status=$?
 set -e
 
