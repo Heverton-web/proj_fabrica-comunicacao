@@ -24,50 +24,41 @@ em vez de reinventar orientação de design do zero.
 
 ## Procedimento
 
-### 1. Copiar as fontes da marca
+### 1. Executar a Compilação via `scripts/compilar-html.py`
 
-Copie `templates/fonts/*.woff2` para `output/<slug>/<tipo>/assets/fonts/` — os
-templates referenciam esse path relativo via `@font-face`. Sem isso, o material cai
-silenciosamente em fonte de sistema (Roboto, se instalada) — confirme visualmente ou
-via `document.fonts` antes de considerar concluído.
+Toda compilação de HTML do projeto foi centralizada de forma robusta e automatizada no script utilitário **`scripts/compilar-html.py`**. Ele gerencia cópias de fontes, logo horizontal de marca, imagem do produto e executa o processamento do conteúdo. Invoque o script informando o slug e o tipo do material:
+```bash
+python scripts/compilar-html.py <slug> apresentacao
+python scripts/compilar-html.py <slug> landing-page
+```
 
-### 2. Injetar conteúdo no template
+### 2. Auto-detecção de Layouts e Recursos Visuais (Apresentação)
 
-Substitua os placeholders de conteúdo do template (`{{SLIDES}}`/`{{HERO}}`/
-`{{BADGE_CONTEXTO}}` etc. — ver comentários em `templates/apresentacao.html` /
-`templates/landing.html`) pelo conteúdo de `slides.json`/`conteudo.json`. Copie
-qualquer imagem referenciada para `output/<slug>/<tipo>/assets/` e ajuste os `src` para
-paths relativos. `{{BADGE_CONTEXTO}}` = "USO INTERNO" ou "USO PROFISSIONAL"/"USO
-EXTERNO" conforme a decisão de escopo registrada em `brief_criativo.json`.
+O compilador lê o arquivo `slides.json` e monta os blocos correspondentes de forma inteligente a partir de palavras-chave do título:
+- **Slide de Capa:** Cria um layout de duas colunas (Hero) com dados/badges à esquerda e imagem de alta qualidade do produto à direita.
+- **Divisão em Duas Colunas (Respiro 32px):** Se um slide do tipo conteúdo tiver **4 ou mais marcadores**, o compilador os divide automaticamente em duas colunas paralelas (`.duas-colunas`) para que preencham a tela com excelente respiro lateral e tamanho de fonte perfeito. Os painéis (`.slide ul`) têm obrigatoriamente pelo menos **32px de padding** vertical.
+- **Fluxograma Horizontal Animado (Layout `fluxo`):** Se o título tiver `"Script"`, `"SPIN"` ou `"Passos"`, converte os bullets em uma trilha de passos conectados horizontalmente por setas e com atrasos de animação stagger.
+- **Tabela Técnica com Gauge SVG (Layout `torque`):** Se o título tiver `"Torque"`, renderiza uma tabela de especificações à esquerda e um indicador de torque seguro (SVG Gauge) à direita, cujas agulha e arco se movem de forma animada quando o slide recebe a classe `.ativo`.
+- **Efeitos de Destaque Neon:** Realiza o parsing de marcas de markdown e aplica cores neon Conexão (Roxa, Azul, Verde, Vermelha) nas chaves e drivers, substituindo os asteriscos em tags HTML válidas.
 
-**Atenção — regra de ouro (bug já ocorrido, não repita):** nos templates os
-placeholders de bloco vivem DENTRO de um comentário HTML
-(`<!-- {{HERO}} -- compilador-html substitui: ... -->`). Substitua o comentário
-INTEIRO pelo HTML gerado (ex.: `re.sub(r'<!--\s*\{\{HERO\}\}.*?-->', html_gerado,
-texto, flags=re.DOTALL)`) — NUNCA apenas o token `{{HERO}}`, senão o conteúdo fica
-invisível (dentro do comentário) e a página renderiza vazia sem nenhum erro de
-console. Depois de salvar, confirme no DOM (não só por grep) que o conteúdo existe:
-`document.querySelectorAll('.slide').length` (apresentação) e
-`document.querySelector('.hero h1')` (landing).
+### 3. Atenção — regra de ouro (bug já ocorrido, não repita)
 
-### 3. Salvar
+Nos templates os placeholders de bloco vivem DENTRO de um comentário HTML (`<!-- {{HERO}} -- compilador-html substitui: ... -->`). Substitua o comentário INTEIRO pelo HTML gerado usando regex com a flag de quebra de linhas ativa (`flags=re.DOTALL`), senão o comentário permanece e os slides ficam invisíveis no navegador.
 
-- `output/<slug>/apresentacao/index.html` (+ `assets/`, incluindo `assets/fonts/`)
-- `output/<slug>/landing-page/index.html` (+ `assets/`, incluindo `assets/fonts/`)
+### 4. Handoff e Validação
 
-### 4. Handoff
-
-`scripts/validar-html.py <slug> <tipo>` roda o Playwright headless para confirmar
-ausência de erro de console/asset quebrado/overflow; `scripts/validar-design-tokens.py
-<slug> <tipo>` confirma fidelidade de cor contra `brand/design-system-conexao.json`;
-`revisor-marca` faz a checagem de fidelidade de conteúdo e de componente.
+Após a compilação, execute os validadores do projeto para atestar a conformidade técnica e fidelidade estrita das cores:
+```bash
+python scripts/validar-html.py <slug> <tipo>
+python scripts/validar-design-tokens.py <slug> <tipo>
+```
 
 ## Restrições
 
-- Nunca hardcode hex/nome de fonte fora do bloco `:root` — todo o resto do CSS deve
-  usar `var(--accent)` etc., para que `validar-design-tokens.py` consiga confirmar
-  fidelidade de marca por grep.
+- **Sem Hexadecimais Não Homologados:** Para passar no validador `validar-design-tokens.py`, o arquivo final gerado não pode conter nenhum código hexadecimal de cor (`#RRGGBB`) que não esteja explícito no arquivo de tokens fixo. Para cores adicionais de destaque, luzes ou efeitos decorativos neon, utilize estritamente a notação funcional **`rgb()`** ou **`rgba()`** CSS.
 - Botão/CTA primário sempre usa `var(--gradiente-assinatura)`, nunca `var(--accent)`
+  chapado. No slide final (CTA), o botão deve ser translúcido e discreto, em total conformidade visual.
+- HTML deve ser autocontido (sem CDN externo, inclusive de fonte).
   chapado — ver `aplicador-marca-conexao`.
 - HTML deve ser autocontido (sem CDN externo, inclusive de fonte) — mesma disciplina de
   artifacts self-contained.

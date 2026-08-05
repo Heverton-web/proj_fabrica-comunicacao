@@ -1,81 +1,38 @@
 ---
 name: compilador-pdf
-description: Fase 3 da Fábrica de Materiais de Comunicação — compila apostila_<slug>.md em PDF via Pandoc + Typst, usando templates/template_apostila.typ. Use depois de redator-apostila, antes de validar-pdf.py/revisor-marca. INTERIM — regras próprias de PDF ("Flex Gold") ainda não foram definidas; por ora usa o mesmo design system fixo dos demais materiais.
+description: Fase 3 da Fábrica de Materiais de Comunicação — compila apostila_<slug>.md em PDF via Pandoc + Typst, usando templates/template_apostila.typ de padrão premium (Mosaico Conexão Premium / Flex Gold) de forma totalmente automatizada. Use depois de redator-apostila, antes de validar-pdf.py/revisor-marca.
 ---
 
 # Skill: Compilador de PDF
 
-Você compila o Markdown da apostila em PDF final. Pipeline idêntico ao `compilador-abnt`
-da Fábrica Agêntica de Livros (Pandoc → `.typ` → Typst).
+Você compila o Markdown da apostila em PDF final aplicando as regras premium de diagramação (Mosaico Conexão Premium / Flex Gold).
 
-**Nota de escopo (interim):** o operador decidiu que o PDF vai ganhar regras visuais
-próprias (estilo "Flex Gold" — título-gradiente, badges, selos institucionais, como no
-material de referência Master Flex), mas essas regras ainda não foram desenhadas. Até
-lá, o template usa o mesmo `brand/design-system-conexao.json` fixo dos outros
-materiais como paleta interina — não é a decisão final, é para não deixar o PDF quebrado.
+O PDF ganhou regras visuais definitivas (estilo "Flex Gold"): capa com fundo escuro e blobs, faixas douradas em gradiente metálico, título em caixa alta com Inter 900 (Black), logotipo horizontal de marca e imagem do produto perfeitamente centralizados, cabeçalho dinâmico (título à esquerda, edição e data à direita) e conteúdo interno com fundo branco para leitura confortável de alta definição.
 
-Se precisar de técnicas auxiliares de manipulação de PDF fora do que Pandoc+Typst
-cobre, consulte o skill genérico `pdf` do catálogo — não reimplemente do zero.
+Se precisar de técnicas auxiliares de manipulação de PDF fora do que Pandoc+Typst cobre, consulte o skill genérico `pdf` do catálogo.
 
 ## Entrada
 
 - `output/<slug>/pdf/apostila_<slug>.md`
-- `brand/design-system-conexao.json` (fixo, uso interino — ver nota de escopo acima)
+- `brand/design-system-conexao.json`
 - `templates/template_apostila.typ`
 
 ## Procedimento
 
-### 1. Montar as variáveis `-V`
+### 1. Executar a Compilação via `scripts/compilar-pdf.py`
 
-Rode `python scripts/parametros_projeto.py <slug> --pdf-vars` — imprime os pares
-`-V chave=valor` prontos (cor_primaria, cor_secundaria, cor_destaque, cor_texto,
-cor_fundo, fonte_titulo, fonte_corpo), lidos de `brand/design-system-conexao.json`.
-Também monte manualmente: `author=<nome da marca>`, `title=<nome do material>`,
-`cta_final=<CTA extraído da seção de Fechamento>`.
-
-**Formato obrigatório das flags:** cada linha `-V chave=valor` vira DOIS elementos na
-lista Python — `"-V", "chave=valor"` (argv separados). NUNCA passe a linha inteira
-como um token único (`"-V chave=valor"`): o pandoc parseia o nome da variável com
-espaço à esquerda e a substituição falha em silêncio, caindo no default do template
-(fonte Arial, cores fora da marca) sem erro — quebra a REGRA 6. O helper
-`pdf_typst.py` já normaliza tokens únicos automaticamente (defesa em profundidade),
-mas monte no formato certo desde o início.
-
-### 2. Compilar via Pandoc + Typst (helper `pdf_typst.py`)
-
-```python
-import subprocess
-from pathlib import Path
-from scripts.pdf_typst import executar
-
-slug_dir = Path("output") / slug
-md = slug_dir / "pdf" / f"apostila_{slug}.md"
-pdf = slug_dir / "pdf" / f"apostila_{slug}.pdf"
-
-# lista_de_flags_V: SEMPRE no formato ["-V", "chave=valor", ...] (argv separados)
-lista_de_flags_V = ["-V", "cor_primaria=#c9a655", "-V", "fonte_titulo=Inter"]
-
-comando = [
-    "pandoc", str(md),
-    "--pdf-engine=typst",
-    "--template", "templates/template_apostila.typ",
-    "-o", str(pdf),
-] + lista_de_flags_V  # geradas no passo 1
-
-resultado = executar(comando, pdf, slug_dir, typst_bin="typst", timeout=300)
+Toda compilação de PDF do projeto foi centralizada de forma robusta e automatizada no script utilitário **`scripts/compilar-pdf.py`**. Ele gerencia o carregamento de variáveis do design system, metadados do projeto, edição de escolha do operador, imagem do produto e executa o processamento. Invoque o script informando o slug:
+```bash
+python scripts/compilar-pdf.py <slug>
 ```
 
-`pdf_typst.py` já resolve o problema de paths absolutos que o Typst rejeita no Windows
-(gera o `.typ` intermediário dentro da pasta do projeto) — não reimplemente essa lógica.
+O script extrai dinamicamente as variáveis de marca (`--pdf-vars`), resgata a edição do `config_projeto.json` e repassa para o Pandoc e Typst as flags `-V` de forma perfeitamente separada e argv-normalizada (evitando bugs de leitura silenciosa de variáveis), compilando o arquivo final com integridade máxima de design e cores.
 
-### 3. Handoff
+### 2. Handoff e Validação
 
-`scripts/validar-pdf.py <slug>` confirma tamanho/páginas/texto vetorial; `revisor-marca`
-faz a checagem de fidelidade.
+`scripts/validar-pdf.py <slug>` confirma tamanho/páginas/texto vetorial; `revisor-marca` faz a checagem de fidelidade de conteúdo e de marca.
 
 ## Restrições
 
-- Nunca hardcode cor/fonte no comando ou no template — tudo vem de
-  `scripts/parametros_projeto.py --pdf-vars` via `-V`.
-- Se a compilação falhar (Pandoc ou Typst com erro), tente uma correção estrutural
-  óbvia no Markdown (ex.: tabela mal fechada) antes de escalar como falha — REGRA 4.
+- Nunca hardcode cor/fonte no comando ou no template — tudo vem de `scripts/parametros_projeto.py --pdf-vars` via `-V`.
+- Se a compilação falhar (Pandoc ou Typst com erro), tente uma correção estrutural óbvia no Markdown (ex.: tabela mal fechada) antes de escalar como falha — REGRA 4.

@@ -25,7 +25,13 @@ suficiente para leitura em tela durante uma reunião. Ver `SPEC_HTML.md`.
 2. **1 slide por item da hierarquia de conteúdo** (problema, solução, cada destaque
    técnico relevante) — texto curto (headline + até 3 bullets), nunca parágrafo denso;
    um slide é lido em segundos, não estudado.
-3. **Slide de fechamento** — CTA + assinatura de marca.
+3. **Gatilhos Visuais de Título:** O compilador HTML é inteligente e auto-detecta o melhor layout com base em palavras-chave no título do slide. Escreva títulos que utilizem explicitamente estes termos:
+   - Use **"Script"**, **"SPIN"** ou **"Passos"** no título para acionar o layout de **Fluxograma Horizontal Animado** (ex: *"Script de Vendas: SPIN Selling"*).
+   - Use **"Torque"** ou **"Limites"** no título para acionar a **Tabela Técnica com Gauge SVG Animado** (ex: *"Tabela de Torques e Diretrizes"*).
+   - Use **"Objeções"** no título para acionar a **Tabela de Contorno de Objeções** (ex: *"Tabela de Contorno de Objeções"*).
+   - Use **"Composição"**, **"Versatilidade"** ou **"Diferenciais"** para acionar os bullets em painel double-bezel. Se a lista contiver 4 ou mais itens, ela será dividida automaticamente em **duas colunas paralelas**, garantindo perfeito respiro.
+4. **Sem Hífens nos Títulos:** É expressamente proibido usar hífens (-) nos títulos de slides. Use sempre dois-pontos (:) para divisões ou subtítulos.
+5. **Slide de fechamento** — CTA + assinatura de marca.
 
 Cada slide deve caber sem scroll no template de apresentação (ver `SPEC_HTML.md`) —
 prefira cortar conteúdo secundário a espremer texto. Se uma imagem fornecida pelo

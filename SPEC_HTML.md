@@ -25,19 +25,25 @@ properties e `@font-face` embutidos; ver `.claude/skills/aplicador-marca-conexao
 
 ## Apresentação
 
-- Estrutura em slides (`brief_criativo.mapeamento_por_material.apresentacao.slides`):
-  capa, problema, solução, 1 destaque por slide, fechamento/CTA.
-- Navegação simples (setas/teclado) — sem exigir biblioteca externa pesada; JS inline
-  mínimo.
-- Saída: `output/<slug>/apresentacao/index.html` (+ `assets/` se houver imagens).
+- **Estrutura de Slides:** Capa, diferenciais, composição, especificações, scripts/SPIN, objeções, fechamento/CTA.
+- **Design de Títulos:** Todos os títulos de slides devem ser em **Caixa Alta** (uppercase), com peso de fonte **Inter 900** (Black) e preenchidos com o gradiente metálico linear Conexão (`--gradiente-assinatura`).
+- **Sem Hífens:** Hífens (-) nos títulos são proibidos, devendo ser obrigatoriamente substituídos por dois-pontos (:).
+- **Cabeçalho Dinâmico:** O cabeçalho fixo (`.topo-deck`) deve dispor o logotipo horizontal Conexão à esquerda e a Edição definida (ex: "1ª Edição" carregada dinamicamente de `config_projeto.json`) à direita de forma sutil e elegante.
+- **Respiro de Painéis (Padding):** Os painéis de conteúdo (`.slide ul`) devem ter obrigatoriamente pelo menos **32px de padding superior e inferior** (`padding: 32px 1.8rem;`) com tamanhos de fonte equilibrados para evitar overflow.
+- **Divisão Dinâmica de Listas (Split 4+):** Se uma lista de bullets contiver 4 ou mais itens, ela deve ser dividida dinamicamente pelo compilador em **duas colunas paralelas de painéis** (`.duas-colunas`), preenchendo a largura da tela de forma balanceada e simétrica.
+- **Medidor de Torque (SVG Gauge):** O slide relacionado a torques cirúrgicos deve conter uma tabela técnica à esquerda e um **indicador de torque seguro (Gauge SVG inline) animado** à direita. O ponteiro e a cor do arco devem realizar uma transição suave de varredura quando o slide recebe a classe `.ativo`.
+- **Efeitos Neon nas Cores de Captura:** O compilador HTML deve fazer o parsing do markdown (`**` para `<strong>` e `*` para `<em>`) e aplicar classes de estilo com brilho neon nas tags `strong` contendo palavras-chave das cores de captura da marca Conexão (Roxa, Azul, Verde, Vermelha).
+- **Navegação:** Suporta navegação interativa nativa por setas, barra de espaço e cliques (efeito fade-in/slide vertical).
+- **Saída:** `output/<slug>/apresentacao/index.html` (+ `assets/` incluindo fontes locais e logotipos).
 
 ## Landing Page
 
-- Estrutura em seções (`brief_criativo.mapeamento_por_material.landing-page.secoes`):
-  hero, problema→solução, destaques, prova/composição, CTA final.
-- Copy persuasiva mas fiel à fonte (REGRA 6) — sem superlativo não sustentado pelo
-  texto-base.
-- Saída: `output/<slug>/landing-page/index.html` (+ `assets/` se houver imagens).
+- **Estrutura de Seções:** Hero, problema→solução, destaques, prova/composição técnica e comercial, CTA final.
+- **Design Unificado:** Títulos em Caixa Alta e Inter 900 com gradiente de assinatura, badges com fundo dourado translúcido (12% opacidade) e bordas finas, botões primários translúcidos com efeito hover sutil.
+- **Faixas Premium:** Presença de finas faixas douradas (3px) preenchidas com o gradiente Conexão fixadas no topo e rodapé de forma persistente.
+- **Parser de Markdown:** Tratamento de markdown em todo o copy e tabelas para renderização limpa de negritos/itálicos.
+- **Copy Persuasiva:** Fiel à fonte (REGRA 6) — sem superlativos não sustentados pelo texto-base.
+- **Saída:** `output/<slug>/landing-page/index.html` (+ `assets/` incluindo fontes e logotipos locais).
 
 ## Validação (`scripts/validar-html.py`)
 
