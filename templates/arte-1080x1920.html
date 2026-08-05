@@ -51,12 +51,11 @@
   }
 
   /* Bloco de Conteúdo Integrado: Imagem do produto, Título e Parágrafo explicativo
-     Alinhado ao centro tanto na vertical quanto na horizontal, com largura expandida para 920px para que o título
-     tenha bastante espaço horizontal para respirar (ficando mais largo que o produto)
+     Alinhado exatamente 64px mais para baixo do centro vertical (calc(50% + 64px)), com largura unificada de 920px
      Mantendo 24px de padding left e right */
   .bloco-conteudo {
     position: absolute;
-    top: 50%; left: 50%;
+    top: calc(50% + 64px); left: 50%;
     transform: translate(-50%, -50%);
     width: 920px;
     padding: 0 24px;

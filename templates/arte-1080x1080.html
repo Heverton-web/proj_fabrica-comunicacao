@@ -51,12 +51,11 @@
   }
 
   /* Bloco de Conteúdo Integrado: Imagem do produto, Título e Parágrafo explicativo
-     Alinhado ao centro tanto na vertical quanto na horizontal, com largura expandida para 800px para que o título
-     tenha bastante espaço horizontal para respirar (ficando mais largo que o produto)
+     Alinhado exatamente 64px mais para baixo do centro vertical (calc(50% + 64px)), com largura unificada de 800px
      Mantendo 24px de padding left e right */
   .bloco-conteudo {
     position: absolute;
-    top: 50%; left: 50%;
+    top: calc(50% + 64px); left: 50%;
     transform: translate(-50%, -50%);
     width: 800px;
     padding: 0 24px;
@@ -68,8 +67,7 @@
     z-index: 1;
   }
 
-  /* Imagem do produto em evidência (Foco Principal) - Altura reduzida para 360px para garantir 
-     uma folga mínima de 53px (superior a 48px) entre o logo (y=83+64=147px) e o topo do bloco de produto (y=200px) */
+  /* Imagem do produto em evidência (Foco Principal) */
   .produto {
     width: 600px; max-height: 360px; object-fit: contain; margin-bottom: 32px;
     filter: drop-shadow(0 15px 35px rgba(0,0,0,0.5));
