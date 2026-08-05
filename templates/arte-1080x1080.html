@@ -39,38 +39,59 @@
   .barra-topo { position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: var(--gradiente-assinatura); box-shadow: 0 0 8px rgba(255, 243, 173, 0.4); z-index: 10; }
   .barra-baixo { position: absolute; bottom: 0; left: 0; width: 100%; height: 3px; background: var(--gradiente-assinatura); box-shadow: 0 0 8px rgba(255, 243, 173, 0.4); z-index: 10; }
 
-  /* Logo da empresa centralizado no topo */
-  .logo { position: absolute; top: 40px; left: 50%; transform: translateX(-50%); max-height: 55px; max-width: 220px; z-index: 2; }
+  /* Logo um pouco maior no topo, exatamente a 24px da faixa superior (24px + 3px da faixa = 27px) */
+  .logo { position: absolute; top: 27px; left: 50%; transform: translateX(-50%); max-height: 64px; max-width: 240px; z-index: 2; }
 
-  /* Badges dourados translúcidos premium centralizados */
+  /* Badges dourados translúcidos premium */
   .badge {
-    position: absolute; top: 120px; left: 50%; transform: translateX(-50%);
+    display: inline-block;
     background: rgba(201, 166, 85, 0.12);
     border: 1px solid rgba(201, 166, 85, 0.35);
-    border-radius: 999px; padding: 0.45rem 1.2rem; font-size: 0.9rem; font-weight: 700;
+    border-radius: 999px; padding: 0.45rem 1.2rem; font-size: 0.85rem; font-weight: 700;
     letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent);
-    box-shadow: 0 2px 4px rgba(0,0,0,0.12); z-index: 2;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.12);
   }
 
-  /* Imagem do produto em evidência centralizado */
+  /* Bloco de Conteúdo Integrado: Imagem do produto, Título e Parágrafo explicativo
+     Alinhado ao centro tanto na vertical quanto na horizontal, com largura unificada de 620px (largura da imagem)
+     Mantendo 24px de padding left e right */
+  .bloco-conteudo {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 620px;
+    padding: 0 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    z-index: 1;
+  }
+
+  /* Imagem do produto em evidência ocupando 100% do bloco de conteúdo */
   .produto {
-    position: absolute; top: 190px; left: 50%; transform: translateX(-50%);
-    width: 620px; max-height: 440px; object-fit: contain; z-index: 1;
+    width: 100%; max-height: 380px; object-fit: contain; margin-bottom: 24px;
     filter: drop-shadow(0 15px 35px rgba(0,0,0,0.5));
   }
 
-  /* Título em caixa alta, Inter 900 e parágrafo centralizados */
-  .texto { position: absolute; left: 48px; right: 48px; bottom: 155px; z-index: 2; text-align: center; }
-  .texto h1 {
-    font-family: var(--fonte-titulo); font-weight: 900; font-size: 2.85rem; line-height: 1.15; margin-bottom: 0.6rem;
-    text-transform: uppercase;
+  /* Título em caixa alta, Inter 900 ocupando 100% da largura do bloco */
+  .bloco-conteudo h1 {
+    font-family: var(--fonte-titulo); font-weight: 900; font-size: 2.85rem; line-height: 1.15; margin-bottom: 16px;
+    text-transform: uppercase; width: 100%;
     background: var(--gradiente-assinatura); background-clip: text; -webkit-background-clip: text; color: transparent;
   }
-  .texto p.subcopy { font-family: var(--fonte-corpo); font-size: 1.25rem; color: var(--text-muted); margin: 0 auto; max-width: 50ch; line-height: 1.45; }
+  
+  /* Parágrafo de descrição limitando-se exatamente à mesma largura do bloco */
+  .bloco-conteudo p.subcopy {
+    font-family: var(--fonte-corpo); font-size: 1.25rem; color: var(--text-muted); line-height: 1.45;
+    margin-bottom: 16px; width: 100%;
+  }
 
-  /* Botão CTA Centralizado */
-  .marca { position: absolute; bottom: 85px; left: 50%; transform: translateX(-50%); display: flex; justify-content: center; align-items: center; z-index: 2; }
+  /* Botão CTA integrado no bloco de conteúdo */
+  .marca { display: flex; justify-content: center; align-items: center; margin-top: 8px; }
   .marca .cta {
+    display: inline-block;
     background: rgba(201, 166, 85, 0.08);
     border: 1px solid rgba(201, 166, 85, 0.4);
     color: var(--accent);
@@ -79,11 +100,23 @@
     box-shadow: 0 4px 12px rgba(0,0,0,0.15);
   }
 
-  /* Rodapé com direitos autorais (opacidade baixa e itálico) */
+  /* Bloco do Rodapé: Badges e Direitos Autorais com gap de exatamente 24px */
+  .rodape-bloco {
+    position: absolute;
+    bottom: 35px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    width: 100%;
+    z-index: 2;
+  }
+
   .rodape-copyright {
-    position: absolute; bottom: 35px; left: 50%; transform: translateX(-50%);
     font-family: var(--fonte-corpo); font-size: 0.85rem; font-style: italic;
-    color: rgba(255, 255, 255, 0.35); text-align: center; z-index: 2; width: 100%;
+    color: rgba(255, 255, 255, 0.35); text-align: center; width: 100%;
   }
 </style>
 </head>
@@ -94,21 +127,23 @@
   <div class="barra-baixo"></div>
 
   <!-- {{LOGO}} -- compilador-arte substitui: <img class="logo" src="..."> -->
-  <!-- {{BADGE_CONTEXTO}} -- compilador-arte substitui: <span class="badge">USO INTERNO</span> -->
 
-  <!-- {{IMAGEM_PRODUTO}} -- compilador-arte substitui: <img class="produto" src="..."> -->
-
-  <div class="texto">
+  <div class="bloco-conteudo">
+    <!-- {{IMAGEM_PRODUTO}} -- compilador-arte substitui: <img class="produto" src="..."> -->
     <!-- {{HEADLINE}} -- compilador-arte substitui: <h1>headline</h1> -->
     <!-- {{SUBCOPY}} -- compilador-arte substitui: <p class="subcopy">subcopy</p> -->
+    <div class="marca">
+      <!-- {{CTA}} -- compilador-arte substitui: <span class="cta">cta</span> -->
+    </div>
   </div>
 
-  <div class="marca">
-    <!-- {{CTA}} -- compilador-arte substitui: <span class="cta">cta</span> -->
-  </div>
-
-  <div class="rodape-copyright">
-    2026 © Todos os direitos reservados a Conexão Sistemas de Próteses
+  <div class="rodape-bloco">
+    <div class="badge-container">
+      <!-- {{BADGE_CONTEXTO}} -- compilador-arte substitui: <span class="badge">USO INTERNO</span> -->
+    </div>
+    <div class="rodape-copyright">
+      2026 © Todos os direitos reservados a Conexão Sistemas de Próteses
+    </div>
   </div>
 </body>
 </html>
