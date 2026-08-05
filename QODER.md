@@ -36,3 +36,14 @@ Fall back to Grep/Glob/Read **only** when the graph doesn't cover what you need.
 2. Use `detect_changes_tool` for code review.
 3. Use `get_affected_flows_tool` to understand impact.
 4. Use `query_graph_tool` pattern="tests_for" to check coverage.
+
+## Comandos da Fábrica
+
+Este repositório é a "Fábrica de Materiais de Comunicação". Os comandos
+`/esbocar`, `/produzir-comunicacao-completa <slug>`, `/gerar-pdf <slug>`,
+`/gerar-landing <slug>`, `/gerar-apresentacao <slug>` e `/gerar-arte <slug>` são
+universais (não exclusivos do Claude Code) — o procedimento completo de cada um
+está em `SPEC_COMANDOS.md`. Se o operador digitar um desses comandos (ou pedir o
+equivalente em linguagem natural, ex.: "inicie a fábrica para o produto X"), leia
+`SPEC_COMANDOS.md` por completo e siga a seção correspondente. `AGENTS.md` é a
+fonte de verdade da arquitetura/regras do projeto.

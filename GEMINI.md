@@ -37,6 +37,17 @@ Fall back to Grep/Glob/Read **only** when the graph doesn't cover what you need.
 3. Use `get_affected_flows_tool` to understand impact.
 4. Use `query_graph_tool` pattern="tests_for" to check coverage.
 
+## Comandos da Fábrica
+
+Este repositório é a "Fábrica de Materiais de Comunicação". Os comandos
+`/esbocar`, `/produzir-comunicacao-completa <slug>`, `/gerar-pdf <slug>`,
+`/gerar-landing <slug>`, `/gerar-apresentacao <slug>` e `/gerar-arte <slug>` são
+universais (não exclusivos do Claude Code) — o procedimento completo de cada um
+está em `SPEC_COMANDOS.md`. Se o operador digitar um desses comandos (ou pedir o
+equivalente em linguagem natural, ex.: "inicie a fábrica para o produto X"), leia
+`SPEC_COMANDOS.md` por completo e siga a seção correspondente. `AGENTS.md` é a
+fonte de verdade da arquitetura/regras do projeto.
+
 ## Regras Invioláveis do Projeto
 
 1. **Charset UTF-8 Obrigatório:** Todos os materiais gerados (HTML, CSS, JSON, Markdown, etc.) e todos os scripts de leitura/escrita do ecossistema devem utilizar codificação **UTF-8** de forma explícita e obrigatória (ex: `<meta charset="utf-8">` em HTML, `encoding="utf-8"` em chamadas de arquivos em Python). Nenhuma outra codificação é permitida para garantir compatibilidade multiplataforma absoluta de caracteres especiais e acentuação.

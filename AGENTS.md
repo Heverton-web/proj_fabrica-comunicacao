@@ -19,6 +19,16 @@ Este projeto é modelado sobre a arquitetura da **Fábrica Agêntica de Livros**
 de trabalho, scripts determinísticos = árbitro de qualidade. Ver `SPEC.md` para o
 contrato completo e `PRD.md` para a visão de produto.
 
+**Os comandos (`/esbocar`, `/produzir-comunicacao-completa`, `/gerar-pdf`,
+`/gerar-landing`, `/gerar-apresentacao`, `/gerar-arte`) são universais — funcionam em
+qualquer harness que leia os arquivos deste repositório, não só Claude Code.** O
+procedimento completo e canônico de cada um vive em `SPEC_COMANDOS.md`; os arquivos
+em `.claude/commands/*.md` são apenas o mecanismo de descoberta específico do Claude
+Code (ponteiros finos para `SPEC_COMANDOS.md`, nunca uma segunda cópia da instrução).
+Um harness sem esse mecanismo deve reconhecer o mesmo comando por pedido em
+linguagem natural equivalente (ex.: "inicie a fábrica para o produto X") e seguir a
+seção correspondente de `SPEC_COMANDOS.md`.
+
 ## REGRAS INVIOLÁVEIS
 
 **REGRA 1 — Idioma Estrito (PT-BR):** toda comunicação interna entre skills/agentes e

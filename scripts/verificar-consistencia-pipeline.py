@@ -5,9 +5,15 @@ tipo de material em TIPOS_VALIDOS esteja presente em TODAS as camadas do pipelin
 entrevista, dispatcher, skill de redacao, subagente produtor e validador tecnico.
 
 Existe porque o material "textos" ficou, por 2 commits inteiros, funcional em todas as
-camadas MENOS na entrevista (.claude/commands/esbocar.md), tornando-o estruturalmente
-inatingivel por qualquer operador. Este script torna essa classe de lacuna detectavel
-antes da producao real de um projeto, nao depois.
+camadas MENOS na entrevista (originalmente .claude/commands/esbocar.md, hoje
+SPEC_COMANDOS.md -- ver abaixo), tornando-o estruturalmente inatingivel por qualquer
+operador. Este script torna essa classe de lacuna detectavel antes da producao real
+de um projeto, nao depois.
+
+Checa SPEC_COMANDOS.md (fonte unica de verdade, universal a qualquer harness) para as
+camadas de entrevista/dispatch -- nao mais .claude/commands/*.md, que desde a
+universalizacao dos comandos sao so ponteiros finos sem o texto completo (ver
+AGENTS.md, secao sobre comandos universais).
 
 Uso:
     python scripts/verificar-consistencia-pipeline.py [--estrito]
@@ -25,8 +31,8 @@ DIR_PROJETO = Path(__file__).resolve().parent.parent
 DIR_AGENTS = DIR_PROJETO / ".claude" / "agents"
 DIR_SKILLS = DIR_PROJETO / ".claude" / "skills"
 DIR_SCRIPTS = DIR_PROJETO / "scripts"
-CAMINHO_ESBOCAR = DIR_PROJETO / ".claude" / "commands" / "esbocar.md"
-CAMINHO_PRODUZIR = DIR_PROJETO / ".claude" / "commands" / "produzir-comunicacao-completa.md"
+CAMINHO_ESBOCAR = DIR_PROJETO / "SPEC_COMANDOS.md"
+CAMINHO_PRODUZIR = DIR_PROJETO / "SPEC_COMANDOS.md"
 
 # Fonte de verdade dos tipos validos: os proprios scripts de validacao/auditoria.
 TIPOS_VALIDOS = {"pdf", "landing-page", "apresentacao", "arte-01", "arte-02", "arte-03",
@@ -118,8 +124,9 @@ def verificar():
             marcador = MAPA_ESBOCAR.get(tipo, tipo)
             if marcador not in texto_esbocar:
                 problemas.append(
-                    f"[{tipo}] nao encontrado em esbocar.md (Passo 4) - operador "
-                    f"nunca conseguira selecionar este material via /esbocar."
+                    f"[{tipo}] nao encontrado em SPEC_COMANDOS.md (secao /esbocar, "
+                    f"Passo 4) - operador nunca conseguira selecionar este material "
+                    f"via /esbocar."
                 )
 
         # (b) entrada no dispatch de producao
@@ -127,9 +134,9 @@ def verificar():
             agente_dispatch = MAPA_DISPATCH.get(tipo)
             if agente_dispatch and agente_dispatch not in texto_produzir:
                 problemas.append(
-                    f"[{tipo}] nao encontrado no dispatch de "
-                    f"produzir-comunicacao-completa.md - material selecionavel mas "
-                    f"nunca sera despachado para producao."
+                    f"[{tipo}] nao encontrado em SPEC_COMANDOS.md (secao "
+                    f"/produzir-comunicacao-completa, dispatch) - material "
+                    f"selecionavel mas nunca sera despachado para producao."
                 )
 
         # (c) skill redator-*

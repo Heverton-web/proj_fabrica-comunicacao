@@ -1,8 +1,10 @@
 # SPEC.md — Especificação Mestre da Fábrica de Materiais de Comunicação
 
-Ver `PRD.md` para a visão de produto e `CLAUDE.md` para as REGRAs invioláveis. Este
+Ver `PRD.md` para a visão de produto e `AGENTS.md` para as REGRAs invioláveis. Este
 documento é o contrato técnico de orquestração. Contratos técnicos por tipo de material
-vivem em `SPEC_PDF.md`, `SPEC_HTML.md`, `SPEC_ARTE.md` e `SPEC_KITS.md`.
+vivem em `SPEC_PDF.md`, `SPEC_HTML.md`, `SPEC_ARTE.md` e `SPEC_KITS.md`. O
+procedimento completo e universal (qualquer harness) de cada comando vive em
+`SPEC_COMANDOS.md`.
 
 ## Requisitos contratuais (R1–R13) — não-negociáveis
 

@@ -4,20 +4,11 @@ description: Regenera só a apresentação HTML de um projeto já esboçado, sem
 
 # /gerar-apresentacao
 
-`$ARGUMENTS` = `<slug>`. Regeneração pontual — nunca re-executa `/esbocar` nem
-`analista-insumos`/`diretor-de-arte`.
+O procedimento completo e canônico deste comando vive em `SPEC_COMANDOS.md`, seção
+`## /gerar-apresentacao` — este arquivo é só o ponteiro que permite ao Claude Code
+descobrir o comando (REGRA: nunca duplicar a mesma instrução em 2 lugares, mesma
+lição do bug histórico de `TIPOS_VALIDOS` duplicado).
 
-## Pré-condição (falhe rápido se ausente)
-
-Confirme que `output/<slug>/brief_criativo.json` existe. Se não existir, pare e informe:
-"Rode `/esbocar` (ou `/produzir-comunicacao-completa <slug>`) primeiro — este projeto
-ainda não tem brief criativo."
-
-## Procedimento
-
-1. Se `apresentacao` não estiver em `config_projeto.materiais_selecionados`, adicione-o.
-2. Despache `subagente-produtor-apresentacao` para `<slug>`.
-3. Despache `subagente-revisor-marca` só para o tipo `apresentacao`.
-4. Rode `python scripts/auditar-projeto.py <slug> --estrito --apenas apresentacao`.
-5. Rode `python scripts/empacotar-projeto.py <slug>`.
-6. Reporte (REGRA 2): path do `index.html`, decisões de design, faltantes.
+**Leia `SPEC_COMANDOS.md` por completo agora e execute exatamente o que está escrito
+na seção `/gerar-apresentacao`.** `$ARGUMENTS` = `<slug>` referenciado naquele
+documento.
