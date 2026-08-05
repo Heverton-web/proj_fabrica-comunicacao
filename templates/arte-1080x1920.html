@@ -12,10 +12,12 @@
   @font-face { font-family: 'Inter'; font-weight: 900; src: url('assets/fonts/inter-900.woff2') format('woff2'); }
 
   :root {
-    --bg: #0f172a; --bg-deep: #0a0f1e; --bg-glow: #16213a;
+    --bg: #0f172a;
+    --bg-deep: rgb(10, 15, 30);
+    --bg-glow: rgb(22, 33, 58);
     --surface: #1e293b; --text-main: #f8fafc; --text-muted: #94a3b8;
-    --border-subtle: #1e293b; --accent: #e5c158;
-    --gradiente-assinatura: linear-gradient(135deg, #d4af37 0%, #fff3ad 25%, #e5c158 50%, #fff8d6 75%, #caa146 100%);
+    --border-subtle: #1e293b; --accent: #c9a655;
+    --gradiente-assinatura: linear-gradient(135deg, #c9a655 0%, #e8d48b 25%, #a8873a 50%, #e8d48b 75%, #c9a655 100%);
     --glow-blue: #148ecb; /* uso exclusivo: glows decorativos de fundo, nunca texto/botao/card */
     --fonte-titulo: 'Inter', 'Roboto', sans-serif;
     --fonte-corpo: 'Inter', 'Roboto', sans-serif;
@@ -33,11 +35,21 @@
   .glow-1 { width: 560px; height: 560px; top: -160px; right: -140px; background: radial-gradient(circle, rgba(20,142,203,0.24), transparent 70%); }
   .glow-2 { width: 460px; height: 460px; bottom: -140px; left: -120px; background: radial-gradient(circle, rgba(20,142,203,0.14), transparent 70%); }
 
-  .barra-topo { position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: var(--gradiente-assinatura); box-shadow: 0 0 8px rgba(255, 243, 173, 0.4); z-index: 2; }
+  /* Faixas douradas em gradiente e finas (0.3cm = ~3px) */
+  .barra-topo { position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: var(--gradiente-assinatura); box-shadow: 0 0 8px rgba(255, 243, 173, 0.4); z-index: 10; }
+  .barra-baixo { position: absolute; bottom: 0; left: 0; width: 100%; height: 3px; background: var(--gradiente-assinatura); box-shadow: 0 0 8px rgba(255, 243, 173, 0.4); z-index: 10; }
 
   .logo { position: absolute; top: 64px; left: 64px; max-height: 84px; max-width: 260px; z-index: 2; }
 
-  .badge { position: absolute; top: 64px; right: 64px; border: 1px solid var(--accent); border-radius: 999px; padding: 0.5rem 1.3rem; font-size: 1.15rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: var(--accent); z-index: 2; }
+  /* Badges dourados translúcidos premium */
+  .badge {
+    position: absolute; top: 64px; right: 64px;
+    background: rgba(201, 166, 85, 0.12);
+    border: 1px solid rgba(201, 166, 85, 0.35);
+    border-radius: 999px; padding: 0.5rem 1.3rem; font-size: 1.05rem; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.12); z-index: 2;
+  }
 
   .produto {
     position: absolute; top: 260px; left: 50%; transform: translateX(-50%);
@@ -45,20 +57,33 @@
   }
 
   .texto { position: absolute; left: 64px; right: 64px; bottom: 220px; z-index: 2; }
+  
+  /* Títulos em caixa alta e Inter 900 */
   .texto h1 {
     font-family: var(--fonte-titulo); font-weight: 900; font-size: 4rem; line-height: 1.1; margin-bottom: 0.9rem;
+    text-transform: uppercase;
     background: var(--gradiente-assinatura); background-clip: text; -webkit-background-clip: text; color: transparent;
   }
-  .texto p.subcopy { font-family: var(--fonte-corpo); font-size: 1.6rem; color: var(--text-muted); margin-bottom: 1.2rem; max-width: 38ch; }
+  .texto p.subcopy { font-family: var(--fonte-corpo); font-size: 1.45rem; color: var(--text-muted); margin-bottom: 1.4rem; max-width: 44ch; }
 
-  .marca { position: absolute; bottom: 44px; left: 64px; right: 64px; display: flex; justify-content: space-between; align-items: center; font-family: var(--fonte-corpo); font-size: 1.35rem; font-weight: 700; color: var(--text-main); z-index: 2; }
-  .marca .cta { background: var(--gradiente-assinatura); color: var(--bg); font-weight: 700; padding: 0.65rem 1.5rem; border-radius: 999px; font-size: 1.2rem; }
+  .marca { position: absolute; bottom: 48px; left: 64px; right: 64px; display: flex; justify-content: space-between; align-items: center; font-family: var(--fonte-corpo); font-size: 1.2rem; font-weight: 700; color: var(--text-main); z-index: 2; }
+  
+  /* Botão em formato de badge translúcido */
+  .marca .cta {
+    background: rgba(201, 166, 85, 0.08);
+    border: 1px solid rgba(201, 166, 85, 0.4);
+    color: var(--accent);
+    font-weight: 700; padding: 0.6rem 1.8rem; border-radius: 999px; font-size: 1.1rem;
+    text-transform: uppercase; letter-spacing: 0.05em;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  }
 </style>
 </head>
 <body>
   <div class="glow glow-1"></div>
   <div class="glow glow-2"></div>
   <div class="barra-topo"></div>
+  <div class="barra-baixo"></div>
 
   <!-- {{LOGO}} -- compilador-arte substitui (opcional): <img class="logo" src="..."> -->
   <!-- {{BADGE_CONTEXTO}} -- compilador-arte substitui: <span class="badge">USO INTERNO|USO PROFISSIONAL</span> -->
