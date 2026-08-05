@@ -24,6 +24,16 @@ def carregar_json(caminho):
         return None
 
 
+def formatar_markdown(texto):
+    if not isinstance(texto, str):
+        return texto
+    # Substitui **texto** por <strong>texto</strong>
+    texto = re.sub(r'\*\*(.*?)\*\*', r'<strong>\1</strong>', texto)
+    # Substitui *texto* por <em>texto</em>
+    texto = re.sub(r'\*(.*?)\*', r'<em>\1</em>', texto)
+    return texto
+
+
 def compilar_apresentacao(slug):
     slug_dir = DIR_OUTPUT / slug
     slides_path = slug_dir / "apresentacao" / "slides.json"
@@ -68,14 +78,14 @@ def compilar_apresentacao(slug):
 
         if tipo == "capa":
             # Slide 1 Layout Hero de Capa (Conteúdo à esquerda, imagem do produto à direita)
-            # O título e o subtítulo ficam envoltos em um bloco de max-width: 540px para que tenham a mesma largura horizontal
+            corpo_formatado = formatar_markdown(corpo)
             html = f"""
     <div class="slide capa{ativo_class}">
       <div class="capa-esquerda">
         <span class="badge">Uso Interno</span>
         <div style="max-width: 540px; width: 100%;">
           <h1>{titulo}</h1>
-          <p style="font-size: 1.25rem; line-height: 1.5; color: var(--text-muted); max-width: 100%;">{corpo}</p>
+          <p style="font-size: 1.25rem; line-height: 1.5; color: var(--text-muted); max-width: 100%;">{corpo_formatado}</p>
         </div>
       </div>
       <div class="capa-direita">
@@ -86,11 +96,12 @@ def compilar_apresentacao(slug):
 
         elif tipo == "cta":
             # Slide CTA Centralizado com botão-badge translúcido
+            corpo_formatado = formatar_markdown(corpo)
             html = f"""
     <div class="slide cta{ativo_class}">
       <span class="badge">Dica de Ouro</span>
       <h1 style="font-size: 2.6rem;">{titulo}</h1>
-      <p style="margin-bottom: 1.5rem; color: var(--text-main); font-size: 1.25rem;">{corpo}</p>
+      <p style="margin-bottom: 1.5rem; color: var(--text-main); font-size: 1.25rem;">{corpo_formatado}</p>
       <button class="btn-badge">Conexão Implantes</button>
     </div>"""
             html_slides.append(html)
@@ -106,8 +117,8 @@ def compilar_apresentacao(slug):
                         p_num = partes[0].strip() if len(partes) >= 2 else f"P{i+1}"
                         p_desc = partes[1].strip() if len(partes) >= 2 else item
                         
-                        # Remove markdown bold
-                        p_num = p_num.replace("**", "")
+                        p_num = formatar_markdown(p_num.replace("**", ""))
+                        p_desc = formatar_markdown(p_desc)
                         
                         passos_html.append(f"""
         <div class="fluxo-passo">
@@ -134,11 +145,11 @@ def compilar_apresentacao(slug):
                     for item in corpo:
                         partes = item.split(" → ") if " → " in item else (item.split(" — ") if " — " in item else item.split(" - "))
                         if len(partes) >= 2:
-                            c1 = partes[0].replace("**", "").replace('"', '').strip()
-                            c2 = partes[1].strip()
+                            c1 = formatar_markdown(partes[0].replace("**", "").replace('"', '').strip())
+                            c2 = formatar_markdown(partes[1].strip())
                         else:
                             c1 = "Parâmetro"
-                            c2 = item.replace("**", "").strip()
+                            c2 = formatar_markdown(item.replace("**", "").strip())
                         rows_html.append(f"<tr><td><strong>{c1}</strong></td><td>{c2}</td></tr>")
                 rows_str = "\n".join(rows_html)
                 
@@ -168,9 +179,11 @@ def compilar_apresentacao(slug):
                 bullets_html = []
                 if isinstance(corpo, list):
                     for item in corpo:
-                        bullets_html.append(f"<li>{item}</li>")
+                        formatted_item = formatar_markdown(item)
+                        bullets_html.append(f"<li>{formatted_item}</li>")
                 elif isinstance(corpo, str):
-                    bullets_html.append(f"<li>{corpo}</li>")
+                    formatted_item = formatar_markdown(corpo)
+                    bullets_html.append(f"<li>{formatted_item}</li>")
                 bullets_str = "\n".join(bullets_html)
                 html = f"""
     <div class="slide conteudo{ativo_class}">
