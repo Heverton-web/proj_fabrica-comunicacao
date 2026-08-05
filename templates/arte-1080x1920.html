@@ -39,11 +39,12 @@
   .barra-topo { position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: var(--gradiente-assinatura); box-shadow: 0 0 8px rgba(255, 243, 173, 0.4); z-index: 10; }
   .barra-baixo { position: absolute; bottom: 0; left: 0; width: 100%; height: 3px; background: var(--gradiente-assinatura); box-shadow: 0 0 8px rgba(255, 243, 173, 0.4); z-index: 10; }
 
-  .logo { position: absolute; top: 64px; left: 64px; max-height: 84px; max-width: 260px; z-index: 2; }
+  /* Logo da empresa centralizado no topo */
+  .logo { position: absolute; top: 80px; left: 50%; transform: translateX(-50%); max-height: 70px; max-width: 260px; z-index: 2; }
 
-  /* Badges dourados translúcidos premium */
+  /* Badges dourados translúcidos premium centralizados */
   .badge {
-    position: absolute; top: 64px; right: 64px;
+    position: absolute; top: 200px; left: 50%; transform: translateX(-50%);
     background: rgba(201, 166, 85, 0.12);
     border: 1px solid rgba(201, 166, 85, 0.35);
     border-radius: 999px; padding: 0.5rem 1.3rem; font-size: 1.05rem; font-weight: 700;
@@ -51,31 +52,38 @@
     box-shadow: 0 2px 4px rgba(0,0,0,0.12); z-index: 2;
   }
 
+  /* Imagem do produto em evidência centralizado */
   .produto {
-    position: absolute; top: 260px; left: 50%; transform: translateX(-50%);
-    width: 760px; max-height: 820px; object-fit: contain; z-index: 1;
+    position: absolute; top: 290px; left: 50%; transform: translateX(-50%);
+    width: 760px; max-height: 800px; object-fit: contain; z-index: 1;
+    filter: drop-shadow(0 15px 35px rgba(0,0,0,0.5));
   }
 
-  .texto { position: absolute; left: 64px; right: 64px; bottom: 220px; z-index: 2; }
-  
-  /* Títulos em caixa alta e Inter 900 */
+  /* Título em caixa alta, Inter 900 e parágrafo centralizados */
+  .texto { position: absolute; left: 64px; right: 64px; bottom: 250px; z-index: 2; text-align: center; }
   .texto h1 {
-    font-family: var(--fonte-titulo); font-weight: 900; font-size: 4rem; line-height: 1.1; margin-bottom: 0.9rem;
+    font-family: var(--fonte-titulo); font-weight: 900; font-size: 3.8rem; line-height: 1.15; margin-bottom: 0.9rem;
     text-transform: uppercase;
     background: var(--gradiente-assinatura); background-clip: text; -webkit-background-clip: text; color: transparent;
   }
-  .texto p.subcopy { font-family: var(--fonte-corpo); font-size: 1.45rem; color: var(--text-muted); margin-bottom: 1.4rem; max-width: 44ch; }
+  .texto p.subcopy { font-family: var(--fonte-corpo); font-size: 1.45rem; color: var(--text-muted); margin: 0 auto; max-width: 50ch; line-height: 1.45; }
 
-  .marca { position: absolute; bottom: 48px; left: 64px; right: 64px; display: flex; justify-content: space-between; align-items: center; font-family: var(--fonte-corpo); font-size: 1.2rem; font-weight: 700; color: var(--text-main); z-index: 2; }
-  
-  /* Botão em formato de badge translúcido */
+  /* Botão CTA Centralizado */
+  .marca { position: absolute; bottom: 145px; left: 50%; transform: translateX(-50%); display: flex; justify-content: center; align-items: center; z-index: 2; }
   .marca .cta {
     background: rgba(201, 166, 85, 0.08);
     border: 1px solid rgba(201, 166, 85, 0.4);
     color: var(--accent);
-    font-weight: 700; padding: 0.6rem 1.8rem; border-radius: 999px; font-size: 1.1rem;
+    font-weight: 700; padding: 0.65rem 2.2rem; border-radius: 999px; font-size: 1.1rem;
     text-transform: uppercase; letter-spacing: 0.05em;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
+
+  /* Rodapé com direitos autorais (opacidade baixa e itálico) */
+  .rodape-copyright {
+    position: absolute; bottom: 65px; left: 50%; transform: translateX(-50%);
+    font-family: var(--fonte-corpo); font-size: 0.95rem; font-style: italic;
+    color: rgba(255, 255, 255, 0.35); text-align: center; z-index: 2; width: 100%;
   }
 </style>
 </head>
@@ -85,10 +93,10 @@
   <div class="barra-topo"></div>
   <div class="barra-baixo"></div>
 
-  <!-- {{LOGO}} -- compilador-arte substitui (opcional): <img class="logo" src="..."> -->
-  <!-- {{BADGE_CONTEXTO}} -- compilador-arte substitui: <span class="badge">USO INTERNO|USO PROFISSIONAL</span> -->
+  <!-- {{LOGO}} -- compilador-arte substitui: <img class="logo" src="..."> -->
+  <!-- {{BADGE_CONTEXTO}} -- compilador-arte substitui: <span class="badge">USO INTERNO</span> -->
 
-  <!-- {{IMAGEM_PRODUTO}} -- compilador-arte substitui: <img class="produto" src="..."> (conteudo.imagem_produto, nunca ilustracao gerada) -->
+  <!-- {{IMAGEM_PRODUTO}} -- compilador-arte substitui: <img class="produto" src="..."> -->
 
   <div class="texto">
     <!-- {{HEADLINE}} -- compilador-arte substitui: <h1>headline</h1> -->
@@ -96,8 +104,11 @@
   </div>
 
   <div class="marca">
-    <span>{{NOME_MARCA}}</span>
     <!-- {{CTA}} -- compilador-arte substitui: <span class="cta">cta</span> -->
+  </div>
+
+  <div class="rodape-copyright">
+    2026 © Todos os direitos reservados a Conexão Sistemas de Próteses
   </div>
 </body>
 </html>
