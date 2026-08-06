@@ -40,16 +40,16 @@ Fall back to Grep/Glob/Read **only** when the graph doesn't cover what you need.
 ## Comandos da Fábrica
 
 Este repositório é a "Fábrica de Materiais de Comunicação". Os comandos
-`/esbocar`, `/produzir-comunicacao-completa <slug>`, `/gerar-pdf <slug>`,
-`/gerar-landing <slug>`, `/gerar-apresentacao <slug>`, `/gerar-arte <slug>`,
-`/gerar-arte-1080x1080 <slug>`, `/gerar-arte-1080x1350 <slug>`,
-`/gerar-arte-1080x1920 <slug>`, `/gerar-textos <slug>`,
-`/gerar-kit-consultor <slug>` e `/gerar-kit-distribuidor <slug>` são
-universais (não exclusivos do Claude Code) — o procedimento completo de cada um
-está em `SPEC_COMANDOS.md`. Se o operador digitar um desses comandos (ou pedir o
-equivalente em linguagem natural, ex.: "inicie a fábrica para o produto X"), leia
-`SPEC_COMANDOS.md` por completo e siga a seção correspondente. `AGENTS.md` é a
-fonte de verdade da arquitetura/regras do projeto.
+(`/esbocar`, `/produzir-comunicacao-completa`, `/gerar-pdf`, `/gerar-landing`,
+`/gerar-apresentacao`, `/gerar-arte` e variantes por tamanho, `/gerar-textos`,
+`/gerar-kit-consultor`, `/gerar-kit-distribuidor`) são universais (não exclusivos
+do Claude Code) — o procedimento completo de cada um está em `SPEC_COMANDOS.md`
+(fonte única de verdade; a lista canônica vive em `AGENTS.md`). Se o operador
+digitar um desses comandos (ou pedir o equivalente em linguagem natural, ex.:
+"inicie a fábrica para o produto X"), leia `SPEC_COMANDOS.md` por completo e siga
+a seção correspondente. `AGENTS.md` é a fonte de verdade da arquitetura/regras do
+projeto. Sempre que um comando/skill/rule for alterado, rode
+`python scripts/verificar-universalidade.py --estrito` antes de concluir.
 
 ## Regras Invioláveis do Projeto
 

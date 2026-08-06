@@ -40,6 +40,25 @@ de continuar. O que importa é o **conteúdo, a ordem e o número de rodadas** (
 `SPEC.md` — exatamente 4 rodadas de interação humana), nunca o mecanismo de UI
 usado para exibir a pergunta.
 
+### Guardas determinísticos — passo manual obrigatório (qualquer harness)
+
+Hooks e automações nativas de harness (ex.: `.claude/settings.json`) são
+**conveniência, nunca requisito** (REGRA 10 do `AGENTS.md`). Em **qualquer
+harness**, sempre que um comando, skill, rule ou qualquer personalização deste
+repositório for **criada, alterada ou removida**, o operador ou agente deve rodar,
+antes de considerar o trabalho concluído:
+
+```
+python scripts/verificar-universalidade.py --estrito
+python scripts/verificar-consistencia-pipeline.py --estrito
+```
+
+Exit code 0 = universal/consistente. Exit code 1 = lacuna — corrija internamente
+(REGRA 4) e rode de novo, nunca entregue com guarda vermelho. O
+`verificar-universalidade.py` é o árbitro da arquitetura de 3 camadas: canônico
+único, adaptadores finos por harness (`.claude/commands/` + `.opencode/commands/` +
+MCPs) e rules finas (`CLAUDE.md`/`GEMINI.md`/`CODEBUDDY.md`/`QODER.md`).
+
 ---
 
 ## `/esbocar`

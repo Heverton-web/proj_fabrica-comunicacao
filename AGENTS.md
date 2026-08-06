@@ -92,6 +92,27 @@ não por leitura direta de arquivo. A ordem obrigatória é:
 
 Grep, `list_dir` e leitura de arquivo inteiro sem passar pelo grafo primeiro são proibidos quando o grafo puder responder. Fall back para leitura direta **somente** quando o grafo não cobrir o que se precisa (ex.: arquivo recém-criado ainda não indexado).
 
+**REGRA 10 — Universalidade Total (canônica, inegociável):** toda personalização do
+repositório — skill, MCP, hook, SPEC, config, comando, regra, agente, script — deve
+**funcionar em qualquer harness** (Claude Code, opencode, Gemini CLI, CodeBuddy,
+Qoder, e qualquer outro que leia arquivos deste repositório). A arquitetura obrigatória
+é a de 3 camadas: (1) **canônico único** — `SPEC_COMANDOS.md` (procedimentos),
+`AGENTS.md` (regras), `brand/*` (design), `.claude/skills/*/SKILL.md` (padrão aberto
+Agent Skills, frontmatter `name`+`description`) — nunca duplica lógica em arquivo de
+harness; (2) **adaptadores finos de descoberta por harness** — `.claude/commands/*.md`
+(Claude Code), `.opencode/commands/*.md` (opencode), declaração MCP em `.mcp.json`
+**e** `opencode.jsonc`, hooks proprietários em `.claude/settings.json` — ponteiros que
+apenas apontam para o canônico, nunca copiam o procedimento; (3) **rules finas por
+harness** — `CLAUDE.md`, `GEMINI.md`, `CODEBUDDY.md`, `QODER.md` — referenciam
+`AGENTS.md` + `SPEC_COMANDOS.md` sem duplicar listas ou regras canônicas. Hooks e
+automações nativas são **conveniência, nunca requisito**: o gate é sempre o script
+determinístico (`scripts/verificar-consistencia-pipeline.py --estrito` e
+`scripts/verificar-universalidade.py --estrito`), listado como passo manual obrigatório
+no `SPEC_COMANDOS.md`. O fallback universal para qualquer harness é o mapeamento por
+linguagem natural (pedido equivalente descrito no `SPEC_COMANDOS.md`). Qualquer
+mecanismo nativo de um harness que não exista em outro (ex.: `AskUserQuestion`,
+hooks) deve ser contornado pelo texto/canônico, nunca bloqueando o operador.
+
 ## Arquitetura em uma frase
 
 ```
