@@ -22,7 +22,8 @@ contrato completo e `PRD.md` para a visão de produto.
 **Os comandos (`/esbocar`, `/produzir-comunicacao-completa`, `/gerar-pdf`,
 `/gerar-landing`, `/gerar-apresentacao`, `/gerar-arte`, `/gerar-arte-1080x1080`,
 `/gerar-arte-1080x1350`, `/gerar-arte-1080x1920`, `/gerar-textos`,
-`/gerar-kit-consultor`, `/gerar-kit-distribuidor`) são universais — funcionam em
+`/gerar-kit-consultor`, `/gerar-kit-distribuidor`, `/kit-completo-consultor`,
+`/kit-completo-distribuidor`, `/kit-completo-cliente`) são universais — funcionam em
 qualquer harness que leia os arquivos deste repositório, não só Claude Code.** O
 procedimento completo e canônico de cada um vive em `SPEC_COMANDOS.md`; os arquivos
 em `.claude/commands/*.md` são apenas o mecanismo de descoberta específico do Claude
@@ -140,6 +141,8 @@ brand/design-system-conexao.json (FIXO, mesmo para todo projeto)
                                                           │
 /esbocar (Passo 1 — entrevista em 4 rodadas: insumos, público-alvo, objetivo/tom, materiais)
    └─► analista-insumos ─► diretor-de-arte ─► config_projeto.json + brief_criativo.json
+/kit-completo-<publico> (Passo 1 alternativo — preset: público + materiais fixos, entrevista adaptada; mesmo fluxo a seguir)
+   └─► analista-insumos ─► diretor-de-arte ─► config_projeto.json + brief_criativo.json
                                                           │
 /produzir-comunicacao-completa <slug> (Passo 2 — autônomo, lote 4, pool-materiais.py)
    ├─► redator-apostila      ─► compilador-pdf     ─► output/<slug>/pdf/          (interim: usa o mesmo brand fixo)
@@ -148,9 +151,12 @@ brand/design-system-conexao.json (FIXO, mesmo para todo projeto)
    ├─► redator-arte (×3)     ─► compilador-arte    ─► output/<slug>/arte-01|02|03/
    └─► redator-kit-copy (×1) ─► compilador-kit (×2)─► output/<slug>/kit-consultor|distribuidor/
                                                           │
-                                                    revisor-marca (auditar-projeto.py --estrito)
-                                                          │
-                                                    empacotar-projeto.py → manifesto_materiais.json
+                                                     revisor-marca (auditar-projeto.py --estrito)
+                                                           │
+                                                     empacotar-projeto.py → manifesto_materiais.json
+                                                           │
+                                                     empacotar-distribuicao.py → output/<slug>/distribuicao/ (finais + distribuicao_<slug>.zip + COPYRIGHT.txt)
+                                                           (pacote de distribuição auto-atualizado a cada ciclo — só finais, versão mais recente, REGRAS 2 e 11)
 ```
 
 ## Tabela de módulos por tipo de material
@@ -169,7 +175,7 @@ brand/design-system-conexao.json (FIXO, mesmo para todo projeto)
 
 Toda vez que um material for adicionado/removido desta tabela, rode `python scripts/verificar-consistencia-pipeline.py --estrito` para validar a consistência entre todos os módulos.
 
-Todos os materiais passam por `revisor-marca` (fidelidade de fonte + marca) e `auditar-projeto.py --estrito` antes de `empacotar-projeto.py`.
+Todos os materiais passam por `revisor-marca` (fidelidade de fonte + marca) e `auditar-projeto.py --estrito` antes de `empacotar-projeto.py`. Depois de todo `empacotar-projeto.py <slug>` (produção completa ou regeneração pontual), rode `empacotar-distribuicao.py <slug>` para o pacote de distribuição (pasta `distribuicao/` com zip + `COPYRIGHT.txt` dentro) — ver `SPEC_COMANDOS.md`, Passo 6 de `/produzir-comunicacao-completa`.
 
 ## Skills globais reaproveitados (catálogo já disponível, não copiar)
 

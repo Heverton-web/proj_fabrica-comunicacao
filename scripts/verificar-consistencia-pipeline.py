@@ -24,8 +24,12 @@ para uso exploratorio).
 """
 
 import argparse
+import re
 import sys
 from pathlib import Path
+
+sys.path.append(str(Path(__file__).resolve().parent))
+from _tipos_comuns import PRESETS_KIT_COMPLETO
 
 DIR_PROJETO = Path(__file__).resolve().parent.parent
 DIR_AGENTS = DIR_PROJETO / ".claude" / "agents"
@@ -107,6 +111,17 @@ def carregar_texto(caminho):
     return caminho.read_text(encoding="utf-8")
 
 
+def extrair_secao(texto, titulo):
+    """Conteudo da secao '## <titulo>' ate a proxima secao '## ' (headers
+    '### '/'#### ' nao quebram a secao). Retorna None se texto/titulo ausentes."""
+    if texto is None or titulo not in texto:
+        return None
+    for parte in re.split(r"(?m)^## ", texto):
+        if parte.startswith(titulo[3:]):
+            return parte
+    return None
+
+
 def verificar():
     problemas = []
 
@@ -153,6 +168,68 @@ def verificar():
         validador = MAPA_VALIDADOR.get(tipo)
         if validador and not (DIR_SCRIPTS / validador).exists():
             problemas.append(f"[{tipo}] validador 'scripts/{validador}' nao encontrado.")
+
+    # Comandos /kit-completo-<publico>: presenca das 3 secoes, presets dentro de
+    # TIPOS_VALIDOS (fonte unica: _tipos_comuns) e dispatch completo na secao
+    # canonica (/kit-completo-consultor) — as variantes a referenciam.
+    if texto_produzir is not None:
+        for comando in ("/kit-completo-consultor", "/kit-completo-distribuidor",
+                        "/kit-completo-cliente"):
+            if comando not in texto_produzir:
+                problemas.append(
+                    f"[{comando}] secao nao encontrada em SPEC_COMANDOS.md - "
+                    f"comando universal inexistente."
+                )
+
+        for preset, esperado in sorted(PRESETS_KIT_COMPLETO.items()):
+            invalidos = [m for m in esperado["materiais"] if m not in TIPOS_VALIDOS]
+            if invalidos:
+                problemas.append(
+                    f"[kit-completo-{preset}] materiais fixos fora de TIPOS_VALIDOS: "
+                    f"{invalidos} (fonte: PRESETS_KIT_COMPLETO em _tipos_comuns.py)"
+                )
+
+        secao = extrair_secao(texto_produzir, "## `/kit-completo-consultor`")
+        if secao is not None:
+            for tipo in PRESETS_KIT_COMPLETO["consultores"]["materiais"]:
+                agente_dispatch = MAPA_DISPATCH.get(tipo)
+                if agente_dispatch and agente_dispatch not in secao:
+                    problemas.append(
+                        f"[kit-completo-consultor] dispatch de '{tipo}' "
+                        f"({agente_dispatch}) ausente na secao do comando - "
+                        f"material do preset nunca sera despachado."
+                    )
+            if "--proxima-pasta" not in secao or "pool-materiais.py" not in secao:
+                problemas.append(
+                    f"[kit-completo-consultor] resolucao de pasta por "
+                    f"'pool-materiais.py <slug> --proxima-pasta <tipo>' ausente na "
+                    f"secao do comando (REGRA 11 - nunca sobrescrever)."
+                )
+        else:
+            problemas.append(
+                "[kit-completo-consultor] secao canonica nao encontrada - "
+                "dispatch dos presets nao verificavel."
+            )
+
+    # Pacote de distribuicao (auto-atualiza a cada ciclo): o script existe e todo
+    # ponto de finalizacao que roda empacotar-projeto.py <slug> (producao completa e
+    # cada /gerar-<material>) tambem roda empacotar-distribuicao.py <slug>, garantindo
+    # que a pasta distribuicao/ + zip + COPYRIGHT.txt sempre refletem o ultimo ciclo.
+    if not (DIR_SCRIPTS / "empacotar-distribuicao.py").exists():
+        problemas.append(
+            "scripts/empacotar-distribuicao.py nao encontrado - pacote de "
+            "distribuicao (pasta distribuicao/ + zip + COPYRIGHT.txt) inexistente."
+        )
+    if texto_produzir is not None:
+        for parte in re.split(r"(?m)^## ", texto_produzir):
+            if "empacotar-projeto.py <slug>" in parte:
+                if "empacotar-distribuicao.py <slug>" not in parte:
+                    titulo = parte.split("\n", 1)[0]
+                    problemas.append(
+                        f"[{titulo}] passo de empacotamento chama empacotar-projeto.py "
+                        f"sem empacotar-distribuicao.py na mesma secao - pacote de "
+                        f"distribuicao nao auto-atualiza neste ciclo."
+                    )
 
     return problemas
 

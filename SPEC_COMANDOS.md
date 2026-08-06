@@ -4,7 +4,9 @@ Este documento é a **fonte única de verdade** do procedimento completo de cada
 comando da fábrica — `/esbocar`, `/produzir-comunicacao-completa`, `/gerar-pdf`,
 `/gerar-landing`, `/gerar-apresentacao`, `/gerar-arte` (guarda-chuva),
 `/gerar-arte-1080x1080`, `/gerar-arte-1080x1350`, `/gerar-arte-1080x1920`,
-`/gerar-textos`, `/gerar-kit-consultor` e `/gerar-kit-distribuidor`. Funciona em
+`/gerar-textos`, `/gerar-kit-consultor`, `/gerar-kit-distribuidor` e
+`/kit-completo-<publico>` (`/kit-completo-consultor`, `/kit-completo-distribuidor`,
+`/kit-completo-cliente`). Funciona em
 **qualquer harness** que leia os arquivos deste repositório (Claude Code, Antigravity,
 OpenCode, Freebuff, MiMoCode, Gemini CLI, CodeBuddy, Qoder, ou qualquer outro
 assistente de código) — não depende do mecanismo nativo de "slash command" de
@@ -320,7 +322,19 @@ python scripts/empacotar-projeto.py <slug>
 
 Monta a estrutura final em
 `output/<slug>/{pdf,landing-page,apresentacao,arte-01,arte-02,arte-03,textos,kit-consultor,kit-distribuidor}/`
-e grava `manifesto_materiais.json`.
+e grava `manifesto_materiais.json`. Em seguida rode **sempre**:
+
+```
+python scripts/empacotar-distribuicao.py <slug>
+```
+
+Gera o **pacote de distribuição** (se auto-atualiza a cada ciclo/finalização): pasta
+`output/<slug>/distribuicao/` contendo os **resultados finais** dos materiais
+`concluido_autonomo` — sem insumos, briefs, JSONs de trabalho ou `revisao/`
+(REGRA 2) — com `COPYRIGHT.txt` e o zip `distribuicao_<slug>.zip` **dentro da
+pasta**. Empacota a **versão mais recente** de cada material (maior sufixo `-vN` da
+REGRA 11); as versões antigas permanecem em `output/<slug>/`, o pacote é derivado e
+regenerado do zero, nunca apaga origem.
 
 ### Passo 7 — Relatório final (REGRA 2 — telegráfico, sem preâmbulo)
 
@@ -421,6 +435,10 @@ aplica). **Nunca decida "sobrescrever ou não" por julgamento do agente — a re
 4. Rode `python scripts/empacotar-projeto.py <slug>` (reempacota o manifesto;
    `manifesto_materiais.json` passa a listar automaticamente toda pasta versionada
    encontrada em disco — nunca só a 1ª geração — sem afetar as demais já entregues).
+   Em seguida rode `python scripts/empacotar-distribuicao.py <slug>` — o pacote de
+   distribuição (pasta `distribuicao/` com `distribuicao_<slug>.zip` e
+   `COPYRIGHT.txt` dentro) se auto-atualiza a cada ciclo, empacotando a versão mais
+   recente de cada material.
 5. Reporte (REGRA 2): path de cada material entregue **por pasta/versão** (deixando
    claro quando um material é uma nova versão e qual pasta anterior permanece
    intocada), decisões de design, faltantes, sugestão de legenda de compartilhamento.
@@ -532,7 +550,11 @@ resolvidas — pule direto para o despacho abaixo usando a `<pasta>` recebida.
 4. Despache `subagente-revisor-marca` cobrindo todas as pastas despachadas.
 5. Rode `python scripts/auditar-projeto.py <slug> --estrito --apenas <lista das
    pastas despachadas, separadas por vírgula>`.
-6. Rode `python scripts/empacotar-projeto.py <slug>`.
+6. Rode `python scripts/empacotar-projeto.py <slug>`, depois
+   `python scripts/empacotar-distribuicao.py <slug>` (pacote de distribuição
+   auto-atualizado: pasta `distribuicao/` com `distribuicao_<slug>.zip` e
+   `COPYRIGHT.txt` dentro — ver Passo 6 de
+   `/produzir-comunicacao-completa`).
 7. Reporte (REGRA 2): path de cada PNG **por pasta/versão** (3 nesta variante, mais os
    demais materiais despachados), decisões de design, faltantes, sugestões de legenda
    por copy.
@@ -621,7 +643,11 @@ e "Procedimento (despacho)" de `/gerar-pdf` acima, trocando o material principal
 6. Despache `subagente-revisor-marca` cobrindo todas as pastas despachadas.
 7. Rode `python scripts/auditar-projeto.py <slug> --estrito --apenas <lista das
    pastas despachadas, separadas por vírgula>`.
-8. Rode `python scripts/empacotar-projeto.py <slug>`.
+8. Rode `python scripts/empacotar-projeto.py <slug>`, depois
+   `python scripts/empacotar-distribuicao.py <slug>` (pacote de distribuição
+   auto-atualizado: pasta `distribuicao/` com `distribuicao_<slug>.zip` e
+   `COPYRIGHT.txt` dentro — ver Passo 6 de
+   `/produzir-comunicacao-completa`).
 9. Reporte (REGRA 2): path de cada PNG **por pasta/versão** (10, mais os demais
    materiais despachados), decisões de design, faltantes, sugestões de legenda/CTA.
 
@@ -638,3 +664,200 @@ e "Procedimento (despacho)" de `/gerar-pdf` acima, trocando o material principal
 
 Mesmo procedimento de `/gerar-kit-consultor` acima, trocando `kit-consultor` por
 `kit-distribuidor` (subagente renderiza as 10 copies com CTA de distribuidor).
+
+---
+
+## `/kit-completo-consultor`
+
+Canônico completo dos 3 comandos universais de **kit completo de comunicação focado
+em um público-alvo fixo** — combinação de materiais já existentes com **estruturas de
+conteúdo especializadas por público** (ver "Presets" abaixo). As variantes
+`/kit-completo-distribuidor` e `/kit-completo-cliente` (seções próprias abaixo)
+referenciam esta seção, trocando apenas o preset — nunca duplicam o procedimento
+(REGRA 10).
+
+São comandos de entrada de projeto: rodam num projeto novo (equivalem a `/esbocar` +
+`/produzir-comunicacao-completa` com público e materiais pré-fixos) ou num projeto já
+existente (regeneração parcial — ver "Resolver pasta de destino", REGRA 11 do
+`AGENTS.md`).
+
+| Comando | Público fixo (`config_projeto.publico_alvo`) | Materiais fixos (`config_projeto.materiais_selecionados`) |
+|---|---|---|
+| `/kit-completo-consultor` | `consultores` | `pdf` + `kit-consultor` + `landing-page` + `apresentacao` |
+| `/kit-completo-distribuidor` | `distribuidores` | `pdf` + `kit-distribuidor` + `landing-page` + `apresentacao` |
+| `/kit-completo-cliente` | `clientes` | `pdf` + `landing-page` + `apresentacao` |
+
+`<argumentos>` = `<slug>` (se `output/<slug>/` já existir) ou o nome/tema do produto
+(se novo — slug derivado como no Passo 0 de `/esbocar`, com sufixo `-v2` se
+`output/<slug>/` já existir).
+
+O preset **pré-preenche** a rodada 2 (público-alvo) e a rodada 4 (materiais) do
+`/esbocar` — nunca é uma 5ª rodada nova (R1 do `SPEC.md`).
+
+### Presets — estrutura de conteúdo por público (canônico)
+
+Estas estruturas alimentam `diretor-de-arte` (→
+`brief_criativo.mapeamento_por_material`) quando `config_projeto.preset_kit_completo`
+existir. São também as variantes referenciadas por `SPEC_PDF.md`/`SPEC_HTML.md`.
+
+#### `/kit-completo-consultor`
+
+| Material | Estrutura |
+|---|---|
+| `pdf` | O que é · Para que serve · Diferenciais técnicos/comerciais · Como vender: SPIN (Situação, Problema, Implicação, Necessidade de solução) · Contorno de objeções (objeções reais + resposta) · Fechamento/CTA |
+| `kit-consultor` | Fluxo atual inalterado (`SPEC_KITS.md`) — 10 artes 1080×1350, público `dentista_implantodontista` |
+| `landing-page` | Fluxo atual inalterado (`SPEC_HTML.md`) |
+| `apresentacao` | Foco: O que é · Para que serve · Diferenciais técnicos |
+
+#### `/kit-completo-distribuidor`
+
+| Material | Estrutura |
+|---|---|
+| `pdf` | O que é · Para que serve · Diferenciais técnicos/comerciais · Rentabilidade para o seu negócio · Como vender: SPIN · Contorno de objeções · Fechamento/CTA |
+| `kit-distribuidor` | Fluxo atual inalterado (`SPEC_KITS.md`) |
+| `landing-page` | Fluxo atual inalterado (`SPEC_HTML.md`) |
+| `apresentacao` | Foco: O que é · Para que serve · Diferenciais técnicos · Rentabilidade para o seu negócio |
+
+#### `/kit-completo-cliente`
+
+| Material | Estrutura |
+|---|---|
+| `pdf` | O que é · Para que serve · Diferenciais técnicos · Diferenciais para a prática clínica · Por que utilizar este produto · Fechamento/CTA |
+| `landing-page` | Foco: O que é · Para que serve · Diferenciais técnicos · Diferenciais para a prática clínica · Por que utilizar este produto |
+| `apresentacao` | Foco: O que é · Para que serve · Diferenciais técnicos · Diferenciais para a prática clínica · Por que utilizar este produto |
+
+#### Regras de conteúdo transversais (fidelidade à fonte — REGRA 6)
+
+- **SPIN e contorno de objeções:** a técnica (S/P/I/N; pergunta→resposta) é fixa; o
+  **conteúdo** (perguntas reais de venda, objeções reais, respostas baseadas no dossiê)
+  é extraído do texto-base — nunca inventado.
+- **Rentabilidade:** margens, preços, condições e benefícios comerciais exatamente
+  como constam no texto-base. Ausência de dados → a seção entra como "faltante" no
+  relatório final, nunca preenchida por suposição.
+- **Diferenciais para a prática clínica / Por que utilizar:** benefícios clínicos e
+  motivos de escolha presentes no texto-base, redigidos no registro de linguagem de
+  `brand/publicos-alvo.json` para o público do preset.
+- Design system, capa do PDF, componentes e validações: inalterados — só o conteúdo
+  muda de estrutura.
+
+### Entrevista (adaptação das rodadas — sem rodada nova)
+
+Público (rodada 2) e materiais (rodada 4) vêm do preset — não são perguntados. As
+perguntas abaixo são feitas na ordem, sempre mostrando o valor atual como referência
+de "manter" quando o projeto já existir (mesma disciplina de `/gerar-pdf`):
+
+1. **Insumos** (texto livre): "Informe o caminho das imagens e o texto-base da
+   informação a comunicar." — para `/kit-completo-distribuidor`, reforçar que o
+   texto-base deve conter dados de rentabilidade (margem/preço/condições) se
+   existirem; para `/kit-completo-consultor`, objeções reais e perguntas de venda se
+   existirem. Ausência nunca é bloqueio — vira "faltante" (REGRA 6).
+2. **Objetivo/tom de voz** (seleção única): mesmas 3 opções compostas do Passo 3 de
+   `/esbocar`. O preset sugere a opção compatível com o público (via
+   `brand/publicos-alvo.json`), mas o operador decide.
+3. **Edição** (texto livre): obrigatória (o preset sempre inclui `pdf`) — ex.:
+   "1ª Edição". Gravada em `config_projeto.edicao`.
+4. **Elementos decorativos** (sim/não): obrigatória nos presets consultor/distribuidor
+   (os kits têm artes — mesma disciplina do Passo 5 de `/esbocar`); no preset cliente
+   (sem kits, sem artes) não perguntar. Default `true`. Gravada em
+   `config_projeto.elementos_decorativos`.
+
+Trate qualquer resposta livre/"Other" como válida (REGRA 3). Não pergunte sobre
+design system (é fixo, REGRA 10/`aplicador-marca-conexao`).
+
+### Aplicar resultado (sem nova pausa)
+
+1. Se `output/<slug>/` não existir, crie a estrutura (mesma disciplina do Passo 6 de
+   `/esbocar`): copie/referencie os insumos em `output/<slug>/insumos/`.
+2. Grave/atualize `config_projeto.json`: `publico_alvo` = público do preset,
+   `materiais_selecionados` = materiais do preset **somados aos já existentes** (nunca
+   remova um material já listado), `preset_kit_completo` = `<publico>`, `edicao`,
+   `elementos_decorativos` (schema em `SPEC.md`).
+3. Se os insumos mudaram (ou o projeto é novo), invoque `analista-insumos` → regrava
+   `dossie_insumos.md`.
+4. Invoque `diretor-de-arte` → regrava `brief_criativo.json` com o
+   `mapeamento_por_material` das estruturas por público da tabela de presets acima (o
+   preset é detectado por `config_projeto.preset_kit_completo`).
+5. Rode `python scripts/parametros_projeto.py <slug> --validar` — corrija internamente
+   (REGRA 4) antes de seguir.
+
+### Resolver pasta de destino — nunca sobrescrever (REGRA 11 do `AGENTS.md`)
+
+Para **cada material** do preset, resolva a pasta real de destino **antes de
+despachar qualquer subagente**:
+
+```
+python scripts/pool-materiais.py <slug> --proxima-pasta <tipo>
+```
+
+`<tipo>` ∈ {`pdf`, `landing-page`, `apresentacao`, `kit-consultor` (preset consultor),
+`kit-distribuidor` (preset distribuidor)}. O script imprime `<tipo>` sem sufixo se a
+pasta ainda não existir (1ª geração) ou `<tipo>-v2`, `-v3`... se já existir (material
+entregue por qualquer comando anterior — `/esbocar`+`/produzir-comunicacao-completa`,
+`/gerar-*` ou um kit-completo anterior). Nunca decida sobrescrita por julgamento do
+agente — a resolução é sempre feita por este script determinístico.
+
+### Procedimento (despacho)
+
+1. Para cada par `(tipo, pasta)` resolvido, despache o subagente produtor
+   correspondente **informando `<pasta>`** — mapeamento e dependências (copy
+   compartilhada de kit antes do fan-out) iguais aos Passos 2.7 e 3 de
+   `/produzir-comunicacao-completa`:
+   - `pdf` → `subagente-produtor-pdf`
+   - `landing-page` → `subagente-produtor-landing`
+   - `apresentacao` → `subagente-produtor-apresentacao`
+   - `kit-consultor`/`kit-distribuidor` → `subagente-produtor-kit`
+2. Se `kit-consultor`/`kit-distribuidor` estiver no preset e
+   `output/<slug>/kits/copies.json` não existir (ou não tiver exatamente 10 copies),
+   invoque `redator-kit-copy` inline, uma única vez, antes do fan-out (Passo 2.7) —
+   copy compartilhada; reaproveitada se os insumos não mudaram, regravada se mudaram.
+3. Despache `subagente-revisor-marca` cobrindo todas as `<pasta>` despachadas.
+4. Rode `python scripts/auditar-projeto.py <slug> --estrito --apenas <lista das pastas
+   despachadas, separadas por vírgula>`.
+5. Rode `python scripts/empacotar-projeto.py <slug>` (o manifesto lista todas as
+   versões encontradas em disco, nunca só a mais recente — REGRA 11), depois
+   `python scripts/empacotar-distribuicao.py <slug>` (pacote de distribuição
+   auto-atualizado: pasta `distribuicao/` com `distribuicao_<slug>.zip` e
+   `COPYRIGHT.txt` dentro — ver Passo 6 de
+   `/produzir-comunicacao-completa`).
+6. Reporte (REGRA 2): path de cada material **por pasta/versão** (deixando claro
+   quando um material é uma nova versão e qual pasta anterior permanece intocada),
+   decisões de design, faltantes (incluindo dados comerciais/clínicos ausentes do
+   texto-base), sugestões de legenda/CTA para compartilhamento.
+
+---
+
+## `/kit-completo-distribuidor`
+
+Variante do preset **distribuidores** — mesmo procedimento de
+`/kit-completo-consultor` acima, trocando apenas o preset:
+
+- `config_projeto.publico_alvo` = `distribuidores`;
+- `config_projeto.materiais_selecionados` = `pdf` + `kit-distribuidor` +
+  `landing-page` + `apresentacao` (somados aos já existentes, nunca removendo);
+- `config_projeto.preset_kit_completo` = `distribuidores`;
+- estrutura de conteúdo por material na tabela de presets acima (PDF acrescenta
+  "Rentabilidade para o seu negócio"; apresentação idem);
+- entrevista: reforçar que o texto-base deve conter dados de rentabilidade
+  (margem/preço/condições) se existirem — ausência vira "faltante" (REGRA 6);
+- `pool-materiais.py --proxima-pasta` para `kit-distribuidor` (nunca sobrescrever,
+  REGRA 11).
+
+---
+
+## `/kit-completo-cliente`
+
+Variante do preset **clientes** — mesmo procedimento de `/kit-completo-consultor`
+acima, trocando apenas o preset:
+
+- `config_projeto.publico_alvo` = `clientes`;
+- `config_projeto.materiais_selecionados` = `pdf` + `landing-page` +
+  `apresentacao` (somados aos já existentes, nunca removendo) — **sem kits**, sem
+  artes;
+- `config_projeto.preset_kit_completo` = `clientes`;
+- estrutura de conteúdo por material na tabela de presets acima (PDF, landing e
+  apresentação focam em "Diferenciais para a prática clínica" e "Por que utilizar
+  este produto");
+- entrevista: **não perguntar** elementos decorativos (sem kits, sem artes) —
+  gravar `config_projeto.elementos_decorativos` = `true` por default;
+- `pool-materiais.py --proxima-pasta` para `pdf`, `landing-page` e `apresentacao`
+  (nunca sobrescrever, REGRA 11).
