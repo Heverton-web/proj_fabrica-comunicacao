@@ -332,61 +332,108 @@ design tomadas, informações faltantes, sugestões de legenda/CTA para comparti
 
 ## `/gerar-pdf`
 
-`<argumentos>` = `<slug>`. Regeneração pontual — nunca re-executa `/esbocar` nem
-`analista-insumos`/`diretor-de-arte`.
+`<argumentos>` = `<slug>`. Regeneração pontual de um projeto já esboçado — nunca
+re-executa as 4 rodadas de `/esbocar` do zero, mas **sempre** roda a entrevista de
+regeneração abaixo antes de iniciar qualquer criação. Isso vale para **todo**
+`/gerar-<material>` (esta seção é a definição canônica da entrevista; as demais
+seções abaixo só referenciam esta, nunca duplicam o texto).
 
 **Pré-condição (falhe rápido se ausente):** confirme que `output/<slug>/brief_criativo.json`
 existe. Se não existir, pare e informe: "Rode `/esbocar` (ou
 `/produzir-comunicacao-completa <slug>`) primeiro — este projeto ainda não tem brief
 criativo." Nunca invente um brief para contornar isso.
 
-### Procedimento
+### Entrevista de regeneração (obrigatória, comum a todo `/gerar-<material>`)
 
-1. Se `pdf` não estiver em `config_projeto.materiais_selecionados`, adicione-o (o
-   operador está pedindo explicitamente este material agora).
-2. Despache `subagente-produtor-pdf` para `<slug>`.
-3. Despache `subagente-revisor-marca` só para o tipo `pdf`.
-4. Rode `python scripts/auditar-projeto.py <slug> --estrito --apenas pdf`.
-5. Rode `python scripts/empacotar-projeto.py <slug>` (reempacota o manifesto sem tocar
+Antes de despachar qualquer subagente produtor, faça esta entrevista com o operador,
+na ordem abaixo, sempre mostrando o valor atualmente gravado como referência de
+"manter" (mesma disciplina de `AskUserQuestion`/texto simples numerado descrita na
+Nota sobre `AskUserQuestion` no topo deste documento):
+
+1. **Imagem** — "Deseja utilizar a imagem atual do produto (`<caminho em
+   output/<slug>/insumos/>`) ou informar uma nova?" Se nova, colete o caminho/anexo e
+   copie/referencie em `output/<slug>/insumos/`; marque que os insumos mudaram.
+2. **Texto-base** — "Deseja utilizar o texto-base atual ou informar um novo?" Se
+   novo, colete (cole aqui ou caminho de arquivo); marque que os insumos mudaram.
+3. **Público-alvo** — mostre o valor atual de `config_projeto.publico_alvo` e
+   pergunte se mantém ou troca, com as mesmas 3 opções do Passo 2 de `/esbocar`
+   (Consultores / Clientes / Distribuidores).
+4. **Objetivo/tom de voz** — mostre o valor atual de `config_projeto.objetivo_tom` e
+   pergunte se mantém ou troca, com as mesmas 3 opções do Passo 3 de `/esbocar`.
+5. **Edição** — só se o material principal desta regeneração for `pdf`, ou se
+   `config_projeto.edicao` já existir de uma geração anterior: mostre o valor atual
+   e pergunte se mantém ou define um novo (ex.: "1ª Edição", "2ª Edição Revisada").
+   Se nenhuma das duas condições se aplicar, pule esta pergunta.
+6. **Outros materiais** — "Deseja gerar apenas `pdf` ou também outros tipos de
+   material?" Se "também outros", apresente as 9 opções da rodada 4 de `/esbocar`
+   (multiSelect, mesma divisão em partes 1/3, 2/3, 3/3 se o mecanismo do harness
+   limitar) e registre as escolhas.
+
+Trate qualquer resposta livre/"Other" como válida — nunca pare para confirmar de novo
+(REGRA 3). Só depois de coletar as 6 respostas, siga para "Aplicar resultado" abaixo.
+
+### Aplicar resultado da entrevista (sem nova pausa)
+
+1. Se a imagem e/ou o texto-base mudaram (perguntas 1-2), atualize
+   `output/<slug>/insumos/` e reinvoque `analista-insumos` para regravar
+   `dossie_insumos.md`.
+2. Se público-alvo, objetivo/tom mudaram (perguntas 3-4), OU se os insumos mudaram
+   no passo 1 acima, grave os novos valores em `config_projeto.publico_alvo`/
+   `config_projeto.objetivo_tom` (o que se aplicar) e reinvoque `diretor-de-arte`
+   para regravar `brief_criativo.json`.
+3. Se a edição mudou (pergunta 5), grave em `config_projeto.edicao`.
+4. Monte o conjunto final de materiais a (re)gerar: o material principal desta
+   regeneração (`pdf`) mais qualquer material adicional escolhido na pergunta 6.
+   Adicione todos os que ainda não estiverem em
+   `config_projeto.materiais_selecionados`.
+5. Rode `python scripts/parametros_projeto.py <slug> --validar` — corrija
+   internamente qualquer erro (REGRA 4) antes de seguir.
+
+### Procedimento (despacho)
+
+1. Para cada material do conjunto final montado acima, despache o subagente
+   produtor correspondente — mapeamento e ordem de dependências (copy
+   compartilhada de arte/kit antes do fan-out) iguais aos Passos 2.5, 2.7 e 3 de
+   `/produzir-comunicacao-completa`.
+2. Despache `subagente-revisor-marca` cobrindo todos os tipos despachados no passo 1.
+3. Rode `python scripts/auditar-projeto.py <slug> --estrito --apenas <lista dos
+   tipos despachados, separados por vírgula>`.
+4. Rode `python scripts/empacotar-projeto.py <slug>` (reempacota o manifesto sem tocar
    nos outros materiais já entregues).
-6. Reporte (REGRA 2): path do PDF final, decisões de design, faltantes, sugestão de
-   legenda de compartilhamento.
+5. Reporte (REGRA 2): path de cada material entregue, decisões de design, faltantes,
+   sugestão de legenda de compartilhamento.
 
 ---
 
 ## `/gerar-landing`
 
 `<argumentos>` = `<slug>`. Regeneração pontual — nunca re-executa `/esbocar` nem
-`analista-insumos`/`diretor-de-arte`.
+`analista-insumos`/`diretor-de-arte` do zero.
 
 **Pré-condição:** mesma checagem de `brief_criativo.json` de `/gerar-pdf` acima.
 
 ### Procedimento
 
-1. Se `landing-page` não estiver em `config_projeto.materiais_selecionados`, adicione-o.
-2. Despache `subagente-produtor-landing` para `<slug>`.
-3. Despache `subagente-revisor-marca` só para o tipo `landing-page`.
-4. Rode `python scripts/auditar-projeto.py <slug> --estrito --apenas landing-page`.
-5. Rode `python scripts/empacotar-projeto.py <slug>`.
-6. Reporte (REGRA 2): path do `index.html`, decisões de design, faltantes.
+Mesma **entrevista de regeneração** e mesmo fluxo de "Aplicar resultado" e
+"Procedimento (despacho)" de `/gerar-pdf` acima, trocando o material principal
+`pdf` por `landing-page` (a pergunta 5 sobre edição só se aplica se
+`config_projeto.edicao` já existir de uma geração anterior).
 
 ---
 
 ## `/gerar-apresentacao`
 
 `<argumentos>` = `<slug>`. Regeneração pontual — nunca re-executa `/esbocar` nem
-`analista-insumos`/`diretor-de-arte`.
+`analista-insumos`/`diretor-de-arte` do zero.
 
 **Pré-condição:** mesma checagem de `brief_criativo.json` de `/gerar-pdf` acima.
 
 ### Procedimento
 
-1. Se `apresentacao` não estiver em `config_projeto.materiais_selecionados`, adicione-o.
-2. Despache `subagente-produtor-apresentacao` para `<slug>`.
-3. Despache `subagente-revisor-marca` só para o tipo `apresentacao`.
-4. Rode `python scripts/auditar-projeto.py <slug> --estrito --apenas apresentacao`.
-5. Rode `python scripts/empacotar-projeto.py <slug>`.
-6. Reporte (REGRA 2): path do `index.html`, decisões de design, faltantes.
+Mesma **entrevista de regeneração** e mesmo fluxo de "Aplicar resultado" e
+"Procedimento (despacho)" de `/gerar-pdf` acima, trocando o material principal
+`pdf` por `apresentacao` (a pergunta 5 sobre edição só se aplica se
+`config_projeto.edicao` já existir de uma geração anterior).
 
 ---
 
@@ -394,18 +441,25 @@ criativo." Nunca invente um brief para contornar isso.
 
 `<argumentos>` = `<slug> [--tamanho 1080x1080|1080x1350|1080x1920 ...]`. Sem
 `--tamanho`, regenera todas as 3 variantes. Regeneração pontual — nunca re-executa
-`/esbocar` nem `analista-insumos`/`diretor-de-arte`.
+`/esbocar` nem `analista-insumos`/`diretor-de-arte` do zero.
 
 **Pré-condição:** mesma checagem de `brief_criativo.json` de `/gerar-pdf` acima.
 
 ### Procedimento
 
 1. Resolva a lista de variantes a partir de `--tamanho` (ou as 3, se omitido).
-2. Para cada variante resolvida, execute o procedimento completo do comando
+2. Rode a **entrevista de regeneração** de `/gerar-pdf` acima **uma única vez**
+   (nunca repita por variante), tratando o material principal como "arte" (a
+   soma das variantes resolvidas no passo 1) — na pergunta 6 ("outros materiais"),
+   as variantes de arte ainda não resolvidas não contam como "outros materiais",
+   já fazem parte do pedido atual. Aplique o resultado (mesmos passos de "Aplicar
+   resultado da entrevista" de `/gerar-pdf`).
+3. Para cada variante resolvida, execute o "Procedimento (despacho)" do comando
    específico correspondente abaixo (`/gerar-arte-1080x1080`,
-   `/gerar-arte-1080x1350`, `/gerar-arte-1080x1920`) — este comando é o guarda-chuva,
-   nunca uma segunda cópia do passo a passo.
-3. Reporte (REGRA 2): path de cada PNG (até 9 se as 3 variantes forem regeneradas),
+   `/gerar-arte-1080x1350`, `/gerar-arte-1080x1920`) **sem repetir a entrevista**,
+   já feita no passo 2 — este comando é o guarda-chuva, nunca uma segunda cópia do
+   passo a passo.
+4. Reporte (REGRA 2): path de cada PNG (até 9 se as 3 variantes forem regeneradas),
    decisões de design, faltantes, sugestões de legenda por copy×variante.
 
 ---
@@ -413,7 +467,7 @@ criativo." Nunca invente um brief para contornar isso.
 ## `/gerar-arte-1080x1080`
 
 `<argumentos>` = `<slug>`. Regeneração pontual de uma única variante de arte —
-nunca re-executa `/esbocar` nem `analista-insumos`/`diretor-de-arte`.
+nunca re-executa `/esbocar` nem `analista-insumos`/`diretor-de-arte` do zero.
 
 **Pré-condição:** mesma checagem de `brief_criativo.json` de `/gerar-pdf` acima.
 
@@ -425,101 +479,116 @@ nunca re-executa `/esbocar` nem `analista-insumos`/`diretor-de-arte`.
 
 ### Procedimento
 
-1. Se `arte-01` não estiver em `config_projeto.materiais_selecionados`, adicione-o
-   (o operador está pedindo explicitamente este material agora).
+Se chamado **diretamente** pelo operador (não via `/gerar-arte` guarda-chuva), rode
+primeiro a **entrevista de regeneração** e "Aplicar resultado da entrevista" de
+`/gerar-pdf` acima, trocando o material principal `pdf` por `arte-01` (a pergunta 5
+sobre edição só se aplica se `config_projeto.edicao` já existir). Se chamado **pelo
+guarda-chuva** `/gerar-arte`, a entrevista já foi feita — pule direto para o
+despacho abaixo.
+
+1. Se `arte-01` não estiver em `config_projeto.materiais_selecionados`, adicione-o.
 2. Se `output/<slug>/arte/copies.json` não existir (ou não tiver exatamente 3
    copies), invoque `redator-arte` inline, uma única vez, ANTES do fan-out — formato
    e copy são eixos ortogonais (ver `docs/05-plano-expansao-multi-copy-arte.md`);
    as mesmas 3 copies são compartilhadas por todas as variantes. Se já existir,
    reaproveite sem regravar.
 3. Despache `subagente-produtor-arte` para `<slug>` na variante `arte-01` — ele lê
-   `arte/copies.json` e renderiza as 3 copies em 1080×1080 (3 PNGs).
-4. Despache `subagente-revisor-marca` só para o tipo `arte-01`.
-5. Rode `python scripts/auditar-projeto.py <slug> --estrito --apenas arte-01`.
+   `arte/copies.json` e renderiza as 3 copies em 1080×1080 (3 PNGs). Se a entrevista
+   (quando aplicável) tiver escolhido "outros materiais" adicionais, despache também
+   os subagentes correspondentes (mesmo mapeamento do Passo 3 de
+   `/produzir-comunicacao-completa`).
+4. Despache `subagente-revisor-marca` cobrindo todos os tipos despachados.
+5. Rode `python scripts/auditar-projeto.py <slug> --estrito --apenas <lista dos
+   tipos despachados, separados por vírgula>`.
 6. Rode `python scripts/empacotar-projeto.py <slug>`.
-7. Reporte (REGRA 2): path de cada PNG (3 nesta variante), decisões de design,
-   faltantes, sugestões de legenda por copy.
+7. Reporte (REGRA 2): path de cada PNG (3 nesta variante, mais os demais materiais
+   despachados), decisões de design, faltantes, sugestões de legenda por copy.
 
 ---
 
 ## `/gerar-arte-1080x1350`
 
 `<argumentos>` = `<slug>`. Regeneração pontual de uma única variante de arte —
-nunca re-executa `/esbocar` nem `analista-insumos`/`diretor-de-arte`.
+nunca re-executa `/esbocar` nem `analista-insumos`/`diretor-de-arte` do zero.
 
 **Pré-condição:** mesma checagem de `brief_criativo.json` de `/gerar-pdf` acima.
 
 ### Procedimento
 
-Mesmo procedimento de `/gerar-arte-1080x1080` acima, trocando `arte-01` por
-`arte-02` (subagente renderiza as 3 copies em 1080×1350).
+Mesmo procedimento de `/gerar-arte-1080x1080` acima (incluindo a mesma regra de
+"entrevista só quando chamado diretamente, pulada quando vem do guarda-chuva"),
+trocando `arte-01` por `arte-02` (subagente renderiza as 3 copies em 1080×1350).
 
 ---
 
 ## `/gerar-arte-1080x1920`
 
 `<argumentos>` = `<slug>`. Regeneração pontual de uma única variante de arte —
-nunca re-executa `/esbocar` nem `analista-insumos`/`diretor-de-arte`.
+nunca re-executa `/esbocar` nem `analista-insumos`/`diretor-de-arte` do zero.
 
 **Pré-condição:** mesma checagem de `brief_criativo.json` de `/gerar-pdf` acima.
 
 ### Procedimento
 
-Mesmo procedimento de `/gerar-arte-1080x1080` acima, trocando `arte-01` por
-`arte-03` (subagente renderiza as 3 copies em 1080×1920).
+Mesmo procedimento de `/gerar-arte-1080x1080` acima (incluindo a mesma regra de
+"entrevista só quando chamado diretamente, pulada quando vem do guarda-chuva"),
+trocando `arte-01` por `arte-03` (subagente renderiza as 3 copies em 1080×1920).
 
 ---
 
 ## `/gerar-textos`
 
 `<argumentos>` = `<slug>`. Regeneração pontual — nunca re-executa `/esbocar` nem
-`analista-insumos`/`diretor-de-arte`.
+`analista-insumos`/`diretor-de-arte` do zero.
 
 **Pré-condição:** mesma checagem de `brief_criativo.json` de `/gerar-pdf` acima.
 
 ### Procedimento
 
-1. Se `textos` não estiver em `config_projeto.materiais_selecionados`, adicione-o.
-2. Despache `subagente-produtor-textos` para `<slug>`.
-3. Despache `subagente-revisor-marca` só para o tipo `textos`.
-4. Rode `python scripts/auditar-projeto.py <slug> --estrito --apenas textos`.
-5. Rode `python scripts/empacotar-projeto.py <slug>`.
-6. Reporte (REGRA 2): path de cada `.txt`, decisões de design, faltantes, sugestões
-   de legenda de compartilhamento.
+Mesma **entrevista de regeneração** e mesmo fluxo de "Aplicar resultado" e
+"Procedimento (despacho)" de `/gerar-pdf` acima, trocando o material principal
+`pdf` por `textos` (a pergunta 5 sobre edição só se aplica se
+`config_projeto.edicao` já existir de uma geração anterior).
 
 ---
 
 ## `/gerar-kit-consultor`
 
 `<argumentos>` = `<slug>`. Regeneração pontual — nunca re-executa `/esbocar` nem
-`analista-insumos`/`diretor-de-arte`.
+`analista-insumos`/`diretor-de-arte` do zero.
 
 **Pré-condição:** mesma checagem de `brief_criativo.json` de `/gerar-pdf` acima.
 
 ### Procedimento
 
-1. Se `kit-consultor` não estiver em `config_projeto.materiais_selecionados`,
+1. Rode a mesma **entrevista de regeneração** e "Aplicar resultado da entrevista"
+   de `/gerar-pdf` acima, trocando o material principal `pdf` por `kit-consultor`
+   (a pergunta 5 sobre edição só se aplica se `config_projeto.edicao` já existir).
+2. Se `kit-consultor` não estiver em `config_projeto.materiais_selecionados`,
    adicione-o.
-2. Se `output/<slug>/kits/copies.json` não existir (ou não tiver exatamente 10
+3. Se `output/<slug>/kits/copies.json` não existir (ou não tiver exatamente 10
    copies), invoque `redator-kit-copy` inline, uma única vez, ANTES do fan-out —
    copy é compartilhada entre os 2 kits (eixo ortogonal a variante, ver
    `SPEC_KITS.md`); só o CTA final muda (`brand/kits-conexao.json`, resolvido por
    `compilador-kit`). Se já existir, reaproveite sem regravar.
-3. Despache `subagente-produtor-kit` para `<slug>` na variante `kit-consultor` —
+4. Despache `subagente-produtor-kit` para `<slug>` na variante `kit-consultor` —
    ele lê `kits/copies.json` e renderiza as 10 copies em 1080×1350 com CTA de
-   consultor.
-4. Despache `subagente-revisor-marca` só para o tipo `kit-consultor`.
-5. Rode `python scripts/auditar-projeto.py <slug> --estrito --apenas kit-consultor`.
-6. Rode `python scripts/empacotar-projeto.py <slug>`.
-7. Reporte (REGRA 2): path de cada PNG (10), decisões de design, faltantes,
-   sugestões de legenda/CTA.
+   consultor. Se a entrevista escolheu "outros materiais" adicionais, despache
+   também os subagentes correspondentes (mesmo mapeamento do Passo 3 de
+   `/produzir-comunicacao-completa`).
+5. Despache `subagente-revisor-marca` cobrindo todos os tipos despachados.
+6. Rode `python scripts/auditar-projeto.py <slug> --estrito --apenas <lista dos
+   tipos despachados, separados por vírgula>`.
+7. Rode `python scripts/empacotar-projeto.py <slug>`.
+8. Reporte (REGRA 2): path de cada PNG (10, mais os demais materiais despachados),
+   decisões de design, faltantes, sugestões de legenda/CTA.
 
 ---
 
 ## `/gerar-kit-distribuidor`
 
 `<argumentos>` = `<slug>`. Regeneração pontual — nunca re-executa `/esbocar` nem
-`analista-insumos`/`diretor-de-arte`.
+`analista-insumos`/`diretor-de-arte` do zero.
 
 **Pré-condição:** mesma checagem de `brief_criativo.json` de `/gerar-pdf` acima.
 

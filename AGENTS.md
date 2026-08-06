@@ -41,9 +41,15 @@ operador já estiver em outro idioma (nesse caso, preserva-se o idioma da fonte)
 preâmbulo conversacional, saudação ou meta-comentário do agente. Apenas o material puro.
 
 **REGRA 3 — Autonomia Total Após o `/esbocar`:** o `/esbocar` é o único ponto de
-interação humana (Passo 1 do fluxo — ver `SPEC.md`, entrevista em 4 rodadas). Depois que `config_projeto.json` é
-gravado, `/produzir-comunicacao-completa` roda do início ao fim sem pausas, com gates de
-qualidade internos e auto-correção (REGRA 4) em vez de perguntas ao operador.
+interação humana do fluxo principal (Passo 1 do fluxo — ver `SPEC.md`, entrevista em
+4 rodadas). Depois que `config_projeto.json` é gravado, `/produzir-comunicacao-completa`
+roda do início ao fim sem pausas, com gates de qualidade internos e auto-correção
+(REGRA 4) em vez de perguntas ao operador. Exceção deliberada: os comandos pontuais
+`/gerar-<material>` (regeneração de um material já esboçado) rodam sua própria
+entrevista curta de confirmação/atualização (imagem, texto-base, público-alvo, tom,
+edição, outros materiais — ver `SPEC_COMANDOS.md`, seção `/gerar-pdf`) antes de
+produzir, já que o operador está pedindo uma regeneração pontual e pode querer trocar
+insumos ou escolhas sem refazer o `/esbocar` inteiro.
 
 **REGRA 4 — Auto-Correção Interna:** desvios estruturais ou de formatação detectados
 pelos scripts de validação (`validar-*.py`, `auditar-projeto.py`) são corrigidos

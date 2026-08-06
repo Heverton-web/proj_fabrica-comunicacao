@@ -73,5 +73,7 @@ lote, revisão de marca, compilação por tipo, empacotamento final.
 `/gerar-apresentacao <slug>`, `/gerar-arte-1080x1080|1080x1350|1080x1920 <slug>`,
 `/gerar-textos <slug>`, `/gerar-kit-consultor <slug>`,
 `/gerar-kit-distribuidor <slug>`): o operador regenera um material individual de um
-projeto já esboçado, sem repetir a entrevista nem re-analisar insumos — ver
+projeto já esboçado; roda antes uma entrevista curta de confirmação/atualização
+(imagem, texto-base, público-alvo, tom de voz, edição quando aplicável, outros
+materiais), sem repetir as 4 rodadas completas de `/esbocar` — ver
 `SPEC_COMANDOS.md`.

@@ -1,5 +1,5 @@
 ---
-description: Regenera uma ou mais variantes de arte PNG (1080x1080/1080x1350/1080x1920) de um projeto já esboçado, sem repetir a entrevista nem re-analisar insumos. Falha rápido se o projeto ainda não tiver brief_criativo.json.
+description: Regenera uma ou mais variantes de arte PNG (1080x1080/1080x1350/1080x1920) de um projeto já esboçado, rodando antes (uma única vez, mesmo com várias variantes) uma entrevista curta de confirmação/atualização (imagem, texto-base, público-alvo, tom de voz, outros materiais) sem repetir as 4 rodadas completas de /esbocar. Falha rápido se o projeto ainda não tiver brief_criativo.json.
 ---
 
 # /gerar-arte

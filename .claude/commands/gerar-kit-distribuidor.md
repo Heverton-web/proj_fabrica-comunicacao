@@ -1,5 +1,5 @@
 ---
-description: Regenera só o Kit Distribuidor (10 artes 1080x1350 + copies + textos de WhatsApp, CTA/assinatura de distribuidor) de um projeto já esboçado, sem repetir a entrevista nem re-analisar insumos. Falha rápido se o projeto ainda não tiver brief_criativo.json.
+description: Regenera o Kit Distribuidor (10 artes 1080x1350 + copies + textos de WhatsApp, CTA/assinatura de distribuidor) de um projeto já esboçado, rodando antes uma entrevista curta de confirmação/atualização (imagem, texto-base, público-alvo, tom de voz, outros materiais) sem repetir as 4 rodadas completas de /esbocar. Falha rápido se o projeto ainda não tiver brief_criativo.json.
 ---
 
 # /gerar-kit-distribuidor
