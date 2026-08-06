@@ -15,7 +15,10 @@ didático que a apostila. Ver `SPEC_HTML.md`.
 
 ## Saída
 
-- `output/<slug>/landing-page/conteudo.json` — schema:
+- `output/<slug>/<pasta>/conteudo.json` — `<pasta>` é informada pelo subagente que te
+  invoca (normalmente `"landing-page"`, ou `"landing-page-v2"` numa regeneração via
+  `/gerar-landing` — REGRA 11 do `AGENTS.md`: nunca escreva por cima de uma versão já
+  entregue). Schema:
   `{hero: {headline, subheadline, cta}, problema_solucao: {...}, destaques: [...], prova: {...}, cta_final: {...}, enriquecimentos?: [...]}`,
   consumido por `compilador-html`.
 

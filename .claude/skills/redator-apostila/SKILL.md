@@ -16,7 +16,11 @@ Você escreve o conteúdo final (Markdown) do material PDF — o mais longo e di
 
 ## Saída
 
-- `output/<slug>/pdf/apostila_<slug>.md` — Markdown pronto para `compilador-pdf`.
+- `output/<slug>/<pasta>/apostila_<slug>.md` — Markdown pronto para `compilador-pdf`.
+  `<pasta>` é informada pelo subagente que te invoca — normalmente `"pdf"`, mas pode
+  ser uma versão regenerada (ex.: `"pdf-v2"`) quando o material já foi entregue antes
+  e o operador pediu uma nova geração via `/gerar-pdf` (REGRA 11 do `AGENTS.md`: nunca
+  escreva por cima de uma versão já entregue).
 
 ## Procedimento
 

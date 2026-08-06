@@ -25,18 +25,24 @@ DIMENSOES = {
 }
 
 
-def compilar_variante_arte(slug, variante):
+def compilar_variante_arte(slug, variante, pasta=None):
     """Renderiza as 3 copies compartilhadas (output/<slug>/arte/copies.json) na
     dimensao desta variante -- 1 render por copy, 3 PNGs no total. Formato
     (variante/dimensao) e copy (conceito criativo) sao eixos ortogonais: as
     mesmas 3 copies sao reaproveitadas em arte-01/02/03, nunca uma copy por
-    formato (ver docs/05-plano-expansao-multi-copy-arte.md)."""
+    formato (ver docs/05-plano-expansao-multi-copy-arte.md).
+
+    `pasta` e a pasta real de destino em output/<slug>/ -- normalmente igual a
+    `variante`, mas pode ser uma versao regenerada (ex.: "arte-01-v2") por
+    /gerar-arte-1080x1080 -- ver REGRA 11 do AGENTS.md. `variante` continua
+    sendo a variante BASE (define dimensao e nome de arquivo)."""
+    pasta = pasta or variante
     largura, altura = DIMENSOES[variante]
     slug_dir = DIR_OUTPUT / slug
     copies_path = slug_dir / "arte" / "copies.json"
 
     template_path = DIR_PROJETO / "templates" / f"arte-{largura}x{altura}.html"
-    dest_dir = slug_dir / variante
+    dest_dir = slug_dir / pasta
 
     if not copies_path.exists():
         print(f"[ERRO] {copies_path} nao encontrado -- redator-arte deve gerar as "
@@ -117,13 +123,22 @@ def main():
     ap = argparse.ArgumentParser(description="Compila dados de conteúdo JSON em peças de arte PNG pixel-perfect")
     ap.add_argument("slug")
     ap.add_argument("--variante", choices=["arte-01", "arte-02", "arte-03", "todas"], default="todas")
+    ap.add_argument("--pasta", default=None,
+                     help="pasta de destino em output/<slug>/ (default: a propria "
+                          "--variante; use '<variante>-v2', '-v3'... para regeneracoes "
+                          "que nao devem sobrescrever a versao anterior - ver REGRA 11 "
+                          "do AGENTS.md). So valido com --variante != 'todas'.")
     args = ap.parse_args()
+
+    if args.pasta and args.variante == "todas":
+        print("[ERRO] --pasta so pode ser usado com uma unica --variante (nunca com 'todas')")
+        return 1
 
     variantes = ["arte-01", "arte-02", "arte-03"] if args.variante == "todas" else [args.variante]
 
     erros = 0
     for var in variantes:
-        ret = compilar_variante_arte(args.slug, var)
+        ret = compilar_variante_arte(args.slug, var, args.pasta)
         if ret != 0:
             erros += 1
 

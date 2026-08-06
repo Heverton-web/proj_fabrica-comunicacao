@@ -18,9 +18,13 @@ DIR_OUTPUT = DIR_PROJETO / "output"
 def main():
     ap = argparse.ArgumentParser(description="Valida os textos de cópias do projeto")
     ap.add_argument("slug")
+    ap.add_argument("--pasta", default="textos",
+                     help="pasta em output/<slug>/ a validar (default: 'textos'; use "
+                          "'textos-v2', 'textos-v3'... para validar uma regeneracao - "
+                          "ver REGRA 11 do AGENTS.md)")
     args = ap.parse_args()
 
-    pasta = DIR_OUTPUT / args.slug / "textos"
+    pasta = DIR_OUTPUT / args.slug / args.pasta
     if not pasta.exists():
         print(f"[ERRO] Pasta de textos não encontrada: {pasta}")
         return 1

@@ -119,6 +119,19 @@ linguagem natural (pedido equivalente descrito no `SPEC_COMANDOS.md`). Qualquer
 mecanismo nativo de um harness que não exista em outro (ex.: `AskUserQuestion`,
 hooks) deve ser contornado pelo texto/canônico, nunca bloqueando o operador.
 
+**REGRA 11 — Nunca Sobrescrever Material Entregue (crítica, inegociável):** todo
+comando `/gerar-<material>` que encontrar uma pasta de material já entregue
+(`output/<slug>/<tipo>/` já existe e tem conteúdo) **nunca** escreve por cima dela —
+cria uma nova pasta numerada (`<tipo>-v2`, `<tipo>-v3`...) e preserva todas as
+versões anteriores intactas, lado a lado, sempre visíveis em `output/<slug>/`. A
+resolução de qual pasta usar é **sempre** feita pelo script determinístico
+`pool-materiais.py --proxima-pasta <tipo>` (ver `SPEC_COMANDOS.md`, seção
+"Resolver pasta de destino" de `/gerar-pdf`) — nunca por julgamento do agente sobre
+se é "seguro" sobrescrever. `manifesto_materiais.json` (via `empacotar-projeto.py`)
+lista automaticamente toda versão encontrada em disco, não só a mais recente. Motivo:
+o operador pode regenerar um material (ex.: PDF) com público-alvo/tom de voz
+diferentes do original sem perder o trabalho já entregue anteriormente.
+
 ## Arquitetura em uma frase
 
 ```

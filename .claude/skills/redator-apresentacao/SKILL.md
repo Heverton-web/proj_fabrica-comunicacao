@@ -15,7 +15,10 @@ suficiente para leitura em tela durante uma reunião. Ver `SPEC_HTML.md`.
 
 ## Saída
 
-- `output/<slug>/apresentacao/slides.json` — lista de slides, schema:
+- `output/<slug>/<pasta>/slides.json` — `<pasta>` é informada pelo subagente que te
+  invoca (normalmente `"apresentacao"`, ou `"apresentacao-v2"` numa regeneração via
+  `/gerar-apresentacao` — REGRA 11 do `AGENTS.md`: nunca escreva por cima de uma
+  versão já entregue). Lista de slides, schema:
   `{slides: [{tipo: "capa"|"conteudo"|"cta", titulo, corpo?, imagem?, componente?}]}`,
   consumido por `compilador-html`.
 

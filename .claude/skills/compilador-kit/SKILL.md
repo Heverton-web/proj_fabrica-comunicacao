@@ -31,10 +31,15 @@ muda, e vem de `brand/kits-conexao.json`, nunca de uma nova chamada de LLM.
 
 ## Procedimento
 
-Rode `python scripts/compilar-kit.py <slug> --kit <kit-consultor|kit-distribuidor>`.
-Internamente, para cada um dos 5 tons de `brand/tons-kit.json` × 2 itens (10 no total):
+Rode `python scripts/compilar-kit.py <slug> --kit <kit-consultor|kit-distribuidor>
+--pasta <pasta>`. `<pasta>` é normalmente igual a `--kit`, mas pode ser uma versão
+regenerada (ex.: `"kit-consultor-v2"`) informada pelo subagente que te invoca quando
+esse kit já foi entregue antes — **REGRA 11 do `AGENTS.md`: nunca escreva em uma pasta
+que já tenha material entregue**. `--kit` continua fixo (define CTA/assinatura); só a
+`--pasta` muda o destino em disco. Internamente, para cada um dos 5 tons de
+`brand/tons-kit.json` × 2 itens (10 no total):
 
-1. Cria `output/<slug>/<kit>/artes-<tom>/arte-0N/` e copia fontes/logo/produto para
+1. Cria `output/<slug>/<pasta>/artes-<tom>/arte-0N/` e copia fontes/logo/produto para
    `arte-0N/assets/` (mesma técnica de `preparar_assets` em `_arte_common.py`).
 2. Preenche `templates/arte-1080x1350.html` com a copy (headline/subcopy) + o CTA fixo
    da variante — salva como `arte-0N/index.html` (mantido, não temporário, para
@@ -57,7 +62,7 @@ Internamente, para cada um dos 5 tons de `brand/tons-kit.json` × 2 itens (10 no
 
 ## Handoff
 
-`scripts/validar-kit.py <slug> <kit>` confirma a estrutura completa (5 tons × 2 itens ×
+`scripts/validar-kit.py <slug> <kit> --pasta <pasta>` confirma a estrutura completa (5 tons × 2 itens ×
 {PNG, conteudo.json, texto_whatsapp.txt} = 30 arquivos) **e a regra de 1 badge por
 peça** (0 badges de contexto + exatamente 1 CTA por `index*.html`); `revisor-marca` faz a
 checagem de fidelidade e confirma que as copies dos 2 kits são idênticas exceto

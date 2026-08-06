@@ -389,19 +389,41 @@ Trate qualquer resposta livre/"Other" como válida — nunca pare para confirmar
 5. Rode `python scripts/parametros_projeto.py <slug> --validar` — corrija
    internamente qualquer erro (REGRA 4) antes de seguir.
 
+### Resolver pasta de destino — nunca sobrescrever (REGRA 11 do `AGENTS.md`)
+
+Para **cada material** do conjunto final montado no passo 4 acima, resolva a pasta
+real de destino em disco **antes de despachar qualquer subagente**:
+
+```
+python scripts/pool-materiais.py <slug> --proxima-pasta <tipo>
+```
+
+Isso imprime `<tipo>` sem sufixo se `output/<slug>/<tipo>/` ainda não existir (1ª
+geração), ou `<tipo>-v2`, `-v3`... se já existir uma entrega anterior (regeneração
+pontual — nunca escreva por cima). Guarde o par `(tipo, pasta)` resolvido para cada
+material — `pasta` é o valor usado em todos os passos de despacho/validação/registro
+abaixo; `tipo` continua sendo a string base (define qual validador/dimensão/CTA
+aplica). **Nunca decida "sobrescrever ou não" por julgamento do agente — a resolução
+é sempre feita por este script determinístico.**
+
 ### Procedimento (despacho)
 
-1. Para cada material do conjunto final montado acima, despache o subagente
-   produtor correspondente — mapeamento e ordem de dependências (copy
+1. Para cada par `(tipo, pasta)` resolvido acima, despache o subagente produtor
+   correspondente **informando `<pasta>`** — mapeamento e ordem de dependências (copy
    compartilhada de arte/kit antes do fan-out) iguais aos Passos 2.5, 2.7 e 3 de
-   `/produzir-comunicacao-completa`.
-2. Despache `subagente-revisor-marca` cobrindo todos os tipos despachados no passo 1.
-3. Rode `python scripts/auditar-projeto.py <slug> --estrito --apenas <lista dos
-   tipos despachados, separados por vírgula>`.
-4. Rode `python scripts/empacotar-projeto.py <slug>` (reempacota o manifesto sem tocar
-   nos outros materiais já entregues).
-5. Reporte (REGRA 2): path de cada material entregue, decisões de design, faltantes,
-   sugestão de legenda de compartilhamento.
+   `/produzir-comunicacao-completa`. O subagente lê/escreve exclusivamente em
+   `output/<slug>/<pasta>/**` e nunca toca em `output/<slug>/<tipo>/` se `pasta !=
+   tipo` (essa é a versão anterior, intocável).
+2. Despache `subagente-revisor-marca` cobrindo todas as `<pasta>` despachadas no
+   passo 1 (a lista do lote é de pastas, não de tipos-base).
+3. Rode `python scripts/auditar-projeto.py <slug> --estrito --apenas <lista das
+   pastas despachadas, separadas por vírgula>`.
+4. Rode `python scripts/empacotar-projeto.py <slug>` (reempacota o manifesto;
+   `manifesto_materiais.json` passa a listar automaticamente toda pasta versionada
+   encontrada em disco — nunca só a 1ª geração — sem afetar as demais já entregues).
+5. Reporte (REGRA 2): path de cada material entregue **por pasta/versão** (deixando
+   claro quando um material é uma nova versão e qual pasta anterior permanece
+   intocada), decisões de design, faltantes, sugestão de legenda de compartilhamento.
 
 ---
 
@@ -414,8 +436,8 @@ Trate qualquer resposta livre/"Other" como válida — nunca pare para confirmar
 
 ### Procedimento
 
-Mesma **entrevista de regeneração** e mesmo fluxo de "Aplicar resultado" e
-"Procedimento (despacho)" de `/gerar-pdf` acima, trocando o material principal
+Mesma **entrevista de regeneração**, "Aplicar resultado", "Resolver pasta de destino"
+e "Procedimento (despacho)" de `/gerar-pdf` acima, trocando o material principal
 `pdf` por `landing-page` (a pergunta 5 sobre edição só se aplica se
 `config_projeto.edicao` já existir de uma geração anterior).
 
@@ -430,8 +452,8 @@ Mesma **entrevista de regeneração** e mesmo fluxo de "Aplicar resultado" e
 
 ### Procedimento
 
-Mesma **entrevista de regeneração** e mesmo fluxo de "Aplicar resultado" e
-"Procedimento (despacho)" de `/gerar-pdf` acima, trocando o material principal
+Mesma **entrevista de regeneração**, "Aplicar resultado", "Resolver pasta de destino"
+e "Procedimento (despacho)" de `/gerar-pdf` acima, trocando o material principal
 `pdf` por `apresentacao` (a pergunta 5 sobre edição só se aplica se
 `config_projeto.edicao` já existir de uma geração anterior).
 
@@ -454,13 +476,18 @@ Mesma **entrevista de regeneração** e mesmo fluxo de "Aplicar resultado" e
    as variantes de arte ainda não resolvidas não contam como "outros materiais",
    já fazem parte do pedido atual. Aplique o resultado (mesmos passos de "Aplicar
    resultado da entrevista" de `/gerar-pdf`).
-3. Para cada variante resolvida, execute o "Procedimento (despacho)" do comando
+3. Para cada variante resolvida no passo 1, resolva a pasta de destino (**"Resolver
+   pasta de destino" de `/gerar-pdf` acima — REGRA 11 do `AGENTS.md`, nunca
+   sobrescrever**): `python scripts/pool-materiais.py <slug> --proxima-pasta
+   <variante>`. Guarde o par `(variante, pasta)` de cada uma.
+4. Para cada par `(variante, pasta)`, execute o "Procedimento (despacho)" do comando
    específico correspondente abaixo (`/gerar-arte-1080x1080`,
-   `/gerar-arte-1080x1350`, `/gerar-arte-1080x1920`) **sem repetir a entrevista**,
-   já feita no passo 2 — este comando é o guarda-chuva, nunca uma segunda cópia do
-   passo a passo.
-4. Reporte (REGRA 2): path de cada PNG (até 9 se as 3 variantes forem regeneradas),
-   decisões de design, faltantes, sugestões de legenda por copy×variante.
+   `/gerar-arte-1080x1350`, `/gerar-arte-1080x1920`) **sem repetir a entrevista nem a
+   resolução de pasta**, já feitas nos passos 2-3 — este comando é o guarda-chuva,
+   nunca uma segunda cópia do passo a passo. Passe a `<pasta>` já resolvida adiante.
+5. Reporte (REGRA 2): path de cada PNG **por pasta/versão** (até 9 se as 3 variantes
+   forem regeneradas), decisões de design, faltantes, sugestões de legenda por
+   copy×variante.
 
 ---
 
@@ -482,27 +509,33 @@ nunca re-executa `/esbocar` nem `analista-insumos`/`diretor-de-arte` do zero.
 Se chamado **diretamente** pelo operador (não via `/gerar-arte` guarda-chuva), rode
 primeiro a **entrevista de regeneração** e "Aplicar resultado da entrevista" de
 `/gerar-pdf` acima, trocando o material principal `pdf` por `arte-01` (a pergunta 5
-sobre edição só se aplica se `config_projeto.edicao` já existir). Se chamado **pelo
-guarda-chuva** `/gerar-arte`, a entrevista já foi feita — pule direto para o
-despacho abaixo.
+sobre edição só se aplica se `config_projeto.edicao` já existir); em seguida resolva a
+pasta de destino (**"Resolver pasta de destino" de `/gerar-pdf` acima — REGRA 11 do
+`AGENTS.md`**): `python scripts/pool-materiais.py <slug> --proxima-pasta arte-01`. Se
+chamado **pelo guarda-chuva** `/gerar-arte`, a entrevista e a pasta já foram
+resolvidas — pule direto para o despacho abaixo usando a `<pasta>` recebida.
 
 1. Se `arte-01` não estiver em `config_projeto.materiais_selecionados`, adicione-o.
 2. Se `output/<slug>/arte/copies.json` não existir (ou não tiver exatamente 3
    copies), invoque `redator-arte` inline, uma única vez, ANTES do fan-out — formato
    e copy são eixos ortogonais (ver `docs/05-plano-expansao-multi-copy-arte.md`);
-   as mesmas 3 copies são compartilhadas por todas as variantes. Se já existir,
-   reaproveite sem regravar.
-3. Despache `subagente-produtor-arte` para `<slug>` na variante `arte-01` — ele lê
-   `arte/copies.json` e renderiza as 3 copies em 1080×1080 (3 PNGs). Se a entrevista
-   (quando aplicável) tiver escolhido "outros materiais" adicionais, despache também
-   os subagentes correspondentes (mesmo mapeamento do Passo 3 de
-   `/produzir-comunicacao-completa`).
-4. Despache `subagente-revisor-marca` cobrindo todos os tipos despachados.
-5. Rode `python scripts/auditar-projeto.py <slug> --estrito --apenas <lista dos
-   tipos despachados, separados por vírgula>`.
+   as mesmas 3 copies são compartilhadas por todas as variantes. Se já existir e a
+   entrevista não mudou público/tom, reaproveite sem regravar (se mudou, `redator-arte`
+   regrava — ver seu `SKILL.md`).
+3. Despache `subagente-produtor-arte` para `<slug>` na variante `arte-01`,
+   **informando `<pasta>`** — ele lê `arte/copies.json` e renderiza as 3 copies em
+   1080×1080 (3 PNGs) em `output/<slug>/<pasta>/`, nunca em `output/<slug>/arte-01/`
+   se `pasta != arte-01`. Se a entrevista (quando aplicável) tiver escolhido "outros
+   materiais" adicionais, resolva a pasta de cada um (mesmo passo de "Resolver pasta
+   de destino") e despache também os subagentes correspondentes (mesmo mapeamento do
+   Passo 3 de `/produzir-comunicacao-completa`).
+4. Despache `subagente-revisor-marca` cobrindo todas as pastas despachadas.
+5. Rode `python scripts/auditar-projeto.py <slug> --estrito --apenas <lista das
+   pastas despachadas, separadas por vírgula>`.
 6. Rode `python scripts/empacotar-projeto.py <slug>`.
-7. Reporte (REGRA 2): path de cada PNG (3 nesta variante, mais os demais materiais
-   despachados), decisões de design, faltantes, sugestões de legenda por copy.
+7. Reporte (REGRA 2): path de cada PNG **por pasta/versão** (3 nesta variante, mais os
+   demais materiais despachados), decisões de design, faltantes, sugestões de legenda
+   por copy.
 
 ---
 
@@ -516,8 +549,9 @@ nunca re-executa `/esbocar` nem `analista-insumos`/`diretor-de-arte` do zero.
 ### Procedimento
 
 Mesmo procedimento de `/gerar-arte-1080x1080` acima (incluindo a mesma regra de
-"entrevista só quando chamado diretamente, pulada quando vem do guarda-chuva"),
-trocando `arte-01` por `arte-02` (subagente renderiza as 3 copies em 1080×1350).
+"entrevista e resolução de pasta só quando chamado diretamente, puladas quando vem do
+guarda-chuva"), trocando `arte-01` por `arte-02` (subagente renderiza as 3 copies em
+1080×1350).
 
 ---
 
@@ -531,8 +565,9 @@ nunca re-executa `/esbocar` nem `analista-insumos`/`diretor-de-arte` do zero.
 ### Procedimento
 
 Mesmo procedimento de `/gerar-arte-1080x1080` acima (incluindo a mesma regra de
-"entrevista só quando chamado diretamente, pulada quando vem do guarda-chuva"),
-trocando `arte-01` por `arte-03` (subagente renderiza as 3 copies em 1080×1920).
+"entrevista e resolução de pasta só quando chamado diretamente, puladas quando vem do
+guarda-chuva"), trocando `arte-01` por `arte-03` (subagente renderiza as 3 copies em
+1080×1920).
 
 ---
 
@@ -545,8 +580,8 @@ trocando `arte-01` por `arte-03` (subagente renderiza as 3 copies em 1080×1920)
 
 ### Procedimento
 
-Mesma **entrevista de regeneração** e mesmo fluxo de "Aplicar resultado" e
-"Procedimento (despacho)" de `/gerar-pdf` acima, trocando o material principal
+Mesma **entrevista de regeneração**, "Aplicar resultado", "Resolver pasta de destino"
+e "Procedimento (despacho)" de `/gerar-pdf` acima, trocando o material principal
 `pdf` por `textos` (a pergunta 5 sobre edição só se aplica se
 `config_projeto.edicao` já existir de uma geração anterior).
 
@@ -564,24 +599,31 @@ Mesma **entrevista de regeneração** e mesmo fluxo de "Aplicar resultado" e
 1. Rode a mesma **entrevista de regeneração** e "Aplicar resultado da entrevista"
    de `/gerar-pdf` acima, trocando o material principal `pdf` por `kit-consultor`
    (a pergunta 5 sobre edição só se aplica se `config_projeto.edicao` já existir).
-2. Se `kit-consultor` não estiver em `config_projeto.materiais_selecionados`,
+2. Resolva a pasta de destino (**"Resolver pasta de destino" de `/gerar-pdf` acima —
+   REGRA 11 do `AGENTS.md`**): `python scripts/pool-materiais.py <slug>
+   --proxima-pasta kit-consultor`.
+3. Se `kit-consultor` não estiver em `config_projeto.materiais_selecionados`,
    adicione-o.
-3. Se `output/<slug>/kits/copies.json` não existir (ou não tiver exatamente 10
+4. Se `output/<slug>/kits/copies.json` não existir (ou não tiver exatamente 10
    copies), invoque `redator-kit-copy` inline, uma única vez, ANTES do fan-out —
    copy é compartilhada entre os 2 kits (eixo ortogonal a variante, ver
    `SPEC_KITS.md`); só o CTA final muda (`brand/kits-conexao.json`, resolvido por
-   `compilador-kit`). Se já existir, reaproveite sem regravar.
-4. Despache `subagente-produtor-kit` para `<slug>` na variante `kit-consultor` —
-   ele lê `kits/copies.json` e renderiza as 10 copies em 1080×1350 com CTA de
-   consultor. Se a entrevista escolheu "outros materiais" adicionais, despache
+   `compilador-kit`). Se já existir e a regeneração não trocou imagem/texto-base,
+   reaproveite sem regravar (se trocou, `redator-kit-copy` regrava — ver seu
+   `SKILL.md`).
+5. Despache `subagente-produtor-kit` para `<slug>` na variante `kit-consultor`,
+   **informando `<pasta>`** — ele lê `kits/copies.json` e renderiza as 10 copies em
+   1080×1350 com CTA de consultor em `output/<slug>/<pasta>/`, nunca em
+   `output/<slug>/kit-consultor/` se `pasta != kit-consultor`. Se a entrevista
+   escolheu "outros materiais" adicionais, resolva a pasta de cada um e despache
    também os subagentes correspondentes (mesmo mapeamento do Passo 3 de
    `/produzir-comunicacao-completa`).
-5. Despache `subagente-revisor-marca` cobrindo todos os tipos despachados.
-6. Rode `python scripts/auditar-projeto.py <slug> --estrito --apenas <lista dos
-   tipos despachados, separados por vírgula>`.
-7. Rode `python scripts/empacotar-projeto.py <slug>`.
-8. Reporte (REGRA 2): path de cada PNG (10, mais os demais materiais despachados),
-   decisões de design, faltantes, sugestões de legenda/CTA.
+6. Despache `subagente-revisor-marca` cobrindo todas as pastas despachadas.
+7. Rode `python scripts/auditar-projeto.py <slug> --estrito --apenas <lista das
+   pastas despachadas, separadas por vírgula>`.
+8. Rode `python scripts/empacotar-projeto.py <slug>`.
+9. Reporte (REGRA 2): path de cada PNG **por pasta/versão** (10, mais os demais
+   materiais despachados), decisões de design, faltantes, sugestões de legenda/CTA.
 
 ---
 

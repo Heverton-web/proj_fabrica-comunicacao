@@ -30,10 +30,15 @@ def main():
     ap = argparse.ArgumentParser(description="Valida dimensao exata e peso de uma arte PNG")
     ap.add_argument("slug")
     ap.add_argument("variante", choices=sorted(DIMENSOES))
+    ap.add_argument("--pasta", default=None,
+                     help="pasta em output/<slug>/ a validar (default: a propria "
+                          "<variante>; use '<variante>-v2', '-v3'... para validar uma "
+                          "regeneracao - ver REGRA 11 do AGENTS.md)")
     args = ap.parse_args()
+    pasta = args.pasta or args.variante
 
     largura_esperada, altura_esperada = DIMENSOES[args.variante]
-    base = DIR_OUTPUT / args.slug / args.variante
+    base = DIR_OUTPUT / args.slug / pasta
     pngs = sorted(base.glob("*.png")) if base.exists() else []
 
     if not pngs:

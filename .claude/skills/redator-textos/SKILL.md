@@ -14,9 +14,13 @@ Você escreve as cópias de textos curtos para WhatsApp, Instagram e LinkedIn de
 
 ## Saída
 
-- `output/<slug>/textos/whatsapp.txt` — texto formatado com quebras, emoticons e asteriscos (`*`) para negritos.
-- `output/<slug>/textos/instagram.txt` — texto com blocos espaçados de leitura, hashtags do nicho e chamada para link na bio.
-- `output/<slug>/textos/linkedin.txt` — texto de autoridade profissional, focado em dados de mercado, especificações técnicas precisas e parágrafos limpos.
+`<pasta>` é informada pelo subagente que te invoca (normalmente `"textos"`, ou
+`"textos-v2"` numa regeneração via `/gerar-textos` — REGRA 11 do `AGENTS.md`: nunca
+escreva por cima de uma versão já entregue):
+
+- `output/<slug>/<pasta>/whatsapp.txt` — texto formatado com quebras, emoticons e asteriscos (`*`) para negritos.
+- `output/<slug>/<pasta>/instagram.txt` — texto com blocos espaçados de leitura, hashtags do nicho e chamada para link na bio.
+- `output/<slug>/<pasta>/linkedin.txt` — texto de autoridade profissional, focado em dados de mercado, especificações técnicas precisas e parágrafos limpos.
 
 Todos os arquivos devem ser gravados obrigatoriamente utilizando a codificação **`utf-8`**.
 

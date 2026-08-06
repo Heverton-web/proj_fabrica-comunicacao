@@ -131,10 +131,12 @@ def extrair_capa_textos(md_path):
     return titulo, paragrafo
 
 
-def preparar_assets_logo(slug_dir):
-    """Copia os logos de marca fixos para pdf/assets/logos/, mesmo padrão usado
-    por landing-page/apresentacao/arte (compilar-html.py / compilar-arte.py)."""
-    dest = slug_dir / "pdf" / "assets" / "logos"
+def preparar_assets_logo(slug_dir, pasta):
+    """Copia os logos de marca fixos para <pasta>/assets/logos/, mesmo padrão
+    usado por landing-page/apresentacao/arte (compilar-html.py / compilar-arte.py).
+    `pasta` é normalmente "pdf", mas pode ser uma versão regenerada (ex.:
+    "pdf-v2") por /gerar-pdf — ver REGRA 11 do AGENTS.md."""
+    dest = slug_dir / pasta / "assets" / "logos"
     dest.mkdir(parents=True, exist_ok=True)
     if DIR_LOGOS.exists():
         for logo in DIR_LOGOS.glob("*.png"):
@@ -144,11 +146,15 @@ def preparar_assets_logo(slug_dir):
 def main():
     ap = argparse.ArgumentParser(description="Compila apostila de Markdown para PDF usando Typst")
     ap.add_argument("slug")
+    ap.add_argument("--pasta", default="pdf",
+                     help="pasta de destino em output/<slug>/ (default: 'pdf'; use "
+                          "'pdf-v2', 'pdf-v3'... para regeneracoes que nao devem "
+                          "sobrescrever a versao anterior - ver REGRA 11 do AGENTS.md)")
     args = ap.parse_args()
 
     slug_dir = DIR_OUTPUT / args.slug
-    md = slug_dir / "pdf" / f"apostila_{args.slug}.md"
-    pdf = slug_dir / "pdf" / f"apostila_{args.slug}.pdf"
+    md = slug_dir / args.pasta / f"apostila_{args.slug}.md"
+    pdf = slug_dir / args.pasta / f"apostila_{args.slug}.pdf"
 
     if not md.exists():
         print(f"[ERRO] Arquivo Markdown não encontrado em {md}")
@@ -191,11 +197,11 @@ def main():
     fonte_titulo = tipografia.get("titulo", {}).get("familia", "Inter")
     fonte_corpo = tipografia.get("corpo", {}).get("familia", "Inter")
 
-    # Logos de marca (fixos) precisam existir em pdf/assets/logos/ antes da compilação
-    preparar_assets_logo(slug_dir)
+    # Logos de marca (fixos) precisam existir em <pasta>/assets/logos/ antes da compilação
+    preparar_assets_logo(slug_dir, args.pasta)
 
     # Paths relativos para o Typst (em relação ao slug_dir / `--root` de compilação)
-    logo_imagem = "pdf/assets/logos/Logo_Conexão_horizontal_texto_branco.png"
+    logo_imagem = f"{args.pasta}/assets/logos/Logo_Conexão_horizontal_texto_branco.png"
     imagem_produto = extrair_imagem_produto(config, slug_dir, args.slug)
 
     # Monta as flags -V

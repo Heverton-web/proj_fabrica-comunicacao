@@ -16,7 +16,10 @@ em vez de reinventar orientação de design do zero.
 
 ## Entrada
 
-- `output/<slug>/apresentacao/slides.json` **ou** `output/<slug>/landing-page/conteudo.json`
+- `output/<slug>/<pasta>/slides.json` **ou** `output/<slug>/<pasta>/conteudo.json`
+  (`<pasta>` normalmente `"apresentacao"`/`"landing-page"`, ou uma versão regenerada
+  como `"apresentacao-v2"` — informada pelo subagente que te invoca; ver REGRA 11 do
+  `AGENTS.md`)
 - `brand/design-system-conexao.json` (fixo, mesmo para todo projeto)
 - `templates/apresentacao.html` **ou** `templates/landing.html` — já vêm com o `:root`
   e os `@font-face` da marca embutidos; normalmente você não precisa tocar nisso, só
@@ -26,10 +29,11 @@ em vez de reinventar orientação de design do zero.
 
 ### 1. Executar a Compilação via `scripts/compilar-html.py`
 
-Toda compilação de HTML do projeto foi centralizada de forma robusta e automatizada no script utilitário **`scripts/compilar-html.py`**. Ele gerencia cópias de fontes, logo horizontal de marca, imagem do produto e executa o processamento do conteúdo. Invoque o script informando o slug e o tipo do material:
+Toda compilação de HTML do projeto foi centralizada de forma robusta e automatizada no script utilitário **`scripts/compilar-html.py`**. Ele gerencia cópias de fontes, logo horizontal de marca, imagem do produto e executa o processamento do conteúdo. Invoque o script informando o slug e o tipo do material (e `--pasta`, se for diferente do padrão):
 ```bash
 python scripts/compilar-html.py <slug> apresentacao
 python scripts/compilar-html.py <slug> landing-page
+python scripts/compilar-html.py <slug> apresentacao --pasta apresentacao-v2   # regeneracao pontual (REGRA 11)
 ```
 
 ### 2. Auto-detecção de Layouts e Recursos Visuais (Apresentação)
@@ -47,10 +51,10 @@ Nos templates os placeholders de bloco vivem DENTRO de um comentário HTML (`<!-
 
 ### 4. Handoff e Validação
 
-Após a compilação, execute os validadores do projeto para atestar a conformidade técnica e fidelidade estrita das cores:
+Após a compilação, execute os validadores do projeto para atestar a conformidade técnica e fidelidade estrita das cores (`<pasta>` = a mesma pasta usada na compilação, se diferente de `<tipo>`):
 ```bash
-python scripts/validar-html.py <slug> <tipo>
-python scripts/validar-design-tokens.py <slug> <tipo>
+python scripts/validar-html.py <slug> <tipo> --pasta <pasta>
+python scripts/validar-design-tokens.py <slug> <pasta>
 ```
 
 ## Restrições

@@ -67,10 +67,15 @@ def montar_texto_whatsapp(tom, headline, subcopy, cta, assinatura):
     return "\n\n".join(partes) + "\n"
 
 
-def compilar_kit(slug, kit_variante):
+def compilar_kit(slug, kit_variante, pasta=None):
+    """`pasta` e a pasta real de destino em output/<slug>/ -- normalmente igual a
+    `kit_variante`, mas pode ser uma versao regenerada (ex.: "kit-consultor-v2")
+    por /gerar-kit-consultor -- ver REGRA 11 do AGENTS.md. `kit_variante`
+    continua sendo a variante BASE (define CTA/assinatura fixos)."""
     if kit_variante not in VARIANTES_VALIDAS:
         print(f"[ERRO] variante de kit desconhecida: {kit_variante!r}")
         return 1
+    pasta = pasta or kit_variante
 
     slug_dir = DIR_OUTPUT / slug
     copies_path = slug_dir / "kits" / "copies.json"
@@ -105,7 +110,7 @@ def compilar_kit(slug, kit_variante):
     cta = variante_cfg.get("cta_padrao", "Fale com a Conexão")
     assinatura = variante_cfg.get("assinatura", "Conexão")
 
-    kit_dir = slug_dir / kit_variante
+    kit_dir = slug_dir / pasta
     template_content = template_path.read_text(encoding="utf-8")
 
     # Elementos decorativos de fundo sao opt-out via config_projeto.elementos_decorativos
@@ -197,13 +202,22 @@ def main():
     ap = argparse.ArgumentParser(description="Compila as copies compartilhadas do kit em PNGs + textos de WhatsApp")
     ap.add_argument("slug")
     ap.add_argument("--kit", choices=[*VARIANTES_VALIDAS, "ambos"], default="ambos")
+    ap.add_argument("--pasta", default=None,
+                     help="pasta de destino em output/<slug>/ (default: o proprio "
+                          "--kit; use '<kit>-v2', '-v3'... para regeneracoes que nao "
+                          "devem sobrescrever a versao anterior - ver REGRA 11 do "
+                          "AGENTS.md). So valido com --kit != 'ambos'.")
     args = ap.parse_args()
+
+    if args.pasta and args.kit == "ambos":
+        print("[ERRO] --pasta so pode ser usado com um unico --kit (nunca com 'ambos')")
+        return 1
 
     variantes = list(VARIANTES_VALIDAS) if args.kit == "ambos" else [args.kit]
 
     erros = 0
     for variante in variantes:
-        ret = compilar_kit(args.slug, variante)
+        ret = compilar_kit(args.slug, variante, args.pasta)
         if ret != 0:
             erros += 1
 

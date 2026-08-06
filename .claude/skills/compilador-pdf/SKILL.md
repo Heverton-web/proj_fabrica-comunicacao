@@ -19,7 +19,9 @@ Se precisar de técnicas auxiliares de manipulação de PDF fora do que Pandoc+T
 
 ## Entrada
 
-- `output/<slug>/pdf/apostila_<slug>.md`
+- `output/<slug>/<pasta>/apostila_<slug>.md` (`<pasta>` normalmente `"pdf"`, ou uma
+  versão regenerada como `"pdf-v2"` — informada pelo subagente que te invoca; ver
+  REGRA 11 do `AGENTS.md`)
 - `brand/design-system-conexao.json`
 - `templates/template_apostila.typ`
 
@@ -27,16 +29,17 @@ Se precisar de técnicas auxiliares de manipulação de PDF fora do que Pandoc+T
 
 ### 1. Executar a Compilação via `scripts/compilar-pdf.py`
 
-Toda compilação de PDF do projeto foi centralizada de forma robusta e automatizada no script utilitário **`scripts/compilar-pdf.py`**. Ele gerencia o carregamento de variáveis do design system, metadados do projeto, edição de escolha do operador, imagem do produto e executa o processamento. Invoque o script informando o slug:
+Toda compilação de PDF do projeto foi centralizada de forma robusta e automatizada no script utilitário **`scripts/compilar-pdf.py`**. Ele gerencia o carregamento de variáveis do design system, metadados do projeto, edição de escolha do operador, imagem do produto e executa o processamento. Invoque o script informando o slug (e a `--pasta`, se for diferente do padrão `"pdf"`):
 ```bash
 python scripts/compilar-pdf.py <slug>
+python scripts/compilar-pdf.py <slug> --pasta pdf-v2   # regeneracao pontual (REGRA 11)
 ```
 
 O script extrai dinamicamente as variáveis de marca (`--pdf-vars`), resgata a edição do `config_projeto.json` e repassa para o Pandoc e Typst as flags `-V` de forma perfeitamente separada e argv-normalizada (evitando bugs de leitura silenciosa de variáveis), compilando o arquivo final com integridade máxima de design e cores.
 
 ### 2. Handoff e Validação
 
-`scripts/validar-pdf.py <slug>` confirma tamanho/páginas/texto vetorial **e as checagens
+`scripts/validar-pdf.py <slug> --pasta <pasta>` confirma tamanho/páginas/texto vetorial **e as checagens
 determinísticas de capa** (título ≤ 2 linhas sem palavra isolada remetendo ao tema do
 texto-mãe; parágrafo da capa em bloco quadrado sem palavra isolada — via spans PyMuPDF
 da página 1); `revisor-marca` faz a checagem de fidelidade de conteúdo e de marca.

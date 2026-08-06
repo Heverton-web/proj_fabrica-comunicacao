@@ -13,7 +13,13 @@ assinatura, aplicados depois por `compilador-kit` de forma determinística
 **Invocado uma única vez por projeto**, nunca uma vez por kit — se você for chamado de
 novo e `output/<slug>/kits/copies.json` já existir com 10 copies válidas, não regrave
 (evita `kit-consultor` e `kit-distribuidor` divergindo em paralelo, mesma disciplina de
-`redator-arte`/`docs/05-plano-expansao-multi-copy-arte.md`).
+`redator-arte`/`docs/05-plano-expansao-multi-copy-arte.md`). **Exceção:** o público e
+os 5 tons do kit são sempre fixos (nunca mudam com `publico_alvo`/`objetivo_tom` do
+operador — ver "Entrada" acima), então só regrave se a regeneração pontual
+(`/gerar-kit-consultor`/`/gerar-kit-distribuidor`) trocou **imagem ou texto-base** do
+projeto (o que muda `brief_criativo.mensagem_central`/`angulos_por_tom`, fonte destas
+copies). Os PNGs já entregues de kits anteriores não são afetados de qualquer forma,
+pois já foram renderizados e vivem em pastas próprias (REGRA 11 do `AGENTS.md`).
 
 ## Entrada
 

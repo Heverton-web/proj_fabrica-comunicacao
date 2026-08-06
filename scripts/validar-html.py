@@ -53,9 +53,14 @@ def main():
     ap = argparse.ArgumentParser(description="Valida um material HTML via Playwright headless")
     ap.add_argument("slug")
     ap.add_argument("tipo", choices=["landing-page", "apresentacao"])
+    ap.add_argument("--pasta", default=None,
+                     help="pasta em output/<slug>/ a validar (default: o proprio "
+                          "<tipo>; use '<tipo>-v2', '-v3'... para validar uma "
+                          "regeneracao - ver REGRA 11 do AGENTS.md)")
     args = ap.parse_args()
+    pasta = args.pasta or args.tipo
 
-    html_path = DIR_OUTPUT / args.slug / args.tipo / "index.html"
+    html_path = DIR_OUTPUT / args.slug / pasta / "index.html"
     if not html_path.exists():
         print(f"[ERRO] {html_path} nao encontrado")
         return 1

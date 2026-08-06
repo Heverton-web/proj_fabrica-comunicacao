@@ -30,13 +30,23 @@ renderiza **3** (1 por copy compartilhada), todas na mesma dimensão da variante
 
 ## Procedimento
 
+### 0. Pasta de destino (`<pasta>`)
+
+`<pasta>` é normalmente igual a `<variante>` (`arte-01`/`02`/`03`), mas pode ser uma
+versão regenerada (ex.: `"arte-01-v2"`) informada pelo subagente que te invoca quando
+essa variante já foi entregue antes — **REGRA 11 do `AGENTS.md`: nunca escreva em uma
+pasta que já tenha material entregue**. `<variante>` continua fixa para tudo que
+depende de dimensão (viewport, nome de arquivo); só o destino em disco muda. Invoque
+sempre via `python scripts/compilar-arte.py <slug> --variante <variante> --pasta
+<pasta>`.
+
 ### 1. Copiar as fontes e injetar conteúdo no template HTML
 
-Copie `templates/fonts/*.woff2` para `output/<slug>/<variante>/assets/fonts/` (o
+Copie `templates/fonts/*.woff2` para `output/<slug>/<pasta>/assets/fonts/` (o
 template referencia esse path relativo via `@font-face` — sem isso a fonte cai
 silenciosamente em Roboto/sistema). Para **cada uma das 3 copies** de
 `arte/copies.json`, preencha `templates/arte-<dimensao>.html` com aquela copy e salve
-como HTML dentro da pasta da variante (para que o path relativo das fontes resolva).
+como HTML dentro da pasta de destino (para que o path relativo das fontes resolva).
 
 ### 2. Renderizar com Playwright (viewport exato = dimensão final), 1× por copy
 
@@ -91,14 +101,15 @@ manual do `revisor-marca`.
 
 ### 4. Handoff
 
-`scripts/validar-dimensoes.py <slug> <variante>` confirma exatamente 3 PNGs, dimensão
-exata e teto de peso; `revisor-marca` faz a checagem de fidelidade nas 3 copies.
+`scripts/validar-dimensoes.py <slug> <variante> --pasta <pasta>` confirma exatamente 3
+PNGs, dimensão exata e teto de peso; `revisor-marca` faz a checagem de fidelidade nas
+3 copies.
 
 ## Naming
 
 - `arte_<slug>_<NN>_copy<MM>.png` onde `NN` é o formato (`01`=1080×1080,
   `02`=1080×1350, `03`=1080×1920) e `MM` é a copy (`01`/`02`/`03`), salvo em
-  `output/<slug>/arte-0N/`. Nunca deixe um número solto — os dois eixos (formato e
+  `output/<slug>/<pasta>/`. Nunca deixe um número solto — os dois eixos (formato e
   copy) sempre aparecem juntos no nome do arquivo.
 
 ## Restrições

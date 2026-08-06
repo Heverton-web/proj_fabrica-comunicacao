@@ -195,12 +195,16 @@ def renderizar_componente(componente):
     return fn(componente.get("dados", {}))
 
 
-def compilar_apresentacao(slug):
+def compilar_apresentacao(slug, pasta="apresentacao"):
+    """`pasta` e normalmente "apresentacao", mas pode ser uma versao regenerada
+    (ex.: "apresentacao-v2") por /gerar-apresentacao — ver REGRA 11 do AGENTS.md.
+    O `slides.json` de entrada tambem vive dentro de `pasta` (gravado la pelo
+    redator-apresentacao antes desta chamada)."""
     slug_dir = DIR_OUTPUT / slug
-    slides_path = slug_dir / "apresentacao" / "slides.json"
+    slides_path = slug_dir / pasta / "slides.json"
     template_path = DIR_PROJETO / "templates" / "apresentacao.html"
-    dest_html = slug_dir / "apresentacao" / "index.html"
-    dest_assets = slug_dir / "apresentacao" / "assets"
+    dest_html = slug_dir / pasta / "index.html"
+    dest_assets = slug_dir / pasta / "assets"
 
     if not slides_path.exists():
         print(f"[ERRO] slides.json não encontrado em {slides_path}")
@@ -443,12 +447,14 @@ def compilar_apresentacao(slug):
     return 0
 
 
-def compilar_landing(slug):
+def compilar_landing(slug, pasta="landing-page"):
+    """`pasta` e normalmente "landing-page", mas pode ser uma versao regenerada
+    (ex.: "landing-page-v2") por /gerar-landing — ver REGRA 11 do AGENTS.md."""
     slug_dir = DIR_OUTPUT / slug
-    conteudo_path = slug_dir / "landing-page" / "conteudo.json"
+    conteudo_path = slug_dir / pasta / "conteudo.json"
     template_path = DIR_PROJETO / "templates" / "landing.html"
-    dest_html = slug_dir / "landing-page" / "index.html"
-    dest_assets = slug_dir / "landing-page" / "assets"
+    dest_html = slug_dir / pasta / "index.html"
+    dest_assets = slug_dir / pasta / "assets"
 
     if not conteudo_path.exists():
         print(f"[ERRO] conteudo.json não encontrado em {conteudo_path}")
@@ -639,12 +645,17 @@ def main():
     ap = argparse.ArgumentParser(description="Compila dados estruturados JSON em HTML aplicando design Conexão")
     ap.add_argument("slug")
     ap.add_argument("tipo", choices=["apresentacao", "landing-page"])
+    ap.add_argument("--pasta", default=None,
+                     help="pasta de destino em output/<slug>/ (default: o proprio "
+                          "<tipo>; use '<tipo>-v2', '-v3'... para regeneracoes que nao "
+                          "devem sobrescrever a versao anterior - ver REGRA 11 do AGENTS.md)")
     args = ap.parse_args()
+    pasta = args.pasta or args.tipo
 
     if args.tipo == "apresentacao":
-        return compilar_apresentacao(args.slug)
+        return compilar_apresentacao(args.slug, pasta)
     elif args.tipo == "landing-page":
-        return compilar_landing(args.slug)
+        return compilar_landing(args.slug, pasta)
     return 0
 
 

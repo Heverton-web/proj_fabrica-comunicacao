@@ -18,6 +18,12 @@ vez, pelo orquestrador antes do fan-out) — você nunca escreve copy, nunca inv
 ## Entrada
 
 - `<slug>` do projeto e `<kit>` ∈ {`kit-consultor`, `kit-distribuidor`}
+- `<pasta>` — pasta de destino em `output/<slug>/` (opcional; default = `<kit>`). Só é
+  diferente quando o orquestrador (`/gerar-kit-consultor`/`/gerar-kit-distribuidor`) já
+  resolveu uma versão regenerada via `pool-materiais.py --proxima-pasta <kit>` (ex.:
+  `"kit-consultor-v2"`, porque já existe esse kit entregue anteriormente) — **REGRA 11
+  do `AGENTS.md`: nunca escreva em uma pasta que já tenha material entregue**. `<kit>`
+  continua fixo (define CTA/assinatura); só `<pasta>` muda entre gerações.
 - `output/<slug>/kits/copies.json` (10 copies compartilhadas — **pré-condição
   obrigatória**, gerada pelo orquestrador antes de despachar qualquer subagente de kit)
 - `brand/kits-conexao.json` (CTA/assinatura fixos da sua variante), `brand/tons-kit.json`,
@@ -36,24 +42,24 @@ vez, pelo orquestrador antes do fan-out) — você nunca escreve copy, nunca inv
    copies. Se não existir, **pare e reporte falha** — é um erro de orquestração (o
    passo compartilhado de `redator-kit-copy` deveria ter rodado antes do fan-out); não
    gere você mesmo, para não duplicar/divergir do que o outro kit vai usar.
-2. Invoque o skill `compilador-kit` para o seu kit → roda
-   `python scripts/compilar-kit.py <slug> --kit <kit>`, que renderiza os 10 PNGs
-   1080×1350 e escreve os 10 `conteudo.json` + 10 `texto_whatsapp.txt`.
-3. Rode `python scripts/validar-kit.py <slug> <kit>` — exige exatamente 10 PNGs + 10
-   `conteudo.json` + 10 `texto_whatsapp.txt` corretos (5 tons × 2 itens). Se falhar
-   (dimensão errada, peso acima do teto, item faltante), corrija (recompactar, ajustar
-   texto, re-renderizar o item faltante via `compilador-kit`) e repita o passo 2 até
-   passar ou esgotar 3 tentativas locais.
-4. Auto-registre:
-   - Sucesso: `python scripts/pool-materiais.py <slug> --registrar <kit> --sucesso`
-   - Falha: `python scripts/pool-materiais.py <slug> --registrar <kit> --falha "<motivo>"`
+2. Invoque o skill `compilador-kit` para o seu kit (informando `<pasta>`) → roda
+   `python scripts/compilar-kit.py <slug> --kit <kit> --pasta <pasta>`, que renderiza
+   os 10 PNGs 1080×1350 e escreve os 10 `conteudo.json` + 10 `texto_whatsapp.txt`.
+3. Rode `python scripts/validar-kit.py <slug> <kit> --pasta <pasta>` — exige
+   exatamente 10 PNGs + 10 `conteudo.json` + 10 `texto_whatsapp.txt` corretos (5 tons ×
+   2 itens). Se falhar (dimensão errada, peso acima do teto, item faltante), corrija
+   (recompactar, ajustar texto, re-renderizar o item faltante via `compilador-kit`) e
+   repita o passo 2 até passar ou esgotar 3 tentativas locais.
+4. Auto-registre (sempre pela `<pasta>` real, nunca por `<kit>` fixo):
+   - Sucesso: `python scripts/pool-materiais.py <slug> --registrar <pasta> --sucesso`
+   - Falha: `python scripts/pool-materiais.py <slug> --registrar <pasta> --falha "<motivo>"`
 5. Não invoque `revisor-marca` você mesmo.
 
 ## Limites
 
-- Só toca em `output/<slug>/<kit>/**` (nunca em `output/<slug>/kits/copies.json` —
+- Só toca em `output/<slug>/<pasta>/**` (nunca em `output/<slug>/kits/copies.json` —
   esse arquivo é compartilhado e de responsabilidade do orquestrador/`redator-kit-copy`,
-  nem no outro kit).
+  nem no outro kit, nem numa versão anterior já entregue).
 - Nunca copiar arte de outro projeto ou usar banco de imagens (copyright) — a imagem do
   produto vem sempre de `config_projeto.imagens[0]`.
 - Nunca usar cor/fonte fora de `brand/design-system-conexao.json`.

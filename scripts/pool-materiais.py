@@ -31,6 +31,9 @@ import sys
 import time
 from pathlib import Path
 
+sys.path.append(str(Path(__file__).resolve().parent))
+from _tipos_comuns import tipo_base, numero_versao, proxima_pasta_livre
+
 DIR_PROJETO = Path(__file__).resolve().parent.parent
 DIR_OUTPUT = DIR_PROJETO / "output"
 
@@ -60,7 +63,15 @@ def carregar_config(slug):
         return None
     dados = json.loads(caminho.read_text(encoding="utf-8"))
     materiais = dados.get("materiais_selecionados", [])
-    return [{"material": m, "titulo": TITULOS_MATERIAL.get(m, m)} for m in materiais]
+    return [{"material": m, "titulo": titulo_material(m)} for m in materiais]
+
+
+def titulo_material(tipo):
+    """Rotulo legivel de um tipo/pasta, incluindo a versao quando > 1
+    (ex.: 'pdf-v2' -> 'PDF (apostila) — versão 2')."""
+    titulo = TITULOS_MATERIAL.get(tipo_base(tipo), tipo)
+    n = numero_versao(tipo)
+    return f"{titulo} — versão {n}" if n > 1 else titulo
 
 
 def caminho_estado(slug):
@@ -116,29 +127,34 @@ def _liberar_lock(lock_path):
 def material_entregue(slug, tipo):
     """Entregue = artefato esperado existe no disco e tem tamanho > 0.
     Checagem de forma/dimensao exata fica por conta de validar-pdf.py /
-    validar-html.py / validar-dimensoes.py — aqui e so o gate de disco."""
+    validar-html.py / validar-dimensoes.py — aqui e so o gate de disco.
+
+    `tipo` pode ser uma pasta versionada (ex.: "pdf-v2") — o dispatch abaixo
+    usa sempre tipo_base(tipo) para decidir a regra, mas le/escreve a pasta
+    literal `tipo` em disco (ver REGRA 11 do AGENTS.md)."""
     base = DIR_OUTPUT / slug / tipo
+    base_tipo = tipo_base(tipo)
     if not base.exists():
         return False, "pasta ainda nao criada"
-    if tipo == "pdf":
+    if base_tipo == "pdf":
         pdfs = [p for p in base.glob("*.pdf") if p.stat().st_size > 0]
         return (True, "ok") if pdfs else (False, "PDF ainda nao gerado")
-    if tipo in ("landing-page", "apresentacao"):
+    if base_tipo in ("landing-page", "apresentacao"):
         idx = base / "index.html"
         if idx.exists() and idx.stat().st_size > 0:
             return True, "ok"
         return False, "index.html ainda nao gerado"
-    if tipo.startswith("arte-"):
+    if base_tipo.startswith("arte-"):
         pngs = [p for p in base.glob("*.png") if p.stat().st_size > 0]
         if len(pngs) < 3:
             return False, f"esperado 3 PNGs (1 por copy), encontrado {len(pngs)}"
         return True, "ok"
-    if tipo == "textos":
+    if base_tipo == "textos":
         esperados = ("whatsapp.txt", "instagram.txt", "linkedin.txt")
         faltantes = [n for n in esperados
                      if not (base / n).exists() or (base / n).stat().st_size == 0]
         return (True, "ok") if not faltantes else (False, f"faltando: {', '.join(faltantes)}")
-    if tipo in ("kit-consultor", "kit-distribuidor"):
+    if base_tipo in ("kit-consultor", "kit-distribuidor"):
         # 5 tons x 2 itens x {PNG, conteudo.json, texto_whatsapp.txt} = 10 de cada,
         # ver SPEC_KITS.md. Checagem de forma/dimensao exata fica com validar-kit.py.
         tons_pastas = ["artes-informativas", "artes-contra-intuitivas", "artes-tecnicas",
@@ -220,6 +236,10 @@ def main():
     ap.add_argument("--pendentes", action="store_true", help="lista materiais pendentes/esgotados")
     ap.add_argument("--status", action="store_true", help="resumo do progresso")
     ap.add_argument("--registrar", metavar="TIPO", help="registra o resultado de um material")
+    ap.add_argument("--proxima-pasta", metavar="TIPO_BASE",
+                     help="imprime o proximo nome de pasta livre para uma nova versao deste "
+                          "tipo (ex.: 'pdf' -> 'pdf' se ainda nao existe, ou 'pdf-v2' se ja "
+                          "existir output/<slug>/pdf/ entregue) - nunca sobrescreve (REGRA 11)")
     ap.add_argument("--sucesso", action="store_true")
     ap.add_argument("--falha", nargs="?", const="falha nao especificada", metavar="MOTIVO")
     ap.add_argument("--reset", action="store_true", help="zera o contador de tentativas")
@@ -231,6 +251,11 @@ def main():
     if not (DIR_OUTPUT / args.slug).exists():
         print(f"[ERRO] Projeto nao encontrado: {DIR_OUTPUT / args.slug}")
         return 1
+
+    if args.proxima_pasta:
+        pasta = proxima_pasta_livre(DIR_OUTPUT / args.slug, args.proxima_pasta)
+        print(pasta)
+        return 0
 
     if args.registrar:
         try:

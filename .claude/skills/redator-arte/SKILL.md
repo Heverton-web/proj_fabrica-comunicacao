@@ -14,7 +14,12 @@ não escreve "uma copy por variante" — você escreve **3 copies compartilhadas
 uma renderizada depois em **todos** os formatos selecionados (`arte-01`/`02`/`03`).
 Invocado **uma única vez por projeto**, nunca uma vez por variante — se você for
 chamado de novo e `output/<slug>/arte/copies.json` já existir com 3 copies válidas,
-não regrave (evita 2 subagentes de formato divergindo em paralelo).
+não regrave (evita 2 subagentes de formato divergindo em paralelo). **Exceção:** se
+esta chamada vem de uma regeneração pontual (`/gerar-arte-<tamanho>`) cuja entrevista
+mudou público-alvo e/ou tom de voz do projeto, o `copies.json` existente reflete a
+escolha antiga — regrave-o com os novos ângulos (as PNGs já entregues de outras
+variantes não são afetadas, pois já foram renderizadas e vivem em pastas próprias —
+ver REGRA 11 do `AGENTS.md`).
 
 ## Entrada
 

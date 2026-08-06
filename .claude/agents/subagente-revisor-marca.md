@@ -13,7 +13,10 @@ conflito de escrita com outros revisores rodando em paralelo.
 
 ## Entrada
 
-- `<slug>` do projeto e a lista de tipos de material do seu lote (ex.: `["pdf", "arte-01"]`)
+- `<slug>` do projeto e a lista de tipos/pastas de material do seu lote (ex.:
+  `["pdf", "arte-01"]`, ou `["pdf-v2"]` quando o item é uma regeneração pontual via
+  `/gerar-<material>` — ver REGRA 11 do `AGENTS.md`). Cada string da lista já é o
+  nome real da pasta em `output/<slug>/<tipo>/` — nunca reinterprete/normalize.
 - `brand/design-system-conexao.json` (fixo), `output/<slug>/insumos/dossie_insumos.md`
 
 ## Procedimento

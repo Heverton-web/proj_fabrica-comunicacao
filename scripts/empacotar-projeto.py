@@ -17,34 +17,44 @@ import json
 import sys
 from pathlib import Path
 
+sys.path.append(str(Path(__file__).resolve().parent))
+from _tipos_comuns import tipo_base
+
 DIR_PROJETO = Path(__file__).resolve().parent.parent
 DIR_OUTPUT = DIR_PROJETO / "output"
-
-def _resolver_textos(base, slug):
-    pasta = base / "textos"
-    esperados = ("whatsapp.txt", "instagram.txt", "linkedin.txt")
-    if pasta.is_dir() and all((pasta / n).exists() and (pasta / n).stat().st_size > 0 for n in esperados):
-        return pasta
-    return None
-
-
-def _resolver_arte(tipo):
-    def resolver(base, slug):
-        pasta = base / tipo
-        pngs = [p for p in pasta.glob("*.png") if p.stat().st_size > 0] if pasta.is_dir() else []
-        # 3 PNGs esperados: 1 por copy compartilhada (arte/copies.json),
-        # ver docs/05-plano-expansao-multi-copy-arte.md
-        return pasta if len(pngs) == 3 else None
-    return resolver
-
 
 TONS_PASTAS_KIT = ["artes-informativas", "artes-contra-intuitivas", "artes-tecnicas",
                    "artes-efeito-uau", "artes-educativas"]
 
 
-def _resolver_kit(tipo):
-    def resolver(base, slug):
-        pasta = base / tipo
+def resolver_artefato(base, slug, tipo):
+    """Retorna o path do artefato principal de `tipo` (que pode ser uma pasta
+    versionada, ex.: "pdf-v2" - ver REGRA 11 do AGENTS.md), ou None se ainda nao
+    estiver completo. O dispatch usa sempre tipo_base(tipo); a pasta lida em
+    disco e sempre a string completa `tipo`."""
+    pasta = base / tipo
+    base_tipo = tipo_base(tipo)
+
+    if base_tipo == "pdf":
+        return next(iter(sorted(pasta.glob("*.pdf"))), None)
+
+    if base_tipo in ("landing-page", "apresentacao"):
+        idx = pasta / "index.html"
+        return idx if idx.exists() else None
+
+    if base_tipo.startswith("arte-"):
+        pngs = [p for p in pasta.glob("*.png") if p.stat().st_size > 0] if pasta.is_dir() else []
+        # 3 PNGs esperados: 1 por copy compartilhada (arte/copies.json),
+        # ver docs/05-plano-expansao-multi-copy-arte.md
+        return pasta if len(pngs) == 3 else None
+
+    if base_tipo == "textos":
+        esperados = ("whatsapp.txt", "instagram.txt", "linkedin.txt")
+        if pasta.is_dir() and all((pasta / n).exists() and (pasta / n).stat().st_size > 0 for n in esperados):
+            return pasta
+        return None
+
+    if base_tipo in ("kit-consultor", "kit-distribuidor"):
         if not pasta.is_dir():
             return None
         pngs = conteudos = textos = 0
@@ -64,20 +74,21 @@ def _resolver_kit(tipo):
         # 10 PNGs + 10 conteudo.json + 10 texto_whatsapp.txt esperados (5 tons x 2
         # itens), ver SPEC_KITS.md.
         return pasta if (pngs, conteudos, textos) == (10, 10, 10) else None
-    return resolver
+
+    return None
 
 
-PATH_POR_TIPO = {
-    "pdf": lambda base, slug: next(iter(sorted((base / "pdf").glob("*.pdf"))), None),
-    "landing-page": lambda base, slug: (base / "landing-page" / "index.html"),
-    "apresentacao": lambda base, slug: (base / "apresentacao" / "index.html"),
-    "arte-01": _resolver_arte("arte-01"),
-    "arte-02": _resolver_arte("arte-02"),
-    "arte-03": _resolver_arte("arte-03"),
-    "textos": _resolver_textos,
-    "kit-consultor": _resolver_kit("kit-consultor"),
-    "kit-distribuidor": _resolver_kit("kit-distribuidor"),
-}
+def com_versoes(base, tipos_selecionados):
+    """Acrescenta a `tipos_selecionados` qualquer pasta irma versionada
+    (<tipo>-v2, -v3...) ja encontrada em disco - garante que o manifesto sempre
+    reflita 100% do que foi gerado, nao so a 1a geracao (REGRA 11)."""
+    completos = list(tipos_selecionados)
+    for tipo in tipos_selecionados:
+        n = 2
+        while (base / f"{tipo}-v{n}").exists():
+            completos.append(f"{tipo}-v{n}")
+            n += 1
+    return completos
 
 
 def carregar_json(caminho, default=None):
@@ -101,6 +112,7 @@ def main():
     if not tipos:
         print(f"[ERRO] config_projeto.json de {args.slug} nao tem materiais_selecionados")
         return 1
+    tipos = com_versoes(base, tipos)
 
     estado_pool = carregar_json(base / "_pool_estado.json", {}).get("materiais", {})
     parecer = carregar_json(base / "revisao" / "parecer_revisao.json", {
@@ -111,8 +123,7 @@ def main():
     algum_erro = False
     for tipo in tipos:
         estado = estado_pool.get(tipo, {}).get("estado", "desconhecido")
-        resolver = PATH_POR_TIPO.get(tipo)
-        artefato = resolver(base, args.slug) if resolver else None
+        artefato = resolver_artefato(base, args.slug, tipo)
 
         if estado == "concluido_autonomo" and (artefato is None or not artefato.exists()):
             print(f"[ERRO] {tipo}: estado diz concluido_autonomo mas o artefato nao existe no disco "

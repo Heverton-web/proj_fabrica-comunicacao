@@ -9,6 +9,7 @@ Uso:
 """
 
 import argparse
+import json
 import re
 import sys
 import unicodedata
@@ -173,9 +174,13 @@ def validar_capa(pdf_path, texto_base_path):
 def main():
     ap = argparse.ArgumentParser(description="Valida o PDF final da apostila")
     ap.add_argument("slug")
+    ap.add_argument("--pasta", default="pdf",
+                     help="pasta em output/<slug>/ a validar (default: 'pdf'; use "
+                          "'pdf-v2', 'pdf-v3'... para validar uma regeneracao - ver "
+                          "REGRA 11 do AGENTS.md)")
     args = ap.parse_args()
 
-    base = DIR_OUTPUT / args.slug / "pdf"
+    base = DIR_OUTPUT / args.slug / args.pasta
     pdfs = sorted(base.glob("*.pdf")) if base.exists() else []
     if not pdfs:
         print(f"[ERRO] nenhum PDF encontrado em {base}")
@@ -218,7 +223,22 @@ def main():
 
     # SPEC_PDF (endurecimento): capa tematica em bloco quadrado, titulo <= 2
     # linhas sem palavra isolada, paragrafo em bloco sem palavra isolada
-    if not validar_capa(pdf_path, DIR_OUTPUT / args.slug / "insumos" / "texto-mae.txt"):
+    #
+    # texto_base e lido de config_projeto.json (fonte de verdade do /esbocar) -
+    # nunca hardcoded como "texto-mae.txt", pois /gerar-<material> pode trocar o
+    # texto-base do projeto para um novo arquivo (ex.: texto-mae-02.txt).
+    texto_base_path = DIR_OUTPUT / args.slug / "insumos" / "texto-mae.txt"
+    config_path = DIR_OUTPUT / args.slug / "config_projeto.json"
+    if config_path.exists():
+        try:
+            config = json.loads(config_path.read_text(encoding="utf-8"))
+            texto_base_config = config.get("texto_base")
+            if texto_base_config:
+                texto_base_path = DIR_PROJETO / texto_base_config
+        except Exception:
+            pass
+
+    if not validar_capa(pdf_path, texto_base_path):
         ok = False
 
     return 0 if ok else 1

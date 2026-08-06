@@ -12,19 +12,28 @@ base no JSON deles, nunca por impressão própria do conteúdo.
 
 ## Entrada
 
-- O(s) artefato(s) compilado(s) em `output/<slug>/<tipo>/`.
+- O(s) artefato(s) compilado(s) em `output/<slug>/<tipo>/`, onde `<tipo>` é o nome
+  literal da pasta em disco — pode ser uma versão regenerada (ex.: `"pdf-v2"`) quando
+  o material já foi entregue antes e o operador pediu uma nova geração via
+  `/gerar-<material>` (REGRA 11 do `AGENTS.md`). Nunca normalize/reescreva `<tipo>` —
+  use-o exatamente como recebido tanto para ler a pasta quanto para os comandos abaixo.
 - `brand/design-system-conexao.json` (fixo), `output/<slug>/insumos/dossie_insumos.md`.
 
 ## Procedimento
 
 ### 1. Rodar as validações determinísticas primeiro
 
+`<base>` abaixo é o tipo "puro" sem sufixo de versão (ex.: `<tipo>` = `"pdf-v2"` →
+`<base>` = `"pdf"`) — só para escolher qual validador chamar; a pasta lida em disco
+continua sendo sempre `<tipo>` (via `--pasta`, ou como argumento posicional em
+`validar-design-tokens.py`, que já é genérico):
+
 ```
-python scripts/validar-design-tokens.py <slug> <tipo>
-python scripts/validar-pdf.py <slug>            # só se tipo == pdf
-python scripts/validar-html.py <slug> <tipo>    # só se tipo in (landing-page, apresentacao)
-python scripts/validar-dimensoes.py <slug> <tipo>  # só se tipo startswith arte-
-python scripts/validar-kit.py <slug> <tipo>     # só se tipo in (kit-consultor, kit-distribuidor)
+python scripts/validar-design-tokens.py <slug> <tipo>              # so se base in (landing-page, apresentacao)
+python scripts/validar-pdf.py <slug> --pasta <tipo>                 # so se base == pdf
+python scripts/validar-html.py <slug> <base> --pasta <tipo>         # so se base in (landing-page, apresentacao)
+python scripts/validar-dimensoes.py <slug> <base> --pasta <tipo>    # so se base comeca com arte-
+python scripts/validar-kit.py <slug> <base> --pasta <tipo>          # so se base in (kit-consultor, kit-distribuidor)
 ```
 
 ### 1.1. Checagens de endurecimento (determinísticas, novas)

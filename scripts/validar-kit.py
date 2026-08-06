@@ -38,7 +38,12 @@ def main():
     ap = argparse.ArgumentParser(description="Valida a estrutura de um Kit do Consultor/Distribuidor")
     ap.add_argument("slug")
     ap.add_argument("kit", choices=["kit-consultor", "kit-distribuidor"])
+    ap.add_argument("--pasta", default=None,
+                     help="pasta em output/<slug>/ a validar (default: o proprio "
+                          "<kit>; use '<kit>-v2', '-v3'... para validar uma "
+                          "regeneracao - ver REGRA 11 do AGENTS.md)")
     args = ap.parse_args()
+    pasta = args.pasta or args.kit
 
     try:
         from PIL import Image
@@ -46,7 +51,7 @@ def main():
         print("[ERRO] Pillow nao instalado - rode: pip install Pillow")
         return 1
 
-    kit_dir = DIR_OUTPUT / args.slug / args.kit
+    kit_dir = DIR_OUTPUT / args.slug / pasta
     if not kit_dir.is_dir():
         print(f"[ERRO] pasta do kit nao encontrada: {kit_dir}")
         return 1

@@ -18,6 +18,9 @@ import subprocess
 import sys
 from pathlib import Path
 
+sys.path.append(str(Path(__file__).resolve().parent))
+from _tipos_comuns import tipo_base
+
 DIR_PROJETO = Path(__file__).resolve().parent.parent
 DIR_OUTPUT = DIR_PROJETO / "output"
 DIR_SCRIPTS = Path(__file__).resolve().parent
@@ -27,18 +30,24 @@ TIPOS_VALIDOS = ["pdf", "landing-page", "apresentacao", "arte-01", "arte-02", "a
 
 
 def rodar_validador(slug, tipo):
-    """Retorna (ok, saida) rodando o script validar-*.py apropriado para o tipo."""
+    """Retorna (ok, saida) rodando o script validar-*.py apropriado para o tipo.
+
+    `tipo` pode ser uma pasta versionada (ex.: "pdf-v2", gerada por
+    /gerar-<material> - ver REGRA 11 do AGENTS.md): o dispatch usa sempre
+    tipo_base(tipo) para escolher o validador certo, mas passa a string
+    completa via --pasta para que o script valide a pasta real em disco."""
     py = sys.executable
-    if tipo == "pdf":
-        cmd = [py, str(DIR_SCRIPTS / "validar-pdf.py"), slug]
-    elif tipo in ("landing-page", "apresentacao"):
-        cmd = [py, str(DIR_SCRIPTS / "validar-html.py"), slug, tipo]
-    elif tipo.startswith("arte-"):
-        cmd = [py, str(DIR_SCRIPTS / "validar-dimensoes.py"), slug, tipo]
-    elif tipo == "textos":
-        cmd = [py, str(DIR_SCRIPTS / "validar-textos.py"), slug]
-    elif tipo in ("kit-consultor", "kit-distribuidor"):
-        cmd = [py, str(DIR_SCRIPTS / "validar-kit.py"), slug, tipo]
+    base = tipo_base(tipo)
+    if base == "pdf":
+        cmd = [py, str(DIR_SCRIPTS / "validar-pdf.py"), slug, "--pasta", tipo]
+    elif base in ("landing-page", "apresentacao"):
+        cmd = [py, str(DIR_SCRIPTS / "validar-html.py"), slug, base, "--pasta", tipo]
+    elif base.startswith("arte-"):
+        cmd = [py, str(DIR_SCRIPTS / "validar-dimensoes.py"), slug, base, "--pasta", tipo]
+    elif base == "textos":
+        cmd = [py, str(DIR_SCRIPTS / "validar-textos.py"), slug, "--pasta", tipo]
+    elif base in ("kit-consultor", "kit-distribuidor"):
+        cmd = [py, str(DIR_SCRIPTS / "validar-kit.py"), slug, base, "--pasta", tipo]
     else:
         return False, f"tipo desconhecido: {tipo}"
 
@@ -49,8 +58,11 @@ def rodar_validador(slug, tipo):
 
 def rodar_validador_marca(slug, tipo):
     """R5: fidelidade de cor/fonte - so aplica a landing-page/apresentacao (arte
-    e validado por construcao + dimensoes; pdf usa -V, nao ha 'hex solto' a checar)."""
-    if tipo not in ("landing-page", "apresentacao"):
+    e validado por construcao + dimensoes; pdf usa -V, nao ha 'hex solto' a checar).
+    `validar-design-tokens.py` ja recebe `tipo` como o nome literal da pasta
+    (sem restricao de choices), entao a string versionada (ex.: "landing-page-v2")
+    passa direto, sem precisar de --pasta separado."""
+    if tipo_base(tipo) not in ("landing-page", "apresentacao"):
         return True, "n/a"
     py = sys.executable
     cmd = [py, str(DIR_SCRIPTS / "validar-design-tokens.py"), slug, tipo]
@@ -100,7 +112,7 @@ def main():
     else:
         tipos = config.get("materiais_selecionados", [])
 
-    tipos = [t for t in tipos if t in TIPOS_VALIDOS]
+    tipos = [t for t in tipos if tipo_base(t) in TIPOS_VALIDOS]
     if not tipos:
         print("[ERRO] nenhum tipo de material valido para auditar")
         return 1

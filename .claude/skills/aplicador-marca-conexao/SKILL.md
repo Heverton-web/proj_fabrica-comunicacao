@@ -277,7 +277,8 @@ para composições de capa onde há espaço vertical livre (ex.: capa PDF centra
 - **arte-01/02/03**: canto superior esquerdo do canvas, margem de 48px, altura 28–32px.
   Nunca centrado — reservar centro para headline e imagem do produto.
 - **PDF (capa)**: centrado na área superior da capa, altura 56–64px. O `compilador-pdf`
-  copia o arquivo para `output/<slug>/pdf/assets/logos/` e o template Typst o
+  copia o arquivo para `output/<slug>/<pasta>/assets/logos/` (`<pasta>` normalmente
+  `"pdf"`, ou uma versão regenerada — ver REGRA 11 do `AGENTS.md`) e o template Typst o
   referencia via `image("assets/logos/Logo_Conexão_horizontal_texto_branco.png")`.
 
 ### Como copiar o arquivo (obrigatório antes de compilar)
