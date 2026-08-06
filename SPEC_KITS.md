@@ -115,6 +115,10 @@ Sem campo `cta` — o CTA é sempre resolvido em tempo de renderização a parti
   do parágrafo (mesma regra e mesmo template `arte-1080x1350.html` de `SPEC_ARTE.md`
   — os kits reaproveitam o script de ajuste embutido no template, nada específico
   de kit a implementar aqui).
+- **1 Badge por Peça (endurecimento):** mesma regra de `SPEC_ARTE.md` — cada PNG tem
+  exatamente 1 elemento tipo badge (o CTA pill `class="cta"` da variante) e nenhum
+  badge de contexto (`class="badge"`). Validado por `validar-kit.py` sobre os
+  `index*.html` persistidos (0 badges de contexto, exatamente 1 CTA por arquivo).
 - Elementos geométricos/wave decorativos de fundo: mesma regra de `SPEC_ARTE.md`,
   aqui o **bloco** é o par kit-variante×tom (as 2 artes de 1 tom de 1 kit
   compartilham forma/posição/tamanho/opacidade) — opt-out via

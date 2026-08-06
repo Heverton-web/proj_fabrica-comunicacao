@@ -67,12 +67,27 @@ divergente entre subagentes paralelos) — ver seção 1 de
   dimensão.
 - Cores/fontes só via CSS custom properties do design system fixo (mesma disciplina
   de `SPEC_HTML.md`).
+- **Imagem do produto em evidência (endurecimento):** `.produto` ocupa a maior parte
+  do bloco de conteúdo — `width: 680px`/`max-height: 440px` (arte-01),
+  `740px`/`640px` (arte-02), `840px`/`920px` (arte-03), `object-fit: contain`,
+  `margin-bottom: 48px`. Com a foto padrão (1600×1382, quase quadrada), o
+  `max-height` é o fator limitante: renderiza ~680×440 (arte-01), 740×639 (arte-02),
+  840×726 (arte-03). Nunca reduza para acomodar texto — ajuste o texto (REGRA 4).
+  Bloco de conteúdo nunca pode colidir com o rodapé de copyright (verificar via
+  bounding rect no Playwright após render).
 - **Título (headline) em no máximo 2 linhas, nunca com 1 única palavra sozinha numa
   linha**, e com largura igual à do parágrafo (mesmo `max-width` de `.subcopy`), para
   causar a impressão de um bloco compacto em harmonia com o parágrafo abaixo — não
   garantido só por CSS (`text-wrap: balance` como 1ª camada); os templates embutem um
   script que mede as linhas renderizadas e reduz o `font-size` em passos pequenos até
   cumprir as 2 regras (nunca aumenta o tamanho definido no CSS). Ver `templates/arte-*.html`.
+- **1 Badge por Peça (endurecimento):** cada PNG tem **exatamente 1** elemento tipo
+  badge — o **CTA pill** (`class="cta"`). **Nenhum badge de contexto** (`class="badge"`,
+  ex.: "USO PROFISSIONAL"/"USO INTERNO") em artes — o CTA é o único elemento
+  distintivo permitido. `resolver_badge()` em `scripts/_arte_common.py` sempre retorna
+  vazio para PNGs (badge de contexto só existe em HTML vivo — landing/apresentação,
+  ver `SPEC_HTML.md`). Validado deterministicamente por `validar-dimensoes.py` sobre os
+  `index*.html` persistidos (0 badges de contexto, exatamente 1 CTA por arquivo).
 - **Elementos geométricos/wave decorativos de fundo** (bordas finas douradas —
   `stroke-width` ~0.35 num viewBox 0-100, nunca grosso —, `stroke` sem `fill`,
   opacidade baixa ~0.06-0.15, tamanho grande sangrando por um canto do canvas) para

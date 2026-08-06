@@ -15,6 +15,9 @@ import argparse
 import sys
 from pathlib import Path
 
+sys.path.append(str(Path(__file__).resolve().parent))
+from _arte_common import checar_um_badge_por_peca
+
 DIR_PROJETO = Path(__file__).resolve().parent.parent
 DIR_OUTPUT = DIR_PROJETO / "output"
 
@@ -109,6 +112,13 @@ def main():
     if ok:
         print(f"[OK] {args.kit}: {total_pngs} PNGs, {total_conteudos} conteudo.json, "
               f"{total_textos} texto_whatsapp.txt (10 esperados de cada)")
+
+    # SPEC_KITS (endurecimento): 1 badge por peca (somente o CTA pill)
+    ok_badges, mensagens = checar_um_badge_por_peca(kit_dir, args.kit)
+    for msg in mensagens:
+        print(msg)
+    if not ok_badges:
+        ok = False
 
     return 0 if ok else 1
 

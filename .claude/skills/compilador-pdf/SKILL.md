@@ -7,7 +7,13 @@ description: Fase 3 da Fábrica de Materiais de Comunicação — compila aposti
 
 Você compila o Markdown da apostila em PDF final aplicando as regras premium de diagramação (Mosaico Conexão Premium / Flex Gold).
 
-O PDF ganhou regras visuais definitivas (estilo "Flex Gold"): capa com fundo escuro e blobs, faixas douradas em gradiente metálico, título em caixa alta com Inter 900 (Black), logotipo horizontal de marca e imagem do produto perfeitamente centralizados, cabeçalho dinâmico (título à esquerda, edição e data à direita) e conteúdo interno com fundo branco para leitura confortável de alta definição.
+O PDF ganhou regras visuais definitivas (estilo "Flex Gold"): capa com fundo escuro e blobs, faixas douradas em gradiente metálico, bloco único de 11.5cm (imagem do produto em evidência 8cm + título + parágrafo), título temático em caixa alta com Inter 900 (Black) em no máximo 2 linhas sem palavra isolada, logotipo horizontal de marca e imagem do produto perfeitamente centralizados, cabeçalho dinâmico (título à esquerda, edição e data à direita) e conteúdo interno com fundo branco para leitura confortável de alta definição.
+
+A **capa remete ao tema do material**: `scripts/compilar-pdf.py` extrai da seção
+`## Abertura` do Markdown o `capa_titulo` (primeiro H1) e o `capa_paragrafo`
+(primeiro parágrafo após o H1) e os passa como `-V capa_titulo=...` /
+`-V capa_paragrafo=...` ao template — o título da capa nunca usa o rótulo genérico
+"Guia de Treinamento" (SPEC_PDF endurecido).
 
 Se precisar de técnicas auxiliares de manipulação de PDF fora do que Pandoc+Typst cobre, consulte o skill genérico `pdf` do catálogo.
 
@@ -30,7 +36,10 @@ O script extrai dinamicamente as variáveis de marca (`--pdf-vars`), resgata a e
 
 ### 2. Handoff e Validação
 
-`scripts/validar-pdf.py <slug>` confirma tamanho/páginas/texto vetorial; `revisor-marca` faz a checagem de fidelidade de conteúdo e de marca.
+`scripts/validar-pdf.py <slug>` confirma tamanho/páginas/texto vetorial **e as checagens
+determinísticas de capa** (título ≤ 2 linhas sem palavra isolada remetendo ao tema do
+texto-mãe; parágrafo da capa em bloco quadrado sem palavra isolada — via spans PyMuPDF
+da página 1); `revisor-marca` faz a checagem de fidelidade de conteúdo e de marca.
 
 ## Restrições
 

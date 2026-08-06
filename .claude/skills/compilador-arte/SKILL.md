@@ -71,6 +71,15 @@ Se `false`, injete string vazia. Nunca gere a forma você mesmo fora desse helpe
 é o que garante bordas finas, opacidade baixa e posição sempre variando por bloco
 (ver `SPEC_ARTE.md`).
 
+### 3.6. Badge (1 por peça — endurecimento)
+
+Preencha o placeholder `{{BADGE_CONTEXTO}}` com `resolver_badge(slug_dir)` de
+`scripts/_arte_common.py`, que **sempre retorna string vazia** em peças PNG (SPEC_ARTE
+endurecido): o CTA pill (`class="cta"`) é o único elemento tipo badge da peça — nunca
+injete badge de contexto ("USO PROFISSIONAL"/"USO INTERNO") por conta própria.
+`validar-dimensoes.py` confirma 0 badges de contexto e exatamente 1 CTA nos
+`index*.html` persistidos.
+
 ### 3. Persistência do HTML
 
 Ao contrário de um HTML temporário único, mantenha os 3 HTMLs (1 por copy) —

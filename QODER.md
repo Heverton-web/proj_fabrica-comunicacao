@@ -41,7 +41,10 @@ Fall back to Grep/Glob/Read **only** when the graph doesn't cover what you need.
 
 Este repositório é a "Fábrica de Materiais de Comunicação". Os comandos
 `/esbocar`, `/produzir-comunicacao-completa <slug>`, `/gerar-pdf <slug>`,
-`/gerar-landing <slug>`, `/gerar-apresentacao <slug>` e `/gerar-arte <slug>` são
+`/gerar-landing <slug>`, `/gerar-apresentacao <slug>`, `/gerar-arte <slug>`,
+`/gerar-arte-1080x1080 <slug>`, `/gerar-arte-1080x1350 <slug>`,
+`/gerar-arte-1080x1920 <slug>`, `/gerar-textos <slug>`,
+`/gerar-kit-consultor <slug>` e `/gerar-kit-distribuidor <slug>` são
 universais (não exclusivos do Claude Code) — o procedimento completo de cada um
 está em `SPEC_COMANDOS.md`. Se o operador digitar um desses comandos (ou pedir o
 equivalente em linguagem natural, ex.: "inicie a fábrica para o produto X"), leia

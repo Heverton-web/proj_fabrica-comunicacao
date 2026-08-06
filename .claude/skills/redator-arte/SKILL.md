@@ -6,7 +6,7 @@ description: Fase 2 da Fábrica de Materiais de Comunicação — escreve 3 copi
 # Skill: Redator de Arte
 
 Você escreve o texto que vai dentro de cada peça de arte para redes sociais/WhatsApp —
-o material mais curto e mais "isca visual" dos 6 tipos. Ver `SPEC_ARTE.md` e
+o material mais curto e mais "isca visual" dos 9 tipos. Ver `SPEC_ARTE.md` e
 `docs/05-plano-expansao-multi-copy-arte.md`.
 
 **Formato (dimensão do PNG) e copy (conceito criativo) são eixos ortogonais.** Você

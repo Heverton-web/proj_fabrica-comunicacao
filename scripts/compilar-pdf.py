@@ -88,6 +88,49 @@ def extrair_cta_final(md_path):
     return fallback
 
 
+def extrair_capa_textos(md_path):
+    """Título e parágrafo da capa — extraídos da seção '## Abertura' do próprio
+    Markdown (SPEC_PDF: a capa remete ao TEMA do material, nunca ao rótulo
+    genérico 'Guia de Treinamento'). capa_titulo = primeiro H1 da Abertura;
+    capa_paragrafo = primeiro parágrafo logo após o H1 (parágrafo de apoio).
+    Retorna (None, None) se a seção não existir."""
+    try:
+        texto = md_path.read_text(encoding="utf-8")
+    except Exception:
+        return None, None
+
+    secoes = re.split(r"(?m)^## .*$", texto)
+    abertura = secoes[1] if len(secoes) > 1 else texto
+    titulo = None
+    paragrafo = None
+    achou_h1 = False
+    linhas = abertura.splitlines()
+    i = 0
+    while i < len(linhas):
+        linha = linhas[i].strip()
+        i += 1
+        if not linha or linha.startswith("<!--"):
+            continue
+        if linha.startswith("# "):
+            if titulo is None:
+                titulo = linha[2:].strip()
+                achou_h1 = True
+            continue
+        if linha.startswith("## ") or linha.startswith("!"):
+            continue
+        if achou_h1:
+            partes = [re.sub(r"[\*\>]", "", linha).strip()]
+            while i < len(linhas):
+                prox = linhas[i].strip()
+                if not prox or prox.startswith("#") or prox.startswith("!"):
+                    break
+                partes.append(re.sub(r"[\*\>]", "", prox).strip())
+                i += 1
+            paragrafo = " ".join(p for p in partes if p)
+            break
+    return titulo, paragrafo
+
+
 def preparar_assets_logo(slug_dir):
     """Copia os logos de marca fixos para pdf/assets/logos/, mesmo padrão usado
     por landing-page/apresentacao/arte (compilar-html.py / compilar-arte.py)."""
@@ -135,6 +178,12 @@ def main():
     # Substitui qualquer hífen por dois-pontos de forma garantida (SPEC_PDF: sem hífens em títulos)
     title = title.replace(" - ", ": ").replace("-", ":")
 
+    # Capa — título e parágrafo remetem ao TEMA do material (seção Abertura do
+    # Markdown, redator-apostila). Fallbacks: título genérico e mensagem central.
+    capa_titulo, capa_paragrafo = extrair_capa_textos(md)
+    capa_titulo = (capa_titulo or title).strip()
+    capa_paragrafo = (capa_paragrafo or subtitle).strip()
+
     # CTA final — extraído da última seção ('## Fechamento') da própria apostila
     cta_final = extrair_cta_final(md)
 
@@ -160,6 +209,8 @@ def main():
         "-V", f"fonte_corpo={fonte_corpo}",
         "-V", f"title={title}",
         "-V", f"subtitle={subtitle}",
+        "-V", f"capa_titulo={capa_titulo}",
+        "-V", f"capa_paragrafo={capa_paragrafo}",
         "-V", f"author=Conexão Sistemas de Próteses",
         "-V", f"logo_imagem={logo_imagem}",
         "-V", f"cta_final={cta_final}",

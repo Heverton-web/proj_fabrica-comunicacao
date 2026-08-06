@@ -27,6 +27,18 @@ python scripts/validar-dimensoes.py <slug> <tipo>  # só se tipo startswith arte
 python scripts/validar-kit.py <slug> <tipo>     # só se tipo in (kit-consultor, kit-distribuidor)
 ```
 
+### 1.1. Checagens de endurecimento (determinísticas, novas)
+
+- **PDF — capa (via `validar-pdf.py`):** título ≤ 2 linhas, sem linha com 1 palavra
+  isolada, proporção de bloco, **não** contém "guia de treinamento" e **≥ 2 palavras
+  significativas do título presentes no texto-mãe** (capa remete ao tema — REGRA 6);
+  parágrafo da capa em bloco quadrado (proporção em `[0.12, 1.2]`), sem palavra
+  isolada. O script já falha (exit 1) se qualquer critério falhar.
+- **Artes e kits — 1 badge por peça (via `validar-dimensoes.py`/`validar-kit.py`):**
+  cada `index*.html` persistido deve ter **0 badges de contexto** (`class="badge"`) e
+  **exatamente 1 CTA pill** (`class="cta"`). O CTA é o único elemento tipo badge
+  permitido em peça PNG (SPEC_ARTE.md/SPEC_KITS.md endurecidos).
+
 ### 2. Checar fidelidade à fonte (REGRA 6)
 
 Compare cada claim/dado presente no material com `dossie_insumos.md`. Qualquer

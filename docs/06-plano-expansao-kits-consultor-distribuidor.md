@@ -226,8 +226,9 @@ sessão de revisão de código (REGRA 9).
 10. Rodar `verificar-consistencia-pipeline.py --estrito` — deve retornar OK antes de
     qualquer produção real.
 11. Teste ponta a ponta: adicionar `kit-consultor` + `kit-distribuidor` a
-    `output/kit-inlego/config_projeto.json` (ou rodar `/gerar-kit kit-inlego`, se um
-    comando pontual equivalente a `/gerar-arte` for criado) e produzir os 2 kits
+    `output/kit-inlego/config_projeto.json` (ou rodar `/gerar-kit-consultor kit-inlego`
+    e `/gerar-kit-distribuidor kit-inlego` — os comandos pontuais já criados, ver
+    `SPEC_COMANDOS.md`) e produzir os 2 kits
     completos, com `auditar-projeto.py --estrito` CONFORME ao final.
 
 ## 12. Riscos e mitigação

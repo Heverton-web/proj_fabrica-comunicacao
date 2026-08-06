@@ -16,9 +16,10 @@ portado verbatim de `fabrica-de-livros`) → `scripts/validar-pdf.py`.
   - Fundo escuro com vinheta radial (`#16213a` → `#0f172a`) e blobs decorativos de iluminação azul translúcidos (`rgba(20, 142, 203, 24%)`).
   - Faixas superior e inferior ultra-finas (**0.3cm**) preenchidas com o gradiente dourado de assinatura de 5 tons.
   - Logo horizontal com texto branco centralizado horizontalmente no topo (`dy: 1.5cm`, `width: 3.6cm`).
-  - Imagem do produto transparente centralizada no centro geométrico da página (`dy: 4.3cm`, `width: 100%` / delimitada a `13.5cm`).
-  - Título principal centralizado horizontalmente, em **Caixa Alta**, peso **Inter 900** (Black), preenchido com o gradiente dourado metálico, e com largura máxima de exatamente **`13.5cm`** (exatamente a mesma largura horizontal da imagem do produto).
-  - Subtítulo de descrição com largura máxima também delimitada a `13.5cm` para simetria de bloco vertical perfeita.
+  - **Bloco Único (endurecimento):** imagem do produto + título + parágrafo formam um bloco único de **11.5cm de largura** (`block(width: 11.5cm)`, centralizado em `center + horizon`).
+  - **Imagem do produto em evidência:** `width: 100%`, `height: 8cm`, `fit: contain` — a imagem (quase quadrada por natureza) domina a composição; para a foto padrão 1600×1382 renderiza ~9.3×8.0cm.
+  - **Título Temático (endurecimento):** remete ao **tema do material extraído do texto-mãe** (`capa_titulo`, primeiro H1 da seção Abertura do Markdown — nunca o rótulo genérico "Guia de Treinamento..."), centralizado, **Caixa Alta**, **Inter 900**, preenchido com o gradiente dourado metálico, **24pt**, e **no máximo 2 linhas** — nenhuma linha com uma única palavra isolada.
+  - **Parágrafo da Capa (endurecimento):** primeiro parágrafo da Abertura (`capa_paragrafo`), em **sub-bloco de 10cm** (garante ≥ 3 linhas equilibradas), **sem linha com palavra única isolada** (proporção altura/largura em `[0.12, 1.2]`).
   - Frase de direitos autorais ("2026 ©...") centralizada no rodapé com opacidade de 60%, em itálico e fonte pequena (`dy: -1.2cm`).
 - **Cabeçalho Dinâmico (Páginas Internas):**
   - **Lado Esquerdo:** Título do material.
@@ -36,7 +37,14 @@ portado verbatim de `fabrica-de-livros`) → `scripts/validar-pdf.py`.
 
 ## Estrutura de conteúdo (default, ajustável pelo `brief_criativo.json`)
 
-1. Abertura — nome do material/produto + frase de posicionamento (`brief_criativo.mensagem_central`).
+1. **Abertura** — estrutura obrigatória nesta ordem:
+   - H1 temático (`capa_titulo` da capa): **máx. 34 caracteres / 6 palavras**, **sem hífens**,
+     remetendo ao tema do texto-mãe (nunca o nome cru do produto).
+   - Parágrafo de apoio (`capa_paragrafo` da capa): **120–160 caracteres**, frase de
+     posicionamento do produto (nunca claim novo — REGRA 6).
+   - Imagem do produto (`![](insumos/...)`).
+   - Frase de posicionamento em negrito (`brief_criativo.mensagem_central`).
+   - 1–2 parágrafos de contexto.
 2. Problema — extraído do texto-base, nunca inventado.
 3. Solução — como o produto/oferta resolve, linguagem objetiva.
 4. Destaques — 4 a 6 pontos, mapeados de `brief_criativo.hierarquia_de_conteudo`.
@@ -52,6 +60,12 @@ portado verbatim de `fabrica-de-livros`) → `scripts/validar-pdf.py`.
 - Extração de texto (via `pdfminer`/equivalente) retorna conteúdo não vazio — confirma
   texto vetorial, não imagem.
 - Contagem de páginas > 0 e coerente com o número de seções do brief.
+- **Capa (endurecimento, via spans PyMuPDF da página 1):**
+  - Título (spans ≥ 18pt): **máx. 2 linhas**; nenhuma linha com 1 palavra isolada;
+    proporção altura/largura ≥ 0.18 (bloco); **não** contém "guia de treinamento";
+    **≥ 2 palavras significativas** do título presentes no texto-mãe (remete ao tema).
+  - Parágrafo (spans 9–16.5pt): **mín. 2 linhas**; nenhuma linha com 1 palavra isolada;
+    proporção altura/largura em **[0.12, 1.2]** (bloco quadrado).
 
 Exit 1 se qualquer critério falhar; `revisor-marca` decide se é caso de auto-correção
 (REGRA 4) ou de reportar como faltante.

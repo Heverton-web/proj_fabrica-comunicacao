@@ -38,7 +38,10 @@ Internamente, para cada um dos 5 tons de `brand/tons-kit.json` × 2 itens (10 no
    `arte-0N/assets/` (mesma técnica de `preparar_assets` em `_arte_common.py`).
 2. Preenche `templates/arte-1080x1350.html` com a copy (headline/subcopy) + o CTA fixo
    da variante — salva como `arte-0N/index.html` (mantido, não temporário, para
-   auditoria de marca).
+   auditoria de marca). O placeholder `{{BADGE_CONTEXTO}}` é preenchido por
+   `resolver_badge()` que **sempre retorna vazio** em PNGs — 1 badge por peça
+   (somente o CTA pill, ver SPEC_KITS.md endurecido); nunca injete badge de contexto
+   por conta própria.
 2.5. Se `elementos_decorativos` for `true` (default), escolhe **1 combinação** de
    forma/posição/tamanho/opacidade por **tom** (via `escolher_decoracao_fundo(f"{slug}:kit:{kit}:{tom}")`
    em `_arte_common.py`) — os 2 itens (`arte-01`/`arte-02`) daquele tom compartilham a
@@ -55,7 +58,8 @@ Internamente, para cada um dos 5 tons de `brand/tons-kit.json` × 2 itens (10 no
 ## Handoff
 
 `scripts/validar-kit.py <slug> <kit>` confirma a estrutura completa (5 tons × 2 itens ×
-{PNG, conteudo.json, texto_whatsapp.txt} = 30 arquivos); `revisor-marca` faz a
+{PNG, conteudo.json, texto_whatsapp.txt} = 30 arquivos) **e a regra de 1 badge por
+peça** (0 badges de contexto + exatamente 1 CTA por `index*.html`); `revisor-marca` faz a
 checagem de fidelidade e confirma que as copies dos 2 kits são idênticas exceto
 CTA/assinatura.
 

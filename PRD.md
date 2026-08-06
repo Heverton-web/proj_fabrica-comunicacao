@@ -62,8 +62,16 @@ Consultores, Clientes e Distribuidores.
 Educacional/Comercial, Informacional/Técnico e Comercial/Informacional técnico de
 parceria de venda.
 
-**Rodada 4 — Entrevista de materiais** (`/esbocar`): quais dos 6 tipos de material
-gerar.
+**Rodada 4 — Entrevista de materiais** (`/esbocar`): quais dos 9 tipos de material
+gerar (PDF, landing page, apresentação, artes 1080×1080/1080×1350/1080×1920, textos
+de apoio, kit do consultor, kit distribuidor).
 
 **Fábrica autônoma** (`/produzir-comunicacao-completa <slug>`): geração paralela em
 lote, revisão de marca, compilação por tipo, empacotamento final.
+
+**Regeneração pontual** (`/gerar-pdf <slug>`, `/gerar-landing <slug>`,
+`/gerar-apresentacao <slug>`, `/gerar-arte-1080x1080|1080x1350|1080x1920 <slug>`,
+`/gerar-textos <slug>`, `/gerar-kit-consultor <slug>`,
+`/gerar-kit-distribuidor <slug>`): o operador regenera um material individual de um
+projeto já esboçado, sem repetir a entrevista nem re-analisar insumos — ver
+`SPEC_COMANDOS.md`.

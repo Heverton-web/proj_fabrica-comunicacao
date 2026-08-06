@@ -165,18 +165,41 @@ def preparar_assets(dest_dir, slug_dir):
 
 
 def resolver_badge(slug_dir):
-    """Le brief_criativo.json.nota_de_escopo e retorna a tag HTML do badge
-    de contexto. O badge USO INTERNO e suprimido ativamente (string vazia)
-    -- so aparece quando a nota de escopo indica material externo/profissional."""
-    brief = carregar_json(slug_dir / "brief_criativo.json")
-    badge_texto = "USO INTERNO"
-    if brief:
-        nota = brief.get("nota_de_escopo", "").lower()
-        if "externo" in nota or "profissional" in nota:
-            badge_texto = "USO PROFISSIONAL"
-    if badge_texto == "USO INTERNO":
-        return ""
-    return f'<span class="badge">{badge_texto}</span>'
+    """REGRa 1 BADGE POR PECA (rodada de endurecimento): em pecas PNG (arte-* e
+    kits) o CTA pill e o UNICO elemento tipo badge -- o badge de contexto
+    (USO INTERNO/USO PROFISSIONAL) e sempre suprimido aqui (string vazia).
+    Badge de contexto so existe em material HTML vivo (landing/apresentacao,
+    no cabecalho) via compilar-html.py. Mantido o placeholder nos templates
+    para permitir retorno futuro sem quebrar o pipeline."""
+    return ""
+
+
+def checar_um_badge_por_peca(base_dir, rotulo):
+    """REGRA 1 BADGE POR PECA: cada peca PNG deve ter exatamente 1 elemento
+    tipo badge -- o CTA pill -- e nenhum badge de contexto no HTML persistido
+    (index*.html renderizado). Retorna (ok, mensagens)."""
+    import re as _re
+
+    mensagens = []
+    ok = True
+    base = Path(base_dir)
+    htmls = sorted(base.rglob("index*.html"))
+    if not htmls:
+        mensagens.append(f"[AVISO] {rotulo}: nenhum index*.html encontrado - pulando checagem de badge")
+        return True, mensagens
+    for html in htmls:
+        conteudo = html.read_text(encoding="utf-8", errors="ignore")
+        badges = _re.findall(r'class="badge"', conteudo)
+        ctas = _re.findall(r'class="cta"', conteudo)
+        if badges:
+            ok = False
+            mensagens.append(f"[FALHA] {rotulo}/{html.name}: {len(badges)} badge(s) de contexto (esperado 0)")
+        if len(ctas) != 1:
+            ok = False
+            mensagens.append(f"[FALHA] {rotulo}/{html.name}: {len(ctas)} CTA pill(s) (esperado exatamente 1)")
+    if ok:
+        mensagens.append(f"[OK] {rotulo}: 1 badge por peca (somente o CTA pill, 0 badges de contexto)")
+    return ok, mensagens
 
 
 def _titulo_com_palavras(headline):

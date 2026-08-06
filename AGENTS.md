@@ -20,7 +20,9 @@ de trabalho, scripts determinísticos = árbitro de qualidade. Ver `SPEC.md` par
 contrato completo e `PRD.md` para a visão de produto.
 
 **Os comandos (`/esbocar`, `/produzir-comunicacao-completa`, `/gerar-pdf`,
-`/gerar-landing`, `/gerar-apresentacao`, `/gerar-arte`) são universais — funcionam em
+`/gerar-landing`, `/gerar-apresentacao`, `/gerar-arte`, `/gerar-arte-1080x1080`,
+`/gerar-arte-1080x1350`, `/gerar-arte-1080x1920`, `/gerar-textos`,
+`/gerar-kit-consultor`, `/gerar-kit-distribuidor`) são universais — funcionam em
 qualquer harness que leia os arquivos deste repositório, não só Claude Code.** O
 procedimento completo e canônico de cada um vive em `SPEC_COMANDOS.md`; os arquivos
 em `.claude/commands/*.md` são apenas o mecanismo de descoberta específico do Claude

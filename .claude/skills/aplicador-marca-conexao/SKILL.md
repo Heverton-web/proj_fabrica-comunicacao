@@ -1,6 +1,6 @@
 ---
 name: aplicador-marca-conexao
-description: Skill ultra-personalizada e única fonte de verdade de como o design system fixo da Conexão (brand/design-system-conexao.json) se materializa em cada tipo de material — landing-page, apresentacao e arte (o PDF NÃO usa esta skill ainda, segue regras próprias a definir depois). Use dentro de compilador-html e compilador-arte, sempre antes de gerar qualquer HTML/CSS — nunca improvise cor, fonte ou componente fora do que está aqui. Inclui fundo em gradiente, título em gradiente de texto, glows decorativos e motion — nunca entregue fundo chapado/título sólido/estático, isso é considerado design pobre e será rejeitado.
+description: Skill ultra-personalizada e única fonte de verdade de como o design system fixo da Conexão (brand/design-system-conexao.json) se materializa em cada tipo de material — landing-page, apresentacao e arte (o PDF segue regras próprias de capa "Flex Gold", ver SPEC_PDF.md, mas usa os mesmos tokens de cor/fonte daqui). Use dentro de compilador-html e compilador-arte, sempre antes de gerar qualquer HTML/CSS — nunca improvise cor, fonte ou componente fora do que está aqui. Inclui fundo em gradiente, título em gradiente de texto, glows decorativos e motion — nunca entregue fundo chapado/título sólido/estático, isso é considerado design pobre e será rejeitado.
 ---
 
 # Skill: Aplicador da Marca Conexão
@@ -173,6 +173,15 @@ login) usa gradiente no botão principal, não cor sólida. Hover/active com fí
 
 ### Badge / pill
 Para specs, selos institucionais, tags de status/contexto (ex.: "USO INTERNO").
+
+**Regra de escopo por material (endurecimento — 1 badge por peça):**
+- **Peças PNG (arte-01/02/03, kit-consultor, kit-distribuidor):** o CTA pill
+  (`class="cta"`) é o **único** elemento tipo badge permitido — **nenhum badge de
+  contexto** (`class="badge"`) em PNGs (SPEC_ARTE.md/SPEC_KITS.md; validado por
+  `validar-dimensoes.py`/`validar-kit.py` sobre os `index*.html` persistidos).
+- **Landing page / apresentação (HTML vivo):** badge de contexto permitido no
+  cabeçalho/capa (ex.: "Uso Interno", "Dica de Ouro"), como definido por
+  `compilar-html.py` e `SPEC_HTML.md`.
 
 ```css
 .badge {

@@ -6,7 +6,7 @@ description: Fase 2 da Fábrica de Materiais de Comunicação — escreve o cont
 # Skill: Redator de Apostila
 
 Você escreve o conteúdo final (Markdown) do material PDF — o mais longo e didático dos
-6 tipos. Ver `SPEC_PDF.md` para o contrato técnico completo.
+9 tipos. Ver `SPEC_PDF.md` para o contrato técnico completo.
 
 ## Entrada
 
@@ -24,6 +24,18 @@ Escreva as 7 seções na ordem de `SPEC_PDF.md` (Abertura, Problema, Solução, 
 Composição/especificações, Aplicação, Fechamento), usando `##` para cada seção. Cada
 seção deve:
 
+- **Abertura (estrutura obrigatória, alimenta a capa — SPEC_PDF endurecido):**
+  1. H1 temático (`# ...`): **máx. 34 caracteres / 6 palavras, sem hífens**, remetendo
+     ao **tema do texto-mãe** (ex.: "Previsibilidade e Excelência Clínica") — nunca o
+     nome cru do produto nem rótulo genérico. Em 24pt/10cm ele vira o título da capa
+     e deve quebrar em **no máximo 2 linhas, sem linha com 1 palavra isolada**.
+  2. Parágrafo de apoio (primeiro parágrafo após o H1): **120–160 caracteres**, frase
+     de posicionamento do produto (factos do dossiê; nunca claim novo) — vira o
+     parágrafo da capa (`capa_paragrafo`) e deve renderizar em **≥ 3 linhas sem
+     palavra isolada** na largura de 10cm.
+  3. Imagem oficial do produto (`![](insumos/...)`).
+  4. Frase de posicionamento em negrito = `brief_criativo.mensagem_central`.
+  5. 1–2 parágrafos de contexto.
 - Usar exclusivamente fatos presentes em `dossie_insumos.md` — se uma seção não tiver
   evidência suficiente (ex.: sem dados de "Aplicação"), escreva o que houver e registre
   a lacuna em um comentário `<!-- FALTANTE: ... -->` no fim da seção (removido antes da
@@ -33,8 +45,6 @@ seção deve:
   rodadas 2 e 3 — fonte de verdade, nunca re-derivar do texto-base).
 - Se o texto-base trouxer itens/códigos/dimensões, formatar a seção "Composição" como
   tabela Markdown — mais escaneável que prosa.
-- Referenciar a(s) imagem(ns) oficial(is) do produto via `![](caminho)` na seção de
-  Abertura — nunca gerar uma ilustração no lugar da foto real.
 - Terminar com uma seção de Fechamento contendo CTA + nome da marca (isso alimenta a
   variável `cta_final` do template Typst).
 

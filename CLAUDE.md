@@ -6,7 +6,7 @@ Instruções específicas para execução via **Claude Code CLI**. Para a arquit
 
 ## Comandos (universais — não exclusivos do Claude Code)
 
-Os 6 comandos abaixo funcionam em **qualquer harness** que leia os arquivos deste
+Os 12 comandos abaixo funcionam em **qualquer harness** que leia os arquivos deste
 repositório — o procedimento completo e canônico de cada um vive em
 [`SPEC_COMANDOS.md`](file:///C:/Users/trcnologia/Desktop/proj_fabrica-comunicacao/SPEC_COMANDOS.md).
 Os arquivos em `.claude/commands/*.md` listados abaixo são apenas o mecanismo de
@@ -19,7 +19,13 @@ nunca uma segunda cópia da instrução.
 3. **`/gerar-pdf <slug>`**: Regenera só o PDF (apostila) de um projeto já esboçado.
 4. **`/gerar-landing <slug>`**: Regenera só a landing page de um projeto já esboçado.
 5. **`/gerar-apresentacao <slug>`**: Regenera só a apresentação HTML de um projeto já esboçado.
-6. **`/gerar-arte <slug> [--tamanho ...]`**: Regenera uma ou mais variantes de arte PNG de um projeto já esboçado.
+6. **`/gerar-arte <slug> [--tamanho ...]`**: Regenera todas as variantes de arte PNG (ou as de `--tamanho`) — guarda-chuva retrocompatível.
+7. **`/gerar-arte-1080x1080 <slug>`**: Regenera só a variante de arte 1080×1080 (WhatsApp/Instagram quadrado).
+8. **`/gerar-arte-1080x1350 <slug>`**: Regenera só a variante de arte 1080×1350 (Instagram/LinkedIn retrato).
+9. **`/gerar-arte-1080x1920 <slug>`**: Regenera só a variante de arte 1080×1920 (Stories/Reels).
+10. **`/gerar-textos <slug>`**: Regenera só os Textos de Apoio (WhatsApp/Instagram/LinkedIn).
+11. **`/gerar-kit-consultor <slug>`**: Regenera só o Kit do Consultor (10 artes 1080×1350 + copies + textos de WhatsApp).
+12. **`/gerar-kit-distribuidor <slug>`**: Regenera só o Kit Distribuidor (mesmo conteúdo, CTA/assinatura de distribuidor).
 
 ---
 

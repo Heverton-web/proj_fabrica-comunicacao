@@ -2,8 +2,10 @@
 
 Este documento é a **fonte única de verdade** do procedimento completo de cada
 comando da fábrica — `/esbocar`, `/produzir-comunicacao-completa`, `/gerar-pdf`,
-`/gerar-landing`, `/gerar-apresentacao`, `/gerar-arte`. Funciona em **qualquer
-harness** que leia os arquivos deste repositório (Claude Code, Antigravity,
+`/gerar-landing`, `/gerar-apresentacao`, `/gerar-arte` (guarda-chuva),
+`/gerar-arte-1080x1080`, `/gerar-arte-1080x1350`, `/gerar-arte-1080x1920`,
+`/gerar-textos`, `/gerar-kit-consultor` e `/gerar-kit-distribuidor`. Funciona em
+**qualquer harness** que leia os arquivos deste repositório (Claude Code, Antigravity,
 OpenCode, Freebuff, MiMoCode, Gemini CLI, CodeBuddy, Qoder, ou qualquer outro
 assistente de código) — não depende do mecanismo nativo de "slash command" de
 nenhuma ferramenta específica.
@@ -377,26 +379,132 @@ criativo." Nunca invente um brief para contornar isso.
 
 **Pré-condição:** mesma checagem de `brief_criativo.json` de `/gerar-pdf` acima.
 
-### Mapeamento de `--tamanho` para tipo de material
+### Procedimento
 
-- `1080x1080` → `arte-01`
-- `1080x1350` → `arte-02`
-- `1080x1920` → `arte-03`
+1. Resolva a lista de variantes a partir de `--tamanho` (ou as 3, se omitido).
+2. Para cada variante resolvida, execute o procedimento completo do comando
+   específico correspondente abaixo (`/gerar-arte-1080x1080`,
+   `/gerar-arte-1080x1350`, `/gerar-arte-1080x1920`) — este comando é o guarda-chuva,
+   nunca uma segunda cópia do passo a passo.
+3. Reporte (REGRA 2): path de cada PNG (até 9 se as 3 variantes forem regeneradas),
+   decisões de design, faltantes, sugestões de legenda por copy×variante.
+
+---
+
+## `/gerar-arte-1080x1080`
+
+`<argumentos>` = `<slug>`. Regeneração pontual de uma única variante de arte —
+nunca re-executa `/esbocar` nem `analista-insumos`/`diretor-de-arte`.
+
+**Pré-condição:** mesma checagem de `brief_criativo.json` de `/gerar-pdf` acima.
+
+### Mapeamento de variantes
+
+- `/gerar-arte-1080x1080` → `arte-01` (WhatsApp/Instagram quadrado)
+- `/gerar-arte-1080x1350` → `arte-02` (Instagram/LinkedIn retrato)
+- `/gerar-arte-1080x1920` → `arte-03` (Stories/Reels)
 
 ### Procedimento
 
-1. Resolva a lista de variantes a partir de `--tamanho` (ou as 3, se omitido). Para
-   cada uma não presente em `config_projeto.materiais_selecionados`, adicione-a.
-2. Se `output/<slug>/arte/copies.json` não existir (ou não tiver exatamente 3 copies),
-   invoque `redator-arte` inline, uma única vez, ANTES do fan-out — formato e copy são
-   eixos ortogonais (ver `docs/05-plano-expansao-multi-copy-arte.md`); as mesmas 3
-   copies são compartilhadas por todas as variantes regeneradas nesta rodada. Se já
-   existir, reaproveite sem regravar.
-3. Despache um `subagente-produtor-arte` por variante, em paralelo — cada um lê
-   `arte/copies.json` e renderiza as 3 copies na sua própria dimensão (3 PNGs por
-   variante).
-4. Despache `subagente-revisor-marca` só para as variantes desta rodada.
-5. Rode `python scripts/auditar-projeto.py <slug> --estrito --apenas <variantes>`.
+1. Se `arte-01` não estiver em `config_projeto.materiais_selecionados`, adicione-o
+   (o operador está pedindo explicitamente este material agora).
+2. Se `output/<slug>/arte/copies.json` não existir (ou não tiver exatamente 3
+   copies), invoque `redator-arte` inline, uma única vez, ANTES do fan-out — formato
+   e copy são eixos ortogonais (ver `docs/05-plano-expansao-multi-copy-arte.md`);
+   as mesmas 3 copies são compartilhadas por todas as variantes. Se já existir,
+   reaproveite sem regravar.
+3. Despache `subagente-produtor-arte` para `<slug>` na variante `arte-01` — ele lê
+   `arte/copies.json` e renderiza as 3 copies em 1080×1080 (3 PNGs).
+4. Despache `subagente-revisor-marca` só para o tipo `arte-01`.
+5. Rode `python scripts/auditar-projeto.py <slug> --estrito --apenas arte-01`.
 6. Rode `python scripts/empacotar-projeto.py <slug>`.
-7. Reporte (REGRA 2): path de cada PNG (9 no total se as 3 variantes forem
-   regeneradas), decisões de design, faltantes, sugestões de legenda por copy×variante.
+7. Reporte (REGRA 2): path de cada PNG (3 nesta variante), decisões de design,
+   faltantes, sugestões de legenda por copy.
+
+---
+
+## `/gerar-arte-1080x1350`
+
+`<argumentos>` = `<slug>`. Regeneração pontual de uma única variante de arte —
+nunca re-executa `/esbocar` nem `analista-insumos`/`diretor-de-arte`.
+
+**Pré-condição:** mesma checagem de `brief_criativo.json` de `/gerar-pdf` acima.
+
+### Procedimento
+
+Mesmo procedimento de `/gerar-arte-1080x1080` acima, trocando `arte-01` por
+`arte-02` (subagente renderiza as 3 copies em 1080×1350).
+
+---
+
+## `/gerar-arte-1080x1920`
+
+`<argumentos>` = `<slug>`. Regeneração pontual de uma única variante de arte —
+nunca re-executa `/esbocar` nem `analista-insumos`/`diretor-de-arte`.
+
+**Pré-condição:** mesma checagem de `brief_criativo.json` de `/gerar-pdf` acima.
+
+### Procedimento
+
+Mesmo procedimento de `/gerar-arte-1080x1080` acima, trocando `arte-01` por
+`arte-03` (subagente renderiza as 3 copies em 1080×1920).
+
+---
+
+## `/gerar-textos`
+
+`<argumentos>` = `<slug>`. Regeneração pontual — nunca re-executa `/esbocar` nem
+`analista-insumos`/`diretor-de-arte`.
+
+**Pré-condição:** mesma checagem de `brief_criativo.json` de `/gerar-pdf` acima.
+
+### Procedimento
+
+1. Se `textos` não estiver em `config_projeto.materiais_selecionados`, adicione-o.
+2. Despache `subagente-produtor-textos` para `<slug>`.
+3. Despache `subagente-revisor-marca` só para o tipo `textos`.
+4. Rode `python scripts/auditar-projeto.py <slug> --estrito --apenas textos`.
+5. Rode `python scripts/empacotar-projeto.py <slug>`.
+6. Reporte (REGRA 2): path de cada `.txt`, decisões de design, faltantes, sugestões
+   de legenda de compartilhamento.
+
+---
+
+## `/gerar-kit-consultor`
+
+`<argumentos>` = `<slug>`. Regeneração pontual — nunca re-executa `/esbocar` nem
+`analista-insumos`/`diretor-de-arte`.
+
+**Pré-condição:** mesma checagem de `brief_criativo.json` de `/gerar-pdf` acima.
+
+### Procedimento
+
+1. Se `kit-consultor` não estiver em `config_projeto.materiais_selecionados`,
+   adicione-o.
+2. Se `output/<slug>/kits/copies.json` não existir (ou não tiver exatamente 10
+   copies), invoque `redator-kit-copy` inline, uma única vez, ANTES do fan-out —
+   copy é compartilhada entre os 2 kits (eixo ortogonal a variante, ver
+   `SPEC_KITS.md`); só o CTA final muda (`brand/kits-conexao.json`, resolvido por
+   `compilador-kit`). Se já existir, reaproveite sem regravar.
+3. Despache `subagente-produtor-kit` para `<slug>` na variante `kit-consultor` —
+   ele lê `kits/copies.json` e renderiza as 10 copies em 1080×1350 com CTA de
+   consultor.
+4. Despache `subagente-revisor-marca` só para o tipo `kit-consultor`.
+5. Rode `python scripts/auditar-projeto.py <slug> --estrito --apenas kit-consultor`.
+6. Rode `python scripts/empacotar-projeto.py <slug>`.
+7. Reporte (REGRA 2): path de cada PNG (10), decisões de design, faltantes,
+   sugestões de legenda/CTA.
+
+---
+
+## `/gerar-kit-distribuidor`
+
+`<argumentos>` = `<slug>`. Regeneração pontual — nunca re-executa `/esbocar` nem
+`analista-insumos`/`diretor-de-arte`.
+
+**Pré-condição:** mesma checagem de `brief_criativo.json` de `/gerar-pdf` acima.
+
+### Procedimento
+
+Mesmo procedimento de `/gerar-kit-consultor` acima, trocando `kit-consultor` por
+`kit-distribuidor` (subagente renderiza as 10 copies com CTA de distribuidor).

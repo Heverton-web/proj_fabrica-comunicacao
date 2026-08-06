@@ -197,31 +197,41 @@
 
     // Bloco Único de Conteúdo: Imagem do produto, Título e Parágrafo explicativo
     // Todos centralizados horizontalmente e verticalmente (center + horizon)
-    // Largura do bloco unificada para 13.5cm para que o título tenha exatamente a mesma largura da imagem.
-    #place(center + horizon, block(width: 13.5cm)[
+    // Bloco de 11.5cm: a imagem do produto em evidência (width 100% / height 8cm)
+    // domina a composição; título em no máximo 2 linhas e parágrafo em bloco
+    // (10cm), sem linhas com uma única palavra isolada (SPEC_PDF).
+    #place(center + horizon, block(width: 11.5cm)[
       #set align(center)
       
-      // Imagem do produto ocupando 100% da largura do bloco (13.5cm)
+      // Imagem do produto em evidência — ocupa quase toda a largura do bloco
       $if(imagem_produto)$
-      #image("$imagem_produto$", width: 100%, height: 7.2cm, fit: "contain")
+      #image("$imagem_produto$", width: 100%, height: 8cm, fit: "contain")
       $else$
-      #image("insumos/kit_start_flex_frontal.png", width: 100%, height: 7.2cm, fit: "contain")
+      #image("insumos/kit_start_flex_frontal.png", width: 100%, height: 8cm, fit: "contain")
       $endif$
 
       #v(0.6cm) // Espaçamento elegante entre a imagem e o título
 
-      // Título do material (CAIXA ALTA e Inter 900) - largura delimitada a 13.5cm
-      #text(font: "Inter", size: 28pt, weight: 900, fill: gradiente-dourado)[#upper[$title$]]
+      // Título do material (CAIXA ALTA, Inter 900, 24pt) — remete ao tema do
+      // material (capa_titulo da seção Abertura); em 11.5cm cabe no máximo 2 linhas
+      #text(font: "Inter", size: 24pt, weight: 900, fill: gradiente-dourado)[#upper[$if(capa_titulo)$$capa_titulo$$else$$title$$endif$]]
       
       #v(0.4cm) // Espaçamento elegante entre o título e o parágrafo
 
-      // Parágrafo explicativo
-      #text(font: fonte-corpo, size: 12pt, fill: rgb("#e2e8f0"))[
-        $if(subtitle)$
-        $subtitle$
-        $else$
-        Guia de treinamento técnico e de vendas para o consultor Conexão.
-        $endif$
+      // Parágrafo explicativo (parágrafo de apoio da Abertura; sub-bloco de 10cm
+      // garante >= 3 linhas equilibradas — bloco quadrado, sem palavra isolada)
+      #block(width: 10cm)[
+        #text(font: fonte-corpo, size: 11.5pt, fill: rgb("#e2e8f0"))[
+          $if(capa_paragrafo)$
+          $capa_paragrafo$
+          $else$
+          $if(subtitle)$
+          $subtitle$
+          $else$
+          Guia de treinamento técnico e de vendas para o consultor Conexão.
+          $endif$
+          $endif$
+        ]
       ]
     ])
 
@@ -259,7 +269,7 @@ $if(cta_final)$
 
     #place(center + horizon, block(width: 16cm)[
       #set align(center)
-      #text(font: "Inter", size: 22pt, weight: 900, fill: gradiente-dourado)[#upper[$title$]]
+      #text(font: "Inter", size: 22pt, weight: 900, fill: gradiente-dourado)[#upper[$if(capa_titulo)$$capa_titulo$$else$$title$$endif$]]
       #v(1cm)
       #text(font: fonte-corpo, size: 13pt, fill: rgb("#f8fafc"))[$cta_final$]
       #v(1.5cm)

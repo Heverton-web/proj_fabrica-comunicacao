@@ -12,6 +12,9 @@ import argparse
 import sys
 from pathlib import Path
 
+sys.path.append(str(Path(__file__).resolve().parent))
+from _arte_common import checar_um_badge_por_peca
+
 DIR_PROJETO = Path(__file__).resolve().parent.parent
 DIR_OUTPUT = DIR_PROJETO / "output"
 
@@ -63,6 +66,13 @@ def main():
             ok = False
         if (largura, altura) == (largura_esperada, altura_esperada) and tamanho_bytes < TETO_BYTES:
             print(f"[OK] {png.name}: {largura}x{altura}, {tamanho_bytes} bytes")
+
+    # SPEC_ARTE (endurecimento): 1 badge por peca (somente o CTA pill)
+    ok_badges, mensagens = checar_um_badge_por_peca(base, args.variante)
+    for msg in mensagens:
+        print(msg)
+    if not ok_badges:
+        ok = False
 
     return 0 if ok else 1
 
