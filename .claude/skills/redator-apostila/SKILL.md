@@ -32,7 +32,10 @@ seção deve:
   1. H1 temático (`# ...`): **máx. 34 caracteres / 6 palavras, sem hífens**, remetendo
      ao **tema do texto-mãe** (ex.: "Previsibilidade e Excelência Clínica") — nunca o
      nome cru do produto nem rótulo genérico. Em 24pt/10cm ele vira o título da capa
-     e deve quebrar em **no máximo 2 linhas, sem linha com 1 palavra isolada**.
+     e deve quebrar em **no máximo 2 linhas, sem linha com 1 palavra isolada**. Nunca
+     use nenhum termo da lista `TITULOS_BANIDOS` de `scripts/validar-pdf.py` (ex.:
+     "guia de treinamento", "gambiarra") mesmo que o texto-base use esse vocabulário
+     no corpo — são clichês banidos especificamente do título, não do conteúdo.
   2. Parágrafo de apoio (primeiro parágrafo após o H1): **120–160 caracteres**, frase
      de posicionamento do produto (factos do dossiê; nunca claim novo) — vira o
      parágrafo da capa (`capa_paragrafo`) e deve renderizar em **≥ 3 linhas sem

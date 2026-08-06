@@ -20,6 +20,12 @@ DIR_OUTPUT = DIR_PROJETO / "output"
 
 TETO_BYTES = 5_000_000  # 5 MB
 
+# Clichês/rótulos banidos do título da capa (endurecimento após feedback real do
+# operador — ex.: "gambiarra" foi reaproveitado em 3 regenerações consecutivas do
+# mesmo projeto até ser reportado como título "ridículo"). Checado por substring
+# normalizada (sem acento, minúsculo) em qualquer forma/flexão da palavra.
+TITULOS_BANIDOS = ("guia de treinamento", "gambiarra")
+
 STOPWORDS = {
     "para", "com", "uma", "que", "tem", "dos", "das", "mais", "não", "sobre",
     "como", "pelo", "pela", "todo", "toda", "este", "esta", "são", "ser",
@@ -76,7 +82,8 @@ def validar_capa(pdf_path, texto_base_path):
     2 linhas, sem linha com uma unica palavra isolada, com impressao de bloco
     quadrado; paragrafo da capa em bloco quadrado, sem palavra isolada; titulo
     remete ao tema do texto-base (>= 2 palavras significativas em comum) e nao
-    usa o rotulo generico 'Guia de Treinamento'."""
+    usa nenhum dos rotulos/cliches banidos em TITULOS_BANIDOS (ex.: 'Guia de
+    Treinamento', 'gambiarra')."""
     try:
         import fitz  # PyMuPDF
     except ImportError:
@@ -130,9 +137,11 @@ def validar_capa(pdf_path, texto_base_path):
                 print(f"[FALHA] titulo nao forma bloco (largura {largura:.0f}pt x altura {altura:.0f}pt)")
                 ok = False
         titulo_texto = " ".join(l["texto"] for l in linhas_titulo)
-        if "guia de treinamento" in _normalizar(titulo_texto):
-            print("[FALHA] titulo da capa usa rotulo generico 'Guia de Treinamento' (deve remeter ao tema)")
-            ok = False
+        titulo_normalizado = _normalizar(titulo_texto)
+        for banido in TITULOS_BANIDOS:
+            if banido in titulo_normalizado:
+                print(f"[FALHA] titulo da capa usa rotulo/cliche banido '{banido}' (deve remeter ao tema, ver TITULOS_BANIDOS)")
+                ok = False
         if texto_base_path.exists():
             base = texto_base_path.read_text(encoding="utf-8", errors="ignore")
             comuns = _palavras_significativas(titulo_texto) & _palavras_significativas(base)

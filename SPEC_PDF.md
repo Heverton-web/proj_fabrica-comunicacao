@@ -62,7 +62,11 @@ portado verbatim de `fabrica-de-livros`) → `scripts/validar-pdf.py`.
 - Contagem de páginas > 0 e coerente com o número de seções do brief.
 - **Capa (endurecimento, via spans PyMuPDF da página 1):**
   - Título (spans ≥ 18pt): **máx. 2 linhas**; nenhuma linha com 1 palavra isolada;
-    proporção altura/largura ≥ 0.18 (bloco); **não** contém "guia de treinamento";
+    proporção altura/largura ≥ 0.18 (bloco); **não** contém nenhum rótulo/clichê da
+    lista `TITULOS_BANIDOS` de `scripts/validar-pdf.py` (ex.: "guia de treinamento",
+    "gambiarra" — endurecido depois que o mesmo clichê foi reaproveitado em 3
+    regenerações consecutivas de um projeto real e reportado pelo operador como
+    título "ridículo"; adicione novos termos à lista sempre que isso se repetir);
     **≥ 2 palavras significativas** do título presentes no texto-mãe (remete ao tema).
   - Parágrafo (spans 9–16.5pt): **mín. 2 linhas**; nenhuma linha com 1 palavra isolada;
     proporção altura/largura em **[0.12, 1.2]** (bloco quadrado).
