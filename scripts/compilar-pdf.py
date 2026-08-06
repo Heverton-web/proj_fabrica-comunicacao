@@ -131,6 +131,25 @@ def extrair_capa_textos(md_path):
     return titulo, paragrafo
 
 
+def preparar_corpo_sem_h1_duplicado(md_path, dest_path):
+    """Grava em `dest_path` uma cópia do Markdown com o H1 temático da Abertura
+    (já extraído para `capa_titulo` por `extrair_capa_textos`) rebaixado para
+    texto em negrito, em vez de heading nível 1.
+
+    Por quê: `template_apostila.typ` estiliza heading nível 1 como um divisor de
+    capítulo (`pagebreak()` + título grande) — correto para um heading real, mas
+    esse H1 nunca foi pensado para isso, só para alimentar a capa via regex. Ao
+    sobreviver como heading nível 1 no corpo, ele força uma quebra de página
+    logo após "## Abertura" (que fica sozinha, sem nada abaixo — a seção parece
+    "em branco") e o título reaparece na própria página seguinte como um
+    capítulo novo, inclusive duplicado no Sumário. Isso só acontece quando
+    `redator-apostila` inclui o H1 (conforme o próprio contrato pede) — quando
+    ele é omitido, a Abertura renderiza inteira, sem quebra."""
+    texto = md_path.read_text(encoding="utf-8")
+    texto_corrigido = re.sub(r"(?m)^# (.+)$", r"**\1**", texto, count=1)
+    dest_path.write_text(texto_corrigido, encoding="utf-8")
+
+
 def preparar_assets_logo(slug_dir, pasta):
     """Copia os logos de marca fixos para <pasta>/assets/logos/, mesmo padrão
     usado por landing-page/apresentacao/arte (compilar-html.py / compilar-arte.py).
@@ -228,8 +247,14 @@ def main():
         print("[AVISO] Nenhuma imagem de produto encontrada (config_projeto.json/insumos) — "
               "capa usará o fallback do template. Registrar como faltante.")
 
+    # Corpo real da compilação: mesmo Markdown do redator-apostila, mas com o H1
+    # da Abertura rebaixado para negrito (ver preparar_corpo_sem_h1_duplicado) —
+    # o arquivo apostila_<slug>.md original nunca é alterado.
+    corpo_compilacao = slug_dir / args.pasta / f"_corpo_apostila_{args.slug}.md"
+    preparar_corpo_sem_h1_duplicado(md, corpo_compilacao)
+
     comando = [
-        "pandoc", str(md),
+        "pandoc", str(corpo_compilacao),
         "--pdf-engine=typst",
         "--template", "templates/template_apostila.typ",
         "-o", str(pdf),
@@ -237,6 +262,7 @@ def main():
 
     print(f"Compilando PDF para {args.slug}...")
     resultado = executar(comando, pdf, slug_dir, typst_bin="typst", timeout=300)
+    corpo_compilacao.unlink(missing_ok=True)
 
     if resultado.returncode == 0:
         print(f"[OK] PDF compilado com sucesso em {pdf}")
