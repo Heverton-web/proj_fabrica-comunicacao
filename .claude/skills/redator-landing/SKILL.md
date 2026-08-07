@@ -59,6 +59,22 @@ qualquer outro ambiente que apenas leia este arquivo como instrução:
   controla — nunca do ponto de vista de como o material foi montado. CTA em
   voz ativa e específica ("Consultar guia completo", não "Saiba mais").
 
+## Estrutura por público (preset `/kit-completo-<publico>`)
+
+Se `config_projeto.preset_kit_completo` existir, a landing segue o **foco** da tabela
+de presets da seção `/kit-completo-consultor` de `SPEC_COMANDOS.md` (canônico dos 3
+presets — variantes em `/kit-completo-distribuidor` e `/kit-completo-cliente`):
+
+- **`consultores` / `distribuidores`:** fluxo atual inalterado (estrutura default do
+  Procedimento acima).
+- **`clientes`:** foco em O que é · Para que serve · Diferenciais técnicos ·
+  Diferenciais para a prática clínica · Por que utilizar este produto — na ordem do
+  `mapeamento_por_material["landing-page"]`.
+
+Regra (REGRA 6): prática clínica/por que utilizar só com dados do dossiê — sem
+evidência, a seção é encurtada/omitida e a lacuna registrada como faltante, nunca
+suposição. Sem preset, vale o procedimento default acima.
+
 ## Tom de voz por público-alvo (obrigatório — REGRA 6)
 
 Leia `brief_criativo.publico_alvo` e aplique o registro de linguagem definido em

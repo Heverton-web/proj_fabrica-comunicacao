@@ -45,6 +45,24 @@ properties e `@font-face` embutidos; ver `.claude/skills/aplicador-marca-conexao
 - **Copy Persuasiva:** Fiel à fonte (REGRA 6) — sem superlativos não sustentados pelo texto-base.
 - **Saída:** `output/<slug>/landing-page/index.html` (+ `assets/` incluindo fontes e logotipos locais).
 
+## Estrutura por público (presets `/kit-completo-<publico>`)
+
+Quando `config_projeto.preset_kit_completo` existir, o `diretor-de-arte` monta o
+`mapeamento_por_material` com as variantes de foco abaixo (canônico em
+`SPEC_COMANDOS.md`, seção `/kit-completo-consultor` — canônico dos 3 presets, com as
+variantes em `/kit-completo-distribuidor` e `/kit-completo-cliente`). Requisitos técnicos, design
+system e validações são os mesmos — muda apenas a estrutura de conteúdo:
+
+| Público do preset | Apresentação (foco dos slides) | Landing page |
+|---|---|---|
+| `consultores` | O que é · Para que serve · Diferenciais técnicos | Fluxo atual inalterado (estrutura default acima) |
+| `distribuidores` | O que é · Para que serve · Diferenciais técnicos · Rentabilidade para o seu negócio | Fluxo atual inalterado |
+| `clientes` | O que é · Para que serve · Diferenciais técnicos · Diferenciais para a prática clínica · Por que utilizar este produto | Foco: O que é · Para que serve · Diferenciais técnicos · Diferenciais para a prática clínica · Por que utilizar este produto |
+
+Regras de conteúdo (REGRA 6): conteúdo de rentabilidade e de prática clínica vem
+exclusivamente do texto-base — ausência vira "faltante" no relatório, nunca suposição.
+Sem preset, valem as estruturas default acima.
+
 ## Validação (`scripts/validar-html.py`)
 
 - Abre `index.html` via Playwright (`file://`), captura console e network.

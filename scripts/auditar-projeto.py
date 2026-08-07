@@ -19,7 +19,7 @@ import sys
 from pathlib import Path
 
 sys.path.append(str(Path(__file__).resolve().parent))
-from _tipos_comuns import tipo_base
+from _tipos_comuns import erros_preset_kit_completo, tipo_base
 
 DIR_PROJETO = Path(__file__).resolve().parent.parent
 DIR_OUTPUT = DIR_PROJETO / "output"
@@ -93,6 +93,18 @@ def checar_r12(slug, tipos):
     return True, "ok"
 
 
+def checar_preset_kit_completo(config):
+    """Regra dos presets /kit-completo-<publico> (fonte unica em _tipos_comuns):
+    publico_alvo e materiais coerentes com o preset declarado em
+    config.preset_kit_completo. Projeto sem preset = ok (n/a)."""
+    erros = erros_preset_kit_completo(config)
+    if not erros:
+        if config.get("preset_kit_completo"):
+            return True, "ok"
+        return True, "n/a"
+    return False, "; ".join(erros)
+
+
 def main():
     ap = argparse.ArgumentParser(description="Auditoria final de conformidade do projeto")
     ap.add_argument("slug")
@@ -142,11 +154,14 @@ def main():
 
     ok_r9, motivo_r9 = checar_r9(args.slug, tipos)
     ok_r12, motivo_r12 = checar_r12(args.slug, tipos)
+    ok_preset, motivo_preset = checar_preset_kit_completo(config)
     print(f"\n[R9]  materiais com estado final : {'OK' if ok_r9 else 'FALHA - ' + motivo_r9}")
     print(f"[R12] estrutura de output correta : {'OK' if ok_r12 else 'FALHA - ' + motivo_r12}")
+    print(f"[PRESET] coerencia kit-completo  : {'OK' if ok_preset else 'FALHA - ' + motivo_preset}")
     relatorio["r9_estado_final"] = {"ok": ok_r9, "motivo": motivo_r9}
     relatorio["r12_estrutura_output"] = {"ok": ok_r12, "motivo": motivo_r12}
-    tudo_ok = tudo_ok and ok_r9 and ok_r12
+    relatorio["preset_kit_completo"] = {"ok": ok_preset, "motivo": motivo_preset}
+    tudo_ok = tudo_ok and ok_r9 and ok_r12 and ok_preset
 
     dir_revisao = DIR_OUTPUT / args.slug / "revisao"
     dir_revisao.mkdir(parents=True, exist_ok=True)

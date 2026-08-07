@@ -10,7 +10,7 @@ procedimento completo e universal (qualquer harness) de cada comando vive em
 
 | # | Requisito |
 |---|---|
-| R1 | Entrevista limitada a exatamente 4 rodadas de `AskUserQuestion` dentro de `/esbocar`: (1) imagens + texto-base, (2) público-alvo, (3) objetivo/tom de voz, (4) tipos de material. Nenhuma pergunta adicional depois disso — REGRA 3. |
+| R1 | Entrevista limitada a exatamente 4 rodadas de `AskUserQuestion` dentro de `/esbocar`: (1) imagens + texto-base, (2) público-alvo, (3) objetivo/tom de voz, (4) tipos de material. Nenhuma pergunta adicional depois disso — REGRA 3. Os comandos `/kit-completo-<publico>` (ver `SPEC_COMANDOS.md`) **pré-preenchem** as rodadas 2 e 4 (público e materiais fixos pelo preset) — nunca contam como rodadas novas. |
 | R2 | `config_projeto.json` é validado por `scripts/parametros_projeto.py --validar` antes de qualquer produção começar. |
 | R3 | O design system é **fixo** (`brand/design-system-conexao.json`), não extraído por projeto — `analista-insumos` não pergunta nem gera tokens de marca, só processa texto-base/imagens e determina `tom_de_voz` (que vai para `brief_criativo.json`). O PDF usa o mesmo arquivo fixo como solução interina até que regras próprias ("Flex Gold") sejam definidas — ver `SPEC_PDF.md`. |
 | R4 | Nenhum material contém claim, dado técnico ou benefício ausente do texto-base/imagens fornecidos — verificado por `revisor-marca` (REGRA 6). |
@@ -97,6 +97,11 @@ Ao final da rodada 4, `/esbocar`:
   //   educacional_comercial | informacional_tecnico | comercial_informacional_parceria
   "materiais_selecionados": ["pdf", "landing-page", "arte-01", "arte-02", "arte-03", "textos",
                               "kit-consultor", "kit-distribuidor"],
+  // Comandos /kit-completo-<publico> (ver SPEC_COMANDOS.md): preset de entrada que
+  // pré-fixa publico_alvo + materiais_selecionados e muda a estrutura de conteúdo de
+  // pdf/apresentacao/landing por público (ver SPEC_PDF.md/SPEC_HTML.md). Opcional —
+  // ausente em projetos criados só por /esbocar.
+  "preset_kit_completo": "consultores",  // consultores | distribuidores | clientes
   "edicao": "1ª Edição",          // Obrigatório se 'pdf' estiver em materiais_selecionados
   // Passo 5 do /esbocar — opcional, só perguntado se algum material de arte foi
   // selecionado. Ausente ou true = elementos decorativos ativos (default, REGRA 3).
@@ -171,3 +176,4 @@ arquivo como solução interina (ver `SPEC_PDF.md`).
 - **Material esgotado após 3 tentativas:** aparece em `manifesto_materiais.json` com `status: "esgotado"` e motivo; os demais materiais são entregues normalmente (R9).
 - **Fonte da marca (Poppins/Inter) não instalada na máquina de build do PDF:** `scripts/parametros_projeto.py` detecta via `typst fonts` e cai para `Arial` com aviso — nunca falha silenciosamente. Registrar como faltante ("instalar fonte no ambiente de build") em vez de aceitar o fallback como definitivo.
 - **Texto-base ambíguo sobre escopo interno vs. externo do material** (ex.: guia de vendas com script/objeções, mas materiais externos foram selecionados): não decidir sozinho — `/esbocar` deve confirmar com o operador antes de produzir (excepciona a autonomia da REGRA 3, é uma decisão de escopo, não de conteúdo/design) e registrar a decisão em `brief_criativo.nota_de_escopo`.
+- **Preset `/kit-completo-<publico>` sem dados comerciais/clínicos no texto-base** (ex.: sem margem/preço para "Rentabilidade", sem objeções reais para "Contorno de objeções"): os `redator-*` escrevem as seções com o que houver de evidência e registram a lacuna como "faltante" (REGRA 6) — nunca preenchem por suposição. A entrevista do comando reforça o pedido dos dados, mas ausência nunca é bloqueio.

@@ -19,8 +19,8 @@ brief e decompõe `objetivo_tom` em `objetivo` + `tom_de_voz` — nunca os alter
 
 - `output/<slug>/insumos/dossie_insumos.md` (fatos/claims + as escolhas do operador
   registradas por `analista-insumos`)
-- `output/<slug>/config_projeto.json` (para `materiais_selecionados`, `publico_alvo` e
-  `objetivo_tom` — escolhas do operador, fonte de verdade)
+- `output/<slug>/config_projeto.json` (para `materiais_selecionados`, `publico_alvo`,
+  `objetivo_tom` e `preset_kit_completo` — escolhas do operador/preset, fonte de verdade)
 
 ## Saída
 
@@ -67,6 +67,25 @@ específica em `brief_criativo.mapeamento_por_material`:
   e cada uma das 10 copies é depois renderizada em **todos** os kits selecionados —
   nunca 1 copy por kit (o que muda entre `kit-consultor`/`kit-distribuidor` é só o CTA,
   resolvido por `compilador-kit` via `brand/kits-conexao.json`).
+
+### 3.5 Preset `/kit-completo-<publico>` — estruturas por público
+
+Se `config_projeto.preset_kit_completo` existir (`consultores`/`distribuidores`/
+`clientes`), monte o `mapeamento_por_material` de `pdf`, `landing-page` e
+`apresentacao` com as **estruturas por público** da seção `/kit-completo-consultor` de
+`SPEC_COMANDOS.md` (canônico dos 3 presets — tabelas de presets; variantes em
+`/kit-completo-distribuidor` e `/kit-completo-cliente`), **no lugar** das estruturas
+default acima. Regras:
+
+- SPIN e contorno de objeções (consultor/distribuidor): a técnica (S/P/I/N;
+  pergunta→resposta) é fixa; o conteúdo vem do texto-base — nunca invente.
+- Rentabilidade (distribuidor) e diferenciais para a prática clínica / por que
+  utilizar (cliente): somente fatos do dossiê — sem evidência, a seção é registrada
+  como faltante, nunca preenchida por suposição (REGRA 6).
+- `kit`/`arte` não mudam com o preset (predefinições fixas de `SPEC_KITS.md`/
+  `SPEC_ARTE.md`).
+- Use `brand/publicos-alvo.json.<publico>.foco_kit_completo` como guia de foco por
+  público (descrições de foco, nunca conteúdo).
 
 ### 4. Carregar as escolhas do operador (público-alvo e objetivo/tom)
 

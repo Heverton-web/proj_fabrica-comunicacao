@@ -21,6 +21,9 @@ import subprocess
 import sys
 from pathlib import Path
 
+sys.path.append(str(Path(__file__).resolve().parent))
+from _tipos_comuns import erros_preset_kit_completo
+
 DIR_PROJETO = Path(__file__).resolve().parent.parent
 DIR_OUTPUT = DIR_PROJETO / "output"
 CAMINHO_BRAND = DIR_PROJETO / "brand" / "design-system-conexao.json"
@@ -79,6 +82,8 @@ def validar_config(slug):
     for m in materiais:
         if m not in TIPOS_VALIDOS:
             erros.append(f"tipo de material invalido em materiais_selecionados: {m!r}")
+
+    erros += erros_preset_kit_completo(config)
 
     if "pdf" in materiais:
         if "edicao" not in config or not str(config.get("edicao", "")).strip():

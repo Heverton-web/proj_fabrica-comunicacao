@@ -24,9 +24,11 @@ Você escreve o conteúdo final (Markdown) do material PDF — o mais longo e di
 
 ## Procedimento
 
-Escreva as 7 seções na ordem de `SPEC_PDF.md` (Abertura, Problema, Solução, Destaques,
-Composição/especificações, Aplicação, Fechamento), usando `##` para cada seção. Cada
-seção deve:
+Escreva as seções na ordem de `SPEC_PDF.md` (Abertura, Problema, Solução, Destaques,
+Composição/especificações, Aplicação, Fechamento), usando `##` para cada seção — ou,
+**se o projeto vier de um preset `/kit-completo-<publico>`** (campo
+`preset_kit_completo` em `config_projeto.json`), escreva as seções por público
+descritas abaixo, na ordem do `mapeamento_por_material.pdf.secoes`. Cada seção deve:
 
 - **Abertura (estrutura obrigatória, alimenta a capa — SPEC_PDF endurecido):**
   1. H1 temático (`# ...`): **máx. 34 caracteres / 6 palavras, sem hífens**, remetendo
@@ -54,6 +56,35 @@ seção deve:
   tabela Markdown — mais escaneável que prosa.
 - Terminar com uma seção de Fechamento contendo CTA + nome da marca (isso alimenta a
   variável `cta_final` do template Typst).
+
+## Estrutura por público (preset `/kit-completo-<publico>`)
+
+Se `config_projeto.preset_kit_completo` existir, o corpo segue a variante da seção
+`/kit-completo-consultor` de `SPEC_COMANDOS.md` (canônico dos 3 presets — tabelas de
+presets; variantes em `/kit-completo-distribuidor` e `/kit-completo-cliente`), com a
+Abertura (capa) sempre na mesma estrutura obrigatória do Procedimento acima:
+
+- **`consultores`:** O que é · Para que serve · Diferenciais técnicos/comerciais ·
+  Como vender: SPIN (S/P/I/N) · Contorno de objeções · Fechamento.
+- **`distribuidores`:** O que é · Para que serve · Diferenciais técnicos/comerciais ·
+  Rentabilidade para o seu negócio · Como vender: SPIN · Contorno de objeções ·
+  Fechamento.
+- **`clientes`:** O que é · Para que serve · Diferenciais técnicos · Diferenciais
+  para a prática clínica · Por que utilizar este produto · Fechamento.
+
+Regras de conteúdo (REGRA 6 — fidelidade à fonte):
+
+- **SPIN:** técnica fixa — uma pergunta por estágio (Situação, Problema, Implicação,
+  Necessidade de solução), redigida a partir de fatos do dossiê. Nunca invente
+  pergunta ou cenário fora do texto-base.
+- **Contorno de objeções:** objeção real do texto-base (ou a mais provável, se o
+  dossiê indicar) → resposta objetiva com dados do dossiê. Estrutura
+  pergunta→resposta; ausência de objeções no texto-base → `<!-- FALTANTE: ... -->`.
+- **Rentabilidade** (distribuidor): margens/preços/condições exatamente como no
+  texto-base; sem dados → `<!-- FALTANTE: ... -->`, nunca suposição.
+- **Diferenciais para a prática clínica / Por que utilizar** (cliente): benefícios
+  clínicos e motivos presentes no dossiê, em linguagem acessível (registro de
+  `brand/publicos-alvo.json`).
 
 ## Tom de voz por público-alvo (obrigatório — REGRA 6)
 

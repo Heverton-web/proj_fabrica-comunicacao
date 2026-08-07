@@ -53,6 +53,27 @@ portado verbatim de `fabrica-de-livros`) → `scripts/validar-pdf.py`.
 6. Aplicação — em que casos usar / não usar, se a fonte indicar.
 7. Fechamento — CTA (`cta_final` do template) + assinatura de marca (logo + nome).
 
+## Estrutura de conteúdo por público (presets `/kit-completo-<publico>`)
+
+Quando `config_projeto.preset_kit_completo` existir, o `diretor-de-arte` monta o
+`mapeamento_por_material.pdf.secoes` com a variante correspondente abaixo (canônico em
+`SPEC_COMANDOS.md`, seção `/kit-completo-consultor` — canônico dos 3 presets, com as
+variantes em `/kit-completo-distribuidor` e `/kit-completo-cliente`). A capa (Flex Gold) e as seções
+obrigatórias da Abertura são as mesmas; muda a estrutura interna do corpo:
+
+| Público do preset | Seções do corpo (na ordem) |
+|---|---|
+| `consultores` | 1. O que é · 2. Para que serve · 3. Diferenciais técnicos/comerciais · 4. Como vender: SPIN (Situação, Problema, Implicação, Necessidade de solução) · 5. Contorno de objeções (objeções reais + resposta) · 6. Fechamento/CTA |
+| `distribuidores` | 1. O que é · 2. Para que serve · 3. Diferenciais técnicos/comerciais · 4. Rentabilidade para o seu negócio · 5. Como vender: SPIN · 6. Contorno de objeções · 7. Fechamento/CTA |
+| `clientes` | 1. O que é · 2. Para que serve · 3. Diferenciais técnicos · 4. Diferenciais para a prática clínica · 5. Por que utilizar este produto · 6. Fechamento/CTA |
+
+**Regras de conteúdo (REGRA 6):** a técnica de SPIN e a estrutura pergunta→resposta de
+objeções são fixas, mas o conteúdo (perguntas, objeções, respostas) é extraído do
+texto-base — nunca inventado. Rentabilidade (margens/preços/condições) e diferenciais
+para a prática clínica vêm exclusivamente do texto-base; ausência → seção registrada
+como "faltante" no relatório final. Sem preset, vale a estrutura default de 7 seções
+acima.
+
 ## Validação (`scripts/validar-pdf.py`)
 
 - Arquivo existe e `size > 0`.

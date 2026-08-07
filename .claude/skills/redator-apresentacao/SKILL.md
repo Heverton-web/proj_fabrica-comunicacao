@@ -74,6 +74,23 @@ Cada slide deve caber sem scroll no template de apresentação (ver `SPEC_HTML.m
 prefira cortar conteúdo secundário a espremer texto. Se uma imagem fornecida pelo
 operador ilustra bem um slide, referencie-a; nunca gere ilustração no lugar dela.
 
+## Estrutura por público (preset `/kit-completo-<publico>`)
+
+Se `config_projeto.preset_kit_completo` existir, monte os slides seguindo o **foco**
+da tabela de presets da seção `/kit-completo-consultor` de `SPEC_COMANDOS.md`
+(canônico dos 3 presets — variantes em `/kit-completo-distribuidor` e
+`/kit-completo-cliente`), sempre 1 conceito por slide:
+
+- **`consultores`:** O que é · Para que serve · Diferenciais técnicos.
+- **`distribuidores`:** O que é · Para que serve · Diferenciais técnicos ·
+  Rentabilidade para o seu negócio.
+- **`clientes`:** O que é · Para que serve · Diferenciais técnicos · Diferenciais
+  para a prática clínica · Por que utilizar este produto.
+
+Regra (REGRA 6): rentabilidade/prática clínica/por que utilizar só entram como slide
+com dados do dossiê — sem evidência, a seção não vira slide e a lacuna é registrada
+como faltante (nunca suposição). Sem preset, vale o procedimento default acima.
+
 ## Tom de voz por público-alvo (obrigatório — REGRA 6)
 
 Leia `brief_criativo.publico_alvo` e aplique o registro de linguagem definido em

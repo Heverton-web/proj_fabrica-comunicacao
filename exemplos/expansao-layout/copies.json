@@ -1,0 +1,29 @@
+{
+  "_nota": "Exemplo do eixo LAYOUT (docs/11-plano-expansao-variacao-layout-arte.md). Copies reais do projeto kit-master-flex-02 (fonte read-only), acrescidas do campo `layout` por copy — Opção B: layout é atributo da copy; total de PNGs por formato nao muda (3).",
+  "copies": [
+    {
+      "id": "copy-01",
+      "angulo": "problema/isca: perfuração sem limite de profundidade arrisca estruturas nobres — o Stop Drill exclusivo devolve o controle desde o primeiro contato ósseo",
+      "layout": "layout-02",
+      "headline": "O Stop Drill exclusivo devolve o controle da perfuração.",
+      "subcopy": "Fresas 1 a 9 com limitadores de profundidade: fidelidade ao planejamento desde o primeiro contato ósseo.",
+      "cta": "Fale com seu consultor Conexão"
+    },
+    {
+      "id": "copy-02",
+      "angulo": "diferencial técnico: único sistema no mercado com Fresa Start (Lança) + Stop Drill dedicado — fresas 1 a 9, cada uma com seu limitador de profundidade",
+      "layout": "layout-01",
+      "headline": "O único sistema com Fresa Start + Stop Drill dedicado.",
+      "subcopy": "Controle de profundidade para proteger estruturas nobres e garantir a osseointegração.",
+      "cta": "Fale com seu consultor Conexão"
+    },
+    {
+      "id": "copy-03",
+      "angulo": "versatilidade/eficiência: de Slim 2,9mm a 5,0mm em uma única plataforma — NP (24°), GMF (16°), FIT (11,5°) e hexágono externo",
+      "layout": "layout-03",
+      "headline": "De 2,9mm a 5,0mm. Um kit para todos os casos.",
+      "subcopy": "NP, GMF, FIT e hexágono externo: do espaço protético estreito à extração imediata, sem trocar de estojo.",
+      "cta": "Fale com seu consultor Conexão"
+    }
+  ]
+}

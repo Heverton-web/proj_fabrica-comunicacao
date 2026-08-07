@@ -17,6 +17,12 @@
         "landing-page": "Hero com dado técnico de impacto → seção de especificações → prova (selos/certificações)",
         "apresentacao": "1 slide = 1 spec ou 1 indicação clínica — sem bullet genérico",
         "arte": "Headline técnico direto (ex.: 'Torque de 15 N·cm. Plataformas 3.0 a 5.0.')"
+      },
+      "foco_kit_completo": {
+        "_uso": "Preset /kit-completo-consultor (SPEC_COMANDOS.md) — blocos de foco que direcionam a estrutura do PDF/apresentação; conteúdo sempre do texto-base (REGRA 6), nunca inventado.",
+        "spin": "Perguntas S/P/I/N (Situação, Problema, Implicação, Necessidade de solução) para qualificar a necessidade do cliente, redigidas a partir do texto-base",
+        "contorno_objetivos": "Objeções reais de clientes + respostas baseadas no dossiê",
+        "diferenciais_tecnico_comercial": "Especificações do dossiê traduzidas em argumento de venda para o consultor"
       }
     },
 
@@ -34,6 +40,11 @@
         "landing-page": "Hero com benefício de resultado (não de spec) → prova social/selos → CTA de contato",
         "apresentacao": "Narrativa: antes/depois, dor → alívio — nunca tabela de specs como slide principal",
         "arte": "Headline de resultado/benefício (ex.: 'Sorria com confiança. Conheça o implante certo para você.')"
+      },
+      "foco_kit_completo": {
+        "_uso": "Preset /kit-completo-cliente (SPEC_COMANDOS.md) — blocos de foco; conteúdo do texto-base (REGRA 6), nunca inventado.",
+        "pratica_clinica": "Benefícios clínicos do dossiê em linguagem acessível, sem jargão sem explicação",
+        "por_que_utilizar": "Síntese dos motivos de escolha presentes no texto-base, orientada ao benefício concreto"
       }
     },
 
@@ -51,6 +62,12 @@
         "landing-page": "Hero com proposta de parceria → diferenciais de distribuição → benefícios do programa de parceiros → CTA de cadastro/contato comercial",
         "apresentacao": "Pitch de parceria: mercado → produto → programa de distribuição → próximos passos",
         "arte": "Headline de oportunidade (ex.: 'Amplie seu portfólio com a linha Conexão Implantes.')"
+      },
+      "foco_kit_completo": {
+        "_uso": "Preset /kit-completo-distribuidor (SPEC_COMANDOS.md) — blocos de foco; conteúdo (margens/preços/condições) exclusivamente do texto-base (REGRA 6).",
+        "rentabilidade": "Margem, preço, condições e benefícios comerciais exatamente como constam no texto-base — ausência vira 'faltante', nunca suposição",
+        "spin": "Mesma técnica S/P/I/N do consultor, com vocabulário comercial-técnico do parceiro",
+        "contorno_objetivos": "Objeções reais de revenda + respostas baseadas no dossiê"
       }
     },
 
