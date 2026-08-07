@@ -1,0 +1,3 @@
+[submodule ".token-economy"]
+	path = .token-economy
+	url = https://github.com/Heverton-web/token-economy-shared.git

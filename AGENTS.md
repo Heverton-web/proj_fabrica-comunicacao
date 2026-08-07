@@ -32,6 +32,23 @@ Um harness sem esse mecanismo deve reconhecer o mesmo comando por pedido em
 linguagem natural equivalente (ex.: "inicie a fábrica para o produto X") e seguir a
 seção correspondente de `SPEC_COMANDOS.md`.
 
+## ECONOMIA DE TOKENS
+
+Infraestrutura compartilhada em `.token-economy/` (submodule Git) — ver
+[`docs/prompt-mestre-token-economy.md`](docs/prompt-mestre-token-economy.md) para o
+racional completo. Aplica-se a qualquer harness que execute este repositório:
+
+- Comprimir logs/saídas de comando com mais de 7 linhas (3 no topo + 4 no fim),
+  **exceto** `output/**`, `config_projeto.json`, `brief_criativo.json` e saída de
+  scripts de auditoria (`scripts/*.py --estrito`), que nunca são truncados.
+- Preferir grep/busca pontual à leitura integral de arquivos grandes antes de editar.
+- Pipelines de build/compilação (Pandoc, Typst, Playwright, `scripts/*.py`) são
+  isentos de qualquer restrição de token — rodam sempre por completo.
+- No Claude Code especificamente, as skills de suporte (`lean-ctx`, `headroom`,
+  `caveman`, `rtk-memory`, `pre-flight-check`, `calcular-gastos-sessao`,
+  `fable-method`, `fable-judge`, `self-learning`) ficam disponíveis via junction em
+  `.claude/skills/` → `.token-economy/.claude/skills/`.
+
 ## REGRAS INVIOLÁVEIS
 
 **REGRA 1 — Idioma Estrito (PT-BR):** toda comunicação interna entre skills/agentes e

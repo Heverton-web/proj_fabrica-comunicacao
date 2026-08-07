@@ -11,6 +11,7 @@ output/
 __pycache__/
 *.pyc
 *.pyo
+.pytest_cache/
 .crg-*.py
 .crg-hook.log
 .DS_Store

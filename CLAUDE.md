@@ -6,6 +6,21 @@ verdade: [`AGENTS.md`](file:///C:/Users/trcnologia/Desktop/proj_fabrica-comunica
 
 ---
 
+## 0. Economia Severa de Tokens (PRIORIDADE MÁXIMA)
+
+Infraestrutura em `.token-economy/` (submodule). Ver [`docs/prompt-mestre-token-economy.md`](file:///C:/Users/trcnologia/Desktop/01_Projetos_e_Desenvolvimento/proj_fabrica-comunicacao/docs/prompt-mestre-token-economy.md) para o racional completo.
+
+1. **Caveman ativo:** respostas telegráficas (3-5 linhas), sem preâmbulos/saudações.
+2. **Headroom:** logs/builds >7 linhas → comprimir (3 topo + 4 fim). EXCEÇÃO: `output/**` e dados de obra NUNCA são comprimidos.
+3. **LeanCTX:** grep antes de read em código/config; ler só a fatia de linhas necessária.
+4. **Delegação:** subagentes para buscas/edições extensas (nunca para prosa criativa dos redatores).
+5. **Build ISENTO:** pipelines de compilação (pandoc, typst, playwright, scripts/*.py) são liberados e obrigatórios, nunca comprimidos na saída de erro.
+6. **Fidelidade de conteúdo:** `output/**`, `config_projeto.json`, `brief_criativo.json` e scripts de auditoria (`scripts/*.py --estrito`) são isentos de compressão.
+7. **Auto-commit/push:** autorizado para este projeto — commitar e pushar ao concluir uma tarefa, sem precisar reconfirmar a cada vez.
+8. **Skills disponíveis** (junctions em `.claude/skills/`, fonte em `.token-economy/`): `lean-ctx`, `headroom`, `caveman`, `rtk-memory`, `pre-flight-check`, `calcular-gastos-sessao`, `fable-method`, `fable-judge`, `self-learning`.
+
+---
+
 ## Comandos (universais — não exclusivos do Claude Code)
 
 Os comandos da fábrica (`/esbocar`, `/produzir-comunicacao-completa`, `/gerar-pdf`,

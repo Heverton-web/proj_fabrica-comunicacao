@@ -1,0 +1,11 @@
+# Dependencias da Fábrica Agêntica de Publicações
+# pip install -r requirements.txt
+
+# Core: geracao de capas e validacao de texto (PIL/Pillow)
+Pillow>=10.0
+
+# Core: geracao de capas e ilustracoes via HTML/CSS
+playwright>=1.40
+
+# Opcional: validacao de YAML em validar-codigo.py
+# PyYAML>=6.0
