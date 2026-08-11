@@ -67,6 +67,25 @@ def compilar_variante_arte(slug, variante, pasta=None):
     template_content = template_path.read_text(encoding="utf-8")
     erros = 0
 
+    # Legendas de publicacao (9 arquivos: 3 copies x 3 canais, format-agnostico --
+    # ver SPEC_ARTE.md). Gravadas em output/<slug>/arte/, nao dentro da pasta do
+    # formato, ja que independem de arte-01/02/03. Escritas em toda chamada (nao so
+    # na 1a variante) para nunca ficarem ausentes se so um formato for selecionado.
+    canais = ("instagram", "linkedin", "whatsapp")
+    for indice, copy in enumerate(copies, start=1):
+        if not isinstance(copy, dict):
+            continue
+        sufixo_copy = f"copy{indice:02d}"
+        legendas = copy.get("legendas") or {}
+        for canal in canais:
+            texto_legenda = legendas.get(canal, "").strip()
+            if not texto_legenda:
+                print(f"[AVISO] {sufixo_copy}/{canal}: legenda ausente em {copies_path} "
+                      f"-- redator-arte precisa gravar 'legendas.{canal}' (ver SPEC_ARTE.md)")
+                continue
+            (slug_dir / "arte" / f"legenda_{sufixo_copy}_{canal}.txt").write_text(
+                texto_legenda, encoding="utf-8")
+
     # Elementos decorativos de fundo sao opt-out via config_projeto.elementos_decorativos
     # (Passo 5 do /esbocar) -- default True se o campo nao existir (REGRA 3).
     config_projeto = carregar_json(slug_dir / "config_projeto.json")

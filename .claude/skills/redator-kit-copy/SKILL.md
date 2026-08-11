@@ -60,7 +60,10 @@ Para cada um dos 5 tons de `brand/tons-kit.json` (`informativa`, `contra-intuiti
 `angulos_por_tom` correspondentes definidos pelo `diretor-de-arte`:
 
 - **headline** — o ângulo comprimido a ≤ 60 caracteres (mesmo teto de `SPEC_ARTE.md`).
-- **subcopy** — um benefício/detalhe de apoio, ≤ 120 caracteres.
+- **subcopy** — **entre 100 e 170 caracteres, em 2 frases** (mesma regra de
+  `redator-arte`/`SPEC_ARTE.md`): 1ª o benefício/detalhe de apoio, 2ª um dado concreto
+  do dossiê de insumos — nunca reafirme o headline em palavras mais vagas. Precisa
+  render em pelo menos 3 linhas no layout 1080×1350, sem linha final de 1-2 palavras.
 - Escreva no registro do público fixo `dentista_implantodontista` (ver
   `brand/publicos-alvo.json`): fala **com** o dentista/implantodontista, 2ª pessoa
   implícita, 1 ideia por peça, sem jargão de vendas/parceria no corpo (isso fica só no

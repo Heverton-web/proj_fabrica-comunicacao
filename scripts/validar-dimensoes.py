@@ -13,7 +13,7 @@ import sys
 from pathlib import Path
 
 sys.path.append(str(Path(__file__).resolve().parent))
-from _arte_common import checar_um_badge_por_peca
+from _arte_common import checar_um_badge_por_peca, checar_paragrafo_arte
 
 DIR_PROJETO = Path(__file__).resolve().parent.parent
 DIR_OUTPUT = DIR_PROJETO / "output"
@@ -78,6 +78,31 @@ def main():
         print(msg)
     if not ok_badges:
         ok = False
+
+    # SPEC_ARTE (endurecimento): paragrafo em >= 3 linhas, sem linha orfa
+    ok_paragrafo, mensagens_paragrafo = checar_paragrafo_arte(base, args.variante)
+    for msg in mensagens_paragrafo:
+        print(msg)
+    if not ok_paragrafo:
+        ok = False
+
+    # SPEC_ARTE: 9 legendas de publicacao (3 copies x 3 canais), format-agnosticas,
+    # gravadas em output/<slug>/arte/ (nao dentro da pasta do formato).
+    dir_arte = DIR_OUTPUT / args.slug / "arte"
+    canais = ("instagram", "linkedin", "whatsapp")
+    legendas_ausentes = []
+    for indice in range(1, 4):
+        sufixo_copy = f"copy{indice:02d}"
+        for canal in canais:
+            legenda = dir_arte / f"legenda_{sufixo_copy}_{canal}.txt"
+            if not legenda.exists() or legenda.stat().st_size == 0:
+                legendas_ausentes.append(legenda.name)
+    if legendas_ausentes:
+        ok = False
+        print(f"[FALHA] arte: {len(legendas_ausentes)} legenda(s) ausente(s)/vazia(s) "
+              f"em {dir_arte}: {', '.join(legendas_ausentes)}")
+    else:
+        print(f"[OK] arte: 9 legendas de publicacao presentes em {dir_arte}")
 
     return 0 if ok else 1
 

@@ -202,6 +202,65 @@ def checar_um_badge_por_peca(base_dir, rotulo):
     return ok, mensagens
 
 
+def checar_paragrafo_arte(base_dir, rotulo):
+    """SPEC_ARTE/SPEC_KITS (endurecimento): o paragrafo (.subcopy) de cada peca
+    deve renderizar em pelo menos 3 linhas, nunca com a linha final tendo 1-2
+    palavras -- mesmo arbitro determinstico ja usado para o titulo (REGRA 8),
+    agora aplicado ao paragrafo. Abre cada index*.html persistido via
+    Playwright (mesma tecnica de renderizar_pagina) e reusa a logica de
+    agrupamento de linhas por bounding rect ja embutida nos templates."""
+    try:
+        from playwright.sync_api import sync_playwright
+    except ImportError:
+        return True, [f"[AVISO] {rotulo}: Playwright nao instalado - pulando checagem de paragrafo"]
+
+    base = Path(base_dir)
+    htmls = sorted(base.rglob("index*.html"))
+    mensagens = []
+    if not htmls:
+        mensagens.append(f"[AVISO] {rotulo}: nenhum index*.html encontrado - pulando checagem de paragrafo")
+        return True, mensagens
+
+    medir_js = """
+        () => {
+            const p = document.querySelector('.texto-bloco p.subcopy');
+            if (!p) return [0, false];
+            const spans = Array.from(p.querySelectorAll('.palavra'));
+            if (!spans.length) return [0, false];
+            const linhas = [];
+            const tops = [];
+            spans.forEach(span => {
+                const top = Math.round(span.getBoundingClientRect().top);
+                let idx = tops.findIndex(t => Math.abs(t - top) < 4);
+                if (idx === -1) { tops.push(top); linhas.push([span]); }
+                else { linhas[idx].push(span); }
+            });
+            const ultima = linhas[linhas.length - 1];
+            return [linhas.length, linhas.length > 1 && ultima.length <= 2];
+        }
+    """
+
+    ok = True
+    with sync_playwright() as pw:
+        browser = pw.chromium.launch()
+        for html in htmls:
+            page = browser.new_page()
+            page.goto(f"file:///{html.resolve()}")
+            page.wait_for_timeout(500)
+            n_linhas, tem_orfa = page.evaluate(medir_js)
+            page.close()
+            if n_linhas < 3:
+                ok = False
+                mensagens.append(f"[FALHA] {rotulo}/{html.name}: paragrafo com {n_linhas} linha(s), esperado >= 3")
+            elif tem_orfa:
+                ok = False
+                mensagens.append(f"[FALHA] {rotulo}/{html.name}: paragrafo com linha final de 1-2 palavras (orfa)")
+        browser.close()
+    if ok:
+        mensagens.append(f"[OK] {rotulo}: paragrafo em >= 3 linhas, sem linha orfa em nenhuma peca")
+    return ok, mensagens
+
+
 def _titulo_com_palavras(headline):
     """Divide o headline em palavras, cada uma envolvida em <span class="palavra">
     -- usado pelo script de ajuste embutido nos templates de arte para medir linhas
@@ -211,6 +270,15 @@ def _titulo_com_palavras(headline):
     identico a formatar o headline inteiro, já que negrito/italico por palavra
     isolada renderiza igual a um span continuo."""
     palavras = [p for p in headline.split(" ") if p]
+    return " ".join(f'<span class="palavra">{formatar_markdown(p)}</span>' for p in palavras)
+
+
+def _paragrafo_com_palavras(subcopy):
+    """Mesma logica de _titulo_com_palavras, aplicada ao paragrafo (.subcopy) --
+    usado pelo script de ajuste embutido nos templates de arte para medir linhas
+    renderizadas no navegador e garantir no minimo 3 linhas, nunca uma linha final
+    com 1-2 palavras (ver SPEC_ARTE.md)."""
+    palavras = [p for p in subcopy.split(" ") if p]
     return " ".join(f'<span class="palavra">{formatar_markdown(p)}</span>' for p in palavras)
 
 
@@ -235,7 +303,7 @@ def preencher_template(template_content, *, titulo, headline, subcopy, cta,
     html_final = re.sub(r'<!--\s*\{\{HEADLINE\}\}.*?-->',
                          f'<h1>{_titulo_com_palavras(headline)}</h1>', html_final, flags=re.DOTALL)
     html_final = re.sub(r'<!--\s*\{\{SUBCOPY\}\}.*?-->',
-                         f'<p class="subcopy">{formatar_markdown(subcopy)}</p>', html_final, flags=re.DOTALL)
+                         f'<p class="subcopy">{_paragrafo_com_palavras(subcopy)}</p>', html_final, flags=re.DOTALL)
     html_final = html_final.replace("{{NOME_MARCA}}", NOME_MARCA)
 
     cta_tag = f'<span class="cta">{formatar_markdown(cta)}</span>'

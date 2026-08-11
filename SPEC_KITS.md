@@ -107,14 +107,18 @@ Sem campo `cta` — o CTA é sempre resolvido em tempo de renderização a parti
 
 - Dimensão **pixel-perfect exata** 1080×1350, viewport do Playwright fixado igual
   (mesma regra de `SPEC_ARTE.md`).
-- Limites de caractere por copy: headline ≤ 60 caracteres, subcopy ≤ 120 caracteres
-  (mesmos tetos de `SPEC_ARTE.md` — o CTA da variante já é fixo e curto por definição
-  em `brand/kits-conexao.json`, não precisa de limite adicional).
+- Limites de caractere por copy: headline ≤ 60 caracteres, subcopy **entre 100 e 170
+  caracteres, em 2 frases** (mesmos tetos/regra de `SPEC_ARTE.md` — o CTA da variante
+  já é fixo e curto por definição em `brand/kits-conexao.json`, não precisa de limite
+  adicional).
 - Teto de peso: 1 MB por PNG (mesmo de `SPEC_ARTE.md`).
 - Título em no máximo 2 linhas, nunca 1 palavra sozinha numa linha, largura igual à
   do parágrafo (mesma regra e mesmo template `arte-1080x1350.html` de `SPEC_ARTE.md`
   — os kits reaproveitam o script de ajuste embutido no template, nada específico
   de kit a implementar aqui).
+- Subcopy em no mínimo 3 linhas renderizadas, nunca com 1-2 palavras sozinhas numa
+  linha — mesma regra e mesmo script de balanceamento (NBSP nas 2 últimas palavras)
+  de `SPEC_ARTE.md`, validado por `validar-kit.py` sobre os `index*.html` persistidos.
 - **1 Badge por Peça (endurecimento):** mesma regra de `SPEC_ARTE.md` — cada PNG tem
   exatamente 1 elemento tipo badge (o CTA pill `class="cta"` da variante) e nenhum
   badge de contexto (`class="badge"`). Validado por `validar-kit.py` sobre os

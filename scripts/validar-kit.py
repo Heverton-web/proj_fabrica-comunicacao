@@ -16,7 +16,7 @@ import sys
 from pathlib import Path
 
 sys.path.append(str(Path(__file__).resolve().parent))
-from _arte_common import checar_um_badge_por_peca
+from _arte_common import checar_um_badge_por_peca, checar_paragrafo_arte
 
 DIR_PROJETO = Path(__file__).resolve().parent.parent
 DIR_OUTPUT = DIR_PROJETO / "output"
@@ -123,6 +123,13 @@ def main():
     for msg in mensagens:
         print(msg)
     if not ok_badges:
+        ok = False
+
+    # SPEC_KITS (endurecimento): paragrafo em >= 3 linhas, sem linha orfa
+    ok_paragrafo, mensagens_paragrafo = checar_paragrafo_arte(kit_dir, args.kit)
+    for msg in mensagens_paragrafo:
+        print(msg)
+    if not ok_paragrafo:
         ok = False
 
     return 0 if ok else 1

@@ -61,10 +61,18 @@ divergente entre subagentes paralelos) — ver seção 1 de
 - Dimensão **pixel-perfect exata** — viewport do Playwright deve ser fixado exatamente
   na dimensão-alvo (sem `device_scale_factor` que gere upscale além do necessário).
 - Texto do headline/CTA deve caber sem overflow no layout — `redator-arte` respeita
-  limites de caracteres (headline ≤ 60 caracteres, subcopy ≤ 120, CTA ≤ 30) para
-  garantir legibilidade em tela de celular. Esses limites são **format-agnósticos** —
-  a mesma copy deve caber nos 3 formatos, por isso não há variação de texto por
-  dimensão.
+  limites de caracteres (headline ≤ 60 caracteres, subcopy **entre 100 e 170**, CTA ≤
+  30) para garantir legibilidade em tela de celular. Esses limites são
+  **format-agnósticos** — a mesma copy deve caber nos 3 formatos, por isso não há
+  variação de texto por dimensão.
+- **Subcopy em no mínimo 3 linhas renderizadas, nunca com 1-2 palavras sozinhas numa
+  linha** (mesmo espírito da regra de headline abaixo, aplicada ao parágrafo): escreva
+  **2 frases** — 1ª o benefício, 2ª um dado/prova concreto do dossiê de insumos (nunca
+  reafirmar o headline em palavras mais vagas) — o suficiente para preencher a coluna
+  de 580px/1.25rem sem ficar raso. Não garantido só por caractere mínimo (palavras
+  longas/curtas variam a quebra) — os templates embutem o mesmo tipo de script do
+  título (mede as linhas renderizadas via `.palavra` e injeta NBSP entre as 2 últimas
+  palavras se a última linha ficar com ≤ 2 palavras). Ver `templates/arte-*.html`.
 - Cores/fontes só via CSS custom properties do design system fixo (mesma disciplina
   de `SPEC_HTML.md`).
 - **Imagem do produto em evidência (endurecimento):** `.produto` ocupa a maior parte
@@ -132,6 +140,30 @@ Pasta auxiliar (`output/<slug>/arte/`, mesmo padrão de `insumos/` e `revisao/`)
 um dos materiais finais de R12 — os materiais finais continuam sendo `arte-01/`,
 `arte-02/`, `arte-03/` (cada um com seus próprios 3 PNGs + HTMLs).
 
+## Legenda de publicação: `output/<slug>/arte/legenda_copy<MM>_<canal>.txt`
+
+O texto embutido no PNG (headline/subcopy/CTA) nunca é o post inteiro — quem publica
+precisa de uma legenda para colar junto da imagem no Instagram/LinkedIn/WhatsApp,
+igual ao `texto_whatsapp.txt` que `compilador-kit` já grava por item do
+kit-consultor/kit-distribuidor. Para as 3 copies compartilhadas de arte-01/02/03,
+`compilador-arte` grava **9 arquivos** (3 copies × 3 canais, format-agnóstico — a
+legenda não depende do formato final, só da copy):
+
+- `legenda_copy01_instagram.txt`, `legenda_copy01_linkedin.txt`, `legenda_copy01_whatsapp.txt`
+- `legenda_copy02_instagram.txt`, `legenda_copy02_linkedin.txt`, `legenda_copy02_whatsapp.txt`
+- `legenda_copy03_instagram.txt`, `legenda_copy03_linkedin.txt`, `legenda_copy03_whatsapp.txt`
+
+Cada legenda reaproveita headline (em destaque) + subcopy expandido (agora em 2
+frases, ver regra de subcopy acima) + 1 dado extra do dossiê de insumos + CTA — nunca
+uma legenda genérica igual nos 3 canais. Adaptação por canal (mesmas regras de
+`redator-textos/SKILL.md`):
+
+| Canal | Adaptação |
+|---|---|
+| `instagram` | Blocos espaçados, hashtags do nicho, CTA para link na bio. |
+| `linkedin` | Tom de autoridade profissional, parágrafo limpo, sem excesso de emoji. |
+| `whatsapp` | Formatação com `*negrito*`/`_itálico_` e emojis, mensagem curta pronta para reenvio 1:1. |
+
 ## Validação (`scripts/validar-dimensoes.py`)
 
 - Abre cada PNG com Pillow, confirma `image.size == (largura, altura)` exata do
@@ -139,5 +171,10 @@ um dos materiais finais de R12 — os materiais finais continuam sendo `arte-01/
 - Confirma **exatamente 3 PNGs** na pasta do formato (1 por copy) — menos ou mais que
   3 é falha.
 - `size_bytes < teto` da tabela acima, para cada PNG.
+- Mede via Playwright as linhas renderizadas do `.subcopy` nos `index*.html`
+  persistidos — falha se `< 3` linhas ou se alguma linha tiver `<= 2` palavras (mesmo
+  árbitro determinístico usado para o título, REGRA 8).
+- Confirma **9 arquivos de legenda** em `output/<slug>/arte/` (3 copies × 3 canais),
+  cada um não vazio.
 - Falha → `revisor-marca` decide reduzir texto/otimizar compressão (auto-correção,
   REGRA 4) antes de reportar esgotado.

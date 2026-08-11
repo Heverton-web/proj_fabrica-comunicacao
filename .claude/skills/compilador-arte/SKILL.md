@@ -16,10 +16,11 @@ renderiza **3** (1 por copy compartilhada), todas na mesma dimensão da variante
 
 ## Entrada
 
-- `output/<slug>/arte/copies.json` (3 copies compartilhadas: headline/subcopy/cta —
-  **falhe alto se este arquivo não existir ou não tiver exatamente 3 copies**; nunca
-  gere copy você mesmo aqui, isso é trabalho de `redator-arte`, rodado uma única vez
-  antes de qualquer formato ser compilado)
+- `output/<slug>/arte/copies.json` (3 copies compartilhadas: headline/subcopy/cta +
+  `legendas.{instagram,linkedin,whatsapp}` cada — **falhe alto se este arquivo não
+  existir ou não tiver exatamente 3 copies**; nunca gere copy você mesmo aqui, isso é
+  trabalho de `redator-arte`, rodado uma única vez antes de qualquer formato ser
+  compilado)
 - `output/<slug>/config_projeto.json` (`imagens[0].path` — imagem do produto,
   compartilhada pelas 3 copies; `elementos_decorativos` — booleano, default `true`,
   ver Passo 3.5 abaixo)
@@ -81,6 +82,16 @@ Se `false`, injete string vazia. Nunca gere a forma você mesmo fora desse helpe
 é o que garante bordas finas, opacidade baixa e posição sempre variando por bloco
 (ver `SPEC_ARTE.md`).
 
+### 3.7. Legendas de publicação (9 arquivos — obrigatório)
+
+`scripts/compilar-arte.py` grava, para cada uma das 3 copies, as 3 `legendas`
+(instagram/linkedin/whatsapp) já escritas por `redator-arte` em `arte/copies.json`
+como `output/<slug>/arte/legenda_copy<MM>_<canal>.txt` — 9 arquivos no total,
+format-agnósticos (gravados uma vez, reaproveitados pelos 3 formatos). Isso nunca é
+gerado aqui do zero — se `legendas` estiver ausente numa copy, o script emite aviso e
+segue (não bloqueia o render do PNG), mas `validar-dimensoes.py` cobra a presença dos
+9 arquivos no gate final.
+
 ### 3.6. Badge (1 por peça — endurecimento)
 
 Preencha o placeholder `{{BADGE_CONTEXTO}}` com `resolver_badge(slug_dir)` de
@@ -102,8 +113,9 @@ manual do `revisor-marca`.
 ### 4. Handoff
 
 `scripts/validar-dimensoes.py <slug> <variante> --pasta <pasta>` confirma exatamente 3
-PNGs, dimensão exata e teto de peso; `revisor-marca` faz a checagem de fidelidade nas
-3 copies.
+PNGs, dimensão exata, teto de peso, parágrafo em ≥3 linhas sem linha órfã e as 9
+legendas de publicação presentes; `revisor-marca` faz a checagem de fidelidade nas
+3 copies e nas 9 legendas.
 
 ## Naming
 

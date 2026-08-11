@@ -1,6 +1,6 @@
 ---
 name: redator-arte
-description: Fase 2 da Fábrica de Materiais de Comunicação — escreve 3 copies (headline/subcopy/CTA) compartilhadas entre todos os formatos de arte selecionados (1080x1080, 1080x1350, 1080x1920) a partir do brief_criativo.json, respeitando limites de caracteres. Use quando qualquer arte-01/02/03 estiver em materiais_selecionados, UMA ÚNICA VEZ por projeto, antes de compilador-arte.
+description: Fase 2 da Fábrica de Materiais de Comunicação — escreve 3 copies (headline/subcopy/CTA + 3 legendas de publicação por canal cada) compartilhadas entre todos os formatos de arte selecionados (1080x1080, 1080x1350, 1080x1920) a partir do brief_criativo.json, respeitando limites de caracteres. Use quando qualquer arte-01/02/03 estiver em materiais_selecionados, UMA ÚNICA VEZ por projeto, antes de compilador-arte.
 ---
 
 # Skill: Redator de Arte
@@ -32,13 +32,17 @@ ver REGRA 11 do `AGENTS.md`).
 - `output/<slug>/arte/copies.json` — schema:
   ```jsonc
   {"copies": [
-    {"id": "copy-01", "angulo": "...", "headline": "...", "subcopy": "...", "cta": "..."},
-    {"id": "copy-02", "angulo": "...", "headline": "...", "subcopy": "...", "cta": "..."},
-    {"id": "copy-03", "angulo": "...", "headline": "...", "subcopy": "...", "cta": "..."}
+    {"id": "copy-01", "angulo": "...", "headline": "...", "subcopy": "...", "cta": "...",
+     "legendas": {"instagram": "...", "linkedin": "...", "whatsapp": "..."}},
+    {"id": "copy-02", "angulo": "...", "headline": "...", "subcopy": "...", "cta": "...",
+     "legendas": {"instagram": "...", "linkedin": "...", "whatsapp": "..."}},
+    {"id": "copy-03", "angulo": "...", "headline": "...", "subcopy": "...", "cta": "...",
+     "legendas": {"instagram": "...", "linkedin": "...", "whatsapp": "..."}}
   ]}
   ```
   Consumido por `compilador-arte`, que renderiza cada uma das 3 copies em cada formato
-  selecionado (3 copies × 3 formatos = até 9 PNGs).
+  selecionado (3 copies × 3 formatos = até 9 PNGs) e grava as 9 `legendas` em
+  `output/<slug>/arte/legenda_copy<MM>_<canal>.txt` (ver `SPEC_ARTE.md`).
 
 ## Procedimento
 
@@ -48,7 +52,11 @@ os mesmos independente da dimensão final — a mesma copy cabe em 1080×1080, 1
 1080×1920):
 
 - **headline** — o ângulo criativo comprimido a ≤ 60 caracteres.
-- **subcopy** — um benefício de apoio, ≤ 120 caracteres.
+- **subcopy** — **entre 100 e 170 caracteres, em 2 frases**: a 1ª carrega o benefício,
+  a 2ª um dado/prova concreto tirado do dossiê de insumos (número, comparação,
+  consequência prática) — nunca reafirme o headline em palavras mais vagas ("é o que
+  evita X" sem dizer o quê/quanto). Precisa render em pelo menos 3 linhas no layout
+  (580px/1.25rem), sem linha final de 1-2 palavras — ver regra em `SPEC_ARTE.md`.
 - **cta** — chamada de ação curta, ≤ 30 caracteres (ex.: "Fale com um consultor").
 
 A imagem do produto/marca a usar não é por copy — vem de `config_projeto.imagens[0]`
@@ -72,6 +80,23 @@ errado em 60 caracteres é ainda mais evidente que em 600.
 O `dossie_insumos.md` gerado por `analista-insumos` já traz as implicações práticas
 do público escolhido — use-as como guia, não as re-derive do texto-base.
 
+## Legendas de publicação (`legendas` — obrigatório)
+
+O texto embutido no PNG nunca é o post inteiro. Para cada uma das 3 copies, escreva
+**3 legendas** (Instagram, LinkedIn, WhatsApp) para colar junto da imagem ao publicar —
+mesmo padrão de riqueza do `texto_whatsapp.txt` dos kits, mas adaptado por canal
+(regras completas de formatação em `redator-textos/SKILL.md`):
+
+- **instagram** — headline em destaque + subcopy expandido em blocos espaçados + 1
+  dado extra do dossiê não usado no subcopy + hashtags do nicho + CTA para link na bio.
+- **linkedin** — tom de autoridade profissional, parágrafo limpo (sem bullets
+  emoji-pesados), dado técnico/de mercado do dossiê, CTA institucional.
+- **whatsapp** — curta, com `*negrito*`/`_itálico_`/emojis, pronta para reenvio 1:1
+  (não precisa hashtag nem link na bio).
+
+Cada legenda é uma peça de comunicação própria — nunca as 3 iguais só trocando emoji,
+e nunca apenas repetir headline+subcopy sem acrescentar conteúdo novo do dossiê.
+
 ## Restrições
 
 - Respeite os limites de caracteres à risca — texto que não cabe no layout é reportado
@@ -82,5 +107,7 @@ do público escolhido — use-as como guia, não as re-derive do texto-base.
   `brand/publicos-alvo.json`) — nunca re-derive do texto-base.
 - As 3 copies devem cobrir 3 ângulos distintos do dossiê (nunca 3 variações do mesmo
   ângulo) — cada uma é uma peça de comunicação completa por si só.
+- As 9 `legendas` (3 copies × 3 canais) também nunca inventam claim fora do dossiê, e
+  nunca são apenas headline+subcopy coladas sem dado novo.
 - Handoff: `compilador-arte` consome `arte/copies.json` + `templates/arte-<dimensao>.html`,
-  um render por combinação copy×formato.
+  um render por combinação copy×formato, e grava as `legendas` como arquivos `.txt`.
