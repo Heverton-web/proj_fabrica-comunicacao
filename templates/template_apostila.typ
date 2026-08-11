@@ -18,6 +18,15 @@
 //                                          (medido por scripts/validar-pdf.py::medir_titulo_capa) —
 //                                          mesmo papel do ajuste de font-size via JS nos templates
 //                                          de arte (SPEC_ARTE.md), so que resolvido no lado Python.
+//   capa_variante                      -> "institucional" troca a capa para a variante sem produto:
+//                                          omite o logo pequeno do topo e usa `logo_imagem_hero` (em
+//                                          vez de `imagem_produto`) no bloco central de destaque. Use
+//                                          para materiais que falam da marca/da Fabrica em si (ex.:
+//                                          manuais institucionais), nunca para apostilas de produto
+//                                          (kits), que sempre mostram a foto do produto na capa.
+//   logo_imagem_hero                   -> PNG do logo (normalmente a variante vertical) usado como
+//                                          destaque central na capa institucional (so relevante
+//                                          quando capa_variante=institucional).
 
 #set document(
   title: "$title$",
@@ -175,6 +184,7 @@
 }
 
 #let capa-grafica-ativa = "$sem_capa_grafica$" != "1"
+#let capa-institucional = "$capa_variante$" == "institucional"
 
 // ── CAPA ────────────────────────────────────────────────────────────
 #if capa-grafica-ativa {
@@ -194,37 +204,53 @@
     #place(top + left, rect(width: 100%, height: 0.3cm, fill: gradiente-dourado))
     #place(bottom + left, rect(width: 100%, height: 0.3cm, fill: gradiente-dourado))
 
-    // Logo horizontal centralizado no topo (width 3.6cm)
-    $if(logo_imagem)$
-    #place(top + center, dy: 1.5cm, image("$logo_imagem$", width: 3.6cm))
-    $else$
-    #place(top + center, dy: 1.5cm, image("pdf/assets/logos/Logo_Conexão_horizontal_texto_branco.png", width: 3.6cm))
-    $endif$
+    // Logo horizontal centralizado no topo (width 4.5cm) — omitido na capa
+    // institucional (capa_variante=institucional), que usa o logo como
+    // destaque do bloco central abaixo e evita logo duplicado na mesma capa.
+    #if not capa-institucional [
+      $if(logo_imagem)$
+      #place(top + center, dy: 1.5cm, image("$logo_imagem$", width: 4.5cm))
+      $else$
+      #place(top + center, dy: 1.5cm, image("pdf/assets/logos/Logo_Conexão_horizontal_texto_branco.png", width: 4.5cm))
+      $endif$
+    ]
 
-    // Bloco Único de Conteúdo: Imagem do produto, Título e Parágrafo explicativo
-    // Todos centralizados horizontalmente e verticalmente (center + horizon)
-    // Bloco de 11.5cm: a imagem do produto em evidência (width 100% / height 8cm)
-    // domina a composição; título em no máximo 2 linhas e parágrafo em bloco
-    // (10cm), sem linhas com uma única palavra isolada (SPEC_PDF).
+    // Bloco Único de Conteúdo: Imagem/logo de destaque, Título e Parágrafo
+    // explicativo. Todos centralizados horizontalmente e verticalmente
+    // (center + horizon). Bloco de 11.5cm: o elemento de destaque (width 100%
+    // / height 8cm) domina a composição; título em no máximo 2 linhas e
+    // parágrafo em bloco (10cm), sem linhas com uma única palavra isolada
+    // (SPEC_PDF).
     #place(center + horizon, block(width: 11.5cm)[
       #set align(center)
-      
-      // Imagem do produto em evidência — ocupa quase toda a largura do bloco
-      $if(imagem_produto)$
-      #image("$imagem_produto$", width: 100%, height: 8cm, fit: "contain")
-      $else$
-      #image("insumos/kit_start_flex_frontal.png", width: 100%, height: 8cm, fit: "contain")
-      $endif$
 
-      #v(0.6cm) // Espaçamento elegante entre a imagem e o título
+      // Elemento de destaque: a imagem do produto por padrão (apostilas de
+      // kit — SPEC_PDF: nunca reduzida para acomodar texto), ou o logo da
+      // marca na capa institucional (capa_variante=institucional), que fala
+      // da Fabrica/da marca em si e não tem um produto específico a mostrar.
+      #if capa-institucional [
+        $if(logo_imagem_hero)$
+        #image("$logo_imagem_hero$", width: 100%, height: 8cm, fit: "contain")
+        $else$
+        #image("pdf/assets/logos/Logo_Conexão_vertical_texto_branco.png", width: 100%, height: 8cm, fit: "contain")
+        $endif$
+      ] else [
+        $if(imagem_produto)$
+        #image("$imagem_produto$", width: 100%, height: 8cm, fit: "contain")
+        $else$
+        #image("insumos/kit_start_flex_frontal.png", width: 100%, height: 8cm, fit: "contain")
+        $endif$
+      ]
+
+      #v(0.8cm) // Espaçamento elegante entre a imagem e o título
 
       // Título do material (CAIXA ALTA, Inter 900, 24pt por padrão) — remete ao
       // tema do material (capa_titulo da seção Abertura); em 11.5cm cabe no
       // máximo 2 linhas. `capa_titulo_size` é reduzido por compilar-pdf.py em
       // loop até o título medir <=2 linhas sem palavra isolada (ver cabeçalho).
       #text(font: "Inter", size: $if(capa_titulo_size)$$capa_titulo_size$$else$24pt$endif$, weight: 900, fill: gradiente-dourado)[#upper[$if(capa_titulo)$$capa_titulo$$else$$title$$endif$]]
-      
-      #v(0.4cm) // Espaçamento elegante entre o título e o parágrafo
+
+      #v(0.6cm) // Espaçamento elegante entre o título e o parágrafo
 
       // Parágrafo explicativo (parágrafo de apoio da Abertura; sub-bloco de 10cm
       // garante >= 3 linhas equilibradas — bloco quadrado, sem palavra isolada)
@@ -256,7 +282,14 @@
 
 // ── SUMARIO ───────────────────────────────────────────────────────
 #outline(title: [Sumário], indent: 1.5cm, depth: 3)
-#pagebreak()
+// weak: true (nao um #pagebreak() incondicional) - em apostilas de kit o
+// corpo comeca com heading nivel 2 (sem quebra propria), entao esta quebra
+// fraca garante a pagina nova do Sumario para o conteudo; em documentos com
+// heading nivel 1 real logo em seguida (ex.: manuais institucionais, ver
+// capa_variante=institucional) o show-rule do H1 ja teria sua propria
+// quebra de pagina - as duas juntas sem "weak" produziam uma pagina em
+// branco entre o Sumario e a primeira secao real.
+#pagebreak(weak: true)
 
 // ── CONTEUDO PRINCIPAL ────────────────────────────────────────────
 $body$

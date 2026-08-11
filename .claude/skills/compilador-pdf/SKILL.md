@@ -29,6 +29,17 @@ inseparável (NBSP) entre as 2 últimas palavras de `capa_titulo`/`capa_paragraf
 ajuste de font-size via JS nos templates de arte (`SPEC_ARTE.md`), só que resolvido
 recompilando no lado Python em vez de medir no navegador.
 
+**Duas variantes de capa (`capa_variante`):** o padrão (`capa_variante` ausente) mostra
+a foto do produto em evidência — sempre usado para apostilas de kit, nunca troque isso,
+é o que permite identificar de relance qual material é aquele num catálogo com vários
+kits. A variante `capa_variante=institucional` troca a foto do produto pelo logo da
+marca (`logo_imagem_hero`, normalmente `Logo_Conexão_vertical_texto_branco.png`) no
+mesmo bloco de destaque e omite o logo pequeno do topo — reservada para materiais que
+falam da marca/da Fábrica em si, sem produto específico (ex.: `manuais/MANUAL_EXECUTIVO.pdf`,
+compilado à parte, fora do pipeline de `compilar-pdf.py`, com `pandoc ... --template
+templates/template_apostila.typ -V capa_variante=institucional -V logo_imagem_hero=...`).
+Ver `SPEC_PDF.md` para o contrato completo de cada variante.
+
 Se precisar de técnicas auxiliares de manipulação de PDF fora do que Pandoc+Typst cobre, consulte o skill genérico `pdf` do catálogo.
 
 ## Entrada
