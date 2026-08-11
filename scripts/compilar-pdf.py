@@ -5,10 +5,12 @@ e aplicando o design system da Conexão.
 """
 
 import argparse
+import importlib.util
 import re
 import shutil
 import sys
 import json
+import unicodedata
 from pathlib import Path
 
 # Adiciona o diretório de scripts ao path para poder importar pdf_typst
@@ -19,6 +21,40 @@ DIR_PROJETO = Path(__file__).resolve().parent.parent
 DIR_OUTPUT = DIR_PROJETO / "output"
 CAMINHO_BRAND = DIR_PROJETO / "brand" / "design-system-conexao.json"
 DIR_LOGOS = DIR_PROJETO / "assets" / "logos-marca"
+
+TAMANHO_TITULO_INICIAL_PT = 24
+# Nunca abaixo de 18pt: scripts/validar-pdf.py classifica "titulo da capa" como
+# qualquer span >= 18pt (e "paragrafo" como 9-16.5pt) - um titulo a 17pt cairia
+# na zona cinzenta entre as duas faixas e o validador reportaria "capa sem
+# titulo" (falso negativo). Ver medir_titulo_capa()/validar_capa() em
+# validar-pdf.py - os dois limiares tem que ficar sempre em sincronia.
+TAMANHO_TITULO_MINIMO_PT = 18
+
+
+def _carregar_medir_titulo_capa():
+    """Carrega scripts/validar-pdf.py como módulo (nome com hífen exige
+    importlib, não dá pra `import validar-pdf`) para reusar a MESMA função de
+    medição de linhas do título usada no gate final — REGRA 8 do AGENTS.md:
+    scripts são o árbitro, uma única fonte de verdade para "quantas linhas o
+    título realmente ocupa", nunca duas implementações divergentes."""
+    caminho = Path(__file__).resolve().parent / "validar-pdf.py"
+    spec = importlib.util.spec_from_file_location("validar_pdf_para_compilador", caminho)
+    modulo = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(modulo)
+    return modulo.medir_titulo_capa
+
+
+def _prevenir_linha_orfa(texto):
+    """Insere espaço inseparável (NBSP, U+00A0) entre as 2 últimas palavras do
+    texto para que a última linha renderizada nunca fique com 1 palavra
+    isolada (viúva tipográfica) — SPEC_PDF: nenhuma linha do título/parágrafo
+    da capa pode ter 1 palavra sozinha. O Typst nunca quebra linha num NBSP,
+    então as 2 últimas palavras sempre terminam juntas na mesma linha."""
+    texto = (texto or "").strip()
+    partes = texto.rsplit(" ", 1)
+    if len(partes) == 2 and partes[1]:
+        return partes[0] + " " + partes[1]
+    return texto
 
 
 def carregar_json(caminho):
@@ -88,19 +124,47 @@ def extrair_cta_final(md_path):
     return fallback
 
 
+# Rótulos estruturais de seção (contrato de 7 seções do redator-apostila,
+# SPEC_PDF) — nunca são um título temático válido. Guarda contra o caso de
+# markdown legado sem aninhamento "## Abertura" > "# título" (heading nível 1
+# usado como rótulo de seção): sem essa guarda, `extrair_capa_textos` acha o
+# "# Abertura" (linha de secao) e o devolve como se fosse o titulo tematico,
+# produzindo uma capa com titulo de 1 palavra isolada ("ABERTURA").
+_ROTULOS_SECAO = {
+    "abertura", "problema", "solucao", "destaques", "composicao",
+    "composicao do kit", "aplicacao", "conclusao", "fechamento",
+}
+
+
+def _normalizar_rotulo(texto):
+    nfkd = unicodedata.normalize("NFD", texto)
+    return "".join(c for c in nfkd if not unicodedata.combining(c)).strip().lower()
+
+
 def extrair_capa_textos(md_path):
     """Título e parágrafo da capa — extraídos da seção '## Abertura' do próprio
     Markdown (SPEC_PDF: a capa remete ao TEMA do material, nunca ao rótulo
     genérico 'Guia de Treinamento'). capa_titulo = primeiro H1 da Abertura;
     capa_paragrafo = primeiro parágrafo logo após o H1 (parágrafo de apoio).
-    Retorna (None, None) se a seção não existir."""
+    Retorna (None, None) se a seção não existir ou se o único H1 encontrado for
+    apenas o rótulo estrutural da própria seção (ver _ROTULOS_SECAO)."""
     try:
         texto = md_path.read_text(encoding="utf-8")
     except Exception:
         return None, None
 
     secoes = re.split(r"(?m)^## .*$", texto)
-    abertura = secoes[1] if len(secoes) > 1 else texto
+    if len(secoes) <= 1:
+        # Nenhuma secao "## " no documento (markdown legado com secoes em "#"
+        # plano, ex.: "# Abertura", "# Problema"...) - nao ha uma secao
+        # "## Abertura" delimitada para procurar o H1 tematico dentro dela.
+        # Nao usar o documento inteiro como escopo: isso faria o loop abaixo
+        # encontrar o proprio "# Abertura" (rotulo de secao) como se fosse o
+        # titulo. Sem escopo confiavel, retorna vazio - compilar-pdf.py cai no
+        # fallback generico (title), o mesmo caminho ja usado quando a secao
+        # existe mas nao tem H1 tematico dentro.
+        return None, None
+    abertura = secoes[1]
     titulo = None
     paragrafo = None
     achou_h1 = False
@@ -112,8 +176,9 @@ def extrair_capa_textos(md_path):
         if not linha or linha.startswith("<!--"):
             continue
         if linha.startswith("# "):
-            if titulo is None:
-                titulo = linha[2:].strip()
+            candidato = linha[2:].strip()
+            if titulo is None and _normalizar_rotulo(candidato) not in _ROTULOS_SECAO:
+                titulo = candidato
                 achou_h1 = True
             continue
         if linha.startswith("## ") or linha.startswith("!"):
@@ -206,8 +271,8 @@ def main():
     # Capa — título e parágrafo remetem ao TEMA do material (seção Abertura do
     # Markdown, redator-apostila). Fallbacks: título genérico e mensagem central.
     capa_titulo, capa_paragrafo = extrair_capa_textos(md)
-    capa_titulo = (capa_titulo or title).strip()
-    capa_paragrafo = (capa_paragrafo or subtitle).strip()
+    capa_titulo = _prevenir_linha_orfa((capa_titulo or title).strip())
+    capa_paragrafo = _prevenir_linha_orfa((capa_paragrafo or subtitle).strip())
 
     # CTA final — extraído da última seção ('## Fechamento') da própria apostila
     cta_final = extrair_cta_final(md)
@@ -253,15 +318,43 @@ def main():
     corpo_compilacao = slug_dir / args.pasta / f"_corpo_apostila_{args.slug}.md"
     preparar_corpo_sem_h1_duplicado(md, corpo_compilacao)
 
-    comando = [
-        "pandoc", str(corpo_compilacao),
-        "--pdf-engine=typst",
-        "--template", "templates/template_apostila.typ",
-        "-o", str(pdf),
-    ] + lista_de_flags_V
+    def _compilar(tamanho_titulo_pt):
+        comando = [
+            "pandoc", str(corpo_compilacao),
+            "--pdf-engine=typst",
+            "--template", "templates/template_apostila.typ",
+            "-o", str(pdf),
+        ] + lista_de_flags_V + ["-V", f"capa_titulo_size={tamanho_titulo_pt}pt"]
+        return executar(comando, pdf, slug_dir, typst_bin="typst", timeout=300)
 
+    # Ajuste determinístico do tamanho do título da capa (SPEC_PDF: título
+    # tematico em no maximo 2 linhas, sem linha com 1 palavra isolada).
+    # Compila a 24pt; se o título medido (mesma função usada por
+    # validar-pdf.py) exceder 2 linhas ou tiver linha órfã, reduz 1pt por vez
+    # e recompila, até caber ou esgotar o piso de 16pt (REGRA 4: autocorreção
+    # interna, sem pausar o operador). O NBSP entre as 2 últimas palavras
+    # (capa_titulo já tratado acima) evita a maior parte das linhas órfãs; este
+    # loop cobre o caso restante de título simplesmente comprido demais.
     print(f"Compilando PDF para {args.slug}...")
-    resultado = executar(comando, pdf, slug_dir, typst_bin="typst", timeout=300)
+    medir_titulo_capa = _carregar_medir_titulo_capa()
+    tamanho_titulo = TAMANHO_TITULO_INICIAL_PT
+    resultado = _compilar(tamanho_titulo)
+    if resultado.returncode == 0:
+        n_linhas, tem_orfa = medir_titulo_capa(pdf)
+        while (
+            n_linhas is not None
+            and (n_linhas > 2 or tem_orfa)
+            and tamanho_titulo > TAMANHO_TITULO_MINIMO_PT
+        ):
+            tamanho_titulo -= 1
+            resultado = _compilar(tamanho_titulo)
+            if resultado.returncode != 0:
+                break
+            n_linhas, tem_orfa = medir_titulo_capa(pdf)
+        if tamanho_titulo < TAMANHO_TITULO_INICIAL_PT:
+            print(f"[AJUSTE] titulo da capa reduzido para {tamanho_titulo}pt "
+                  f"({TAMANHO_TITULO_INICIAL_PT}pt nao coube em <=2 linhas sem palavra isolada)")
+
     corpo_compilacao.unlink(missing_ok=True)
 
     if resultado.returncode == 0:

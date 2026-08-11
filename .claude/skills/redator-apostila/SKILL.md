@@ -30,7 +30,12 @@ Composição/especificações, Aplicação, Fechamento), usando `##` para cada s
 `preset_kit_completo` em `config_projeto.json`), escreva as seções por público
 descritas abaixo, na ordem do `mapeamento_por_material.pdf.secoes`. Cada seção deve:
 
-- **Abertura (estrutura obrigatória, alimenta a capa — SPEC_PDF endurecido):**
+- **Abertura (estrutura obrigatória, alimenta a capa — SPEC_PDF endurecido):** a seção
+  em si é `## Abertura` (nível 2) — o H1 temático fica **dentro** dela, nunca no lugar
+  dela. Nunca escreva `# Abertura` (o rótulo da seção) como se fosse o título:
+  `scripts/compilar-pdf.py` descarta um H1 que seja apenas o nome de uma das 7 seções
+  (Abertura, Problema, Solução...) e cai no fallback genérico — pior resultado que
+  simplesmente escrever o H1 temático certo desde já.
   1. H1 temático (`# ...`): **máx. 34 caracteres / 6 palavras, sem hífens**, remetendo
      ao **tema do texto-mãe** (ex.: "Previsibilidade e Excelência Clínica") — nunca o
      nome cru do produto nem rótulo genérico. Em 24pt/10cm ele vira o título da capa
@@ -38,6 +43,10 @@ descritas abaixo, na ordem do `mapeamento_por_material.pdf.secoes`. Cada seção
      use nenhum termo da lista `TITULOS_BANIDOS` de `scripts/validar-pdf.py` (ex.:
      "guia de treinamento", "gambiarra") mesmo que o texto-base use esse vocabulário
      no corpo — são clichês banidos especificamente do título, não do conteúdo.
+     `compilador-pdf` tem uma rede de segurança determinística (NBSP entre as 2
+     últimas palavras + redução de fonte até caber) para as 2 regras de linha, mas
+     isso não dispensa respeitar o limite de 34 caracteres/6 palavras — a rede de
+     segurança ajusta o encaixe, não reescreve um título ruim.
   2. Parágrafo de apoio (primeiro parágrafo após o H1): **120–160 caracteres**, frase
      de posicionamento do produto (factos do dossiê; nunca claim novo) — vira o
      parágrafo da capa (`capa_paragrafo`) e deve renderizar em **≥ 3 linhas sem

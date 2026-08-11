@@ -7,13 +7,27 @@ description: Fase 3 da Fábrica de Materiais de Comunicação — compila aposti
 
 Você compila o Markdown da apostila em PDF final aplicando as regras premium de diagramação (Mosaico Conexão Premium / Flex Gold).
 
-O PDF ganhou regras visuais definitivas (estilo "Flex Gold"): capa com fundo escuro e blobs, faixas douradas em gradiente metálico, bloco único de 11.5cm (imagem do produto em evidência 8cm + título + parágrafo), título temático em caixa alta com Inter 900 (Black) em no máximo 2 linhas sem palavra isolada, logotipo horizontal de marca e imagem do produto perfeitamente centralizados, cabeçalho dinâmico (título à esquerda, edição e data à direita) e conteúdo interno com fundo branco para leitura confortável de alta definição.
+O PDF ganhou regras visuais definitivas (estilo "Flex Gold"): capa com fundo escuro e blobs, faixas douradas em gradiente metálico, bloco único de 11.5cm (imagem do produto em evidência 8cm + título + parágrafo), título temático em caixa alta com Inter 900 (Black) em no máximo 2 linhas sem palavra isolada, logotipo horizontal de marca e imagem do produto perfeitamente centralizados, cabeçalho dinâmico (título à esquerda, edição e data à direita), contracapa com o mesmo logo em tamanho discreto, e conteúdo interno com fundo branco para leitura confortável de alta definição.
 
 A **capa remete ao tema do material**: `scripts/compilar-pdf.py` extrai da seção
-`## Abertura` do Markdown o `capa_titulo` (primeiro H1) e o `capa_paragrafo`
-(primeiro parágrafo após o H1) e os passa como `-V capa_titulo=...` /
-`-V capa_paragrafo=...` ao template — o título da capa nunca usa o rótulo genérico
-"Guia de Treinamento" (SPEC_PDF endurecido).
+`## Abertura` do Markdown o `capa_titulo` (primeiro H1, nunca o próprio rótulo
+estrutural da seção como "Abertura") e o `capa_paragrafo` (primeiro parágrafo após
+o H1) e os passa como `-V capa_titulo=...` / `-V capa_paragrafo=...` ao template —
+o título da capa nunca usa o rótulo genérico "Guia de Treinamento" (SPEC_PDF
+endurecido). Se a seção "## Abertura" não existir ou não tiver um H1 temático
+válido, `capa_titulo`/`capa_paragrafo` caem no fallback genérico (título/mensagem
+central do brief) — sinal de que `redator-apostila` precisa ser rodado de novo
+para essa seção.
+
+**Enforcement determinístico do título (não depende só do redator acertar de
+primeira):** antes de montar as flags, `compilar-pdf.py` insere um espaço
+inseparável (NBSP) entre as 2 últimas palavras de `capa_titulo`/`capa_paragrafo`
+(evita palavra isolada na última linha) e compila em loop, reduzindo a variável
+`capa_titulo_size` do template (24pt → piso de 18pt, nunca menos — ver
+`SPEC_PDF.md`) até o título medir ≤ 2 linhas sem linha órfã, usando
+`scripts/validar-pdf.py::medir_titulo_capa` como árbitro (REGRA 8). Mesmo papel do
+ajuste de font-size via JS nos templates de arte (`SPEC_ARTE.md`), só que resolvido
+recompilando no lado Python em vez de medir no navegador.
 
 Se precisar de técnicas auxiliares de manipulação de PDF fora do que Pandoc+Typst cobre, consulte o skill genérico `pdf` do catálogo.
 
@@ -35,16 +49,18 @@ python scripts/compilar-pdf.py <slug>
 python scripts/compilar-pdf.py <slug> --pasta pdf-v2   # regeneracao pontual (REGRA 11)
 ```
 
-O script extrai dinamicamente as variáveis de marca (`--pdf-vars`), resgata a edição do `config_projeto.json` e repassa para o Pandoc e Typst as flags `-V` de forma perfeitamente separada e argv-normalizada (evitando bugs de leitura silenciosa de variáveis), compilando o arquivo final com integridade máxima de design e cores.
+O script lê `brand/design-system-conexao.json` diretamente (cores/tipografia), resgata a edição do `config_projeto.json` e repassa para o Pandoc e Typst as flags `-V` de forma perfeitamente separada e argv-normalizada (evitando bugs de leitura silenciosa de variáveis), compilando o arquivo final com integridade máxima de design e cores. Internamente ele recompila em loop (ver acima) só para resolver o `capa_titulo_size` — isso é transparente para quem invoca o script, que só vê o `[OK]`/`[FALHA]` final.
 
 ### 2. Handoff e Validação
 
 `scripts/validar-pdf.py <slug> --pasta <pasta>` confirma tamanho/páginas/texto vetorial **e as checagens
-determinísticas de capa** (título ≤ 2 linhas sem palavra isolada remetendo ao tema do
-texto-mãe; parágrafo da capa em bloco quadrado sem palavra isolada — via spans PyMuPDF
-da página 1); `revisor-marca` faz a checagem de fidelidade de conteúdo e de marca.
+determinísticas de capa e contracapa** (título ≤ 2 linhas sem palavra isolada remetendo
+ao tema do texto-mãe; parágrafo da capa em bloco quadrado sem palavra isolada; logo da
+marca presente na última página — via spans/imagens PyMuPDF); `revisor-marca` faz a
+checagem de fidelidade de conteúdo e de marca.
 
 ## Restrições
 
-- Nunca hardcode cor/fonte no comando ou no template — tudo vem de `scripts/parametros_projeto.py --pdf-vars` via `-V`.
+- Nunca hardcode cor/fonte no comando ou no template — tudo vem de `brand/design-system-conexao.json`, lido por `scripts/compilar-pdf.py` e repassado via `-V`.
+- Nunca duplique a lógica de "quantas linhas o título ocupa" — ela vive em `scripts/validar-pdf.py::medir_titulo_capa` e é importada por `compilar-pdf.py`, nunca reimplementada.
 - Se a compilação falhar (Pandoc ou Typst com erro), tente uma correção estrutural óbvia no Markdown (ex.: tabela mal fechada) antes de escalar como falha — REGRA 4.

@@ -77,6 +77,41 @@ def _bbox_uniao(bboxes):
     ]
 
 
+def medir_titulo_capa(pdf_path):
+    """Mede o titulo da pagina 1 (spans >= 18pt) e retorna (n_linhas,
+    tem_linha_orfa). Retorna (None, None) se PyMuPDF nao estiver disponivel ou
+    nao houver spans de titulo na pagina. Extraida de validar_capa() para ser
+    reusada por scripts/compilar-pdf.py como arbitro do ajuste de tamanho de
+    fonte do titulo ANTES do gate final (REGRA 8 do AGENTS.md: uma unica fonte
+    de verdade para "quantas linhas o titulo ocupa")."""
+    try:
+        import fitz  # PyMuPDF
+    except ImportError:
+        return None, None
+
+    doc = fitz.open(str(pdf_path))
+    spans = []
+    texto_capa = doc[0].get_text("dict")
+    if isinstance(texto_capa, dict):
+        for bloco in texto_capa.get("blocks", []):
+            if not isinstance(bloco, dict):
+                continue
+            for linha in bloco.get("lines", []):
+                for span in linha.get("spans", []):
+                    texto = span["text"].strip()
+                    if texto:
+                        spans.append({"texto": texto, "size": span["size"], "bbox": span["bbox"]})
+    doc.close()
+
+    spans_titulo = [s for s in spans if s["size"] >= 18]
+    if not spans_titulo:
+        return None, None
+    linhas_titulo = _agrupar_linhas(spans_titulo)
+    n_linhas = len(linhas_titulo)
+    tem_orfa = any(len(l["texto"].split()) == 1 for l in linhas_titulo)
+    return n_linhas, tem_orfa
+
+
 def validar_capa(pdf_path, texto_base_path):
     """SPEC_PDF (endurecimento): a capa deve ter titulo tematico em no maximo
     2 linhas, sem linha com uma unica palavra isolada, com impressao de bloco
@@ -180,6 +215,32 @@ def validar_capa(pdf_path, texto_base_path):
     return ok
 
 
+def validar_contracapa_logo(pdf_path):
+    """SPEC_PDF (endurecimento): a contracapa (ultima pagina) deve trazer o
+    logo da marca, discreto, alem do bloco de titulo/CTA/assinatura ja
+    existente. Checagem simples e determinista: a ultima pagina precisa ter
+    pelo menos 1 imagem embutida (o logo) - so aplica quando o PDF tem mais de
+    1 pagina (pagina 1 e a capa; um PDF de 1 pagina so nao tem contracapa
+    grafica separada)."""
+    try:
+        import fitz  # PyMuPDF
+    except ImportError:
+        print("[AVISO] PyMuPDF (fitz) nao instalado - pulando checagem de logo na contracapa")
+        return True
+
+    doc = fitz.open(str(pdf_path))
+    if doc.page_count < 2:
+        doc.close()
+        return True
+    n_imagens = len(doc[-1].get_images())
+    doc.close()
+    if n_imagens == 0:
+        print("[FALHA] contracapa sem logo da marca (nenhuma imagem na ultima pagina)")
+        return False
+    print(f"[OK] contracapa com logo da marca ({n_imagens} imagem(ns) na ultima pagina)")
+    return True
+
+
 def main():
     ap = argparse.ArgumentParser(description="Valida o PDF final da apostila")
     ap.add_argument("slug")
@@ -248,6 +309,9 @@ def main():
             pass
 
     if not validar_capa(pdf_path, texto_base_path):
+        ok = False
+
+    if not validar_contracapa_logo(pdf_path):
         ok = False
 
     return 0 if ok else 1

@@ -18,8 +18,9 @@ portado verbatim de `fabrica-de-livros`) → `scripts/validar-pdf.py`.
   - Logo horizontal com texto branco centralizado horizontalmente no topo (`dy: 1.5cm`, `width: 3.6cm`).
   - **Bloco Único (endurecimento):** imagem do produto + título + parágrafo formam um bloco único de **11.5cm de largura** (`block(width: 11.5cm)`, centralizado em `center + horizon`).
   - **Imagem do produto em evidência:** `width: 100%`, `height: 8cm`, `fit: contain` — a imagem (quase quadrada por natureza) domina a composição; para a foto padrão 1600×1382 renderiza ~9.3×8.0cm.
-  - **Título Temático (endurecimento):** remete ao **tema do material extraído do texto-mãe** (`capa_titulo`, primeiro H1 da seção Abertura do Markdown — nunca o rótulo genérico "Guia de Treinamento..."), centralizado, **Caixa Alta**, **Inter 900**, preenchido com o gradiente dourado metálico, **24pt**, e **no máximo 2 linhas** — nenhuma linha com uma única palavra isolada.
-  - **Parágrafo da Capa (endurecimento):** primeiro parágrafo da Abertura (`capa_paragrafo`), em **sub-bloco de 10cm** (garante ≥ 3 linhas equilibradas), **sem linha com palavra única isolada** (proporção altura/largura em `[0.12, 1.2]`).
+  - **Título Temático (endurecimento):** remete ao **tema do material extraído do texto-mãe** (`capa_titulo`, primeiro H1 da seção Abertura do Markdown — nunca o rótulo genérico "Guia de Treinamento..." nem o próprio rótulo estrutural da seção, ex.: "Abertura"), centralizado, **Caixa Alta**, **Inter 900**, preenchido com o gradiente dourado metálico, **24pt por padrão**, e **no máximo 2 linhas** — nenhuma linha com uma única palavra isolada.
+    - **Enforcement determinístico (não só instrução de prompt):** `scripts/compilar-pdf.py` insere um espaço inseparável (NBSP) entre as 2 últimas palavras de `capa_titulo`/`capa_paragrafo` (impede a palavra final ficar isolada numa linha) e compila em loop reduzindo `capa_titulo_size` (variável do template, 24pt → mínimo 18pt, 1pt por vez) até o título medir ≤ 2 linhas sem linha órfã — medição via `scripts/validar-pdf.py::medir_titulo_capa` (mesma função usada no gate final, PyMuPDF sobre a página 1). O piso de 18pt nunca é violado porque é o mesmo limiar que `validar-pdf.py` usa para classificar um span como "título" (spans 9–16.5pt = parágrafo); um título abaixo de 18pt cairia numa zona cinzenta e seria reportado como "capa sem título".
+  - **Parágrafo da Capa (endurecimento):** primeiro parágrafo da Abertura (`capa_paragrafo`), em **sub-bloco de 10cm** (garante ≥ 3 linhas equilibradas), **sem linha com palavra única isolada** (proporção altura/largura em `[0.12, 1.2]`) — mesma proteção de NBSP entre as 2 últimas palavras.
   - Frase de direitos autorais ("2026 ©...") centralizada no rodapé com opacidade de 60%, em itálico e fonte pequena (`dy: -1.2cm`).
 - **Cabeçalho Dinâmico (Páginas Internas):**
   - **Lado Esquerdo:** Título do material.
@@ -33,6 +34,7 @@ portado verbatim de `fabrica-de-livros`) → `scripts/validar-pdf.py`.
   - O Sumário (`#outline`) deve ocupar uma página exclusiva, sendo seguido por um `#pagebreak()` obrigatório. A seção de abertura nunca deve dividir espaço com ele.
 - **Contracapa Symmetrical (Página Final):**
   - Design escuro premium unificado, com faixas e blobs, e todo o seu conteúdo (título, cta final, linha e assinatura) perfeitamente centralizado na horizontal e vertical (`center + horizon`).
+  - **Logo da marca (endurecimento):** logo horizontal (mesmo arquivo `logo_imagem` usado na capa) posicionado discreto na base da página (`bottom + center`, acima da faixa dourada inferior), em tamanho reduzido (**2.4cm** de largura vs. 3.6cm na capa) para reforçar a marca sem competir com o bloco central de título/CTA/assinatura.
 - **Sem Hífens:** Títulos livres de hífens, substituindo-os por dois-pontos (:).
 
 ## Estrutura de conteúdo (default, ajustável pelo `brief_criativo.json`)
@@ -91,6 +93,8 @@ acima.
     **≥ 2 palavras significativas** do título presentes no texto-mãe (remete ao tema).
   - Parágrafo (spans 9–16.5pt): **mín. 2 linhas**; nenhuma linha com 1 palavra isolada;
     proporção altura/largura em **[0.12, 1.2]** (bloco quadrado).
+- **Contracapa (`validar_contracapa_logo`):** se o PDF tiver mais de 1 página, a
+  última página precisa ter pelo menos 1 imagem embutida (o logo da marca).
 
 Exit 1 se qualquer critério falhar; `revisor-marca` decide se é caso de auto-correção
 (REGRA 4) ou de reportar como faltante.

@@ -7,11 +7,17 @@
 //   cor_primaria, cor_secundaria       -> hex (#RRGGBB)
 //   cor_destaque, cor_texto, cor_fundo -> hex (#RRGGBB)
 //   fonte_titulo, fonte_corpo          -> familia tipografica (com fallback se nao instalada no Typst local)
-//   logo_imagem                        -> PNG/SVG do logo (opcional)
+//   logo_imagem                        -> PNG/SVG do logo (opcional; tambem usado, discreto, na contracapa)
 //   imagem_produto                     -> PNG do produto (opcional)
 //   capa_imagem                        -> PNG full-bleed como pagina-capa (opcional, sobrepoe capa gerada)
 //   cta_final                          -> texto de chamada para acao na ultima pagina (opcional)
 //   sem_capa_grafica                   -> "1" desativa capa grafica (fallback so-texto)
+//   capa_titulo_size                   -> tamanho do titulo da capa (ex.: "24pt"; default 24pt).
+//                                          scripts/compilar-pdf.py reduz este valor e recompila em
+//                                          loop ate o titulo caber em <=2 linhas sem palavra isolada
+//                                          (medido por scripts/validar-pdf.py::medir_titulo_capa) —
+//                                          mesmo papel do ajuste de font-size via JS nos templates
+//                                          de arte (SPEC_ARTE.md), so que resolvido no lado Python.
 
 #set document(
   title: "$title$",
@@ -212,9 +218,11 @@
 
       #v(0.6cm) // Espaçamento elegante entre a imagem e o título
 
-      // Título do material (CAIXA ALTA, Inter 900, 24pt) — remete ao tema do
-      // material (capa_titulo da seção Abertura); em 11.5cm cabe no máximo 2 linhas
-      #text(font: "Inter", size: 24pt, weight: 900, fill: gradiente-dourado)[#upper[$if(capa_titulo)$$capa_titulo$$else$$title$$endif$]]
+      // Título do material (CAIXA ALTA, Inter 900, 24pt por padrão) — remete ao
+      // tema do material (capa_titulo da seção Abertura); em 11.5cm cabe no
+      // máximo 2 linhas. `capa_titulo_size` é reduzido por compilar-pdf.py em
+      // loop até o título medir <=2 linhas sem palavra isolada (ver cabeçalho).
+      #text(font: "Inter", size: $if(capa_titulo_size)$$capa_titulo_size$$else$24pt$endif$, weight: 900, fill: gradiente-dourado)[#upper[$if(capa_titulo)$$capa_titulo$$else$$title$$endif$]]
       
       #v(0.4cm) // Espaçamento elegante entre o título e o parágrafo
 
@@ -277,6 +285,14 @@ $if(cta_final)$
       #v(0.6cm)
       #text(font: fonte-corpo, size: 12pt, weight: "bold", fill: rgb("#f8fafc"))[$author$]
     ])
+
+    // Logo horizontal discreto no rodapé da contracapa — reforça a marca sem
+    // competir com o bloco central (título + CTA + assinatura). Mesma logo da
+    // capa, em tamanho menor (2.4cm vs 3.6cm), posicionado acima da faixa
+    // dourada inferior.
+    $if(logo_imagem)$
+    #place(bottom + center, dy: -1.6cm, image("$logo_imagem$", width: 2.4cm))
+    $endif$
   ]
 } else {
   pagebreak()
