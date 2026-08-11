@@ -90,7 +90,13 @@ acima.
     "gambiarra" — endurecido depois que o mesmo clichê foi reaproveitado em 3
     regenerações consecutivas de um projeto real e reportado pelo operador como
     título "ridículo"; adicione novos termos à lista sempre que isso se repetir);
-    **≥ 2 palavras significativas** do título presentes no texto-mãe (remete ao tema).
+    **≥ 2 palavras significativas** do título presentes no texto-mãe (remete ao tema) —
+    checado contra a **união de todos os `insumos/texto-mae*.txt` do projeto**
+    (`scripts/validar-pdf.py::_coletar_textos_base`), nunca só o `texto_base` atual do
+    `config_projeto.json`: um projeto pode ter passado por várias rodadas de
+    `/gerar-pdf`, cada uma com um texto-base novo, e uma versão antiga (ex.: `pdf-v2`)
+    foi legitimamente escrita contra o texto-base vigente naquela época — checar só o
+    atual gera falso-positivo (achado real: `output/kit-inlego/pdf-v2`).
   - Parágrafo (spans 9–16.5pt): **mín. 2 linhas**; nenhuma linha com 1 palavra isolada;
     proporção altura/largura em **[0.12, 1.2]** (bloco quadrado).
 - **Contracapa (`validar_contracapa_logo`):** se o PDF tiver mais de 1 página, a

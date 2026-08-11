@@ -112,13 +112,22 @@ def medir_titulo_capa(pdf_path):
     return n_linhas, tem_orfa
 
 
-def validar_capa(pdf_path, texto_base_path):
+def validar_capa(pdf_path, texto_base_texto):
     """SPEC_PDF (endurecimento): a capa deve ter titulo tematico em no maximo
     2 linhas, sem linha com uma unica palavra isolada, com impressao de bloco
     quadrado; paragrafo da capa em bloco quadrado, sem palavra isolada; titulo
     remete ao tema do texto-base (>= 2 palavras significativas em comum) e nao
     usa nenhum dos rotulos/cliches banidos em TITULOS_BANIDOS (ex.: 'Guia de
-    Treinamento', 'gambiarra')."""
+    Treinamento', 'gambiarra').
+
+    `texto_base_texto` e o conteudo JA CONCATENADO de todos os texto-mae*.txt
+    do projeto (ver _coletar_textos_base) - nunca so o texto_base ATUAL do
+    config_projeto.json. Um projeto pode ter passado por varias rodadas de
+    /gerar-pdf, cada uma com um texto-base novo (texto-mae.txt, -02, -03...);
+    uma versao antiga (ex.: pdf-v2) foi legitimamente escrita a partir do
+    texto-base vigente NAQUELE momento, nao do texto-base atual do projeto -
+    comparar so contra o atual gera falso-positivo em versoes antigas e
+    corretas (achado real: output/kit-inlego/pdf-v2)."""
     try:
         import fitz  # PyMuPDF
     except ImportError:
@@ -177,16 +186,15 @@ def validar_capa(pdf_path, texto_base_path):
             if banido in titulo_normalizado:
                 print(f"[FALHA] titulo da capa usa rotulo/cliche banido '{banido}' (deve remeter ao tema, ver TITULOS_BANIDOS)")
                 ok = False
-        if texto_base_path.exists():
-            base = texto_base_path.read_text(encoding="utf-8", errors="ignore")
-            comuns = _palavras_significativas(titulo_texto) & _palavras_significativas(base)
+        if texto_base_texto:
+            comuns = _palavras_significativas(titulo_texto) & _palavras_significativas(texto_base_texto)
             if len(comuns) < 2:
                 print(f"[FALHA] titulo nao remete ao tema do texto-base ({len(comuns)} palavra(s) em comum, min: 2)")
                 ok = False
             else:
                 print(f"[OK] titulo remete ao tema do texto-base ({len(comuns)} palavras em comum)")
         else:
-            print("[AVISO] texto-mae.txt nao encontrado - pulando checagem de tema")
+            print("[AVISO] nenhum texto-mae*.txt encontrado - pulando checagem de tema")
 
     # ── 2) Parágrafo da capa ───────────────────────────────────────────
     if not spans_paragrafo:
@@ -239,6 +247,36 @@ def validar_contracapa_logo(pdf_path):
         return False
     print(f"[OK] contracapa com logo da marca ({n_imagens} imagem(ns) na ultima pagina)")
     return True
+
+
+def _coletar_textos_base(slug_dir, config):
+    """Reune o conteudo de todos os texto-mae*.txt em insumos/ (texto-mae.txt,
+    texto-mae-02.txt, texto-mae-03.txt...) mais o texto_base atual do
+    config_projeto.json, se for um caminho diferente. Um projeto acumula um
+    texto-mae novo a cada rodada de /gerar-pdf que troca o texto-base; versoes
+    antigas do PDF foram escritas contra o texto-mae vigente na sua epoca, nao
+    contra o atual - checar tema so contra o atual e a causa do falso-positivo
+    corrigido aqui."""
+    textos = []
+    insumos_dir = slug_dir / "insumos"
+    if insumos_dir.exists():
+        for caminho in sorted(insumos_dir.glob("texto-mae*.txt")):
+            try:
+                textos.append(caminho.read_text(encoding="utf-8", errors="ignore"))
+            except Exception:
+                pass
+    if config:
+        texto_base_config = config.get("texto_base")
+        if texto_base_config:
+            caminho_config = DIR_PROJETO / texto_base_config
+            if caminho_config.exists():
+                try:
+                    conteudo = caminho_config.read_text(encoding="utf-8", errors="ignore")
+                    if conteudo not in textos:
+                        textos.append(conteudo)
+                except Exception:
+                    pass
+    return "\n".join(textos)
 
 
 def main():
@@ -294,21 +332,18 @@ def main():
     # SPEC_PDF (endurecimento): capa tematica em bloco quadrado, titulo <= 2
     # linhas sem palavra isolada, paragrafo em bloco sem palavra isolada
     #
-    # texto_base e lido de config_projeto.json (fonte de verdade do /esbocar) -
-    # nunca hardcoded como "texto-mae.txt", pois /gerar-<material> pode trocar o
-    # texto-base do projeto para um novo arquivo (ex.: texto-mae-02.txt).
-    texto_base_path = DIR_OUTPUT / args.slug / "insumos" / "texto-mae.txt"
+    # texto-base: uniao de TODOS os texto-mae*.txt do projeto (nao so o
+    # texto_base ATUAL do config_projeto.json) - ver _coletar_textos_base.
     config_path = DIR_OUTPUT / args.slug / "config_projeto.json"
+    config = None
     if config_path.exists():
         try:
             config = json.loads(config_path.read_text(encoding="utf-8"))
-            texto_base_config = config.get("texto_base")
-            if texto_base_config:
-                texto_base_path = DIR_PROJETO / texto_base_config
         except Exception:
             pass
+    texto_base_texto = _coletar_textos_base(DIR_OUTPUT / args.slug, config)
 
-    if not validar_capa(pdf_path, texto_base_path):
+    if not validar_capa(pdf_path, texto_base_texto):
         ok = False
 
     if not validar_contracapa_logo(pdf_path):
