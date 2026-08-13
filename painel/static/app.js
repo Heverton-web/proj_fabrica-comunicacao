@@ -59,12 +59,43 @@ async function carregarWorkspaces() {
     const li = document.createElement("li");
     li.className = "ws-item";
     li.innerHTML = `<span><code>${ws.path}</code> <span class="muted">— ${ws.created_at}</span></span>`;
-    const btn = document.createElement("button");
-    btn.className = "secundario";
-    btn.textContent = "usar";
-    btn.onclick = () => marcarWorkspaceAtivo(ws.path);
-    li.appendChild(btn);
+
+    const acoes = document.createElement("span");
+
+    const btnUsar = document.createElement("button");
+    btnUsar.className = "secundario";
+    btnUsar.textContent = "usar";
+    btnUsar.onclick = () => marcarWorkspaceAtivo(ws.path);
+    acoes.appendChild(btnUsar);
+
+    const btnRemover = document.createElement("button");
+    btnRemover.className = "secundario";
+    btnRemover.textContent = "remover da lista";
+    btnRemover.onclick = () => removerWorkspace(ws.path);
+    acoes.appendChild(btnRemover);
+
+    li.appendChild(acoes);
     ul.appendChild(li);
+  }
+}
+
+async function removerWorkspace(path) {
+  if (!confirm(`Remover "${path}" da lista? Isso só tira o registro do painel — a pasta e os arquivos dentro dela NÃO são apagados.`)) {
+    return;
+  }
+  try {
+    await chamar("DELETE", `/api/workspaces?path=${encodeURIComponent(path)}`);
+    if (workspaceAtivo === path) {
+      workspaceAtivo = null;
+      localStorage.removeItem("workspaceAtivo");
+      document.getElementById("ws-ativo").textContent = "(nenhum)";
+      pararPolling();
+      document.getElementById("jobs-lista").innerHTML = "";
+      document.getElementById("projetos-lista").innerHTML = "";
+    }
+    await carregarWorkspaces();
+  } catch (erro) {
+    alert(erro.message);
   }
 }
 

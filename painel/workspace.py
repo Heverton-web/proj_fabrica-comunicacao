@@ -73,3 +73,21 @@ def list_workspaces(conn: sqlite3.Connection | None = None) -> list[dict]:
     finally:
         if own_conn:
             conn.close()
+
+
+def delete_workspace(raw_path: str, conn: sqlite3.Connection | None = None) -> bool:
+    """Remove só o registro do workspace do índice do painel — a pasta e os
+    artefatos dentro dela nunca são tocados (mesma regra de nunca ter banco
+    de conteúdo). Útil pra tirar da lista workspaces de teste/temporários que
+    não têm mais utilidade."""
+    path = str(Path(raw_path).expanduser().resolve())
+
+    own_conn = conn is None
+    conn = conn or get_connection()
+    try:
+        cur = conn.execute("DELETE FROM workspaces WHERE path = ?", (path,))
+        conn.commit()
+        return cur.rowcount > 0
+    finally:
+        if own_conn:
+            conn.close()

@@ -23,7 +23,7 @@ from painel.harness_adapters import list_harness_names
 from painel.jobs import JobError, create_job, get_job, list_jobs, run_job
 from painel.repo import REPO_ROOT
 from painel.vault import VaultError, delete_credential, get_credential, list_harnesses, save_credential
-from painel.workspace import WorkspaceError, list_workspaces, register_workspace
+from painel.workspace import WorkspaceError, delete_workspace, list_workspaces, register_workspace
 
 app = FastAPI(title="Painel de Controle da Fábrica de Materiais de Comunicação")
 
@@ -57,6 +57,14 @@ def api_register_workspace(body: WorkspaceIn):
 @app.get("/api/workspaces")
 def api_list_workspaces():
     return list_workspaces()
+
+
+@app.delete("/api/workspaces")
+def api_delete_workspace(path: str):
+    """Remove só o registro do índice — nunca apaga a pasta nem os
+    artefatos, que continuam no disco caso o usuário queira registrar o
+    mesmo caminho de novo depois."""
+    return {"path": path, "deleted": delete_workspace(path)}
 
 
 # ---------- credenciais (cofre local, nunca no workspace) ----------

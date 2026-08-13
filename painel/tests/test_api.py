@@ -44,6 +44,19 @@ def test_register_workspace_rejects_invalid_path():
     assert resp.status_code == 400
 
 
+def test_delete_workspace_endpoint_removes_only_the_index_entry(tmp_path):
+    target = tmp_path / "workspace-descartavel"
+    client.post("/api/workspaces", json={"path": str(target)})
+
+    resp = client.delete("/api/workspaces", params={"path": str(target)})
+    assert resp.status_code == 200
+    assert resp.json()["deleted"] is True
+    assert target.exists()
+
+    listed = client.get("/api/workspaces").json()
+    assert not any(w["path"] == str(target.resolve()) for w in listed)
+
+
 def test_credentials_roundtrip_never_leaks_secret_in_list():
     resp = client.post(
         "/api/credentials",
