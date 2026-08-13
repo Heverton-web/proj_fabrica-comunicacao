@@ -93,3 +93,64 @@ def test_opencode_adapter_builds_command(tmp_path):
 
     assert inv.cmd == ["opencode", "run", "/produzir-comunicacao-completa slug-x", "--model", "gpt-5"]
     assert inv.env == {"OPENAI_API_KEY": "sk-oa-x"}
+
+
+def test_claude_code_adapter_adds_extra_allowed_dirs(tmp_path):
+    """Achado real na validação: sem --add-dir, claude -p recusa ler
+    AGENTS.md/SPEC_COMANDOS.md quando eles ficam acima do cwd."""
+    repo_root = tmp_path / "repo"
+    adapter = get_adapter("claude-code")
+    inv = adapter.build_invocation(
+        tmp_path / "repo" / "output" / "slug-x",
+        "/produzir-comunicacao-completa slug-x",
+        extra_allowed_dirs=[repo_root],
+    )
+
+    assert inv.cmd == [
+        "claude", "-p", "/produzir-comunicacao-completa slug-x",
+        "--add-dir", str(repo_root),
+    ]
+
+
+def test_opencode_adapter_ignores_extra_allowed_dirs_without_error(tmp_path):
+    adapter = get_adapter("opencode")
+    inv = adapter.build_invocation(tmp_path, "/esbocar", extra_allowed_dirs=[tmp_path.parent])
+
+    assert "--add-dir" not in inv.cmd
+
+
+def test_claude_code_scoped_permission_mode_adds_allowed_tools(tmp_path):
+    adapter = get_adapter("claude-code")
+    inv = adapter.build_invocation(tmp_path, "/esbocar", permission_mode="scoped")
+
+    assert "--allowedTools" in inv.cmd
+    assert "--allow-dangerously-skip-permissions" not in inv.cmd
+
+
+def test_claude_code_bypass_permission_mode_adds_skip_permissions_flag(tmp_path):
+    adapter = get_adapter("claude-code")
+    inv = adapter.build_invocation(tmp_path, "/esbocar", permission_mode="bypass")
+
+    assert "--allow-dangerously-skip-permissions" in inv.cmd
+    assert "--allowedTools" not in inv.cmd
+
+
+def test_claude_code_default_permission_mode_adds_no_extra_flag(tmp_path):
+    adapter = get_adapter("claude-code")
+    inv = adapter.build_invocation(tmp_path, "/esbocar")
+
+    assert inv.cmd == ["claude", "-p", "/esbocar"]
+
+
+def test_opencode_bypass_permission_mode_adds_auto_flag(tmp_path):
+    adapter = get_adapter("opencode")
+    inv = adapter.build_invocation(tmp_path, "/esbocar", permission_mode="bypass")
+
+    assert "--auto" in inv.cmd
+
+
+def test_opencode_scoped_permission_mode_has_no_known_equivalent(tmp_path):
+    adapter = get_adapter("opencode")
+    inv = adapter.build_invocation(tmp_path, "/esbocar", permission_mode="scoped")
+
+    assert inv.cmd == ["opencode", "run", "/esbocar"]

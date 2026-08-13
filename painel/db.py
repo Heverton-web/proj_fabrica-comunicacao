@@ -34,6 +34,12 @@ CREATE TABLE IF NOT EXISTS jobs (
 );
 """
 
+# Migrações leves (SQLite não tem "ADD COLUMN IF NOT EXISTS") — cada uma é
+# idempotente: se a coluna já existe, o OperationalError é engolido.
+_MIGRATIONS = [
+    "ALTER TABLE jobs ADD COLUMN permission_mode TEXT",
+]
+
 
 def db_path() -> Path:
     return appdata_dir() / "painel.db"
@@ -43,5 +49,11 @@ def get_connection(path: Path | None = None) -> sqlite3.Connection:
     conn = sqlite3.connect(str(path or db_path()))
     conn.row_factory = sqlite3.Row
     conn.executescript(SCHEMA)
+    conn.commit()
+    for migration in _MIGRATIONS:
+        try:
+            conn.execute(migration)
+        except sqlite3.OperationalError:
+            pass  # coluna já existe de uma execução anterior
     conn.commit()
     return conn

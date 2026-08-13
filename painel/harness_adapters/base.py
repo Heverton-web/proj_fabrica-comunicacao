@@ -54,7 +54,29 @@ class HarnessAdapter(ABC):
         prompt: str,
         credential: dict | None = None,
         model: str | None = None,
-    ) -> HeadlessInvocation: ...
+        extra_allowed_dirs: list[Path] | None = None,
+        permission_mode: str | None = None,
+    ) -> HeadlessInvocation:
+        """``extra_allowed_dirs``: diretórios fora de ``cwd`` que o harness
+        precisa poder ler (ex.: a raiz do repo, quando o projeto vive numa
+        subpasta dele — sem isso, `claude -p` recusa ler `AGENTS.md`/
+        `SPEC_COMANDOS.md` por ficarem acima do cwd).
+
+        ``permission_mode`` — quem dispara o job escolhe, por execução,
+        quanto de autonomia dar (headless não tem terminal pra aprovar nada
+        interativamente):
+        - ``None``/outro valor: comportamento padrão do harness (mais
+          seguro; pode parar pedindo aprovação e desistir sem travar).
+        - ``"scoped"``: libera só as ferramentas que o pipeline da Fábrica
+          usa (Bash/Read/Write/Edit/Glob/Grep/Task), sem desligar nenhuma
+          verificação de segurança do harness.
+        - ``"bypass"``: desliga toda verificação de permissão do harness —
+          maior raio de risco, mas às vezes é a única forma de rodar 100%
+          autônomo; quem dispara o job decide.
+
+        Adaptadores sem equivalente nativo podem ignorar os parâmetros.
+        """
+        ...
 
     @staticmethod
     def credential_env(credential: dict | None) -> dict[str, str]:

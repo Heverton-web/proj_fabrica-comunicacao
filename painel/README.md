@@ -97,35 +97,52 @@ workspace do usuário.
 
 ## Limitações conhecidas (leia antes de usar com um harness real)
 
-1. **Descoberta de skills quando o workspace é externo ao repo.** Os
-   adaptadores `claude-code`/`opencode` rodam com `cwd` = pasta do projeto
-   dentro do workspace escolhido. Se esse workspace estiver fora deste
-   repositório, o harness não vai encontrar `.claude/skills/`,
-   `SPEC_COMANDOS.md`, `AGENTS.md` etc. — que é de onde vem todo o
-   conhecimento da Fábrica. **Isso não foi resolvido nesta entrega.** Três
-   saídas possíveis, a decidir antes de usar em produção:
-   - manter o workspace como uma subpasta dentro deste repo (ex.:
-     `<repo>/output`), igual ao pipeline atual;
-   - instalar as skills em nível de usuário/global no harness escolhido, se
-     ele suportar (verificar por harness);
-   - estender o adaptador para passar um "project root" explícito, se o
-     harness tiver essa opção de CLI.
-2. **Slash-commands da Fábrica (`/produzir-comunicacao-completa` etc.) via
-   harness real ainda não foram testados de ponta a ponta** — só um prompt
-   simples (sem slash-command) foi validado com `claude-code`/`opencode`
-   reais. Um slash-command real depende da limitação nº 1 (descoberta de
-   skills) estar resolvida primeiro; testar antes disso só reproduziria o
-   "Unknown command" já visto na validação manual.
-3. **Fluxo one-shot substitui a entrevista conversacional do `/esbocar`.**
+1. ~~Descoberta de skills quando o workspace é externo ao repo~~ — **RESOLVIDO
+   para `claude-code` quando o workspace é `<repo>/output`** (o atalho "usar
+   output/ deste repo" da seção 1 do painel). O job runner detecta
+   automaticamente que o projeto está dentro deste repo e adiciona
+   `--add-dir <repo root>` — sem isso, `claude -p` recusa ler `AGENTS.md`/
+   `SPEC_COMANDOS.md` por ficarem acima do cwd (achado real, não hipotético).
+   Se o workspace continuar **fora** do repo, a limitação original persiste;
+   `opencode` não tem um flag equivalente conhecido a `--add-dir`.
+2. **Rodar um slash-command real precisa de `permission_mode` explícito.**
+   Mesmo com `--add-dir` resolvendo a leitura dos arquivos, o `claude -p`
+   headless para pedindo aprovação antes de rodar `Bash`/scripts (sem
+   terminal pra aprovar) e desiste sozinho, sem travar. É preciso escolher,
+   por job, um de:
+   - **`scoped`** (recomendado): `--allowedTools "Bash Read Write Edit Glob
+     Grep Task"` — libera só as ferramentas que o pipeline usa, sem desligar
+     nenhuma verificação de segurança do harness. **Validado de ponta a
+     ponta**: `/produzir-comunicacao-completa` com `materiais_selecionados:
+     ["textos"]` gerou de verdade `dossie_insumos.md`, `brief_criativo.json`
+     e os 3 textos (WhatsApp/Instagram/LinkedIn), com conteúdo real e
+     coerente, e `_pool_estado.json` marcou `"estado": "concluido_autonomo"`.
+   - **`bypass`**: `--allow-dangerously-skip-permissions` (claude-code) /
+     `--auto` (opencode) — desliga toda verificação de permissão do harness.
+     Maior raio de risco; disponível porque às vezes é a única forma de
+     rodar 100% autônomo, mas quem dispara o job decide isso conscientemente
+     (a UI pede confirmação extra antes de disparar em modo `bypass`).
+   - Sem escolher nenhum dos dois (padrão), o comportamento é o mais seguro,
+     mas pode parar pedindo aprovação e desistir — não serve pra produção
+     autônoma de verdade.
+3. **Empacotamento final ainda não foi observado completo num teste real.**
+   No teste de validação (timeout de 300s), o material "textos" terminou e
+   foi validado (`concluido_autonomo`) dentro da janela, mas o processo
+   ainda estava rodando (provavelmente `revisor-marca`/empacotamento) quando
+   o timeout do teste matou o subprocess — isso é uma limitação do *teste*
+   (janela curta), não uma falha observada do pipeline. Rodar sem timeout
+   apertado (ou aumentar o timeout do job) é necessário pra ver o fluxo
+   completo até `manifesto_materiais.json`/pacote final.
+4. **Fluxo one-shot substitui a entrevista conversacional do `/esbocar`.**
    Como a invocação é headless, o formulário precisa entregar tudo de uma vez
    — perde-se a adaptação dinâmica de perguntas de acompanhamento que uma
    conversa real permite (REGRA 3 do `AGENTS.md`).
-4. **Cofre de credenciais é single-user, não enterprise.** Chave simétrica
+5. **Cofre de credenciais é single-user, não enterprise.** Chave simétrica
    local (Fernet), sem rotação, sem HSM. Adequado para uso pessoal.
-5. **Sem autenticação na API HTTP.** Pensado para rodar só em `localhost`;
+6. **Sem autenticação na API HTTP.** Pensado para rodar só em `localhost`;
    não expor a rede sem adicionar autenticação.
-6. **Job runner é uma thread por job, sem fila real.** Suficiente para uso
+7. **Job runner é uma thread por job, sem fila real.** Suficiente para uso
    pessoal sequencial; múltiplos jobs pesados simultâneos precisariam de uma
    fila de verdade (ex.: limite de concorrência, prioridade).
-7. **Frontend é intencionalmente mínimo.** Wizard funcional sem framework e
+8. **Frontend é funcional, não polido.** Wizard funcional sem framework e
    sem polimento visual — prova o fluxo, não é a versão final de produto.

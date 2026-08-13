@@ -21,6 +21,7 @@ from pydantic import BaseModel
 from painel.files import ProjectNotFoundError, list_project_files
 from painel.harness_adapters import list_harness_names
 from painel.jobs import JobError, create_job, get_job, list_jobs, run_job
+from painel.repo import REPO_ROOT
 from painel.vault import VaultError, delete_credential, get_credential, list_harnesses, save_credential
 from painel.workspace import WorkspaceError, list_workspaces, register_workspace
 
@@ -28,6 +29,18 @@ app = FastAPI(title="Painel de Controle da Fábrica de Materiais de Comunicaçã
 
 
 # ---------- workspace (pasta escolhida pelo usuário) ----------
+
+@app.get("/api/repo-workspace")
+def api_repo_workspace():
+    """Sugestão de workspace dentro deste repositório (``<repo>/output``).
+
+    É a configuração recomendada para harnesses reais (claude-code) terem
+    acesso a `.claude/skills`, `AGENTS.md` e `SPEC_COMANDOS.md` — o job
+    runner detecta automaticamente quando o projeto está dentro deste repo e
+    libera esse acesso (ver `painel/jobs.py` e a validação real no README).
+    """
+    return {"path": str(REPO_ROOT / "output")}
+
 
 class WorkspaceIn(BaseModel):
     path: str
@@ -151,12 +164,19 @@ class JobIn(BaseModel):
     harness: str
     prompt: str
     model: str | None = None
+    permission_mode: str | None = None  # None (padrão) | "scoped" | "bypass"
 
 
 @app.post("/api/jobs")
 def api_create_job(body: JobIn):
     try:
-        job = create_job(body.workspace_path, body.slug, body.harness, model=body.model)
+        job = create_job(
+            body.workspace_path,
+            body.slug,
+            body.harness,
+            model=body.model,
+            permission_mode=body.permission_mode,
+        )
     except JobError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
 

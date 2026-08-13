@@ -1,4 +1,5 @@
 import time
+from pathlib import Path
 
 from fastapi.testclient import TestClient
 
@@ -16,6 +17,16 @@ def _wait_job_finished(job_id: int, timeout: float = 5.0) -> dict:
             return job
         time.sleep(0.05)
     raise AssertionError(f"Job {job_id} não terminou em {timeout}s")
+
+
+def test_repo_workspace_suggestion_points_inside_repo():
+    from painel.repo import REPO_ROOT
+
+    resp = client.get("/api/repo-workspace")
+    assert resp.status_code == 200
+    suggested = Path(resp.json()["path"])
+    assert suggested == REPO_ROOT / "output"
+    assert REPO_ROOT in suggested.parents
 
 
 def test_register_and_list_workspace(tmp_path):
@@ -133,6 +144,23 @@ def test_job_list_matches_workspace_regardless_of_slash_style(tmp_path):
 
     listed = client.get("/api/jobs", params={"workspace_path": str(tmp_path)}).json()
     assert any(j["slug"] == "job-barra" for j in listed)
+
+
+def test_create_job_with_permission_mode(tmp_path):
+    created = client.post(
+        "/api/jobs",
+        json={
+            "workspace_path": str(tmp_path),
+            "slug": "job-permissao",
+            "harness": "echo",
+            "prompt": "x",
+            "permission_mode": "scoped",
+        },
+    ).json()
+    assert created["permission_mode"] == "scoped"
+
+    finished = _wait_job_finished(created["id"])
+    assert finished["status"] == "done"
 
 
 def test_create_job_rejects_unknown_harness(tmp_path):

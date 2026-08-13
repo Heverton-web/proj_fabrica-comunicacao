@@ -187,6 +187,7 @@
   <label for="ws-path">Pasta onde os projetos/artefatos serão salvos</label>
   <input id="ws-path" placeholder="C:\Users\voce\Documents\meus-projetos-fabrica" />
   <button onclick="registrarWorkspace()">Registrar workspace</button>
+  <button class="secundario" onclick="usarWorkspaceDoRepo()">usar output/ deste repo (recomendado p/ harness real)</button>
   <p class="muted">Workspace ativo: <code id="ws-ativo">(nenhum)</code></p>
   <ul class="plain" id="ws-lista"></ul>
 </section>
@@ -232,6 +233,12 @@
     <label for="job-prompt">Comando customizado</label>
     <input id="job-prompt" placeholder="/meu-comando argumento" />
   </div>
+  <label for="job-permissao">Permissão no modo headless (sem terminal pra aprovar nada)</label>
+  <select id="job-permissao">
+    <option value="">padrão (mais seguro — pode parar pedindo aprovação e desistir)</option>
+    <option value="scoped">escopado (libera Bash/Read/Write/Edit/Glob/Grep/Task — recomendado p/ produção)</option>
+    <option value="bypass">bypass total (desliga toda verificação — maior risco)</option>
+  </select>
   <button onclick="dispararJob()">Disparar</button>
 </section>
 

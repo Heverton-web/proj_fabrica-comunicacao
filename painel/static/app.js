@@ -78,6 +78,16 @@ async function registrarWorkspace() {
   }
 }
 
+async function usarWorkspaceDoRepo() {
+  try {
+    const { path } = await chamar("GET", "/api/repo-workspace");
+    document.getElementById("ws-path").value = path;
+    await registrarWorkspace();
+  } catch (erro) {
+    alert(erro.message);
+  }
+}
+
 async function carregarHarnesses() {
   const { harnesses } = await chamar("GET", "/api/harnesses");
   for (const id of ["cred-harness", "job-harness"]) {
@@ -134,12 +144,20 @@ async function dispararJob() {
       ? document.getElementById("job-prompt").value
       : `/${comando} ${slug}`.trim();
 
+  const permissionMode = document.getElementById("job-permissao").value || null;
+  if (permissionMode === "bypass" && !confirm(
+    "Bypass total desliga toda verificação de permissão do harness neste job. Confirmar?"
+  )) {
+    return;
+  }
+
   try {
     await chamar("POST", "/api/jobs", {
       workspace_path: workspaceAtivo,
       slug,
       harness: document.getElementById("job-harness").value,
       model: document.getElementById("job-model").value || null,
+      permission_mode: permissionMode,
       prompt,
     });
     atualizarJobs();
@@ -179,8 +197,9 @@ async function atualizarJobs() {
 
     const top = document.createElement("div");
     top.className = "job-top";
+    const permTag = job.permission_mode ? ` · permissão: ${job.permission_mode}` : "";
     top.innerHTML =
-      `<span>#${job.id} <b>${job.slug}</b> via ${job.harness}${job.model ? ` (${job.model})` : ""}</span>` +
+      `<span>#${job.id} <b>${job.slug}</b> via ${job.harness}${job.model ? ` (${job.model})` : ""}${permTag}</span>` +
       `<span class="badge ${job.status}">${job.status}${job.exit_code !== null ? ` · exit ${job.exit_code}` : ""}</span>`;
     li.appendChild(top);
 

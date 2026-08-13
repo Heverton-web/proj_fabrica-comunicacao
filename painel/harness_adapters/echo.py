@@ -31,6 +31,8 @@ class EchoAdapter(HarnessAdapter):
         prompt: str,
         credential: dict | None = None,
         model: str | None = None,
+        extra_allowed_dirs: list[Path] | None = None,
+        permission_mode: str | None = None,
     ) -> HeadlessInvocation:
         cmd = [sys.executable, "-c", _SCRIPT, prompt]
         env = self.credential_env(credential)

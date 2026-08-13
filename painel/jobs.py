@@ -14,6 +14,7 @@ from pathlib import Path
 from painel.appdata import appdata_dir
 from painel.db import get_connection
 from painel.harness_adapters import get_adapter, list_harness_names
+from painel.repo import REPO_ROOT
 
 
 class JobError(RuntimeError):
@@ -38,15 +39,21 @@ def _logs_dir() -> Path:
     return d
 
 
+PERMISSION_MODES = (None, "scoped", "bypass")
+
+
 def create_job(
     workspace_path: str,
     slug: str,
     harness: str,
     model: str | None = None,
+    permission_mode: str | None = None,
     conn: sqlite3.Connection | None = None,
 ) -> dict:
     if harness not in list_harness_names():
         raise JobError(f"Harness '{harness}' não registrado. Disponíveis: {list_harness_names()}")
+    if permission_mode not in PERMISSION_MODES:
+        raise JobError(f"permission_mode {permission_mode!r} inválido. Use um de {PERMISSION_MODES}.")
 
     workspace_path = _normalize_workspace_path(workspace_path)
 
@@ -55,9 +62,9 @@ def create_job(
     try:
         now = _now()
         cur = conn.execute(
-            "INSERT INTO jobs (workspace_path, slug, harness, model, status, created_at, updated_at) "
-            "VALUES (?, ?, ?, ?, 'pending', ?, ?)",
-            (workspace_path, slug, harness, model, now, now),
+            "INSERT INTO jobs (workspace_path, slug, harness, model, permission_mode, status, created_at, updated_at) "
+            "VALUES (?, ?, ?, ?, ?, 'pending', ?, ?)",
+            (workspace_path, slug, harness, model, permission_mode, now, now),
         )
         conn.commit()
         return get_job(cur.lastrowid, conn=conn)
@@ -94,6 +101,16 @@ def list_jobs(workspace_path: str | None = None, conn: sqlite3.Connection | None
             conn.close()
 
 
+def _extra_allowed_dirs_for(project_dir: Path) -> list[Path]:
+    """Se o projeto vive dentro deste repo, libera a raiz do repo para o
+    harness — sem isso, `claude -p` recusa ler `AGENTS.md`/`SPEC_COMANDOS.md`
+    por ficarem acima do cwd (achado real na validação, ver README)."""
+    resolved = project_dir.resolve()
+    if resolved == REPO_ROOT or REPO_ROOT in resolved.parents:
+        return [REPO_ROOT]
+    return []
+
+
 def _update_job(job_id: int, conn: sqlite3.Connection, **fields) -> None:
     fields["updated_at"] = _now()
     cols = ", ".join(f"{key} = ?" for key in fields)
@@ -126,7 +143,12 @@ def run_job(
 
         adapter = get_adapter(job["harness"])
         invocation = adapter.build_invocation(
-            project_dir, prompt, credential=credential, model=job["model"]
+            project_dir,
+            prompt,
+            credential=credential,
+            model=job["model"],
+            extra_allowed_dirs=_extra_allowed_dirs_for(project_dir),
+            permission_mode=job.get("permission_mode"),
         )
 
         log_path = _logs_dir() / f"job-{job_id}.log"

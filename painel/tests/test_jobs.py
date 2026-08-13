@@ -1,7 +1,8 @@
 import pytest
 
 from painel.harness_adapters.base import HarnessAdapter, HeadlessInvocation
-from painel.jobs import JobError, create_job, get_job, list_jobs, run_job
+from painel.jobs import JobError, _extra_allowed_dirs_for, create_job, get_job, list_jobs, run_job
+from painel.repo import REPO_ROOT
 
 
 def test_create_job_starts_pending(tmp_path):
@@ -16,6 +17,17 @@ def test_create_job_starts_pending(tmp_path):
 def test_create_job_rejects_unknown_harness(tmp_path):
     with pytest.raises(JobError):
         create_job(str(tmp_path), "meu-slug", "harness-inventado")
+
+
+def test_create_job_persists_permission_mode(tmp_path):
+    job = create_job(str(tmp_path), "meu-slug", "echo", permission_mode="scoped")
+    assert job["permission_mode"] == "scoped"
+    assert get_job(job["id"])["permission_mode"] == "scoped"
+
+
+def test_create_job_rejects_invalid_permission_mode(tmp_path):
+    with pytest.raises(JobError):
+        create_job(str(tmp_path), "meu-slug", "echo", permission_mode="modo-invalido")
 
 
 def test_get_job_roundtrip(tmp_path):
@@ -61,6 +73,15 @@ def test_list_jobs_matches_regardless_of_slash_style(tmp_path):
     assert any(j["slug"] == "slug-barra" for j in listed)
 
 
+def test_extra_allowed_dirs_empty_for_workspace_outside_repo(tmp_path):
+    assert _extra_allowed_dirs_for(tmp_path / "algum-projeto") == []
+
+
+def test_extra_allowed_dirs_includes_repo_root_when_project_is_inside_repo():
+    project_dir_inside_repo = REPO_ROOT / "output" / "algum-slug-que-nao-existe"
+    assert _extra_allowed_dirs_for(project_dir_inside_repo) == [REPO_ROOT]
+
+
 def test_run_job_unknown_job_id_raises():
     with pytest.raises(JobError):
         run_job(999999, "prompt")
@@ -69,7 +90,9 @@ def test_run_job_unknown_job_id_raises():
 class _FailingAdapter(HarnessAdapter):
     name = "fail-fake"
 
-    def build_invocation(self, cwd, prompt, credential=None, model=None):
+    def build_invocation(
+        self, cwd, prompt, credential=None, model=None, extra_allowed_dirs=None, permission_mode=None
+    ):
         return HeadlessInvocation(cmd=["binario-que-definitivamente-nao-existe-xyz"], cwd=cwd)
 
 
