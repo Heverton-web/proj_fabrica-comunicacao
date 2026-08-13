@@ -43,31 +43,67 @@ tamanho da cadeia deve ser proporcional ao tamanho/risco da tarefa (seção 5).
 
 # 3. Tabela completa: fase, skill, quando usar
 
-| Fase | Skill | Quando usar |
-|---|---|---|
-| Definir | `interview-me` | Você (ou o pedido do operador) ainda não sabe o que quer de verdade — ask não tem quem/por quê/sucesso/restrição claros |
-| Definir | `idea-refine` | Já tem uma ideia (mesmo vaga), precisa gerar e comparar variações antes de decidir |
-| Definir | `spec-driven-development` | Precisa formalizar requisitos + critério de aceite por escrito antes de codar |
-| Planejar | `planning-and-task-breakdown` | Já tem spec/decisão, precisa quebrar em tarefas pequenas e verificáveis |
-| Construir | `incremental-implementation` | Implementar em fatias verticais finas, testando cada uma antes de expandir |
-| Construir | `frontend-ui-engineering` | A fatia é de UI — acessibilidade, qualidade de produção |
-| Construir | `api-and-interface-design` | A fatia define um contrato/endpoint/limite de módulo estável |
-| Construir | `context-engineering` | Precisa carregar o contexto certo na hora certa (evitar poluir a janela) |
-| Construir | `source-driven-development` | Precisa verificar contra documentação oficial antes de implementar (evita alucinar API) |
-| Construir | `doubt-driven-development` | Decisão de risco alto ou código que você não domina — revisão adversarial em contexto limpo |
-| Verificar | `test-driven-development` / `tdd` | Escrever teste que falha primeiro, depois fazer passar (ver nota de duplicidade na seção 6) |
-| Verificar | `browser-testing-with-devtools` | Verificação em runtime via Chrome DevTools MCP, se a fatia é browser-based |
-| Verificar | `debugging-and-error-recovery` | Algo quebrou — reproduzir → localizar → corrigir → proteger com teste |
-| Revisar | `code-review-and-quality` | Revisão em 5 eixos antes de mergear (ver nota de duplicidade na seção 6) |
-| Revisar | `code-simplification` | Reduzir complexidade desnecessária preservando comportamento |
-| Revisar | `security-and-hardening` | Preocupação de segurança — OWASP, validação de entrada, menor privilégio |
-| Revisar | `performance-optimization` | Preocupação de performance — medir antes de otimizar |
-| Entregar | `git-workflow-and-versioning` | Organizar commits atômicos, histórico limpo |
-| Entregar | `ci-cd-and-automation` | Configurar/ajustar pipeline de qualidade automatizado |
-| Entregar | `deprecation-and-migration` | Aposentar sistema antigo e migrar usuários com segurança |
-| Entregar | `documentation-and-adrs` | Documentar o *porquê* da decisão, não só o *o quê* |
-| Entregar | `observability-and-instrumentation` | Adicionar logs estruturados/métricas/alertas — roda em paralelo à construção, não depois |
-| Entregar | `shipping-and-launch` | Checklist pré-lançamento, monitoramento, plano de rollback |
+**Definir**
+
+- `interview-me` — Você (ou o pedido do operador) ainda não sabe o que quer de
+  verdade — ask não tem quem/por quê/sucesso/restrição claros.
+- `idea-refine` — Já tem uma ideia (mesmo vaga), precisa gerar e comparar
+  variações antes de decidir.
+- `spec-driven-development` — Precisa formalizar requisitos + critério de aceite
+  por escrito antes de codar.
+
+**Planejar**
+
+- `planning-and-task-breakdown` — Já tem spec/decisão, precisa quebrar em
+  tarefas pequenas e verificáveis.
+
+**Construir**
+
+- `incremental-implementation` — Implementar em fatias verticais finas,
+  testando cada uma antes de expandir.
+- `frontend-ui-engineering` — A fatia é de UI — acessibilidade, qualidade de
+  produção.
+- `api-and-interface-design` — A fatia define um contrato/endpoint/limite de
+  módulo estável.
+- `context-engineering` — Precisa carregar o contexto certo na hora certa
+  (evitar poluir a janela).
+- `source-driven-development` — Precisa verificar contra documentação oficial
+  antes de implementar (evita alucinar API).
+- `doubt-driven-development` — Decisão de risco alto ou código que você não
+  domina — revisão adversarial em contexto limpo.
+
+**Verificar**
+
+- `test-driven-development` / `tdd` — Escrever teste que falha primeiro, depois
+  fazer passar (ver nota de duplicidade na seção 6).
+- `browser-testing-with-devtools` — Verificação em runtime via Chrome DevTools
+  MCP, se a fatia é browser-based.
+- `debugging-and-error-recovery` — Algo quebrou — reproduzir → localizar →
+  corrigir → proteger com teste.
+
+**Revisar**
+
+- `code-review-and-quality` — Revisão em 5 eixos antes de mergear (ver nota de
+  duplicidade na seção 6).
+- `code-simplification` — Reduzir complexidade desnecessária preservando
+  comportamento.
+- `security-and-hardening` — Preocupação de segurança — OWASP, validação de
+  entrada, menor privilégio.
+- `performance-optimization` — Preocupação de performance — medir antes de
+  otimizar.
+
+**Entregar**
+
+- `git-workflow-and-versioning` — Organizar commits atômicos, histórico limpo.
+- `ci-cd-and-automation` — Configurar/ajustar pipeline de qualidade
+  automatizado.
+- `deprecation-and-migration` — Aposentar sistema antigo e migrar usuários com
+  segurança.
+- `documentation-and-adrs` — Documentar o *porquê* da decisão, não só o *o quê*.
+- `observability-and-instrumentation` — Adicionar logs estruturados/métricas/
+  alertas — roda em paralelo à construção, não depois.
+- `shipping-and-launch` — Checklist pré-lançamento, monitoramento, plano de
+  rollback.
 
 ---
 
@@ -209,31 +245,29 @@ Estas regras vêm do próprio meta-skill `using-agent-skills` e não são opcion
 
 # 8. Referência rápida (todas as skills, um-liner)
 
-| Skill | Resumo |
-|---|---|
-| `interview-me` | Extrai o que o operador quer de verdade antes de plano/spec/código existirem |
-| `idea-refine` | Refina ideias com pensamento divergente e depois convergente |
-| `spec-driven-development` | Requisitos e critério de aceite antes do código |
-| `planning-and-task-breakdown` | Decompõe em tarefas pequenas e verificáveis |
-| `incremental-implementation` | Fatias verticais finas, testando cada uma antes de expandir |
-| `source-driven-development` | Verifica contra documentação oficial antes de implementar |
-| `doubt-driven-development` | Revisão adversarial em contexto limpo de toda decisão não-trivial |
-| `context-engineering` | Contexto certo na hora certa |
-| `frontend-ui-engineering` | UI de qualidade de produção, com acessibilidade |
-| `api-and-interface-design` | Interfaces estáveis com contratos claros |
-| `test-driven-development` / `tdd` | Teste que falha primeiro, depois faz passar |
-| `browser-testing-with-devtools` | Verificação em runtime via Chrome DevTools MCP |
-| `debugging-and-error-recovery` | Reproduzir → localizar → corrigir → proteger |
-| `code-review-and-quality` | Revisão em 5 eixos com quality gates |
-| `code-simplification` | Preserva comportamento reduzindo complexidade desnecessária |
-| `security-and-hardening` | Prevenção OWASP, validação de entrada, menor privilégio |
-| `performance-optimization` | Mede primeiro, otimiza só o que importa |
-| `git-workflow-and-versioning` | Commits atômicos, histórico limpo |
-| `ci-cd-and-automation` | Quality gates automatizados a cada mudança |
-| `deprecation-and-migration` | Remove sistemas antigos e migra usuários com segurança |
-| `documentation-and-adrs` | Documenta o porquê, não só o o quê |
-| `observability-and-instrumentation` | Logs estruturados, métricas RED, traces, alertas por sintoma |
-| `shipping-and-launch` | Checklist pré-lançamento, monitoramento, plano de rollback |
+- `interview-me` — Extrai o que o operador quer de verdade antes de plano/spec/código existirem
+- `idea-refine` — Refina ideias com pensamento divergente e depois convergente
+- `spec-driven-development` — Requisitos e critério de aceite antes do código
+- `planning-and-task-breakdown` — Decompõe em tarefas pequenas e verificáveis
+- `incremental-implementation` — Fatias verticais finas, testando cada uma antes de expandir
+- `source-driven-development` — Verifica contra documentação oficial antes de implementar
+- `doubt-driven-development` — Revisão adversarial em contexto limpo de toda decisão não-trivial
+- `context-engineering` — Contexto certo na hora certa
+- `frontend-ui-engineering` — UI de qualidade de produção, com acessibilidade
+- `api-and-interface-design` — Interfaces estáveis com contratos claros
+- `test-driven-development` / `tdd` — Teste que falha primeiro, depois faz passar
+- `browser-testing-with-devtools` — Verificação em runtime via Chrome DevTools MCP
+- `debugging-and-error-recovery` — Reproduzir → localizar → corrigir → proteger
+- `code-review-and-quality` — Revisão em 5 eixos com quality gates
+- `code-simplification` — Preserva comportamento reduzindo complexidade desnecessária
+- `security-and-hardening` — Prevenção OWASP, validação de entrada, menor privilégio
+- `performance-optimization` — Mede primeiro, otimiza só o que importa
+- `git-workflow-and-versioning` — Commits atômicos, histórico limpo
+- `ci-cd-and-automation` — Quality gates automatizados a cada mudança
+- `deprecation-and-migration` — Remove sistemas antigos e migra usuários com segurança
+- `documentation-and-adrs` — Documenta o porquê, não só o o quê
+- `observability-and-instrumentation` — Logs estruturados, métricas RED, traces, alertas por sintoma
+- `shipping-and-launch` — Checklist pré-lançamento, monitoramento, plano de rollback
 
 ---
 
