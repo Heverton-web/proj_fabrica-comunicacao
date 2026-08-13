@@ -215,32 +215,63 @@ async function dispararJob() {
   }
 }
 
+// Job terminado (done/error) nao tem mais arquivo novo para aparecer -- cachear
+// o feed evita reconsultar disco pra sempre a cada tick de poll.
+const arquivosCacheDoJob = {};
+let pollTimer = null;
+
+function pararPolling() {
+  if (pollTimer) {
+    clearTimeout(pollTimer);
+    pollTimer = null;
+  }
+}
+
+// Poll auto-agendado (setTimeout, nao setInterval): so continua enquanto
+// existir job pending/running. Sem isso o poll rodava pra sempre, e a cada
+// tick refazia a listagem de arquivos de TODOS os jobs (inclusive os ja
+// terminados ha muito tempo) -- N+1 chamadas HTTP a cada 2s sem parar nunca,
+// mesmo sem nenhum job ativo (achado real reportado pelo usuario).
+function agendarProximaAtualizacao(haJobAtivo) {
+  pararPolling();
+  if (haJobAtivo) {
+    pollTimer = setTimeout(atualizarJobs, 2000);
+  }
+}
+
 async function carregarArquivosDoJob(job, feedEl) {
   try {
     const arquivos = await chamar(
       "GET",
       `/api/projects/files?workspace_path=${encodeURIComponent(job.workspace_path)}&slug=${encodeURIComponent(job.slug)}`
     );
-    if (!arquivos.length) {
-      feedEl.textContent = "nenhum arquivo ainda.";
-      return;
-    }
-    feedEl.innerHTML = arquivos
-      .map((a) => `<div class="linha">${a.path}<span class="tam">${a.size}B</span></div>`)
-      .join("");
+    const html = arquivos.length
+      ? arquivos.map((a) => `<div class="linha">${a.path}<span class="tam">${a.size}B</span></div>`).join("")
+      : "nenhum arquivo ainda.";
+    feedEl.innerHTML = html;
     feedEl.scrollTop = feedEl.scrollHeight;
+    if (job.status === "done" || job.status === "error") {
+      arquivosCacheDoJob[job.id] = html;
+    }
   } catch (erro) {
     feedEl.textContent = `(erro ao listar arquivos: ${erro.message})`;
   }
 }
 
 async function atualizarJobs() {
-  if (!workspaceAtivo) return;
+  if (!workspaceAtivo) {
+    agendarProximaAtualizacao(false);
+    return;
+  }
   const jobs = await chamar("GET", `/api/jobs?workspace_path=${encodeURIComponent(workspaceAtivo)}`);
   const ul = document.getElementById("jobs-lista");
   ul.innerHTML = "";
 
+  let haJobAtivo = false;
+
   for (const job of jobs) {
+    if (job.status === "pending" || job.status === "running") haJobAtivo = true;
+
     const li = document.createElement("li");
     li.className = `job-card ${job.status}`;
 
@@ -259,12 +290,20 @@ async function atualizarJobs() {
 
     const feed = document.createElement("div");
     feed.className = "file-feed";
-    feed.textContent = "carregando arquivos…";
     li.appendChild(feed);
 
     ul.appendChild(li);
-    carregarArquivosDoJob(job, feed);
+
+    const cacheado = arquivosCacheDoJob[job.id];
+    if (cacheado !== undefined) {
+      feed.innerHTML = cacheado;
+    } else {
+      feed.textContent = "carregando arquivos…";
+      carregarArquivosDoJob(job, feed);
+    }
   }
+
+  agendarProximaAtualizacao(haJobAtivo);
 }
 
 (async function iniciar() {
@@ -277,5 +316,4 @@ async function atualizarJobs() {
     carregarProjetos();
     atualizarJobs();
   }
-  setInterval(atualizarJobs, 2000);
 })();
