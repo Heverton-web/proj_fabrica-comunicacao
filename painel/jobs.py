@@ -134,7 +134,7 @@ def run_job(
 
         try:
             result = subprocess.run(
-                invocation.cmd,
+                invocation.resolved_cmd(),
                 cwd=invocation.cwd,
                 env=invocation.full_env(),
                 capture_output=True,

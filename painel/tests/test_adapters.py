@@ -1,8 +1,11 @@
+import shutil
 import subprocess
+import sys
 
 import pytest
 
 from painel.harness_adapters import UnknownHarnessError, get_adapter, list_harness_names
+from painel.harness_adapters.base import HeadlessInvocation
 
 
 def test_list_harness_names():
@@ -58,6 +61,26 @@ def test_claude_code_adapter_builds_command_without_model(tmp_path):
 
     assert inv.cmd == ["claude", "-p", "/esbocar"]
     assert inv.env == {}
+
+
+def test_resolved_cmd_resolves_executable_via_path(tmp_path):
+    """Regressão: no Windows, CLIs instaladas via npm são shims .cmd/.bat —
+    sem resolver via shutil.which, subprocess com shell=False não acha o
+    binário mesmo ele existindo e funcionando no terminal."""
+    nome_no_path = "python" if shutil.which("python") else sys.executable
+    inv = HeadlessInvocation(cmd=[nome_no_path, "--version"], cwd=tmp_path)
+
+    resolvido = inv.resolved_cmd()
+
+    assert resolvido[0] == shutil.which(nome_no_path)
+    result = subprocess.run(resolvido, capture_output=True, text=True, timeout=10)
+    assert result.returncode == 0
+
+
+def test_resolved_cmd_falls_back_when_binary_not_found(tmp_path):
+    inv = HeadlessInvocation(cmd=["binario-que-definitivamente-nao-existe-xyz"], cwd=tmp_path)
+
+    assert inv.resolved_cmd() == inv.cmd
 
 
 def test_opencode_adapter_builds_command(tmp_path):

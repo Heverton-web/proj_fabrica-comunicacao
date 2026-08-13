@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import os
+import shutil
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -21,6 +22,19 @@ class HeadlessInvocation:
         merged = dict(os.environ)
         merged.update(self.env)
         return merged
+
+    def resolved_cmd(self) -> list[str]:
+        """Resolve o executável via PATH antes de passar ao ``subprocess``.
+
+        Sem isso, CLIs instaladas via npm (que no Windows são shims
+        ``.cmd``/``.bat``, não um ``.exe``) falham com "arquivo não
+        encontrado" quando o ``subprocess`` roda com ``shell=False`` — mesmo
+        com o binário instalado e funcionando normalmente no terminal.
+        """
+        if not self.cmd:
+            return self.cmd
+        resolved = shutil.which(self.cmd[0])
+        return [resolved, *self.cmd[1:]] if resolved else self.cmd
 
 
 class HarnessAdapter(ABC):
