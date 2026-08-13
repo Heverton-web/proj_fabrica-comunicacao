@@ -9,7 +9,9 @@ from painel.harness_adapters.base import HeadlessInvocation
 
 
 def test_list_harness_names():
-    assert list_harness_names() == ["claude-code", "echo", "opencode"]
+    assert list_harness_names() == [
+        "antigravity", "claude-code", "echo", "freebuff", "grok", "mimocode", "omp", "opencode",
+    ]
 
 
 def test_get_adapter_unknown_raises():
@@ -154,3 +156,69 @@ def test_opencode_scoped_permission_mode_has_no_known_equivalent(tmp_path):
     inv = adapter.build_invocation(tmp_path, "/esbocar", permission_mode="scoped")
 
     assert inv.cmd == ["opencode", "run", "/esbocar"]
+
+
+def test_antigravity_adapter_builds_command_with_model_and_bypass(tmp_path):
+    adapter = get_adapter("antigravity")
+    inv = adapter.build_invocation(
+        tmp_path, "/esbocar", model="gemini-3.5-flash-medium", permission_mode="bypass"
+    )
+
+    assert inv.cmd == [
+        "agy", "-p", "/esbocar", "--model", "gemini-3.5-flash-medium", "--dangerously-skip-permissions",
+    ]
+
+
+def test_antigravity_adapter_default_has_no_extra_flag(tmp_path):
+    adapter = get_adapter("antigravity")
+    inv = adapter.build_invocation(tmp_path, "/esbocar")
+
+    assert inv.cmd == ["agy", "-p", "/esbocar"]
+
+
+def test_grok_adapter_builds_command_with_model_and_bypass(tmp_path):
+    adapter = get_adapter("grok")
+    inv = adapter.build_invocation(
+        tmp_path, "/esbocar",
+        credential={"env_var": "XAI_API_KEY", "api_key": "xai-x"},
+        model="grok-4",
+        permission_mode="bypass",
+    )
+
+    assert inv.cmd == ["grok", "-p", "/esbocar", "-m", "grok-4", "--always-approve"]
+    assert inv.env == {"XAI_API_KEY": "xai-x"}
+
+
+def test_mimocode_adapter_builds_command_with_model_and_bypass(tmp_path):
+    adapter = get_adapter("mimocode")
+    inv = adapter.build_invocation(tmp_path, "/esbocar", model="mimo-large", permission_mode="bypass")
+
+    assert inv.cmd == ["mimo", "run", "/esbocar", "--model", "mimo-large", "--dangerously-skip-permissions"]
+
+
+def test_mimocode_adapter_default_has_no_extra_flag(tmp_path):
+    adapter = get_adapter("mimocode")
+    inv = adapter.build_invocation(tmp_path, "/esbocar")
+
+    assert inv.cmd == ["mimo", "run", "/esbocar"]
+
+
+def test_omp_adapter_builds_command_with_model(tmp_path):
+    adapter = get_adapter("omp")
+    inv = adapter.build_invocation(tmp_path, "/esbocar", model="anthropic/sonnet-4.5")
+
+    assert inv.cmd == ["omp", "-p", "/esbocar", "--model", "anthropic/sonnet-4.5"]
+
+
+def test_omp_adapter_ignores_permission_mode_without_known_equivalent(tmp_path):
+    adapter = get_adapter("omp")
+    inv = adapter.build_invocation(tmp_path, "/esbocar", permission_mode="bypass")
+
+    assert inv.cmd == ["omp", "-p", "/esbocar"]
+
+
+def test_freebuff_adapter_builds_command_best_effort(tmp_path):
+    adapter = get_adapter("freebuff")
+    inv = adapter.build_invocation(tmp_path, "/esbocar", model="algum-modelo")
+
+    assert inv.cmd == ["freebuff", "-p", "/esbocar", "--model", "algum-modelo"]

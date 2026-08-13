@@ -8,15 +8,25 @@ humano faria na CLI.
 
 from __future__ import annotations
 
+from painel.harness_adapters.antigravity import AntigravityAdapter
 from painel.harness_adapters.base import HarnessAdapter, HeadlessInvocation
 from painel.harness_adapters.claude_code import ClaudeCodeAdapter
 from painel.harness_adapters.echo import EchoAdapter
+from painel.harness_adapters.freebuff import FreeBuffAdapter
+from painel.harness_adapters.grok import GrokAdapter
+from painel.harness_adapters.mimocode import MimoCodeAdapter
+from painel.harness_adapters.omp import OmpAdapter
 from painel.harness_adapters.opencode import OpencodeAdapter
 
 _REGISTRY: dict[str, HarnessAdapter] = {
     "echo": EchoAdapter(),
     "claude-code": ClaudeCodeAdapter(),
     "opencode": OpencodeAdapter(),
+    "antigravity": AntigravityAdapter(),
+    "grok": GrokAdapter(),
+    "mimocode": MimoCodeAdapter(),
+    "omp": OmpAdapter(),
+    "freebuff": FreeBuffAdapter(),
 }
 
 

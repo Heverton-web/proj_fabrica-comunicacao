@@ -82,7 +82,9 @@ def test_credentials_roundtrip_never_leaks_secret_in_list():
 
 def test_list_harnesses_endpoint():
     resp = client.get("/api/harnesses")
-    assert resp.json() == {"harnesses": ["claude-code", "echo", "opencode"]}
+    assert resp.json() == {
+        "harnesses": ["antigravity", "claude-code", "echo", "freebuff", "grok", "mimocode", "omp", "opencode"]
+    }
 
 
 def test_create_project_writes_file_in_workspace_not_database(tmp_path):

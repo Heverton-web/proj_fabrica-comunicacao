@@ -48,8 +48,33 @@ racional completo. Harnesses hoje registrados em
 
 - `echo` — dry-run, não chama LLM nenhuma. Existe só para provar a
   canalização inteira (subprocess real → arquivo no workspace → status/log).
-- `claude-code` — monta `claude -p "<prompt>" [--model <modelo>]`.
-- `opencode` — monta `opencode run "<prompt>" [--model <modelo>]`.
+- `claude-code` — monta `claude -p "<prompt>" [--model <modelo>]`. **Validado com harness real.**
+- `opencode` — monta `opencode run "<prompt>" [--model <modelo>]`. **Validado com harness real.**
+- `antigravity` — monta `agy -p "<prompt>" [--model <slug>]`. Sucessor oficial
+  do Gemini CLI (Google, mai/2026). Sintaxe validada só por construção de
+  comando (pesquisa de docs), não com binário real.
+- `grok` — monta `grok -p "<prompt>" [-m <modelo>]`. CLI first-party da xAI.
+  Sintaxe validada só por construção de comando.
+- `mimocode` — monta `mimo run "<prompt>" [--model <modelo>]`. Credencial
+  **não** é variável de ambiente (fica em `~/.local/share/mimocode/auth.json`)
+  — o cofre do painel não se aplica de verdade a este harness; logue o
+  MimoCode fora do painel antes de disparar um job com ele.
+- `omp` (Oh My Pi) — monta `omp -p "<prompt>" [--model <provider/modelo>]`.
+  Sem flag de auto-aprovação/bypass conhecida — `permission_mode` é ignorado
+  para este harness (mesmo tratamento que "scoped" recebe no `opencode`).
+- `freebuff` — **MELHOR ESFORÇO, sintaxe NÃO confirmada.** A pesquisa feita
+  para esta entrega não encontrou nenhuma flag de modo headless/one-shot
+  documentada publicamente (o CLI parece só abrir sessão interativa). Monta
+  `freebuff -p "<prompt>" [--model <modelo>]` por convenção com as outras
+  CLIs desta lista — decisão consciente do usuário mesmo sem confirmação.
+  **Rode `freebuff --help` antes de confiar nisso em produção**; se a flag
+  estiver errada, o job provavelmente fica pendurado esperando uma sessão
+  interativa que não existe (sem terminal pra usar).
+
+Nenhum destes 5 novos harnesses (`antigravity`/`grok`/`mimocode`/`omp`/
+`freebuff`) foi exercitado com o binário real instalado — só construção de
+comando, ao contrário de `claude-code`/`opencode` (ver seção de validação
+acima). Trate a sintaxe como best-effort até testar na sua máquina.
 
 ### Adicionar um novo harness
 
