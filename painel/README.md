@@ -60,6 +60,20 @@ racional completo. Harnesses hoje registrados em
    `painel/tests/test_adapters.py`, seguindo o padrão dos adaptadores
    existentes.
 
+## Pré-requisito de insumos (brief_criativo.json)
+
+Comandos `/gerar-*` e `/produzir-comunicacao-completa` regeneram material a
+partir de um projeto **já esboçado** — eles falham rápido sem
+`brief_criativo.json` (ver `.claude/commands/*.md`). O backend valida isso
+antes de disparar o job (`POST /api/jobs` rejeita com HTTP 400 se o slug não
+tiver `brief_criativo.json` e o `command` enviado exigir um). `/esbocar` e
+`/kit-completo-*` ficam de fora da checagem — são eles que criam o brief.
+
+A seção "Projetos existentes no workspace" da UI lista os projetos já
+esboçados no workspace ativo (com o status do brief e quais materiais já
+foram gerados) para reaproveitar um slug existente e disparar só um
+`/gerar-*` novo, sem repetir o `/esbocar`.
+
 ## Credenciais
 
 `POST /api/credentials` recebe `{harness, env_var, api_key}` e grava

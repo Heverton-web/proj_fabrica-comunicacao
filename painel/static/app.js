@@ -47,6 +47,7 @@ function marcarWorkspaceAtivo(path) {
   workspaceAtivo = path;
   localStorage.setItem("workspaceAtivo", path);
   document.getElementById("ws-ativo").textContent = path;
+  carregarProjetos();
   atualizarJobs();
 }
 
@@ -117,8 +118,9 @@ async function salvarCredencial() {
 
 async function criarProjeto() {
   if (!workspaceAtivo) return alert("Registre e selecione um workspace primeiro.");
-  const materiais = document.getElementById("proj-materiais").value
-    .split(",").map((s) => s.trim()).filter(Boolean);
+  const materiais = Array.from(
+    document.querySelectorAll("#proj-materiais input[type=checkbox]:checked")
+  ).map((el) => el.value);
 
   try {
     await chamar("POST", "/api/projects", {
@@ -132,6 +134,52 @@ async function criarProjeto() {
     alert("Projeto criado dentro do workspace.");
   } catch (erro) {
     alert(erro.message);
+  }
+}
+
+async function carregarProjetos() {
+  if (!workspaceAtivo) return;
+  const ul = document.getElementById("projetos-lista");
+  const datalist = document.getElementById("job-slug-lista");
+  let projetos;
+  try {
+    projetos = await chamar("GET", `/api/projects?workspace_path=${encodeURIComponent(workspaceAtivo)}`);
+  } catch (erro) {
+    ul.innerHTML = `<li class="muted">${erro.message}</li>`;
+    return;
+  }
+
+  ul.innerHTML = "";
+  datalist.innerHTML = "";
+  if (!projetos.length) {
+    ul.innerHTML = `<li class="muted">nenhum projeto esboçado neste workspace ainda.</li>`;
+    return;
+  }
+
+  for (const p of projetos) {
+    datalist.innerHTML += `<option value="${p.slug}"></option>`;
+
+    const materiaisProntos = (p.manifesto ? p.manifesto.materiais : [])
+      .map((m) => m.tipo)
+      .join(", ");
+    const statusBrief = p.tem_brief
+      ? "brief pronto — pode disparar /gerar-*"
+      : "sem brief_criativo.json — precisa rodar /esbocar antes de /gerar-*";
+
+    const li = document.createElement("li");
+    li.className = "ws-item";
+    li.innerHTML =
+      `<span><b>${p.slug}</b> — <span class="muted">${statusBrief}</span>` +
+      (materiaisProntos ? `<br><span class="muted">materiais já gerados: ${materiaisProntos}</span>` : "") +
+      `</span>`;
+    const btn = document.createElement("button");
+    btn.className = "secundario";
+    btn.textContent = "usar no passo 5";
+    btn.onclick = () => {
+      document.getElementById("job-slug").value = p.slug;
+    };
+    li.appendChild(btn);
+    ul.appendChild(li);
   }
 }
 
@@ -158,6 +206,7 @@ async function dispararJob() {
       harness: document.getElementById("job-harness").value,
       model: document.getElementById("job-model").value || null,
       permission_mode: permissionMode,
+      command: comando === "customizado" ? null : comando,
       prompt,
     });
     atualizarJobs();
@@ -225,6 +274,7 @@ async function atualizarJobs() {
   await carregarCredenciais();
   if (workspaceAtivo) {
     document.getElementById("ws-ativo").textContent = workspaceAtivo;
+    carregarProjetos();
     atualizarJobs();
   }
   setInterval(atualizarJobs, 2000);

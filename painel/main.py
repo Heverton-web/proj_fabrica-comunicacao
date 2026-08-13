@@ -142,7 +142,13 @@ def api_list_projects(workspace_path: str):
                 if manifesto_path.exists()
                 else None
             )
-            projetos.append({"slug": child.name, "config": config, "manifesto": manifesto})
+            tem_brief = (child / "brief_criativo.json").exists()
+            projetos.append({
+                "slug": child.name,
+                "config": config,
+                "manifesto": manifesto,
+                "tem_brief": tem_brief,
+            })
     return projetos
 
 
@@ -165,10 +171,34 @@ class JobIn(BaseModel):
     prompt: str
     model: str | None = None
     permission_mode: str | None = None  # None (padrão) | "scoped" | "bypass"
+    command: str | None = None  # nome do comando sem a barra (ex.: "gerar-pdf")
+
+
+# Comandos que regeneram 1 material a partir de um projeto já esboçado — todos
+# "falham rápido" sem brief_criativo.json (ver .claude/commands/*.md). `esbocar`
+# e `kit-completo-*` ficam de fora porque são eles que CRIAM o brief; um
+# "customizado" (command=None) não entra na lista porque não dá pra saber o
+# que ele exige.
+COMANDOS_QUE_EXIGEM_BRIEF_PREVIO = {
+    "gerar-pdf", "gerar-landing", "gerar-apresentacao",
+    "gerar-arte", "gerar-arte-1080x1080", "gerar-arte-1080x1350", "gerar-arte-1080x1920",
+    "gerar-textos", "gerar-kit-consultor", "gerar-kit-distribuidor",
+    "produzir-comunicacao-completa",
+}
 
 
 @app.post("/api/jobs")
 def api_create_job(body: JobIn):
+    if body.command in COMANDOS_QUE_EXIGEM_BRIEF_PREVIO:
+        brief_path = Path(body.workspace_path) / body.slug / "brief_criativo.json"
+        if not brief_path.exists():
+            raise HTTPException(
+                status_code=400,
+                detail=(
+                    f"Projeto '{body.slug}' ainda não tem brief_criativo.json — "
+                    f"rode /esbocar para este slug antes de /{body.command}."
+                ),
+            )
     try:
         job = create_job(
             body.workspace_path,

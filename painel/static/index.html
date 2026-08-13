@@ -171,6 +171,23 @@
   }
 
   #cred-envvar-wrap.oculto, #job-prompt-wrap.oculto { display: none; }
+
+  .materiais-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
+    gap: 0.35rem 0.6rem;
+    margin-top: 0.3rem;
+  }
+  .materiais-item {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--text);
+    font-weight: 400;
+  }
+  .materiais-item input { width: auto; }
 </style>
 </head>
 <body>
@@ -211,18 +228,44 @@
   <label for="proj-texto">Texto-base</label>
   <textarea id="proj-texto" placeholder="Cole aqui o texto-mãe do projeto"></textarea>
   <label for="proj-publico">Público-alvo</label>
-  <input id="proj-publico" placeholder="consultores" />
+  <select id="proj-publico">
+    <option value="consultores">Consultores</option>
+    <option value="clientes">Clientes</option>
+    <option value="distribuidores">Distribuidores</option>
+  </select>
   <label for="proj-tom">Objetivo/tom</label>
-  <input id="proj-tom" placeholder="educacional_comercial" />
-  <label for="proj-materiais">Materiais selecionados (separados por vírgula)</label>
-  <input id="proj-materiais" placeholder="pdf,landing-page,textos" />
+  <select id="proj-tom">
+    <option value="educacional_comercial">Educacional + comercial</option>
+    <option value="informacional_tecnico">Informacional + técnico</option>
+    <option value="comercial_informacional_parceria">Comercial + informacional (parceria)</option>
+  </select>
+  <label>Materiais selecionados</label>
+  <div class="materiais-grid" id="proj-materiais">
+    <label class="materiais-item"><input type="checkbox" value="pdf" /> PDF (apostila)</label>
+    <label class="materiais-item"><input type="checkbox" value="landing-page" /> Landing page</label>
+    <label class="materiais-item"><input type="checkbox" value="apresentacao" /> Apresentação</label>
+    <label class="materiais-item"><input type="checkbox" value="arte-01" /> Arte 1080x1080</label>
+    <label class="materiais-item"><input type="checkbox" value="arte-02" /> Arte 1080x1350</label>
+    <label class="materiais-item"><input type="checkbox" value="arte-03" /> Arte 1080x1920</label>
+    <label class="materiais-item"><input type="checkbox" value="textos" /> Textos (WhatsApp/Instagram/LinkedIn)</label>
+    <label class="materiais-item"><input type="checkbox" value="kit-consultor" /> Kit Consultor</label>
+    <label class="materiais-item"><input type="checkbox" value="kit-distribuidor" /> Kit Distribuidor</label>
+  </div>
   <button onclick="criarProjeto()">Criar projeto</button>
 </section>
 
 <section>
-  <h2><span class="step-badge">4</span> Disparar produção</h2>
-  <label for="job-slug">Slug do projeto</label>
-  <input id="job-slug" placeholder="meu-projeto" />
+  <h2><span class="step-badge">4</span> Projetos existentes no workspace</h2>
+  <p class="muted">Reaproveite um projeto já esboçado para regenerar (ou gerar pela primeira vez) só um material específico, sem repetir o /esbocar.</p>
+  <button class="secundario" onclick="carregarProjetos()">Atualizar lista</button>
+  <ul class="plain" id="projetos-lista"></ul>
+</section>
+
+<section>
+  <h2><span class="step-badge">5</span> Disparar produção</h2>
+  <label for="job-slug">Slug do projeto (existente, escolhido acima, ou novo criado no passo 3)</label>
+  <input id="job-slug" list="job-slug-lista" placeholder="meu-projeto" />
+  <datalist id="job-slug-lista"></datalist>
   <label for="job-harness">Harness</label>
   <select id="job-harness"></select>
   <label for="job-model">Modelo (opcional)</label>
@@ -243,7 +286,7 @@
 </section>
 
 <section>
-  <h2><span class="step-badge">5</span> Jobs do workspace</h2>
+  <h2><span class="step-badge">6</span> Jobs do workspace</h2>
   <button class="secundario" onclick="atualizarJobs()">Atualizar agora</button>
   <ul class="plain" id="jobs-lista"></ul>
 </section>

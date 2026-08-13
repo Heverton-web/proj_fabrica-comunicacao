@@ -174,3 +174,64 @@ def test_create_job_rejects_unknown_harness(tmp_path):
         },
     )
     assert resp.status_code == 400
+
+
+def test_create_job_rejects_gerar_command_without_brief(tmp_path):
+    resp = client.post(
+        "/api/jobs",
+        json={
+            "workspace_path": str(tmp_path),
+            "slug": "projeto-sem-brief",
+            "harness": "echo",
+            "prompt": "/gerar-pdf projeto-sem-brief",
+            "command": "gerar-pdf",
+        },
+    )
+    assert resp.status_code == 400
+    assert "brief_criativo.json" in resp.json()["detail"]
+
+
+def test_create_job_allows_gerar_command_when_brief_exists(tmp_path):
+    project_dir = tmp_path / "projeto-com-brief"
+    project_dir.mkdir()
+    (project_dir / "brief_criativo.json").write_text("{}", encoding="utf-8")
+
+    created = client.post(
+        "/api/jobs",
+        json={
+            "workspace_path": str(tmp_path),
+            "slug": "projeto-com-brief",
+            "harness": "echo",
+            "prompt": "x",
+            "command": "gerar-pdf",
+        },
+    ).json()
+    finished = _wait_job_finished(created["id"])
+    assert finished["status"] == "done"
+
+
+def test_create_job_allows_esbocar_without_brief(tmp_path):
+    created = client.post(
+        "/api/jobs",
+        json={
+            "workspace_path": str(tmp_path),
+            "slug": "projeto-novo",
+            "harness": "echo",
+            "prompt": "x",
+            "command": "esbocar",
+        },
+    ).json()
+    finished = _wait_job_finished(created["id"])
+    assert finished["status"] == "done"
+
+
+def test_list_projects_reports_brief_presence(tmp_path):
+    client.post("/api/projects", json={"workspace_path": str(tmp_path), "slug": "proj-sem-brief"})
+    project_dir = tmp_path / "proj-com-brief"
+    project_dir.mkdir()
+    (project_dir / "config_projeto.json").write_text("{}", encoding="utf-8")
+    (project_dir / "brief_criativo.json").write_text("{}", encoding="utf-8")
+
+    listed = {p["slug"]: p for p in client.get("/api/projects", params={"workspace_path": str(tmp_path)}).json()}
+    assert listed["proj-sem-brief"]["tem_brief"] is False
+    assert listed["proj-com-brief"]["tem_brief"] is True
