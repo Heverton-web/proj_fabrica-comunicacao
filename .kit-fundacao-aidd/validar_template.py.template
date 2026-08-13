@@ -1,0 +1,34 @@
+#!/usr/bin/env python3
+"""Gate {{NOME_GATE}} — {{O_QUE_CONFERE_EM_1_FRASE}}."""
+import argparse
+import sys
+
+REGRAS = {
+    "R-1": "{{descricao_objetiva_e_mensuravel_da_regra}}",
+}
+
+
+def validar(caminho):
+    violacoes = []
+    # ... checagem determinística aqui (regex, contagem, presença) ...
+    # nunca chamar um LLM aqui — se a checagem depende de JULGAR
+    # sentido/qualidade/verdade, isso pertence a um critic separado
+    # (Peça 1), não a este script.
+    return violacoes
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("caminho")
+    ap.add_argument("--estrito", action="store_true")
+    args = ap.parse_args()
+
+    violacoes = validar(args.caminho)
+    if violacoes:
+        print("[FALHA]", *violacoes, sep="\n  - ")
+        sys.exit(1)
+    print("[OK] todas as regras passaram")
+
+
+if __name__ == "__main__":
+    main()
