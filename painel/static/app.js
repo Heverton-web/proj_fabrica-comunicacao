@@ -1,4 +1,15 @@
 let workspaceAtivo = localStorage.getItem("workspaceAtivo") || null;
+// Workspace raiz deste repo -- nunca pode ser removido, nem so da lista (o
+// backend ja recusa isso em painel/workspace.py; aqui e so uma segunda
+// camada pra nem mostrar o botao de remover pra esse caminho especifico).
+let workspaceRaizProtegido = null;
+
+const ICONE_LIXEIRA =
+  '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" ' +
+  'stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+  '<path d="M3 6h18"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>' +
+  '<path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>' +
+  '<line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>';
 
 const COMANDOS = [
   "esbocar",
@@ -61,6 +72,7 @@ async function carregarWorkspaces() {
     li.innerHTML = `<span><code>${ws.path}</code> <span class="muted">— ${ws.created_at}</span></span>`;
 
     const acoes = document.createElement("span");
+    acoes.className = "item-acoes";
 
     const btnUsar = document.createElement("button");
     btnUsar.className = "secundario";
@@ -68,11 +80,15 @@ async function carregarWorkspaces() {
     btnUsar.onclick = () => marcarWorkspaceAtivo(ws.path);
     acoes.appendChild(btnUsar);
 
-    const btnRemover = document.createElement("button");
-    btnRemover.className = "secundario";
-    btnRemover.textContent = "remover da lista";
-    btnRemover.onclick = () => removerWorkspace(ws.path);
-    acoes.appendChild(btnRemover);
+    if (ws.path !== workspaceRaizProtegido) {
+      const btnRemover = document.createElement("button");
+      btnRemover.className = "btn-icone perigo";
+      btnRemover.innerHTML = ICONE_LIXEIRA;
+      btnRemover.title = "Remover da lista (só o registro — a pasta não é apagada)";
+      btnRemover.setAttribute("aria-label", "Remover da lista");
+      btnRemover.onclick = () => removerWorkspace(ws.path);
+      acoes.appendChild(btnRemover);
+    }
 
     li.appendChild(acoes);
     ul.appendChild(li);
@@ -130,8 +146,39 @@ async function carregarHarnesses() {
 
 async function carregarCredenciais() {
   const { harnesses_com_credencial } = await chamar("GET", "/api/credentials");
-  document.getElementById("cred-lista").textContent =
-    harnesses_com_credencial.length ? harnesses_com_credencial.join(", ") : "(nenhuma)";
+  const ul = document.getElementById("cred-lista");
+  ul.innerHTML = "";
+
+  if (!harnesses_com_credencial.length) {
+    ul.innerHTML = `<li class="muted">(nenhuma)</li>`;
+    return;
+  }
+
+  for (const harness of harnesses_com_credencial) {
+    const li = document.createElement("li");
+    li.className = "ws-item";
+    li.innerHTML = `<span><code>${harness}</code></span>`;
+
+    const btnRemover = document.createElement("button");
+    btnRemover.className = "btn-icone perigo";
+    btnRemover.innerHTML = ICONE_LIXEIRA;
+    btnRemover.title = "Remover credencial";
+    btnRemover.setAttribute("aria-label", "Remover credencial");
+    btnRemover.onclick = () => removerCredencial(harness);
+    li.appendChild(btnRemover);
+
+    ul.appendChild(li);
+  }
+}
+
+async function removerCredencial(harness) {
+  if (!confirm(`Remover a credencial salva de "${harness}"?`)) return;
+  try {
+    await chamar("DELETE", `/api/credentials/${encodeURIComponent(harness)}`);
+    await carregarCredenciais();
+  } catch (erro) {
+    alert(erro.message);
+  }
 }
 
 async function salvarCredencial() {
@@ -289,6 +336,47 @@ async function carregarArquivosDoJob(job, feedEl) {
   }
 }
 
+// Elementos de card por job.id -- reaproveitados entre ticks de poll (nunca
+// recriados do zero) pra barra de progresso poder de fato fazer uma
+// transicao suave de largura. Recriar o <li> a cada tick (como era antes)
+// interrompe qualquer transicao/animacao CSS no meio do caminho -- e isso,
+// junto com um keyframe em loop, e o que parecia "piscar".
+const elementosDoJobPorId = {};
+
+function criarCardDeJob() {
+  const li = document.createElement("li");
+
+  const top = document.createElement("div");
+  top.className = "job-top";
+  li.appendChild(top);
+
+  const feed = document.createElement("div");
+  feed.className = "file-feed";
+  feed.textContent = "carregando arquivos…";
+  li.appendChild(feed);
+
+  const track = document.createElement("div");
+  track.className = "progress-track";
+  const fill = document.createElement("div");
+  fill.className = "progress-fill";
+  track.appendChild(fill);
+  li.appendChild(track);
+
+  return { li, top, feed, fill };
+}
+
+// Nao ha progresso real reportado pelo harness (headless, sem callback) --
+// em vez de um loop indeterminado, sobe rapido no comeco e desacelera com
+// base no tempo real decorrido, sem nunca fechar 100% sozinha. So o status
+// real (done/error) faz a barra chegar no fim.
+function calcularLarguraProgresso(job) {
+  if (job.status === "done" || job.status === "error") return 100;
+  if (job.status !== "running") return 4;
+  const decorridoSeg = (Date.now() - new Date(job.created_at).getTime()) / 1000;
+  const pct = 92 * (1 - Math.exp(-decorridoSeg / 25));
+  return Math.max(4, Math.min(92, pct));
+}
+
 async function atualizarJobs() {
   if (!workspaceAtivo) {
     agendarProximaAtualizacao(false);
@@ -296,49 +384,51 @@ async function atualizarJobs() {
   }
   const jobs = await chamar("GET", `/api/jobs?workspace_path=${encodeURIComponent(workspaceAtivo)}`);
   const ul = document.getElementById("jobs-lista");
-  ul.innerHTML = "";
+
+  const idsAtuais = new Set(jobs.map((j) => j.id));
+  for (const id of Object.keys(elementosDoJobPorId)) {
+    if (!idsAtuais.has(Number(id))) delete elementosDoJobPorId[id];
+  }
 
   let haJobAtivo = false;
 
-  for (const job of jobs) {
+  const itensEmOrdem = jobs.map((job) => {
     if (job.status === "pending" || job.status === "running") haJobAtivo = true;
 
-    const li = document.createElement("li");
-    li.className = `job-card ${job.status}`;
+    const els = elementosDoJobPorId[job.id] || (elementosDoJobPorId[job.id] = criarCardDeJob());
+    els.li.className = `job-card ${job.status}`;
 
-    const top = document.createElement("div");
-    top.className = "job-top";
     const permTag = job.permission_mode ? ` · permissão: ${job.permission_mode}` : "";
-    top.innerHTML =
+    els.top.innerHTML =
       `<span>#${job.id} <b>${job.slug}</b> via ${job.harness}${job.model ? ` (${job.model})` : ""}${permTag}</span>` +
       `<span class="badge ${job.status}">${job.status}${job.exit_code !== null ? ` · exit ${job.exit_code}` : ""}</span>`;
-    li.appendChild(top);
 
-    const track = document.createElement("div");
-    track.className = "progress-track";
-    track.innerHTML = `<div class="progress-fill"></div>`;
-    li.appendChild(track);
-
-    const feed = document.createElement("div");
-    feed.className = "file-feed";
-    li.appendChild(feed);
-
-    ul.appendChild(li);
+    els.fill.style.width = `${calcularLarguraProgresso(job)}%`;
 
     const cacheado = arquivosCacheDoJob[job.id];
     if (cacheado !== undefined) {
-      feed.innerHTML = cacheado;
-    } else {
-      feed.textContent = "carregando arquivos…";
-      carregarArquivosDoJob(job, feed);
+      els.feed.innerHTML = cacheado;
+    } else if (job.status !== "pending") {
+      carregarArquivosDoJob(job, els.feed);
     }
-  }
 
+    return els.li;
+  });
+
+  // replaceChildren move os <li> ja existentes (preservando estado/transicao
+  // CSS) em vez de destruir e recriar -- so cria de fato os que sao novos.
+  ul.replaceChildren(...itensEmOrdem);
   agendarProximaAtualizacao(haJobAtivo);
 }
 
 (async function iniciar() {
   popularComandos();
+  try {
+    workspaceRaizProtegido = (await chamar("GET", "/api/repo-workspace")).path;
+  } catch (erro) {
+    // painel ainda funciona sem isso -- so nao esconde o botao de remover
+    // do workspace raiz na lista (o backend recusa a remocao de qualquer jeito).
+  }
   await carregarHarnesses();
   await carregarWorkspaces();
   await carregarCredenciais();

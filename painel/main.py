@@ -63,8 +63,12 @@ def api_list_workspaces():
 def api_delete_workspace(path: str):
     """Remove só o registro do índice — nunca apaga a pasta nem os
     artefatos, que continuam no disco caso o usuário queira registrar o
-    mesmo caminho de novo depois."""
-    return {"path": path, "deleted": delete_workspace(path)}
+    mesmo caminho de novo depois. O workspace raiz `<repo>/output` recusa a
+    remoção mesmo do índice (ver painel/workspace.py)."""
+    try:
+        return {"path": path, "deleted": delete_workspace(path)}
+    except WorkspaceError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
 
 
 # ---------- credenciais (cofre local, nunca no workspace) ----------

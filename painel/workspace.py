@@ -11,6 +11,13 @@ from pathlib import Path
 
 from painel.appdata import appdata_dir
 from painel.db import get_connection
+from painel.repo import REPO_ROOT
+
+# Workspace raiz recomendado pelo atalho "usar output/ deste repo" (ver
+# /api/repo-workspace) -- nunca pode ser removido do indice, nem so o
+# registro (delete_workspace não apaga arquivo nenhum de qualquer forma,
+# mas essa pasta é tratada como intocável em qualquer circunstância).
+_WORKSPACE_RAIZ_PROTEGIDO = str((REPO_ROOT / "output").resolve())
 
 
 class WorkspaceError(ValueError):
@@ -79,8 +86,18 @@ def delete_workspace(raw_path: str, conn: sqlite3.Connection | None = None) -> b
     """Remove só o registro do workspace do índice do painel — a pasta e os
     artefatos dentro dela nunca são tocados (mesma regra de nunca ter banco
     de conteúdo). Útil pra tirar da lista workspaces de teste/temporários que
-    não têm mais utilidade."""
+    não têm mais utilidade.
+
+    O workspace raiz `<repo>/output` nunca pode ser removido, nem do índice
+    — é o workspace canônico recomendado para uso com harness real (ver
+    `/api/repo-workspace`), tratado como intocável em qualquer circunstância."""
     path = str(Path(raw_path).expanduser().resolve())
+
+    if path == _WORKSPACE_RAIZ_PROTEGIDO:
+        raise WorkspaceError(
+            "O workspace raiz deste repo ('output/') nunca pode ser removido — "
+            "nem da lista, nem (muito menos) do disco."
+        )
 
     own_conn = conn is None
     conn = conn or get_connection()

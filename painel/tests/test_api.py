@@ -44,6 +44,14 @@ def test_register_workspace_rejects_invalid_path():
     assert resp.status_code == 400
 
 
+def test_delete_workspace_endpoint_refuses_repo_output_workspace():
+    from painel.repo import REPO_ROOT
+
+    resp = client.delete("/api/workspaces", params={"path": str(REPO_ROOT / "output")})
+    assert resp.status_code == 400
+    assert "output" in resp.json()["detail"]
+
+
 def test_delete_workspace_endpoint_removes_only_the_index_entry(tmp_path):
     target = tmp_path / "workspace-descartavel"
     client.post("/api/workspaces", json={"path": str(target)})

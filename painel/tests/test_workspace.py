@@ -67,3 +67,24 @@ def test_delete_workspace_removes_only_the_index_entry(tmp_path):
 
 def test_delete_workspace_returns_false_when_not_registered(tmp_path):
     assert delete_workspace(str(tmp_path / "nunca-registrado")) is False
+
+
+def test_delete_workspace_refuses_to_remove_repo_output_workspace():
+    from painel.repo import REPO_ROOT
+
+    repo_output = REPO_ROOT / "output"
+    register_workspace(str(repo_output))
+
+    with pytest.raises(WorkspaceError):
+        delete_workspace(str(repo_output))
+
+    # segue registrado -- a tentativa de remocao nao teve efeito nenhum
+    assert any(w["path"] == str(repo_output.resolve()) for w in list_workspaces())
+
+
+def test_delete_workspace_refuses_repo_output_even_when_never_registered():
+    """A recusa e incondicional -- nao depende de estar (ou nao) no indice."""
+    from painel.repo import REPO_ROOT
+
+    with pytest.raises(WorkspaceError):
+        delete_workspace(str(REPO_ROOT / "output"))
