@@ -70,17 +70,30 @@ workspace do usuário.
 
 ## O que foi validado de verdade nesta entrega
 
-- **37 testes automatizados** (`pytest`), incluindo:
+- **47 testes automatizados** (`pytest`), incluindo:
   - subprocess real do adaptador `echo` criando arquivo em disco;
   - job runner real (thread + subprocess) atualizando status no índice;
   - API HTTP real via `TestClient` (workspace, credenciais, projetos,
-    disparo de job) — nenhum teste usa apenas mocks para o fluxo principal.
+    disparo de job, listagem de arquivos) — nenhum teste usa apenas mocks
+    para o fluxo principal;
+  - regressão do bug de normalização de `workspace_path` (barra `/` vs `\`)
+    e do bug de resolução de executável via `PATH` (shim `.cmd` do npm no
+    Windows).
 - **Smoke test manual end-to-end**: servidor `uvicorn` real, requisições HTTP
-  reais via `curl` (não `TestClient`), confirmando:
-  - `config_projeto.json` e `smoke_marker.txt` gravados dentro da pasta de
+  reais via `curl` e validação visual real via Playwright (screenshot),
+  confirmando:
+  - `config_projeto.json` e artefatos do job gravados dentro da pasta de
     workspace escolhida (nunca em banco);
   - `painel.db` (bookkeeping) e os logs ficando fora do workspace, em
-    `~/.fabrica-painel`.
+    `~/.fabrica-painel`;
+  - lista de jobs e feed de arquivos renderizando corretamente na UI.
+- **Chamada real a LLM via os adaptadores `claude-code` e `opencode`**
+  (prompt pequeno e seguro, fora de qualquer slash-command): os dois
+  responderam corretamente (`exit_code 0`), confirmando que a construção de
+  comando, injeção de credencial/modelo e resolução de executável funcionam
+  de ponta a ponta com harness real, não só com o adaptador `echo`. O que
+  **não** foi testado é um slash-command real (`/produzir-comunicacao-completa`
+  etc.) — isso depende da limitação nº 1 abaixo (descoberta de skills).
 
 ## Limitações conhecidas (leia antes de usar com um harness real)
 
@@ -97,11 +110,12 @@ workspace do usuário.
      ele suportar (verificar por harness);
    - estender o adaptador para passar um "project root" explícito, se o
      harness tiver essa opção de CLI.
-2. **Adaptadores de harness real não foram exercitados com subprocess de
-   verdade.** `claude-code` e `opencode` são validados só por construção de
-   comando (testes mockados) — de propósito, para não gerar custo de LLM nem
-   risco de recursão de agente rodando de dentro desta própria sessão. Rodar
-   de verdade requer o binário instalado e credencial real do usuário.
+2. **Slash-commands da Fábrica (`/produzir-comunicacao-completa` etc.) via
+   harness real ainda não foram testados de ponta a ponta** — só um prompt
+   simples (sem slash-command) foi validado com `claude-code`/`opencode`
+   reais. Um slash-command real depende da limitação nº 1 (descoberta de
+   skills) estar resolvida primeiro; testar antes disso só reproduziria o
+   "Unknown command" já visto na validação manual.
 3. **Fluxo one-shot substitui a entrevista conversacional do `/esbocar`.**
    Como a invocação é headless, o formulário precisa entregar tudo de uma vez
    — perde-se a adaptação dinâmica de perguntas de acompanhamento que uma
