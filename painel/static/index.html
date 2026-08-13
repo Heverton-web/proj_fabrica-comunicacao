@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<title>Painel da Fábrica — Multi-Harness</title>
+<style>
+  body { font-family: system-ui, sans-serif; max-width: 920px; margin: 2rem auto; padding: 0 1rem; color: #1a1a1a; }
+  h1 { font-size: 1.3rem; }
+  section { border: 1px solid #ddd; border-radius: 8px; padding: 1rem; margin-bottom: 1.5rem; }
+  section h2 { margin-top: 0; font-size: 1.05rem; }
+  label { display: block; margin: 0.5rem 0 0.2rem; font-size: 0.85rem; color: #444; }
+  input, select, textarea { width: 100%; box-sizing: border-box; padding: 0.4rem; font-size: 0.9rem; }
+  textarea { min-height: 4rem; }
+  button { margin-top: 0.7rem; padding: 0.4rem 0.9rem; cursor: pointer; }
+  ul { padding-left: 1.1rem; }
+  .item { border: 1px solid #eee; border-radius: 6px; padding: 0.5rem 0.7rem; margin-bottom: 0.4rem; font-size: 0.85rem; }
+  .status-pending { color: #a66a00; }
+  .status-running { color: #0060c0; }
+  .status-done { color: #157a15; }
+  .status-error { color: #b3261e; }
+  .muted { color: #777; font-size: 0.8rem; }
+  code { background: #f3f3f3; padding: 0.1rem 0.3rem; border-radius: 4px; }
+</style>
+</head>
+<body>
+<h1>Painel de Controle — Fábrica de Materiais de Comunicação</h1>
+<p class="muted">
+  Roda local. Não guarda conteúdo em banco — todos os artefatos ficam dentro da pasta
+  de workspace escolhida abaixo. Credenciais ficam num cofre local, nunca no workspace.
+</p>
+
+<section id="sec-workspace">
+  <h2>1. Workspace</h2>
+  <label for="ws-path">Pasta onde os projetos/artefatos serão salvos</label>
+  <input id="ws-path" placeholder="C:\Users\voce\Documents\meus-projetos-fabrica" />
+  <button onclick="registrarWorkspace()">Registrar workspace</button>
+  <p class="muted">Workspace ativo: <code id="ws-ativo">(nenhum)</code></p>
+  <ul id="ws-lista"></ul>
+</section>
+
+<section id="sec-credenciais">
+  <h2>2. Harness / provedor de LLM e credenciais</h2>
+  <label for="cred-harness">Harness</label>
+  <select id="cred-harness"></select>
+  <label for="cred-envvar">Variável de ambiente da credencial (ex.: ANTHROPIC_API_KEY)</label>
+  <input id="cred-envvar" placeholder="ANTHROPIC_API_KEY" />
+  <label for="cred-key">API key / token</label>
+  <input id="cred-key" type="password" placeholder="sk-..." />
+  <button onclick="salvarCredencial()">Salvar credencial</button>
+  <p class="muted">Harnesses com credencial salva: <code id="cred-lista"></code></p>
+</section>
+
+<section id="sec-projeto">
+  <h2>3. Novo projeto</h2>
+  <label for="proj-slug">Slug</label>
+  <input id="proj-slug" placeholder="meu-projeto" />
+  <label for="proj-texto">Texto-base</label>
+  <textarea id="proj-texto" placeholder="Cole aqui o texto-mãe do projeto"></textarea>
+  <label for="proj-publico">Público-alvo</label>
+  <input id="proj-publico" placeholder="consultores" />
+  <label for="proj-tom">Objetivo/tom</label>
+  <input id="proj-tom" placeholder="educacional_comercial" />
+  <label for="proj-materiais">Materiais selecionados (separados por vírgula)</label>
+  <input id="proj-materiais" placeholder="pdf,landing-page,textos" />
+  <button onclick="criarProjeto()">Criar projeto</button>
+</section>
+
+<section id="sec-produzir">
+  <h2>4. Disparar produção</h2>
+  <label for="job-slug">Slug do projeto</label>
+  <input id="job-slug" placeholder="meu-projeto" />
+  <label for="job-harness">Harness</label>
+  <select id="job-harness"></select>
+  <label for="job-model">Modelo (opcional)</label>
+  <input id="job-model" placeholder="claude-sonnet-5" />
+  <label for="job-prompt">Comando</label>
+  <input id="job-prompt" value="/produzir-comunicacao-completa" />
+  <button onclick="dispararJob()">Disparar</button>
+</section>
+
+<section id="sec-jobs">
+  <h2>5. Jobs do workspace</h2>
+  <button onclick="atualizarJobs()">Atualizar agora</button>
+  <ul id="jobs-lista"></ul>
+</section>
+
+<script src="/app.js"></script>
+</body>
+</html>
