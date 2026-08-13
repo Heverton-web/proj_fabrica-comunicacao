@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Painel da Fábrica — Multi-Harness</title>
+<style>
+  :root {
+    --bg: #f4f5f7;
+    --card: #ffffff;
+    --border: #e2e4e9;
+    --text: #1c1f26;
+    --muted: #6b7280;
+    --accent: #4f46e5;
+    --accent-dark: #3730a3;
+    --pending: #b45309;
+    --running: #1d4ed8;
+    --done: #15803d;
+    --error: #b91c1c;
+    --mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 2rem 1.25rem 4rem;
+  }
+
+  header { margin-bottom: 1.75rem; }
+  header h1 { font-size: 1.4rem; margin: 0 0 0.3rem; }
+  header p { margin: 0; color: var(--muted); font-size: 0.88rem; }
+
+  section {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.25rem 1.4rem;
+    margin-bottom: 1.25rem;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+  }
+
+  section h2 {
+    margin: 0 0 0.9rem;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .step-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.4rem; height: 1.4rem;
+    border-radius: 50%;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+
+  label { display: block; margin: 0.6rem 0 0.25rem; font-size: 0.8rem; color: var(--muted); font-weight: 500; }
+
+  input, select, textarea {
+    width: 100%;
+    padding: 0.5rem 0.6rem;
+    font-size: 0.9rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: #fbfbfc;
+    font-family: inherit;
+  }
+  input:focus, select:focus, textarea:focus { outline: 2px solid var(--accent); border-color: transparent; }
+  textarea { min-height: 4.5rem; resize: vertical; }
+
+  button {
+    margin-top: 0.85rem;
+    padding: 0.5rem 1.1rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: white;
+    background: var(--accent);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  button:hover { background: var(--accent-dark); }
+  button.secundario { background: #eef0f4; color: var(--text); }
+  button.secundario:hover { background: #e2e4e9; }
+
+  button.com-icone { display: inline-flex; align-items: center; gap: 0.4rem; }
+  button.com-icone svg { flex-shrink: 0; }
+
+  button.btn-icone {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    padding: 0;
+    margin-top: 0;
+    background: #eef0f4;
+    color: var(--muted);
+    flex-shrink: 0;
+  }
+  button.btn-icone:hover { background: #e2e4e9; color: var(--text); }
+  button.btn-icone.perigo:hover { background: #fee2e2; color: var(--error); }
+
+  .item-acoes { display: flex; align-items: center; gap: 0.4rem; flex-shrink: 0; }
+
+  .muted { color: var(--muted); font-size: 0.8rem; }
+  code { background: #eef0f4; padding: 0.1rem 0.35rem; border-radius: 5px; font-family: var(--mono); font-size: 0.82rem; }
+
+  ul.plain { list-style: none; margin: 0.5rem 0 0; padding: 0; }
+  .ws-item, .job-card {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.55rem 0.75rem;
+    margin-bottom: 0.45rem;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+  }
+
+  .badge {
+    display: inline-block;
+    padding: 0.15rem 0.55rem;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+  .badge.pending { background: #fef3c7; color: var(--pending); }
+  .badge.running { background: #dbeafe; color: var(--running); }
+  .badge.done { background: #dcfce7; color: var(--done); }
+  .badge.error { background: #fee2e2; color: var(--error); }
+
+  .progress-track {
+    width: 100%;
+    height: 6px;
+    border-radius: 999px;
+    background: #e2e4e9;
+    overflow: hidden;
+    margin: 0.4rem 0 0.15rem;
+  }
+  .progress-fill {
+    height: 100%;
+    width: 4%;
+    border-radius: 999px;
+    background: var(--running);
+    /* largura e recalculada a cada poll (tempo real decorrido do job) e so
+       transiciona suavemente -- nunca uma keyframe em loop, pra nao "piscar"
+       quando a lista e recriada a cada tick. */
+    transition: width 1.8s linear, background-color 0.3s ease;
+  }
+  .job-card.done .progress-fill { background: var(--done); }
+  .job-card.error .progress-fill { background: var(--error); }
+
+  .job-card { flex-direction: column; align-items: stretch; }
+  .job-card .job-top { display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; }
+
+  .file-feed {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    background: #14161d;
+    color: #d7f9d7;
+    border-radius: 8px;
+    padding: 0.5rem 0.7rem;
+    max-height: 8rem;
+    overflow-y: auto;
+    margin-top: 0.4rem;
+  }
+  .file-feed .linha { animation: surgir 0.25s ease-out; white-space: nowrap; }
+  .file-feed .linha .tam { color: #8fb8a8; margin-left: 0.4rem; }
+  @keyframes surgir {
+    from { opacity: 0; transform: translateY(-4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  #cred-envvar-wrap.oculto, #job-prompt-wrap.oculto { display: none; }
+
+  .materiais-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
+    gap: 0.35rem 0.6rem;
+    margin-top: 0.3rem;
+  }
+  .materiais-item {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--text);
+    font-weight: 400;
+  }
+  .materiais-item input { width: auto; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Painel de Controle — Fábrica de Materiais de Comunicação</h1>
+  <p>
+    Roda local, sem banco de conteúdo — todos os artefatos ficam dentro da pasta de
+    workspace escolhida abaixo. Credenciais ficam num cofre local, nunca no workspace.
+  </p>
+</header>
+
+<section>
+  <h2><span class="step-badge">1</span> Workspace</h2>
+  <label for="ws-path">Pasta onde os projetos/artefatos serão salvos</label>
+  <input id="ws-path" placeholder="C:\Users\voce\Documents\meus-projetos-fabrica" />
+  <button class="com-icone" onclick="registrarWorkspace()"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Registrar workspace</button>
+  <button class="secundario" onclick="usarWorkspaceDoRepo()">usar output/ deste repo (recomendado p/ harness real)</button>
+  <p class="muted">Workspace ativo: <code id="ws-ativo">(nenhum)</code></p>
+  <ul class="plain" id="ws-lista"></ul>
+</section>
+
+<section>
+  <h2><span class="step-badge">2</span> Harness / provedor de LLM e credenciais</h2>
+  <p class="muted">Se o harness já estiver autenticado na sua máquina (ex.: sessão de <code>claude login</code> ativa), pode pular esta etapa — o job herda o ambiente do sistema. Só cadastre uma credencial aqui se quiser forçar uma chave/conta específica.</p>
+  <label for="cred-harness">Harness</label>
+  <select id="cred-harness"></select>
+  <label for="cred-envvar">Variável de ambiente da credencial (ex.: ANTHROPIC_API_KEY)</label>
+  <input id="cred-envvar" placeholder="ANTHROPIC_API_KEY" />
+  <label for="cred-key">API key / token</label>
+  <input id="cred-key" type="password" placeholder="sk-..." />
+  <button class="com-icone" onclick="salvarCredencial()"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Salvar credencial</button>
+  <p class="muted">Harnesses com credencial salva:</p>
+  <ul class="plain" id="cred-lista"><li class="muted">(nenhuma)</li></ul>
+</section>
+
+<section>
+  <h2><span class="step-badge">3</span> Projetos existentes no workspace</h2>
+  <p class="muted">Já esboçou este projeto antes? Reaproveite o slug para regenerar (ou gerar pela primeira vez) só um material específico, sem repetir o /esbocar. Nada aqui? Crie um novo no passo 4.</p>
+  <button class="secundario" onclick="carregarProjetos()">Atualizar lista</button>
+  <ul class="plain" id="projetos-lista"></ul>
+</section>
+
+<section>
+  <h2><span class="step-badge">4</span> Novo projeto</h2>
+  <label for="proj-slug">Slug</label>
+  <input id="proj-slug" placeholder="meu-projeto" />
+  <label for="proj-texto">Texto-base</label>
+  <textarea id="proj-texto" placeholder="Cole aqui o texto-mãe do projeto"></textarea>
+  <label for="proj-publico">Público-alvo</label>
+  <select id="proj-publico">
+    <option value="consultores">Consultores</option>
+    <option value="clientes">Clientes</option>
+    <option value="distribuidores">Distribuidores</option>
+  </select>
+  <label for="proj-tom">Objetivo/tom</label>
+  <select id="proj-tom">
+    <option value="educacional_comercial">Educacional + comercial</option>
+    <option value="informacional_tecnico">Informacional + técnico</option>
+    <option value="comercial_informacional_parceria">Comercial + informacional (parceria)</option>
+  </select>
+  <label>Materiais selecionados</label>
+  <div class="materiais-grid" id="proj-materiais">
+    <label class="materiais-item"><input type="checkbox" value="pdf" /> PDF (apostila)</label>
+    <label class="materiais-item"><input type="checkbox" value="landing-page" /> Landing page</label>
+    <label class="materiais-item"><input type="checkbox" value="apresentacao" /> Apresentação</label>
+    <label class="materiais-item"><input type="checkbox" value="arte-01" /> Arte 1080x1080</label>
+    <label class="materiais-item"><input type="checkbox" value="arte-02" /> Arte 1080x1350</label>
+    <label class="materiais-item"><input type="checkbox" value="arte-03" /> Arte 1080x1920</label>
+    <label class="materiais-item"><input type="checkbox" value="textos" /> Textos (WhatsApp/Instagram/LinkedIn)</label>
+    <label class="materiais-item"><input type="checkbox" value="kit-consultor" /> Kit Consultor</label>
+    <label class="materiais-item"><input type="checkbox" value="kit-distribuidor" /> Kit Distribuidor</label>
+  </div>
+  <button class="com-icone" onclick="criarProjeto()"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Criar projeto</button>
+</section>
+
+<section>
+  <h2><span class="step-badge">5</span> Disparar produção</h2>
+  <label for="job-slug">Slug do projeto (existente, escolhido no passo 3, ou novo criado no passo 4)</label>
+  <input id="job-slug" list="job-slug-lista" placeholder="meu-projeto" />
+  <datalist id="job-slug-lista"></datalist>
+  <label for="job-harness">Harness</label>
+  <select id="job-harness"></select>
+  <label for="job-model">Modelo (opcional)</label>
+  <input id="job-model" placeholder="claude-sonnet-5" />
+  <label for="job-comando">Comando</label>
+  <select id="job-comando" onchange="alternarComandoCustomizado()"></select>
+  <div id="job-prompt-wrap" class="oculto">
+    <label for="job-prompt">Comando customizado</label>
+    <input id="job-prompt" placeholder="/meu-comando argumento" />
+  </div>
+  <label for="job-permissao">Permissão no modo headless (sem terminal pra aprovar nada)</label>
+  <select id="job-permissao">
+    <option value="">padrão (mais seguro — pode parar pedindo aprovação e desistir)</option>
+    <option value="scoped">escopado (libera Bash/Read/Write/Edit/Glob/Grep/Task — recomendado p/ produção)</option>
+    <option value="bypass">bypass total (desliga toda verificação — maior risco)</option>
+  </select>
+  <button onclick="dispararJob()">Disparar</button>
+</section>
+
+<section>
+  <h2><span class="step-badge">6</span> Jobs do workspace</h2>
+  <button class="secundario" onclick="atualizarJobs()">Atualizar agora</button>
+  <ul class="plain" id="jobs-lista"></ul>
+</section>
+
+<script src="/app.js"></script>
+</body>
+</html>

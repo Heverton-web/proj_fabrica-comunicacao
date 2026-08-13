@@ -1,0 +1,12 @@
+# Dependencias do Painel de Controle Universal Multi-Harness
+# pip install -r painel/requirements.txt
+
+fastapi>=0.115
+uvicorn>=0.30
+
+# Cofre de credenciais criptografado (Fernet)
+cryptography>=42.0
+
+# Testes (dev)
+pytest>=8.0
+httpx>=0.27
