@@ -39,6 +39,30 @@ OBJETIVOS_TOM_VALIDOS = {
     "comercial_informacional_parceria",
 }
 
+# Decomposicao fixa de objetivo_tom em objetivo + tom_de_voz (diretor-de-arte,
+# passo 4) - sempre os mesmos 3 pares, nunca re-derivar por LLM. Movido pra
+# script pra parar de fazer a LLM "copiar" uma tabela de 3 entradas que ja
+# estava por extenso no proprio SKILL.md (achado de baixo risco/baixo custo,
+# ver melhorias/plano-determinismo-reducao-custos.md).
+DECOMPOSICAO_OBJETIVO_TOM = {
+    "educacional_comercial": {"objetivo": "educacional", "tom_de_voz": "comercial"},
+    "informacional_tecnico": {"objetivo": "informacional", "tom_de_voz": "tecnico"},
+    "comercial_informacional_parceria": {
+        "objetivo": "comercial",
+        "tom_de_voz": "informacional_tecnico_de_parceria_de_venda",
+    },
+}
+
+
+def decompor_objetivo_tom(objetivo_tom):
+    """Decompoe objetivo_tom (escolha do operador na rodada 3 do /esbocar) em
+    objetivo + tom_de_voz. Tabela fixa - ver DECOMPOSICAO_OBJETIVO_TOM."""
+    if objetivo_tom not in DECOMPOSICAO_OBJETIVO_TOM:
+        raise ValueError(
+            f"objetivo_tom {objetivo_tom!r} invalido. Esperado um de {sorted(OBJETIVOS_TOM_VALIDOS)}."
+        )
+    return dict(DECOMPOSICAO_OBJETIVO_TOM[objetivo_tom])
+
 
 def caminho_config(slug):
     return DIR_OUTPUT / slug / "config_projeto.json"
@@ -166,10 +190,24 @@ def vars_pdf(slug):
 
 def main():
     ap = argparse.ArgumentParser(description="Parametros/validacao de config_projeto.json")
-    ap.add_argument("slug")
+    ap.add_argument("slug", nargs="?")
     ap.add_argument("--validar", action="store_true")
     ap.add_argument("--pdf-vars", action="store_true")
+    ap.add_argument("--decompor-objetivo-tom", metavar="OBJETIVO_TOM")
     args = ap.parse_args()
+
+    if args.decompor_objetivo_tom:
+        try:
+            resultado = decompor_objetivo_tom(args.decompor_objetivo_tom)
+        except ValueError as exc:
+            print(f"[ERRO] {exc}")
+            return 1
+        print(json.dumps(resultado, ensure_ascii=False))
+        return 0
+
+    if args.slug is None:
+        print("Nada a fazer - use --validar, --pdf-vars ou --decompor-objetivo-tom")
+        return 0
 
     if args.validar:
         ok, erros = validar_config(args.slug)

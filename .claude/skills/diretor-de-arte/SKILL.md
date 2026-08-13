@@ -93,12 +93,14 @@ Leia de `config_projeto.json` as escolhas do operador (rodadas 2 e 3) e registre
 `brief_criativo.json` como fonte de verdade:
 
 - `publico_alvo` ∈ {consultores, clientes, distribuidores} — preservado tal qual.
-- `objetivo_tom` ∈ {educacional_comercial, informacional_tecnico,
-  comercial_informacional_parceria} — preservado tal qual **e** decomposto em:
-  - `educacional_comercial` → `objetivo: "educacional"`, `tom_de_voz: "comercial"`
-  - `informacional_tecnico` → `objetivo: "informacional"`, `tom_de_voz: "tecnico"`
-  - `comercial_informacional_parceria` → `objetivo: "comercial"`,
-    `tom_de_voz: "informacional_tecnico_de_parceria_de_venda"`
+- `objetivo_tom` — preservado tal qual **e** decomposto em `objetivo`+`tom_de_voz` via
+  tabela fixa determinística (nunca re-derive isso, é lookup, não decisão):
+
+  ```
+  python scripts/parametros_projeto.py --decompor-objetivo-tom <objetivo_tom>
+  ```
+
+  Copie o JSON de saída (`{"objetivo": ..., "tom_de_voz": ...}`) direto pro brief.
 
 Ambos orientam o registro de linguagem de todos os `redator-*` (mesmo público e mesmo
 tom em PDF, landing, apresentação e artes — consistência de marca).
