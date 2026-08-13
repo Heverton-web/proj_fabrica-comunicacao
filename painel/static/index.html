@@ -222,7 +222,14 @@
 </section>
 
 <section>
-  <h2><span class="step-badge">3</span> Novo projeto</h2>
+  <h2><span class="step-badge">3</span> Projetos existentes no workspace</h2>
+  <p class="muted">Já esboçou este projeto antes? Reaproveite o slug para regenerar (ou gerar pela primeira vez) só um material específico, sem repetir o /esbocar. Nada aqui? Crie um novo no passo 4.</p>
+  <button class="secundario" onclick="carregarProjetos()">Atualizar lista</button>
+  <ul class="plain" id="projetos-lista"></ul>
+</section>
+
+<section>
+  <h2><span class="step-badge">4</span> Novo projeto</h2>
   <label for="proj-slug">Slug</label>
   <input id="proj-slug" placeholder="meu-projeto" />
   <label for="proj-texto">Texto-base</label>
@@ -255,15 +262,8 @@
 </section>
 
 <section>
-  <h2><span class="step-badge">4</span> Projetos existentes no workspace</h2>
-  <p class="muted">Reaproveite um projeto já esboçado para regenerar (ou gerar pela primeira vez) só um material específico, sem repetir o /esbocar.</p>
-  <button class="secundario" onclick="carregarProjetos()">Atualizar lista</button>
-  <ul class="plain" id="projetos-lista"></ul>
-</section>
-
-<section>
   <h2><span class="step-badge">5</span> Disparar produção</h2>
-  <label for="job-slug">Slug do projeto (existente, escolhido acima, ou novo criado no passo 3)</label>
+  <label for="job-slug">Slug do projeto (existente, escolhido no passo 3, ou novo criado no passo 4)</label>
   <input id="job-slug" list="job-slug-lista" placeholder="meu-projeto" />
   <datalist id="job-slug-lista"></datalist>
   <label for="job-harness">Harness</label>
