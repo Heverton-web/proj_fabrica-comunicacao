@@ -1,3 +1,6 @@
+import sys
+import time
+
 import pytest
 
 from painel.harness_adapters.base import HarnessAdapter, HeadlessInvocation
@@ -106,3 +109,44 @@ def test_run_job_marks_error_when_binary_missing(tmp_path, monkeypatch):
     assert finished["exit_code"] is None
     log_content = open(finished["log_path"], encoding="utf-8").read()
     assert "ERRO ao spawnar processo" in log_content
+
+
+class _NetoOrfaoAdapter(HarnessAdapter):
+    """Simula o harness real: o processo direto termina rápido, mas deixa
+    para trás um neto (processo filho do processo filho) que herda os
+    handles e continua vivo por um tempo."""
+
+    name = "neto-orfao-fake"
+
+    def build_invocation(
+        self, cwd, prompt, credential=None, model=None, extra_allowed_dirs=None, permission_mode=None
+    ):
+        script = (
+            "import subprocess, sys\n"
+            "subprocess.Popen([sys.executable, '-c', 'import time; time.sleep(3)'], close_fds=False)\n"
+            "print('PROCESSO_DIRETO_TERMINOU')\n"
+        )
+        return HeadlessInvocation(cmd=[sys.executable, "-c", script], cwd=cwd)
+
+
+def test_run_job_does_not_hang_waiting_for_orphaned_grandchild(tmp_path, monkeypatch):
+    """Regressão: com stdout/stderr capturados via subprocess.PIPE,
+    `subprocess.run()` só retorna quando TODOS os handles do pipe fecham —
+    inclusive o de um neto que herdou o handle e continua vivo depois que o
+    processo filho direto já terminou. Isso deixava o job preso em
+    "running" para sempre mesmo com o trabalho de verdade (arquivos no
+    workspace) já concluído — achado real, não hipotético. Redirecionar
+    stdout/stderr para o arquivo de log (painel/jobs.py) remove essa
+    dependência: o runner só espera o PID do processo filho direto."""
+    job = create_job(str(tmp_path), "slug-neto-orfao", "echo")
+    monkeypatch.setattr("painel.jobs.get_adapter", lambda name: _NetoOrfaoAdapter())
+
+    inicio = time.monotonic()
+    finished = run_job(job["id"], "prompt qualquer", timeout=10)
+    decorrido = time.monotonic() - inicio
+
+    assert finished["status"] == "done"
+    assert decorrido < 2.0, (
+        f"run_job levou {decorrido:.1f}s — parece estar esperando o neto órfão "
+        "(que dorme 3s) em vez de só o processo filho direto."
+    )

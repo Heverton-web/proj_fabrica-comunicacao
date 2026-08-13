@@ -155,25 +155,32 @@ def run_job(
         _update_job(job_id, conn, status="running")
 
         try:
-            result = subprocess.run(
-                invocation.resolved_cmd(),
-                cwd=invocation.cwd,
-                env=invocation.full_env(),
-                capture_output=True,
-                text=True,
-                timeout=timeout,
-            )
+            # stdout/stderr vao direto pro arquivo de log (nunca subprocess.PIPE):
+            # com PIPE, subprocess.run() so retorna quando o pipe fecha, o que
+            # so acontece quando TODO handle que aponta pra ele fecha -- inclusive
+            # o de netos que o harness spawna (MCP servers, node.exe via shim
+            # .cmd no Windows) e nao encerra junto com o processo principal.
+            # Isso deixava o job preso em "running" pra sempre mesmo com o
+            # trabalho de verdade (arquivos no workspace) ja terminado -- achado
+            # real, nao hipotetico. Redirecionar pra arquivo faz o runner esperar
+            # só o PID do processo que ele mesmo spawnou (subprocess.Popen.wait),
+            # que nao depende de handle nenhum de neto.
+            with log_path.open("w", encoding="utf-8") as log_file:
+                log_file.write("$ " + " ".join(invocation.cmd) + "\n\n--- stdout+stderr ---\n")
+                log_file.flush()
+                result = subprocess.run(
+                    invocation.resolved_cmd(),
+                    cwd=invocation.cwd,
+                    env=invocation.full_env(),
+                    stdout=log_file,
+                    stderr=subprocess.STDOUT,
+                    timeout=timeout,
+                )
         except (OSError, subprocess.SubprocessError) as exc:
             log_path.write_text(f"ERRO ao spawnar processo: {exc}", encoding="utf-8")
             _update_job(job_id, conn, status="error", log_path=str(log_path), exit_code=None)
             return get_job(job_id, conn=conn)
 
-        log_path.write_text(
-            "$ "
-            + " ".join(invocation.cmd)
-            + f"\n\n--- stdout ---\n{result.stdout}\n--- stderr ---\n{result.stderr}\n",
-            encoding="utf-8",
-        )
         status = "done" if result.returncode == 0 else "error"
         _update_job(job_id, conn, status=status, log_path=str(log_path), exit_code=result.returncode)
         return get_job(job_id, conn=conn)

@@ -111,6 +111,16 @@ workspace do usuário.
 
 ## Limitações conhecidas (leia antes de usar com um harness real)
 
+0. ~~Job ficava preso em "running" para sempre mesmo com o trabalho já
+   concluído~~ — **RESOLVIDO.** `subprocess.run(..., capture_output=True)`
+   só retorna quando o pipe de stdout/stderr fecha, e isso só acontece
+   quando **todo** processo que herdou aquele handle termina — inclusive um
+   neto que o harness spawna (MCP server, `node.exe` por trás do shim
+   `.cmd` do npm no Windows) e que não morre junto com o processo principal.
+   `painel/jobs.py` agora redireciona stdout/stderr direto para o arquivo de
+   log (nunca `PIPE`), então o runner só espera o PID do processo filho
+   direto — regressão coberta por
+   `test_run_job_does_not_hang_waiting_for_orphaned_grandchild`.
 1. ~~Descoberta de skills quando o workspace é externo ao repo~~ — **RESOLVIDO
    para `claude-code` quando o workspace é `<repo>/output`** (o atalho "usar
    output/ deste repo" da seção 1 do painel). O job runner detecta
