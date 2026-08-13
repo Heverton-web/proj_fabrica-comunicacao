@@ -1,6 +1,9 @@
 # Plano de Ação — Determinismo e Redução de Custo de Token no Pipeline
 
-**Status:** planejado (implementação incremental em `feature/determinismo-pipeline-custos`)
+**Status:** implementado e validado com rodada real "depois" — **-21,2% de tokens
+pagos no total** (413.889 → 326.358), maior corte na etapa mais cara (revisor de
+marca, -38,0%). Ver seção 6 e o comparativo em
+`relatorios/comparativo-custo-antes-depois.html`.
 **Data:** 2026-08-13
 **Escopo:** mapear, campo a campo, o que em `analista-insumos` → `diretor-de-arte` →
 `redator-*` → `revisor-marca` é decisão estrutural fixa (pode virar script/config) vs.
@@ -110,7 +113,33 @@ total, mais cara que a própria escrita do conteúdo).
    visual (antes/depois) pra decidir se a economia compensa o esforço de manutenção
    extra (mais um script pra manter).
 
-## 5. Reversibilidade
+## 6. Resultado real (rodada "depois" já executada)
+
+Mesmo insumo, mesmo material (`textos`), slug novo (`zz-teste-determinismo-depois`),
+`claude -p` real, mesmos flags (`--add-dir` + `--allowedTools`). Números extraídos do
+transcript da nova rodada, mesmo método da seção 1:
+
+| Etapa | Antes | Depois | Δ tokens | Δ % |
+|---|---|---|---|---|
+| Orquestrador (insumos+briefing+dispatch) | 175.637 | 143.899 | -31.738 | **-18,1%** |
+| Revisor de marca | 141.131 | 87.502 | -53.629 | **-38,0%** |
+| Produtor de textos | 97.121 | 94.957 | -2.164 | -2,2% |
+| **Total pago** | **413.889** | **326.358** | **-87.531** | **-21,2%** |
+
+`cache_read_input_tokens` (cobrado a preço reduzido) também caiu 33,4%
+(7.765.777 → 5.175.435), consistente com menos turnos no total (119 → 88).
+
+**Leitura:** a etapa que a evidência do baseline já apontava como a mais cara
+(revisor de marca) foi exatamente a que mais encolheu — confirma a aposta de que
+pré-filtrar deterministicamente antes de pedir julgamento de LLM é onde está o maior
+retorno, não em tentar determinizar a escrita criativa (produtor de textos ficou
+praticamente estável, como esperado — não foi tocado). Auditoria da rodada "depois"
+seguiu `CONFORME`, nenhum claim fabricado, pacote de distribuição gerado normalmente
+— a redução de custo não veio de cortar qualidade/rigor.
+
+Comparativo visual completo: `relatorios/comparativo-custo-antes-depois.html`.
+
+## 7. Reversibilidade
 
 Tudo em `feature/determinismo-pipeline-custos`, sem alterar `main`. Se a comparação
-antes/depois não mostrar economia real, é só não fazer merge.
+antes/depois não mostrar economia real, é só não fazer merge — mas ela mostrou.
