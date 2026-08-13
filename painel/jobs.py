@@ -24,6 +24,14 @@ def _now() -> str:
     return datetime.now(timezone.utc).isoformat()
 
 
+def _normalize_workspace_path(workspace_path: str) -> str:
+    """Canoniza o caminho antes de gravar/filtrar — sem isso, o mesmo workspace
+    passado com barras diferentes (``/`` vs ``\\``) vira duas linhas
+    distintas no índice e a filtragem por igualdade de string falha
+    silenciosamente."""
+    return str(Path(workspace_path).expanduser().resolve())
+
+
 def _logs_dir() -> Path:
     d = appdata_dir() / "logs"
     d.mkdir(parents=True, exist_ok=True)
@@ -39,6 +47,8 @@ def create_job(
 ) -> dict:
     if harness not in list_harness_names():
         raise JobError(f"Harness '{harness}' não registrado. Disponíveis: {list_harness_names()}")
+
+    workspace_path = _normalize_workspace_path(workspace_path)
 
     own_conn = conn is None
     conn = conn or get_connection()
@@ -74,7 +84,7 @@ def list_jobs(workspace_path: str | None = None, conn: sqlite3.Connection | None
         if workspace_path:
             rows = conn.execute(
                 "SELECT * FROM jobs WHERE workspace_path = ? ORDER BY created_at DESC",
-                (workspace_path,),
+                (_normalize_workspace_path(workspace_path),),
             ).fetchall()
         else:
             rows = conn.execute("SELECT * FROM jobs ORDER BY created_at DESC").fetchall()

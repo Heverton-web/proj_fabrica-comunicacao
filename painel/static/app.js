@@ -1,5 +1,23 @@
 let workspaceAtivo = localStorage.getItem("workspaceAtivo") || null;
 
+const COMANDOS = [
+  "esbocar",
+  "produzir-comunicacao-completa",
+  "gerar-pdf",
+  "gerar-landing",
+  "gerar-apresentacao",
+  "gerar-arte",
+  "gerar-arte-1080x1080",
+  "gerar-arte-1080x1350",
+  "gerar-arte-1080x1920",
+  "gerar-textos",
+  "gerar-kit-consultor",
+  "gerar-kit-distribuidor",
+  "kit-completo-cliente",
+  "kit-completo-consultor",
+  "kit-completo-distribuidor",
+];
+
 async function chamar(metodo, url, corpo) {
   const resp = await fetch(url, {
     method: metodo,
@@ -11,6 +29,18 @@ async function chamar(metodo, url, corpo) {
     throw new Error(dados.detail || `Falha em ${metodo} ${url} (HTTP ${resp.status})`);
   }
   return dados;
+}
+
+function popularComandos() {
+  const select = document.getElementById("job-comando");
+  select.innerHTML =
+    COMANDOS.map((c) => `<option value="${c}">/${c}</option>`).join("") +
+    `<option value="customizado">customizado…</option>`;
+}
+
+function alternarComandoCustomizado() {
+  const custom = document.getElementById("job-comando").value === "customizado";
+  document.getElementById("job-prompt-wrap").classList.toggle("oculto", !custom);
 }
 
 function marcarWorkspaceAtivo(path) {
@@ -26,11 +56,12 @@ async function carregarWorkspaces() {
   ul.innerHTML = "";
   for (const ws of lista) {
     const li = document.createElement("li");
-    li.innerHTML = `<code>${ws.path}</code> — registrado em ${ws.created_at}`;
+    li.className = "ws-item";
+    li.innerHTML = `<span><code>${ws.path}</code> <span class="muted">— ${ws.created_at}</span></span>`;
     const btn = document.createElement("button");
+    btn.className = "secundario";
     btn.textContent = "usar";
     btn.onclick = () => marcarWorkspaceAtivo(ws.path);
-    li.appendChild(document.createTextNode(" "));
     li.appendChild(btn);
     ul.appendChild(li);
   }
@@ -96,17 +127,43 @@ async function criarProjeto() {
 
 async function dispararJob() {
   if (!workspaceAtivo) return alert("Registre e selecione um workspace primeiro.");
+  const slug = document.getElementById("job-slug").value;
+  const comando = document.getElementById("job-comando").value;
+  const prompt =
+    comando === "customizado"
+      ? document.getElementById("job-prompt").value
+      : `/${comando} ${slug}`.trim();
+
   try {
     await chamar("POST", "/api/jobs", {
       workspace_path: workspaceAtivo,
-      slug: document.getElementById("job-slug").value,
+      slug,
       harness: document.getElementById("job-harness").value,
       model: document.getElementById("job-model").value || null,
-      prompt: document.getElementById("job-prompt").value,
+      prompt,
     });
     atualizarJobs();
   } catch (erro) {
     alert(erro.message);
+  }
+}
+
+async function carregarArquivosDoJob(job, feedEl) {
+  try {
+    const arquivos = await chamar(
+      "GET",
+      `/api/projects/files?workspace_path=${encodeURIComponent(job.workspace_path)}&slug=${encodeURIComponent(job.slug)}`
+    );
+    if (!arquivos.length) {
+      feedEl.textContent = "nenhum arquivo ainda.";
+      return;
+    }
+    feedEl.innerHTML = arquivos
+      .map((a) => `<div class="linha">${a.path}<span class="tam">${a.size}B</span></div>`)
+      .join("");
+    feedEl.scrollTop = feedEl.scrollHeight;
+  } catch (erro) {
+    feedEl.textContent = `(erro ao listar arquivos: ${erro.message})`;
   }
 }
 
@@ -115,19 +172,35 @@ async function atualizarJobs() {
   const jobs = await chamar("GET", `/api/jobs?workspace_path=${encodeURIComponent(workspaceAtivo)}`);
   const ul = document.getElementById("jobs-lista");
   ul.innerHTML = "";
+
   for (const job of jobs) {
     const li = document.createElement("li");
-    li.className = "item";
-    li.innerHTML =
-      `#${job.id} <b>${job.slug}</b> via ${job.harness}` +
-      (job.model ? ` (${job.model})` : "") +
-      ` — <span class="status-${job.status}">${job.status}</span>` +
-      (job.exit_code !== null ? ` (exit ${job.exit_code})` : "");
+    li.className = `job-card ${job.status}`;
+
+    const top = document.createElement("div");
+    top.className = "job-top";
+    top.innerHTML =
+      `<span>#${job.id} <b>${job.slug}</b> via ${job.harness}${job.model ? ` (${job.model})` : ""}</span>` +
+      `<span class="badge ${job.status}">${job.status}${job.exit_code !== null ? ` · exit ${job.exit_code}` : ""}</span>`;
+    li.appendChild(top);
+
+    const track = document.createElement("div");
+    track.className = "progress-track";
+    track.innerHTML = `<div class="progress-fill"></div>`;
+    li.appendChild(track);
+
+    const feed = document.createElement("div");
+    feed.className = "file-feed";
+    feed.textContent = "carregando arquivos…";
+    li.appendChild(feed);
+
     ul.appendChild(li);
+    carregarArquivosDoJob(job, feed);
   }
 }
 
 (async function iniciar() {
+  popularComandos();
   await carregarHarnesses();
   await carregarWorkspaces();
   await carregarCredenciais();
@@ -135,5 +208,5 @@ async function atualizarJobs() {
     document.getElementById("ws-ativo").textContent = workspaceAtivo;
     atualizarJobs();
   }
-  setInterval(atualizarJobs, 3000);
+  setInterval(atualizarJobs, 2000);
 })();

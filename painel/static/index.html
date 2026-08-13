@@ -2,44 +2,197 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Painel da Fábrica — Multi-Harness</title>
 <style>
-  body { font-family: system-ui, sans-serif; max-width: 920px; margin: 2rem auto; padding: 0 1rem; color: #1a1a1a; }
-  h1 { font-size: 1.3rem; }
-  section { border: 1px solid #ddd; border-radius: 8px; padding: 1rem; margin-bottom: 1.5rem; }
-  section h2 { margin-top: 0; font-size: 1.05rem; }
-  label { display: block; margin: 0.5rem 0 0.2rem; font-size: 0.85rem; color: #444; }
-  input, select, textarea { width: 100%; box-sizing: border-box; padding: 0.4rem; font-size: 0.9rem; }
-  textarea { min-height: 4rem; }
-  button { margin-top: 0.7rem; padding: 0.4rem 0.9rem; cursor: pointer; }
-  ul { padding-left: 1.1rem; }
-  .item { border: 1px solid #eee; border-radius: 6px; padding: 0.5rem 0.7rem; margin-bottom: 0.4rem; font-size: 0.85rem; }
-  .status-pending { color: #a66a00; }
-  .status-running { color: #0060c0; }
-  .status-done { color: #157a15; }
-  .status-error { color: #b3261e; }
-  .muted { color: #777; font-size: 0.8rem; }
-  code { background: #f3f3f3; padding: 0.1rem 0.3rem; border-radius: 4px; }
+  :root {
+    --bg: #f4f5f7;
+    --card: #ffffff;
+    --border: #e2e4e9;
+    --text: #1c1f26;
+    --muted: #6b7280;
+    --accent: #4f46e5;
+    --accent-dark: #3730a3;
+    --pending: #b45309;
+    --running: #1d4ed8;
+    --done: #15803d;
+    --error: #b91c1c;
+    --mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 2rem 1.25rem 4rem;
+  }
+
+  header { margin-bottom: 1.75rem; }
+  header h1 { font-size: 1.4rem; margin: 0 0 0.3rem; }
+  header p { margin: 0; color: var(--muted); font-size: 0.88rem; }
+
+  section {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.25rem 1.4rem;
+    margin-bottom: 1.25rem;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+  }
+
+  section h2 {
+    margin: 0 0 0.9rem;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .step-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.4rem; height: 1.4rem;
+    border-radius: 50%;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+
+  label { display: block; margin: 0.6rem 0 0.25rem; font-size: 0.8rem; color: var(--muted); font-weight: 500; }
+
+  input, select, textarea {
+    width: 100%;
+    padding: 0.5rem 0.6rem;
+    font-size: 0.9rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: #fbfbfc;
+    font-family: inherit;
+  }
+  input:focus, select:focus, textarea:focus { outline: 2px solid var(--accent); border-color: transparent; }
+  textarea { min-height: 4.5rem; resize: vertical; }
+
+  button {
+    margin-top: 0.85rem;
+    padding: 0.5rem 1.1rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: white;
+    background: var(--accent);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  button:hover { background: var(--accent-dark); }
+  button.secundario { background: #eef0f4; color: var(--text); }
+  button.secundario:hover { background: #e2e4e9; }
+
+  .muted { color: var(--muted); font-size: 0.8rem; }
+  code { background: #eef0f4; padding: 0.1rem 0.35rem; border-radius: 5px; font-family: var(--mono); font-size: 0.82rem; }
+
+  ul.plain { list-style: none; margin: 0.5rem 0 0; padding: 0; }
+  .ws-item, .job-card {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.55rem 0.75rem;
+    margin-bottom: 0.45rem;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+  }
+
+  .badge {
+    display: inline-block;
+    padding: 0.15rem 0.55rem;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+  .badge.pending { background: #fef3c7; color: var(--pending); }
+  .badge.running { background: #dbeafe; color: var(--running); }
+  .badge.done { background: #dcfce7; color: var(--done); }
+  .badge.error { background: #fee2e2; color: var(--error); }
+
+  .progress-track {
+    width: 100%;
+    height: 6px;
+    border-radius: 999px;
+    background: #e2e4e9;
+    overflow: hidden;
+    margin: 0.5rem 0 0.35rem;
+  }
+  .progress-fill {
+    height: 100%;
+    width: 40%;
+    border-radius: 999px;
+    background: var(--running);
+  }
+  .job-card.running .progress-fill {
+    animation: avancar 1.1s ease-in-out infinite alternate;
+  }
+  @keyframes avancar {
+    from { transform: translateX(-10%); width: 30%; }
+    to { transform: translateX(120%); width: 30%; }
+  }
+  .job-card.done .progress-fill { width: 100%; background: var(--done); animation: none; transform: none; }
+  .job-card.error .progress-fill { width: 100%; background: var(--error); animation: none; transform: none; }
+
+  .job-card { flex-direction: column; align-items: stretch; }
+  .job-card .job-top { display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; }
+
+  .file-feed {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    background: #14161d;
+    color: #d7f9d7;
+    border-radius: 8px;
+    padding: 0.5rem 0.7rem;
+    max-height: 8rem;
+    overflow-y: auto;
+    margin-top: 0.4rem;
+  }
+  .file-feed .linha { animation: surgir 0.25s ease-out; white-space: nowrap; }
+  .file-feed .linha .tam { color: #8fb8a8; margin-left: 0.4rem; }
+  @keyframes surgir {
+    from { opacity: 0; transform: translateY(-4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  #cred-envvar-wrap.oculto, #job-prompt-wrap.oculto { display: none; }
 </style>
 </head>
 <body>
-<h1>Painel de Controle — Fábrica de Materiais de Comunicação</h1>
-<p class="muted">
-  Roda local. Não guarda conteúdo em banco — todos os artefatos ficam dentro da pasta
-  de workspace escolhida abaixo. Credenciais ficam num cofre local, nunca no workspace.
-</p>
+<header>
+  <h1>Painel de Controle — Fábrica de Materiais de Comunicação</h1>
+  <p>
+    Roda local, sem banco de conteúdo — todos os artefatos ficam dentro da pasta de
+    workspace escolhida abaixo. Credenciais ficam num cofre local, nunca no workspace.
+  </p>
+</header>
 
-<section id="sec-workspace">
-  <h2>1. Workspace</h2>
+<section>
+  <h2><span class="step-badge">1</span> Workspace</h2>
   <label for="ws-path">Pasta onde os projetos/artefatos serão salvos</label>
   <input id="ws-path" placeholder="C:\Users\voce\Documents\meus-projetos-fabrica" />
   <button onclick="registrarWorkspace()">Registrar workspace</button>
   <p class="muted">Workspace ativo: <code id="ws-ativo">(nenhum)</code></p>
-  <ul id="ws-lista"></ul>
+  <ul class="plain" id="ws-lista"></ul>
 </section>
 
-<section id="sec-credenciais">
-  <h2>2. Harness / provedor de LLM e credenciais</h2>
+<section>
+  <h2><span class="step-badge">2</span> Harness / provedor de LLM e credenciais</h2>
   <label for="cred-harness">Harness</label>
   <select id="cred-harness"></select>
   <label for="cred-envvar">Variável de ambiente da credencial (ex.: ANTHROPIC_API_KEY)</label>
@@ -47,11 +200,11 @@
   <label for="cred-key">API key / token</label>
   <input id="cred-key" type="password" placeholder="sk-..." />
   <button onclick="salvarCredencial()">Salvar credencial</button>
-  <p class="muted">Harnesses com credencial salva: <code id="cred-lista"></code></p>
+  <p class="muted">Harnesses com credencial salva: <code id="cred-lista">(nenhuma)</code></p>
 </section>
 
-<section id="sec-projeto">
-  <h2>3. Novo projeto</h2>
+<section>
+  <h2><span class="step-badge">3</span> Novo projeto</h2>
   <label for="proj-slug">Slug</label>
   <input id="proj-slug" placeholder="meu-projeto" />
   <label for="proj-texto">Texto-base</label>
@@ -65,23 +218,27 @@
   <button onclick="criarProjeto()">Criar projeto</button>
 </section>
 
-<section id="sec-produzir">
-  <h2>4. Disparar produção</h2>
+<section>
+  <h2><span class="step-badge">4</span> Disparar produção</h2>
   <label for="job-slug">Slug do projeto</label>
   <input id="job-slug" placeholder="meu-projeto" />
   <label for="job-harness">Harness</label>
   <select id="job-harness"></select>
   <label for="job-model">Modelo (opcional)</label>
   <input id="job-model" placeholder="claude-sonnet-5" />
-  <label for="job-prompt">Comando</label>
-  <input id="job-prompt" value="/produzir-comunicacao-completa" />
+  <label for="job-comando">Comando</label>
+  <select id="job-comando" onchange="alternarComandoCustomizado()"></select>
+  <div id="job-prompt-wrap" class="oculto">
+    <label for="job-prompt">Comando customizado</label>
+    <input id="job-prompt" placeholder="/meu-comando argumento" />
+  </div>
   <button onclick="dispararJob()">Disparar</button>
 </section>
 
-<section id="sec-jobs">
-  <h2>5. Jobs do workspace</h2>
-  <button onclick="atualizarJobs()">Atualizar agora</button>
-  <ul id="jobs-lista"></ul>
+<section>
+  <h2><span class="step-badge">5</span> Jobs do workspace</h2>
+  <button class="secundario" onclick="atualizarJobs()">Atualizar agora</button>
+  <ul class="plain" id="jobs-lista"></ul>
 </section>
 
 <script src="/app.js"></script>

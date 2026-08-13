@@ -108,6 +108,33 @@ def test_create_and_run_job_end_to_end_via_http(tmp_path):
     assert marker.read_text(encoding="utf-8") == "PROVA_API_ENDPOINT"
 
 
+def test_list_project_files_endpoint(tmp_path):
+    client.post("/api/projects", json={"workspace_path": str(tmp_path), "slug": "proj-files"})
+
+    resp = client.get("/api/projects/files", params={"workspace_path": str(tmp_path), "slug": "proj-files"})
+    assert resp.status_code == 200
+    paths = [f["path"] for f in resp.json()]
+    assert "config_projeto.json" in paths
+
+
+def test_list_project_files_endpoint_404_when_missing(tmp_path):
+    resp = client.get("/api/projects/files", params={"workspace_path": str(tmp_path), "slug": "nao-existe"})
+    assert resp.status_code == 404
+
+
+def test_job_list_matches_workspace_regardless_of_slash_style(tmp_path):
+    forward_slash_path = str(tmp_path).replace("\\", "/")
+
+    created = client.post(
+        "/api/jobs",
+        json={"workspace_path": forward_slash_path, "slug": "job-barra", "harness": "echo", "prompt": "x"},
+    ).json()
+    _wait_job_finished(created["id"])
+
+    listed = client.get("/api/jobs", params={"workspace_path": str(tmp_path)}).json()
+    assert any(j["slug"] == "job-barra" for j in listed)
+
+
 def test_create_job_rejects_unknown_harness(tmp_path):
     resp = client.post(
         "/api/jobs",

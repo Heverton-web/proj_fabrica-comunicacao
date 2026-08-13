@@ -18,6 +18,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
+from painel.files import ProjectNotFoundError, list_project_files
 from painel.harness_adapters import list_harness_names
 from painel.jobs import JobError, create_job, get_job, list_jobs, run_job
 from painel.vault import VaultError, delete_credential, get_credential, list_harnesses, save_credential
@@ -130,6 +131,16 @@ def api_list_projects(workspace_path: str):
             )
             projetos.append({"slug": child.name, "config": config, "manifesto": manifesto})
     return projetos
+
+
+# ---------- arquivos do projeto: sempre lidos do disco, nunca de banco ----------
+
+@app.get("/api/projects/files")
+def api_list_project_files(workspace_path: str, slug: str):
+    try:
+        return list_project_files(workspace_path, slug)
+    except ProjectNotFoundError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
 
 
 # ---------- jobs: dispara o harness escolhido em thread de segundo plano ----------

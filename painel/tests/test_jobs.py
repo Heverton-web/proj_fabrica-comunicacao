@@ -51,6 +51,16 @@ def test_run_job_with_echo_adapter_creates_artifact_and_marks_done(tmp_path):
     assert "ECHO_OK:PROVA_JOB_RUNNER" in log_content
 
 
+def test_list_jobs_matches_regardless_of_slash_style(tmp_path):
+    """Regressão: workspace passado com barras diferentes (/ vs \\) não pode
+    virar entradas "invisíveis" na listagem por não bater a igualdade de string."""
+    forward_slash_path = str(tmp_path).replace("\\", "/")
+    create_job(forward_slash_path, "slug-barra", "echo")
+
+    listed = list_jobs(str(tmp_path))
+    assert any(j["slug"] == "slug-barra" for j in listed)
+
+
 def test_run_job_unknown_job_id_raises():
     with pytest.raises(JobError):
         run_job(999999, "prompt")
