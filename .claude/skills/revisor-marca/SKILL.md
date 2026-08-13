@@ -50,6 +50,24 @@ python scripts/validar-kit.py <slug> <base> --pasta <tipo>          # so se base
 
 ### 2. Checar fidelidade à fonte (REGRA 6)
 
+Para `<tipo>` com arquivos `.txt` (ex.: `textos`), rode primeiro o pré-filtro
+determinístico — ele não substitui a checagem abaixo, só reduz o quanto você precisa
+procurar do zero (achado real: esta etapa custou mais token do que a própria escrita do
+material — ver `melhorias/plano-determinismo-reducao-custos.md`):
+
+```
+python scripts/extrair-claims-candidatos.py <slug> <tipo>
+```
+
+Use `output/<slug>/revisao/candidatos_verificacao.json` como checklist inicial: todo
+candidato com `encontrado_no_dossie: false` precisa ser confirmado contra o dossiê antes
+de aprovar (pode ser falso positivo — ex.: hashtag combinando 2 termos reais do dossiê
+de forma legítima — ou pode ser o mesmo tipo de defeito real já visto em produção: uma
+hashtag de outro nicho colada por engano). O script é assistivo, cobre só `.txt`
+(ainda não cobre `copies.json` de arte/kit, HTML ou PDF) e **nunca** substitui a
+comparação semântica linha a linha abaixo — uma paráfrase que muda o sentido não
+aparece em regex.
+
 Compare cada claim/dado presente no material com `dossie_insumos.md`. Qualquer
 afirmação sem rastro no dossiê é um defeito — não é opinião, é checagem factual linha a
 linha.
