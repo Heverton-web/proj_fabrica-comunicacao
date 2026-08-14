@@ -80,8 +80,12 @@ def compilar_variante_arte(slug, variante, pasta=None):
         for canal in canais:
             texto_legenda = legendas.get(canal, "").strip()
             if not texto_legenda:
-                print(f"[AVISO] {sufixo_copy}/{canal}: legenda ausente em {copies_path} "
+                # REGRA INTOCAVEL: legenda de publicacao (whatsapp/instagram/linkedin)
+                # e obrigatoria para toda arte -- nunca um aviso silencioso, ja que o
+                # pacote de distribuicao exige os 9 .txt (ver empacotar-distribuicao.py).
+                print(f"[ERRO] {sufixo_copy}/{canal}: legenda ausente em {copies_path} "
                       f"-- redator-arte precisa gravar 'legendas.{canal}' (ver SPEC_ARTE.md)")
+                erros += 1
                 continue
             (slug_dir / "arte" / f"legenda_{sufixo_copy}_{canal}.txt").write_text(
                 texto_legenda, encoding="utf-8")

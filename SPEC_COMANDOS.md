@@ -336,12 +336,21 @@ pasta**. Empacota a **versão mais recente** de cada material (maior sufixo `-vN
 REGRA 11); as versões antigas permanecem em `output/<slug>/`, o pacote é derivado e
 regenerado do zero, nunca apaga origem.
 
-**REGRA INTOCÁVEL:** `kit-consultor` e `kit-distribuidor`, tanto na pasta
-`distribuicao/` quanto dentro do `.zip`, contêm **somente `.png` e `.txt`** de cada
-arte — nunca `index.html`, `assets/` (fontes/logos/imagem de produto) ou
-`conteudo.json`. Esses arquivos de trabalho continuam existindo normalmente em
-`output/<slug>/kit-*/` para fins de auditoria/revisão; simplesmente não entram no
-pacote entregue ao cliente.
+**REGRA INTOCÁVEL:** `kit-consultor`, `kit-distribuidor` e `arte-01`/`arte-02`/`arte-03`,
+tanto na pasta `distribuicao/` quanto dentro do `.zip`, contêm **somente `.png` e
+`.txt`** de cada peça — nunca `index.html`, `assets/` (fontes/logos/imagem de
+produto) ou `conteudo.json`. Esses arquivos de trabalho continuam existindo
+normalmente em `output/<slug>/kit-*/` e `output/<slug>/arte-0N/` para fins de
+auditoria/revisão; simplesmente não entram no pacote entregue ao cliente.
+
+Para `arte-01`/`arte-02`/`arte-03`, os `.txt` são as **9 legendas de publicação**
+(Instagram/LinkedIn/WhatsApp × 3 copies) escritas por `redator-arte` em
+`copies.json.legendas` e materializadas por `compilar-arte.py` em
+`output/<slug>/arte/legenda_copy<NN>_<canal>.txt` (SPEC_ARTE.md) — como essa pasta
+`arte/` é compartilhada entre os 3 formatos, `empacotar-distribuicao.py` replica os 9
+arquivos dentro de cada `arte-0N/` do pacote. **Legenda ausente/vazia é falha dura**
+(`compilar-arte.py` e `validar-dimensoes.py` retornam erro, `empacotar-projeto.py`
+não considera o material completo) — nunca um aviso silencioso.
 
 ### Passo 7 — Relatório final (REGRA 2 — telegráfico, sem preâmbulo)
 

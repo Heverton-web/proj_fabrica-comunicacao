@@ -14,10 +14,14 @@ Regras:
 - Inclui COPYRIGHT.txt (direitos autorais de marca) na raiz do pacote.
 - Gera tambem o zip distribuicao_<slug>.zip DENTRO da pasta distribuicao/
   (conteudo identico ao da pasta, sem o proprio zip).
-- REGRA INTOCAVEL: kit-consultor e kit-distribuidor, tanto na pasta distribuicao/
-  quanto no .zip, contem SOMENTE .png e .txt de cada arte - nunca index.html,
-  assets/ (fontes/logos/imagem de produto) ou conteudo.json (esses continuam
-  existindo em output/<slug>/kit-*/, so nao entram no pacote entregue ao cliente).
+- REGRA INTOCAVEL: kit-consultor, kit-distribuidor e arte-01/02/03, tanto na
+  pasta distribuicao/ quanto no .zip, contem SOMENTE .png e .txt de cada peca -
+  nunca index.html, assets/ (fontes/logos/imagem de produto) ou conteudo.json
+  (esses continuam existindo em output/<slug>/kit-*/ e output/<slug>/arte-0N/,
+  so nao entram no pacote entregue ao cliente). Para arte-01/02/03 os .txt sao
+  as 9 legendas de publicacao (instagram/linkedin/whatsapp x 3 copies), que
+  moram em output/<slug>/arte/ (compartilhadas entre os 3 formatos) e sao
+  copiadas para dentro de cada pasta arte-0N/ do pacote.
 
 Uso:
     python scripts/empacotar-distribuicao.py <slug>
@@ -38,6 +42,7 @@ DIR_PROJETO = Path(__file__).resolve().parent.parent
 DIR_OUTPUT = DIR_PROJETO / "output"
 
 NOME_PACOTE = "distribuicao"
+ARTES = {"arte-01", "arte-02", "arte-03"}
 COPYRIGHT = (
     "2026 © Conexão Sistemas de Próteses — Todos os direitos reservados.\n"
     "\n"
@@ -70,11 +75,11 @@ def pastas_do_tipo(base, tipo):
 
 def copiar_artefato(origem_tipo, destino_tipo, slug):
     """Copia o artefato final do tipo para o pacote. PDF vira so o .pdf; kits
-    (kit-consultor/kit-distribuidor) copiam SO .png e .txt de cada arte, sem
-    index.html/assets/conteudo.json (REGRA INTOCAVEL: kit no pacote de
-    distribuicao e no .zip so pode conter .png + .txt); os demais tipos copiam
-    a pasta inteira (HTML precisa de assets/; textos dos .txt). Retorna True
-    se copiou."""
+    (kit-consultor/kit-distribuidor) e artes (arte-01/02/03) copiam SO .png e
+    .txt de cada peca, sem index.html/assets/conteudo.json (REGRA INTOCAVEL:
+    kit e arte no pacote de distribuicao e no .zip so podem conter .png +
+    .txt); os demais tipos copiam a pasta inteira (HTML precisa de assets/;
+    textos dos .txt). Retorna True se copiou."""
     base_origem = DIR_OUTPUT / slug
     destino = base_origem / NOME_PACOTE / destino_tipo
     destino.mkdir(parents=True, exist_ok=True)
@@ -85,6 +90,23 @@ def copiar_artefato(origem_tipo, destino_tipo, slug):
             return False
         shutil.copy2(pdfs[0], destino / pdfs[0].name)
         return True
+
+    if tipo_base(destino_tipo) in ARTES:
+        copiado = False
+        for png in sorted(origem_tipo.glob("*.png")):
+            if png.stat().st_size > 0:
+                shutil.copy2(png, destino / png.name)
+                copiado = True
+        # As 9 legendas de publicacao (3 copies x 3 canais) vivem em
+        # output/<slug>/arte/ (compartilhadas entre arte-01/02/03 - ver
+        # SPEC_ARTE.md), nao dentro da propria pasta de formato; cada variante
+        # de arte no pacote precisa levar sua propria copia dos .txt.
+        pasta_legendas = base_origem / "arte"
+        for legenda in sorted(pasta_legendas.glob("legenda_copy*_*.txt")):
+            if legenda.stat().st_size > 0:
+                shutil.copy2(legenda, destino / legenda.name)
+                copiado = True
+        return copiado
 
     if tipo_base(destino_tipo) in KITS:
         copiado = False

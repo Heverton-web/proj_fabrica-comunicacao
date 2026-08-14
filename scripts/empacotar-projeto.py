@@ -46,7 +46,19 @@ def resolver_artefato(base, slug, tipo):
         pngs = [p for p in pasta.glob("*.png") if p.stat().st_size > 0] if pasta.is_dir() else []
         # 3 PNGs esperados: 1 por copy compartilhada (arte/copies.json),
         # ver docs/05-plano-expansao-multi-copy-arte.md
-        return pasta if len(pngs) == 3 else None
+        if len(pngs) != 3:
+            return None
+        # REGRA INTOCAVEL: as 9 legendas de publicacao (3 copies x 3 canais:
+        # instagram/linkedin/whatsapp) sao parte obrigatoria do material - vivem em
+        # output/<slug>/arte/ (compartilhadas entre arte-01/02/03, ver SPEC_ARTE.md),
+        # nao dentro da propria pasta de formato.
+        pasta_legendas = base / "arte"
+        legendas_ok = all(
+            (pasta_legendas / f"legenda_copy{i:02d}_{canal}.txt").exists()
+            and (pasta_legendas / f"legenda_copy{i:02d}_{canal}.txt").stat().st_size > 0
+            for i in (1, 2, 3) for canal in ("instagram", "linkedin", "whatsapp")
+        )
+        return pasta if legendas_ok else None
 
     if base_tipo == "textos":
         esperados = ("whatsapp.txt", "instagram.txt", "linkedin.txt")
