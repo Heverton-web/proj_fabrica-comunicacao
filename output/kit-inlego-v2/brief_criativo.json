@@ -1,0 +1,70 @@
+{
+  "mensagem_central": "Kit inLego: o fim do caos no escaneamento mandibular",
+  "publico_alvo": "consultores",
+  "objetivo_tom": "educacional_comercial",
+  "objetivo": "educacional",
+  "tom_de_voz": "comercial",
+  "nota_de_escopo": "Material interno de capacitação/venda para o consultor da Conexão Digital Implant apresentar ao dentista — preset /kit-completo-consultor: PDF com estruturas por público (O que é · Para que serve · Diferenciais técnicos/comerciais · Como vender: SPIN · Contorno de objeções · Fechamento/CTA), apresentação com foco em O que é/Para que serve/Diferenciais técnicos, landing com fluxo atual e kit com público fixo dentista_implantodontista (5 tons fixos).",
+  "hierarquia_de_conteudo": [
+    "problema: escaneamento da mandíbula é o maior gargalo da implantodontia digital — a mandíbula é um 'deserto' de referências que faz o escâner se perder e confundir a ordem dos escambores; imagem errada → laboratório sem assentamento passivo → risco de tensões e fraturas de parafusos",
+    "solução: Kit inLego — sistema de escaneamento intraoral para pacientes edêntulos (sem dentes) que receberão próteses de arco total (protocolos), com hastes horizontais brancas em PEEK de Grau Médico criando referências geométricas precisas para o escâner",
+    "benefícios clínicos: elimina a 'confusão digital' do escâner; fluxo de trabalho contínuo e livre de distorções; assentamento passivo da barra protética",
+    "destaques técnicos: Ciência da Continuidade (PEEK branco lido como dente natural); Zero Parafuso Passante (rosqueado manualmente, ideal para abertura bucal limitada); Hastes Duplas Exclusivas (2 hastes simultâneas por pilar, captura de distais); Escaneamento em Etapa Única (gengiva + componente de uma vez, metade do tempo de cadeira)",
+    "argumento comercial: framework SPIN Selling (S/P/I/N) com perguntas reais + contorno de objeções (3 objeções com respostas do texto-base)"
+  ],
+  "mapeamento_por_material": {
+    "pdf": {
+      "secoes": [
+        "abertura",
+        "o que e",
+        "para que serve",
+        "diferenciais tecnicos e comerciais",
+        "como vender: framework spin selling",
+        "contorno de objecoes",
+        "fechamento cta"
+      ]
+    },
+    "landing-page": {
+      "secoes": [
+        "hero",
+        "problema→solução",
+        "destaques",
+        "prova/diferenciais técnicos",
+        "cta final"
+      ]
+    },
+    "apresentacao": {
+      "slides": [
+        "capa",
+        "o que é: sistema de escaneamento intraoral para pacientes edêntulos (protocolos), com hastes horizontais brancas em PEEK de Grau Médico",
+        "para que serve: resolver o gargalo do escaneamento mandibular — o fim do caos digital",
+        "diferenciais técnicos: Ciência da Continuidade · Zero Parafuso Passante · Hastes Duplas Exclusivas · Escaneamento em Etapa Única",
+        "fechamento/CTA"
+      ]
+    },
+    "kit": {
+      "angulos_por_tom": {
+        "informativa": [
+          "Kit inLego: sistema de escaneamento intraoral para pacientes edêntulos que receberão próteses de arco total (protocolos), com hastes brancas em PEEK de Grau Médico",
+          "Elimina a 'confusão digital' do escâner na mandíbula e garante fluxo de trabalho contínuo e livre de distorções, com assentamento passivo da barra"
+        ],
+        "contra-intuitiva": [
+          "Escaneamento mandibular sem 'gambiarras': sem resina, sem elástico — o escâner lê o PEEK branco como dente natural (Ciência da Continuidade)",
+          "Zero Parafuso Passante: o sistema é rosqueado com a mão — perfeito para pacientes com abertura bucal limitada onde chaves longas da concorrência não entram"
+        ],
+        "tecnica": [
+          "Hastes horizontais brancas em PEEK de Grau Médico criam referências geométricas precisas para o escâner entender a sequência do arco",
+          "Escaneamento em Etapa Única: copia gengiva e componente de uma só vez, economizando metade do tempo de cadeira em comparação com marcas 'grossas'"
+        ],
+        "efeito-uau": [
+          "Hastes Duplas Exclusivas: duas hastes simultâneas por pilar — união com implantes anteriores + haste para trás nos distais, capturando áreas posteriores",
+          "Assentamento passivo garantido: evita tensões e futuras fraturas de parafusos na prótese de arco total"
+        ],
+        "educativa": [
+          "Por que a mandíbula 'perde' o escâner (o deserto de referências) e como o Kit inLego restaura a sequência lógica do arco",
+          "Por que o assentamento passivo importa: escaneamento com imagem errada → laboratório sem match → risco de barra fraturar o parafuso na boca do paciente"
+        ]
+      }
+    }
+  }
+}

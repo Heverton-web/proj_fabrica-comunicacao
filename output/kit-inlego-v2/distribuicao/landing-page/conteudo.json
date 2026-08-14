@@ -1,0 +1,53 @@
+{
+  "hero": {
+    "headline": "O fim do caos no escaneamento mandibular",
+    "subheadline": "O Kit inLego cria referências geométricas em PEEK de Grau Médico que eliminam a confusão digital do escâner — fluxo de trabalho contínuo, livre de distorções, do início ao fim.",
+    "cta": "Conhecer o Kit inLego"
+  },
+  "problema_solucao": {
+    "problema": {
+      "titulo": "Por que a mandíbula \"perde\" o escâner",
+      "texto": "Na maxila, a rugosidade palatina dá referência anatômica. Na mandíbula, não existe nada disso: é um \"deserto\" que faz o escâner se perder e confundir a ordem dos escambores convencionais. Resultado: imagem errada, laboratório sem assentamento passivo e risco de tensões e fraturas de parafusos na prótese de arco total."
+    },
+    "solucao": {
+      "titulo": "A resposta: Kit inLego",
+      "texto": "Sistema de escaneamento intraoral para pacientes edêntulos que receberão próteses de arco total (protocolos). Suas hastes horizontais brancas, em PEEK de Grau Médico, criam referências geométricas precisas — o escâner lê a cor branca como um dente natural e entende a sequência lógica do arco, sem interrupções."
+    }
+  },
+  "destaques": [
+    {
+      "titulo": "Ciência da Continuidade",
+      "texto": "O escâner lê o PEEK branco como dente natural e mantém a sequência lógica do arco, sem interrupções — leitura na primeira tentativa, sem improvisos de resina ou elástico."
+    },
+    {
+      "titulo": "Zero Parafuso Passante",
+      "texto": "Sistema rosqueado manualmente, no sentido horário. Ideal para pacientes com abertura bucal limitada, onde as chaves longas da concorrência não entram."
+    },
+    {
+      "titulo": "Hastes Duplas Exclusivas",
+      "texto": "Duas hastes simultâneas por pilar: facilitam a união com os implantes anteriores e uma haste aponta para trás nos distais, capturando as áreas posteriores."
+    },
+    {
+      "titulo": "Escaneamento em Etapa Única",
+      "texto": "Pela altura estratégica, gengiva e componente são copiados de uma só vez — metade do tempo de cadeira em comparação com marcas \"grossas\" que exigem dois escaneamentos."
+    }
+  ],
+  "prova": {
+    "especificacoes": {
+      "titulo": "Diferenciais técnicos que sustentam a venda",
+      "cabecalho": ["Característica", "Especificação"],
+      "linhas": [
+        ["Material das hastes", "PEEK de Grau Médico, cor branca"],
+        ["Função", "Referências geométricas precisas para o escâner"],
+        ["Instalação", "Rosqueamento manual, sem parafuso passante"],
+        ["Tempo de cadeira", "Metade do tempo em comparação com marcas que exigem dois escaneamentos"],
+        ["Resultado", "Assentamento passivo da barra, sem tensões e fraturas de parafusos"]
+      ]
+    }
+  },
+  "cta_final": {
+    "headline": "Leve a Ciência da Continuidade para a sua próxima visita",
+    "cta": "Fechar o caso com o dentista",
+    "dica_ouro": "O Kit inLego transforma o maior gargalo do digital em argumento de venda: escaneamento mandibular rápido, preciso e sem improviso, com assentamento passivo protegendo o resultado final do paciente."
+  }
+}

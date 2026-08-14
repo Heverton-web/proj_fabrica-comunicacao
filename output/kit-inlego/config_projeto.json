@@ -1,0 +1,24 @@
+{
+  "slug": "kit-inlego",
+  "texto_base": "output/kit-inlego/insumos/texto-mae-03.txt",
+  "imagens": [
+    {
+      "path": "output/kit-inlego/insumos/kit-inlego.png",
+      "descricao": "foto do produto Kit inLego"
+    }
+  ],
+  "publico_alvo": "distribuidores",
+  "objetivo_tom": "comercial_informacional_parceria",
+  "materiais_selecionados": [
+    "pdf",
+    "landing-page",
+    "apresentacao",
+    "arte-01",
+    "arte-02",
+    "arte-03",
+    "textos",
+    "kit-consultor",
+    "kit-distribuidor"
+  ],
+  "edicao": "1ª Edição do Distribuidor"
+}

@@ -1,0 +1,84 @@
+{
+  "mensagem_central": "Kit inLego: escalabilidade de faturamento e fidelização de contas estratégicas",
+  "publico_alvo": "distribuidores",
+  "objetivo_tom": "comercial_informacional_parceria",
+  "objetivo": "comercial",
+  "tom_de_voz": "informacional_tecnico_de_parceria_de_venda",
+  "nota_de_escopo": "Regeneração pontual `/gerar-pdf kit-inlego`: novo texto-base informado na entrevista (`texto-mae-03.txt`, copiado de `C:\\Users\\trcnologia\\Desktop\\02_Conexao_Implantes\\Kits\\Kit inLego\\texto-mae -03.txt` — posicionamento de mercado B2B em 2ª pessoa DIRETO AO DISTRIBUIDOR, voz de Especialista Estratégico apresentando o inLego como ferramenta de escalabilidade de faturamento, fidelização de contas, giro de estoque e margem), imagem mantida, publico_alvo=distribuidores, objetivo_tom=comercial_informacional_parceria, edicao='1ª Edição do Distribuidor', apenas material pdf. O argumento B2B é citação do distribuidor falando com o Doutor (voz de negociação que o próprio distribuidor usa) — nunca reescrito como didática técnica pura nem como roteiro para terceiros. FIDELIDADE À FONTE: claims do texto-base anterior (texto-mae-02) — 'Ciência da Continuidade', 'MU in lab', composição enumerada Scan inL/SC/TS, SC=10mm/TS=13mm, hastes 'lidas como dente natural' — NÃO estão no texto-mae-03 e não podem ser usados nesta regeneração. Título do PDF: cunhar título sóbrio, técnico-comercial, sem 'gambiarra'/'gambiarras' nem 'guia de treinamento' (TITULOS_BANIDOS) — eixo em escalabilidade da distribuição / fluxo digital lucrativo / conversão de dentistas ao digital. Máx. 34 caracteres / 6 palavras, sem hífens.",
+  "hierarquia_de_conteudo": [
+    "problema comercial: dentista perde tempo com 'gambiarras' (elásticos e resinas) e o laboratório sofre para dar o match digital — retrabalho do cliente e suporte pós-venda que corroem o distribuidor",
+    "solução: Kit inLego como ferramenta de escalabilidade de faturamento e fidelização de contas estratégicas — previsibilidade clínica que reduz churn e consolida parceria de longo prazo",
+    "USPs como barreira de entrada: hastes de escaneamento em etapa única (gengiva + componente de uma só vez = ganho de produtividade para o dono da clínica), exclusividade das hastes duplas (áreas distais onde outros sistemas falham), zero parafuso passante (rosqueamento manual resolve a falta de espaço posterior)",
+    "modelo de negócio: porta de entrada para o ecossistema Conexão Digital Implant; otimizado para pilares Micro Unit (MU) e Multi Base (MB) — a venda do kit 'puxa' demanda por componentes protéticos e bibliotecas digitais (giro de estoque e recorrência)",
+    "diferencial regional: resolve a 'confusão do escâner' na mandíbula com simplicidade que nem grandes players globais alcançam — vantagem competitiva regional agressiva",
+    "valor agregado: PEEK de grau médico e titânio sob estética Dark & Tech (Azul Noturno e Dourado) — estabilidade industrial e confiança tecnológica que sustentam margem de lucro superior",
+    "argumento-chave B2B (citação do distribuidor ao Doutor): barra perfeita de primeira libera a cadeira para novos pacientes e escala o lucro"
+  ],
+  "mapeamento_por_material": {
+    "pdf": {
+      "secoes": [
+        "abertura",
+        "problema",
+        "solução",
+        "destaques",
+        "composição/especificações",
+        "aplicação",
+        "fechamento"
+      ]
+    },
+    "landing-page": {
+      "secoes": [
+        "hero",
+        "problema→solução",
+        "destaques",
+        "prova/composição técnica",
+        "cta final"
+      ]
+    },
+    "apresentacao": {
+      "slides": [
+        "capa",
+        "diferenciais",
+        "composição",
+        "especificações",
+        "dúvidas clínicas comuns",
+        "contorno de objeções técnicas",
+        "fechamento/CTA"
+      ]
+    },
+    "arte": {
+      "angulos_criativos": [
+        "problema: retrabalho do dentista (gambiarras com elásticos e resinas) e churn — o que corrói a conta estratégica do distribuidor",
+        "USPs que 'esmagam' a concorrência: etapa única, hastes duplas nas distais, zero parafuso passante",
+        "negócio: giro de estoque via MU/MB, recorrência do ecossistema Conexão Digital Implant e margem superior com a estética Dark & Tech"
+      ]
+    },
+    "textos": {
+      "canais": ["whatsapp", "instagram", "linkedin"]
+    },
+    "kit": {
+      "angulos_por_tom": {
+        "informativa": [
+          "sistema otimizado para os pilares Micro Unit (MU) e Multi Base (MB) — kit inLego 'puxa' a demanda por componentes protéticos e bibliotecas digitais associadas",
+          "hastes de escaneamento em etapa única: altura estratégica permite escanear gengiva e componente de uma só vez"
+        ],
+        "contra-intuitiva": [
+          "zero parafuso passante parece limitação, mas o rosqueamento manual é o que resolve a falta de espaço posterior — concorrentes que vendem sistemas com chaves longas não resolvem essa dor",
+          "o componente 'grosso' da concorrência exige múltiplas etapas de escaneamento; a altura estratégica das hastes inLego elimina etapas"
+        ],
+        "tecnica": [
+          "hastes em PEEK de grau médico e titânio apresentadas sob estética Dark & Tech (Azul Noturno e Dourado) — estabilidade industrial e confiança tecnológica",
+          "exclusividade das hastes duplas: duas hastes simultâneas no mesmo pilar, facilitando o escaneamento de áreas posteriores (distais) onde outros sistemas falham"
+        ],
+        "efeito-uau": [
+          "um único escaneamento com gengiva e componente juntos — enquanto sistemas convencionais exigem múltiplas etapas, o inLego entrega produtividade de etapa única",
+          "exclusividade das hastes duplas: a captura simultânea das áreas distais mais críticas, algo que nem os grandes players globais resolvem com a mesma simplicidade"
+        ],
+        "educativa": [
+          "por que a mandíbula é a 'confusão do escâner': o arco desdentado sem referências faz o escâner se perder — e por que elásticos e resinas ('gambiarras') eram a saída improvisada",
+          "por que o assentamento passivo importa: refazer protocolos custa tempo e dinheiro; a barra que chega perfeita de primeira libera a cadeira para novos pacientes"
+        ]
+      }
+    }
+  }
+}

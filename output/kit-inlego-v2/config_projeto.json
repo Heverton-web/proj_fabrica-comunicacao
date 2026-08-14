@@ -1,0 +1,13 @@
+{
+  "slug": "kit-inlego-v2",
+  "texto_base": "output/kit-inlego-v2/insumos/texto-mae.txt",
+  "imagens": [
+    {"path": "output/kit-inlego-v2/insumos/kit-inlego.png", "descricao": "foto do produto Kit inLego"}
+  ],
+  "publico_alvo": "consultores",
+  "objetivo_tom": "educacional_comercial",
+  "materiais_selecionados": ["pdf", "kit-consultor", "landing-page", "apresentacao"],
+  "preset_kit_completo": "consultores",
+  "edicao": "2ª Edição",
+  "elementos_decorativos": false
+}

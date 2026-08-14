@@ -1,0 +1,81 @@
+{
+  "hero": {
+    "headline": "Escaneamento contínuo e passivo, sem gambiarras na mandíbula",
+    "subheadline": "Hastes horizontais em PEEK de Grau Médico que o escâner lê como dente natural — leve ao dentista um argumento técnico sólido contra elástico ortodôntico e resina colorida no escaneamento de mandíbulas edêntulas.",
+    "cta": "Ver composição técnica do kit"
+  },
+  "problema_solucao": {
+    "problema": {
+      "titulo": "O deserto anatômico da mandíbula edêntula",
+      "texto": "Sem a rugosidade palatina que serve de referência na maxila, o arco mandibular vira um **deserto anatômico** que confunde o escâner intraoral — a saída informal costuma ser a gambiarra: elástico ortodôntico ou pontos de resina colorida improvisados para dar referência ao software."
+    },
+    "solucao": {
+      "titulo": "Hastes PEEK lidas como dente natural",
+      "texto": "O Kit inLego troca a gambiarra por hastes horizontais em **PEEK de Grau Médico**, lidas pelo escâner com a mesma facilidade de um dente natural — fluxo de trabalho contínuo, sem que o software se perca entre os implantes e sem distorção."
+    }
+  },
+  "destaques": [
+    {
+      "titulo": "Sem parafuso passante",
+      "texto": "Rosqueamento manual no sentido horário — decisivo em regiões posteriores onde o espaço para chaves é limitado."
+    },
+    {
+      "titulo": "Assentamento passivo da barra",
+      "texto": "O match preciso com as bibliotecas digitais MU in lab garante encaixe passivo da barra de protocolo, prevenindo fratura de parafusos a longo prazo."
+    },
+    {
+      "titulo": "Conexão dupla de hastes",
+      "texto": "Cada pilar recebe até duas hastes ao mesmo tempo — uma une aos pilares anteriores, outra aponta para os implantes distais, facilitando a leitura da região posterior."
+    },
+    {
+      "titulo": "Economia de tempo de cadeira",
+      "texto": "Alturas estratégicas capturam gengiva e componente numa única etapa, evitando o duplo escaneamento e reduzindo o tempo de cadeira pela metade."
+    },
+    {
+      "titulo": "Compatível com MU e MB",
+      "texto": "O kit atende os sistemas de abutments Micro Unit e Multi Base, com o Scan inL adaptado a cada um: dois estágios de acoplamento no MU, estágio único no MB."
+    }
+  ],
+  "prova": {
+    "composicao": {
+      "titulo": "Composição do kit",
+      "cabecalho": ["Componente", "Material", "Especificação"],
+      "linhas": [
+        ["Scan inL", "Corpo sólido em PEEK", "MU: dois estágios de acoplamento · MB: estágio único para o clipe de escaneamento horizontal"],
+        ["SC (Scan Connect)", "PEEK", "Perfil de emergência gengival · 10mm"],
+        ["TS (Transfer Scan)", "Híbrido PEEK + Titânio", "13mm · maior versatilidade"],
+        ["Hastes de Escaneamento", "PEEK Grau Médico", "Alturas variadas — captura da gengiva e do componente em etapa única"]
+      ]
+    }
+  },
+  "cta_final": {
+    "headline": "Leve ao consultório um escaneamento sem gambiarra",
+    "cta": "Apresentar o Kit inLego ao dentista",
+    "dica_ouro": "Hastes PEEK lidas como dente natural, assentamento passivo da barra e compatibilidade com MU e MB — o argumento técnico que sustenta a conversa comercial."
+  },
+  "enriquecimentos": [
+    {
+      "secao": "prova",
+      "tipo": "fluxo",
+      "dados": {
+        "passos": [
+          {"titulo": "Situação", "texto": "Pergunte como o dentista escaneia hoje protocolos inferiores: o escâner se perde ou sobrepõe imagens na mandíbula?"},
+          {"titulo": "Problema", "texto": "Aponte o hábito comum: unir escaneadores convencionais com resina colorida só para dar referência ao software."},
+          {"titulo": "Implicação", "texto": "Mostre a consequência: escaneamento imperfeito gera falta de passividade da barra, retrabalho no laboratório e risco de fratura de parafusos."},
+          {"titulo": "Necessidade de Solução", "texto": "Apresente as hastes inLego: continuidade do arco e assentamento 100% passivo com um escaneamento rápido."}
+        ]
+      }
+    },
+    {
+      "secao": "prova",
+      "tipo": "accordion",
+      "dados": {
+        "itens": [
+          {"pergunta": "\"Meu escâner atual já funciona, por que mudar?\"", "resposta": "As hastes PEEK eliminam o uso de resina e elástico e trazem previsibilidade ao assentamento passivo da barra — algo que a gambiarra convencional não garante."},
+          {"pergunta": "\"Não tenho espaço posterior para parafusar\"", "resposta": "O inLego não tem parafuso passante — o rosqueamento é manual, o que facilita regiões de abertura bucal limitada."},
+          {"pergunta": "\"O kit parece complexo, tem muitas peças\"", "resposta": "As hastes duplas e alturas variáveis simplificam: um único escaneamento resolve o que antes exigia várias etapas."}
+        ]
+      }
+    }
+  ]
+}

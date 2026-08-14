@@ -1,0 +1,79 @@
+{
+  "slug": "kit-expertguide",
+  "materiais": [
+    {
+      "tipo": "pdf",
+      "status": "concluido_autonomo",
+      "path": "output/kit-expertguide/pdf/apostila_kit-expertguide.pdf"
+    },
+    {
+      "tipo": "landing-page",
+      "status": "concluido_autonomo",
+      "path": "output/kit-expertguide/landing-page/index.html"
+    },
+    {
+      "tipo": "apresentacao",
+      "status": "concluido_autonomo",
+      "path": "output/kit-expertguide/apresentacao/index.html"
+    },
+    {
+      "tipo": "arte-01",
+      "status": "concluido_autonomo",
+      "path": "output/kit-expertguide/arte-01"
+    },
+    {
+      "tipo": "arte-02",
+      "status": "concluido_autonomo",
+      "path": "output/kit-expertguide/arte-02"
+    },
+    {
+      "tipo": "arte-03",
+      "status": "concluido_autonomo",
+      "path": "output/kit-expertguide/arte-03"
+    },
+    {
+      "tipo": "textos",
+      "status": "concluido_autonomo",
+      "path": "output/kit-expertguide/textos"
+    },
+    {
+      "tipo": "kit-consultor",
+      "status": "concluido_autonomo",
+      "path": "output/kit-expertguide/kit-consultor"
+    },
+    {
+      "tipo": "kit-distribuidor",
+      "status": "concluido_autonomo",
+      "path": "output/kit-expertguide/kit-distribuidor"
+    },
+    {
+      "tipo": "kit-consultor-v2",
+      "status": "concluido_autonomo",
+      "path": "output/kit-expertguide/kit-consultor-v2"
+    },
+    {
+      "tipo": "kit-distribuidor-v2",
+      "status": "concluido_autonomo",
+      "path": "output/kit-expertguide/kit-distribuidor-v2"
+    }
+  ],
+  "decisoes_design": [
+    "Auto-correção REGRA 4: gradiente de assinatura em 11 HTMLs do lote (landing-page, apresentacao, arte-01/02/03 x copy01-03) divergia da fonte de verdade — usava stops 25/50/75 com retorno a #e8d48b em vez de 0/40/70/100 definidos no aplicador-marca-conexao e em design-system-conexao.json. Corrigido para a forma canônica linear-gradient(135deg, #c9a655 0%, #e8d48b 40%, #a8873a 70%, #c9a655 100%) e 9 PNGs de arte re-renderizados a partir dos HTMLs corrigidos (mesmo mecanismo renderizar_pagina do compilador). OBSERVAÇÃO PARA ORQUESTRADOR: a raiz do desvio está nos templates/landing.html, templates/apresentacao.html e templates/arte-*.html — o próximo projeto reproduzirá o defeito se os templates não forem corrigidos. Kits (kit-consultor/kit-distribuidor) ainda usam o gradiente antigo — fora deste lote, não tocado.",
+    "Apresentação: script SPIN Selling representado como componente fluxo (4 passos sequenciais com setas) e contorno de objeções como accordion (3 itens) — os dois únicos componentes dinâmicos, ambos com ganho de clareza real (processo por etapas; perguntas/respostas). Sem componentismo decorativo; motion concentrado na entrada de slide + barras de assinatura superior/inferior em gradiente.",
+    "Landing-page: objeções do dentista em accordion na seção prova, tabelas de linhas/componentes/SPIN em tabela nativa; hero com título em gradiente de texto (background-clip) e imagem oficial do produto kit_expertguide_01.png.",
+    "Artes: 3 copies compartilhadas = 3 ângulos genuinamente distintos do dossiê (problema folga 5mm -> diferencial técnico offset 9mm/anéis redutores -> versatilidade coroa pronta/amplitude 2,9-4,3mm), não variações do mesmo ângulo. CTAs genéricos de ação sem claim técnico.",
+    "PDF (interino, regras próprias): cores do template_apostila.typ todas dentro do design system; faltantes dimensionais e comerciais declarados como comentários HTML no markdown da apostila (rastreáveis no relatório).",
+    "Nenhum dado numérico do dossiê exigia gauge/donut (sem percentuais do todo); sequência SPIN e objeções já cobertas por fluxo/accordion."
+  ],
+  "informacoes_faltantes": [
+    "Sem preço, condições comerciais ou prazo de entrega no texto-base — não incluído em nenhum material (registrado como comentário no PDF e omitido nos demais).",
+    "Sem especificações dimensionais de comprimento das chaves/fresas nem quantidade de peças por alvéolo no texto-base — não inventado (marcado como FALTANTE no PDF).",
+    "Sem contra-indicações ou casos de não-uso declarados no texto-base."
+  ],
+  "sugestoes_legenda": [
+    "Arte 1 (problema): '5mm de folga entre anilha e implante? O Kit ExpertGuide elimina — inserção 100% guiada, eixo fiel ao planejado. Fale com seu consultor Conexão.'",
+    "Arte 2 (diferencial): 'Offset fixo de 9mm garantido pela fresa Plane + anéis redutores que zeram a folga. Precisão milimétrica do planejamento à prótese.'",
+    "Arte 3 (versatilidade): 'Coroa pronta na hora, com o guia ainda em posição. Um único estojo do Slim 2,9 ao Regular 4,3mm.'",
+    "Landing: 'Domine o Kit ExpertGuide em minutos: Hand Free, offset de 9mm e script SPIN prontos para a próxima conversa com o dentista.'"
+  ]
+}

@@ -1,0 +1,74 @@
+{
+  "copies": [
+    {
+      "id": "kit-01",
+      "tom": "informativa",
+      "angulo": "offset fixo de 9mm garantido pela fresa Plane: distância exata entre anilha e plataforma, respeitando o planejamento biológico do software",
+      "headline": "Offset fixo de 9mm, do software à boca.",
+      "subcopy": "A fresa Plane trava a distância exata entre anilha e plataforma do implante, respeitando o planejamento biológico do software. O offset é fixo em 9mm, sempre repetível."
+    },
+    {
+      "id": "kit-02",
+      "tom": "informativa",
+      "angulo": "linhas do kit e codificação por cores: Slim 2,9mm (branca), Narrow 3,3/3,5mm (vermelha), Regular 3,75/4,3mm (preta) e Short 6,5mm de altura (preta)",
+      "headline": "Slim, Narrow, Regular e Short: um estojo, 4 linhas.",
+      "subcopy": "Codificação por cores (branca, vermelha e preta) organiza o kit da esquerda para a direita em alvéolos fechados."
+    },
+    {
+      "id": "kit-03",
+      "tom": "contra-intuitiva",
+      "angulo": "mãos livres parece menos controle, mas é o controle tridimensional total — o Hand Free elimina a intervenção manual para estabilizar fresas e implantes",
+      "headline": "Mãos livres não é menos controle. É controle total.",
+      "subcopy": "O conceito Hand Free assume o controle tridimensional, eliminando a intervenção manual para estabilizar fresas e implantes."
+    },
+    {
+      "id": "kit-04",
+      "tom": "contra-intuitiva",
+      "angulo": "codificação por cores não é simplificação, é um sistema à prova de erros que guia a equipe auxiliar do estojo à boca",
+      "headline": "Código de cores não é estética. É prevenção de erro.",
+      "subcopy": "O estojo em alvéolos fechados guia a equipe auxiliar e evita erros operacionais, da bancada à boca. É um sistema à prova de erros, pensado para toda a equipe."
+    },
+    {
+      "id": "kit-05",
+      "tom": "tecnica",
+      "angulo": "fresa Plane como componente crítico do offset fixo de 9mm entre anilha e plataforma do implante",
+      "headline": "Fresa Plane: o componente crítico do offset de 9mm.",
+      "subcopy": "Distância exata entre a anilha e a plataforma do implante, respeitando o planejamento biológico do software. A fresa Plane é peça crítica desse offset fixo de 9mm."
+    },
+    {
+      "id": "kit-06",
+      "tom": "tecnica",
+      "angulo": "técnica Top-Down: fresas de diâmetro menor 100% presas ao 'tambor' da anilha, pique inicial com guia total e zero desvio em extrações imediatas",
+      "headline": "Top-Down: pique inicial preso ao tambor da anilha.",
+      "subcopy": "Fresa menor 100% presa no tambor garante estabilidade no vazio do alvéolo e zero desvio em extrações imediatas."
+    },
+    {
+      "id": "kit-07",
+      "tom": "efeito-uau",
+      "angulo": "coroa pronta na hora: indexação mesial, distal e oclusal resolvida com o guia ainda em posição, via anilha indexada e Chave Index (marca amarela)",
+      "headline": "O paciente sai da cirurgia com a coroa pronta.",
+      "subcopy": "Indexação mesial, distal e oclusal resolvida com o guia ainda em posição, pela anilha indexada e a Chave Index."
+    },
+    {
+      "id": "kit-08",
+      "tom": "efeito-uau",
+      "angulo": "de 2,9 a 4,3mm de diâmetro em um único estojo — Slim, Narrow, Regular e Short no mesmo alvéolo organizado",
+      "headline": "2,9 a 4,3mm de diâmetro em um único estojo.",
+      "subcopy": "Do Slim em espaço protético limitado ao Regular universal — e ainda o protocolo Short de 6,5mm de altura. Diâmetros de 2,9 a 4,3mm, no mesmo alvéolo organizado."
+    },
+    {
+      "id": "kit-09",
+      "tom": "educativa",
+      "angulo": "por que a folga de 5mm das anilhas compromete o eixo em implantes de 3,75/4,0 e como os anéis redutores garantem a inserção 100% guiada",
+      "headline": "Por que a folga de 5mm da anilha compromete o eixo?",
+      "subcopy": "Em implantes de 3,75 ou 4,0, os anéis redutores eliminam a folga — o implante entra centrado e fiel ao eixo planejado."
+    },
+    {
+      "id": "kit-10",
+      "tom": "educativa",
+      "angulo": "por que a técnica Top-Down (cima para baixo) neutraliza o desvio de eixo em alvéolos abertos — a lógica do pique inicial preso ao tambor",
+      "headline": "Por que a Top-Down neutraliza o desvio em alvéolos abertos?",
+      "subcopy": "O cirurgião começa com fresa menor presa ao tambor e só expande o diâmetro após a profundidade final — onde não há osso, há guia."
+    }
+  ]
+}

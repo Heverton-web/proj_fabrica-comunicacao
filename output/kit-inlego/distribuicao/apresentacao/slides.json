@@ -1,0 +1,130 @@
+{
+  "slides": [
+    {
+      "tipo": "capa",
+      "titulo": "Kit inLego",
+      "corpo": "Escaneamento contínuo e passivo, sem gambiarras na mandíbula. Conexão Digital Implant."
+    },
+    {
+      "tipo": "conteudo",
+      "titulo": "O Deserto Anatômico da Mandíbula",
+      "corpo": [
+        "**Deserto Anatômico** — A mandíbula edêntula (arco total) não tem uma referência anatômica estável para o escâner, ao contrário da maxila, que conta com a rugosidade palatina.",
+        "**Confusão do Software** — Sem esse ponto de referência, o escâner se perde ao tentar mapear os implantes — o maior gargalo da odontologia digital.",
+        "**Gambiarras Necessárias** — Para compensar, é comum recorrer a elásticos ortodônticos ou pontos de resina colorida como referência improvisada."
+      ]
+    },
+    {
+      "tipo": "conteudo",
+      "titulo": "inLego: Fluxo Contínuo e Sem Distorção",
+      "corpo": [
+        "**Hastes em PEEK** — Hastes horizontais brancas em PEEK de Grau Médico substituem as gambiarras.",
+        "**Leitura Como Dente Natural** — O escâner lê as hastes com a mesma facilidade que um dente natural, sem se perder entre os implantes.",
+        "**Fluxo Contínuo** — O resultado é um fluxo de trabalho contínuo e livre de distorções.",
+        "**Zero Gambiarra** — Elimina de vez o uso de elástico ortodôntico ou resina colorida no escaneamento."
+      ]
+    },
+    {
+      "tipo": "conteudo",
+      "titulo": "Diferencial: Sem Parafuso Passante",
+      "corpo": [
+        "**Sem Parafuso Passante** — Diferente da concorrência, o inLego dispensa parafuso passante.",
+        "**Rosqueamento Manual** — O rosqueamento é feito manualmente, no sentido horário.",
+        "**Ideal Para Região Posterior** — Fundamental em áreas onde o espaço para o uso de chaves é limitado."
+      ]
+    },
+    {
+      "tipo": "conteudo",
+      "titulo": "Diferencial: Assentamento Passivo da Barra",
+      "corpo": [
+        "**Match Com Bibliotecas Digitais** — O encaixe preciso com as bibliotecas digitais (MU in lab) garante fidelidade ao componente real.",
+        "**Assentamento Passivo** — Esse match resulta no assentamento passivo da barra de protocolo.",
+        "**Prevenção de Fratura** — A passividade previne fraturas de parafusos a longo prazo."
+      ]
+    },
+    {
+      "tipo": "conteudo",
+      "titulo": "Composição do Kit inLego",
+      "corpo": [
+        "**Scan inL** — Corpo sólido em PEEK; no sistema MU, dois estágios de acoplamento; no MB, estágio único para o clipe de escaneamento horizontal.",
+        "**SC (Scan Connect)** — Fabricado em PEEK, com perfil de emergência gengival, comprimento de 10mm.",
+        "**TS (Transfer Scan)** — Corpo híbrido em PEEK e Titânio, comprimento de 13mm, para maior versatilidade.",
+        "**Hastes de Escaneamento** — Disponíveis em alturas variadas, permitindo captura da gengiva e do componente em uma única etapa.",
+        "**Compatibilidade** — Compatível com os sistemas de abutments Micro Unit (MU) e Multi Base (MB)."
+      ]
+    },
+    {
+      "tipo": "conteudo",
+      "titulo": "Versatilidade: Conexão Dupla de Hastes",
+      "corpo": [
+        "**Conexão Dupla** — Cada pilar permite o encaixe de até duas hastes simultaneamente.",
+        "**Une ao Arco** — Uma haste conecta o pilar aos anteriores, mantendo a continuidade da leitura.",
+        "**Cobre a Região Distal** — A segunda haste aponta para trás, nos implantes distais, facilitando a leitura da área posterior."
+      ]
+    },
+    {
+      "tipo": "conteudo",
+      "titulo": "Economia de Tempo: Uma Única Etapa",
+      "corpo": [
+        "**Uma Única Etapa** — A altura estratégica dos componentes permite capturar gengiva e pilares em um único escaneamento.",
+        "**Sem Escaneamento Duplo** — Evita a necessidade de escanear separadamente a gengiva e os pilares.",
+        "**Tempo de Cadeira Pela Metade** — O fluxo unificado reduz o tempo de cadeira pela metade."
+      ]
+    },
+    {
+      "tipo": "conteudo",
+      "titulo": "Script de Vendas: Framework SPIN Selling",
+      "componente": {
+        "tipo": "fluxo",
+        "dados": {
+          "passos": [
+            {
+              "titulo": "Situação",
+              "texto": "Pergunte como o dentista realiza hoje o escaneamento de protocolos inferiores e se o escâner \"se perde\" ou sobrepõe imagens na mandíbula."
+            },
+            {
+              "titulo": "Problema",
+              "texto": "Muitos colegas perdem tempo unindo escaneadores convencionais com resina para dar referência ao software."
+            },
+            {
+              "titulo": "Implicação",
+              "texto": "Um escaneamento imperfeito gera falta de passividade da barra, retrabalho no laboratório e risco de fratura de parafusos."
+            },
+            {
+              "titulo": "Necessidade de Solução",
+              "texto": "Apresente hastes que dão continuidade ao arco e permitem assentamento 100% passivo com um escaneamento rápido."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "tipo": "conteudo",
+      "titulo": "Contorno de Objeções",
+      "componente": {
+        "tipo": "accordion",
+        "dados": {
+          "itens": [
+            {
+              "pergunta": "\"Meu escaneador atual já funciona.\"",
+              "resposta": "Destaque a eliminação do uso de resina/elástico e o ganho de previsibilidade na passividade da barra."
+            },
+            {
+              "pergunta": "\"Não tenho espaço posterior para parafusar.\"",
+              "resposta": "Destaque a ausência de parafuso passante e o rosqueamento manual, que facilitam regiões de abertura bucal limitada."
+            },
+            {
+              "pergunta": "\"O kit parece complexo, tem muitas peças.\"",
+              "resposta": "Destaque que as hastes duplas e alturas variáveis simplificam: um único escaneamento substitui várias etapas."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "tipo": "cta",
+      "titulo": "Apresente o inLego Com Autoridade Técnica",
+      "corpo": "Leve o argumento completo ao dentista: da fundamentação técnica (hastes PEEK, assentamento passivo, sem parafuso passante) ao script SPIN Selling e ao contorno de objeções. Kit inLego — Conexão Digital Implant."
+    }
+  ]
+}

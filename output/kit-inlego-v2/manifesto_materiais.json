@@ -1,0 +1,45 @@
+{
+  "slug": "kit-inlego-v2",
+  "materiais": [
+    {
+      "tipo": "pdf",
+      "status": "concluido_autonomo",
+      "path": "output/kit-inlego-v2/pdf/apostila_kit-inlego-v2.pdf"
+    },
+    {
+      "tipo": "kit-consultor",
+      "status": "concluido_autonomo",
+      "path": "output/kit-inlego-v2/kit-consultor"
+    },
+    {
+      "tipo": "landing-page",
+      "status": "concluido_autonomo",
+      "path": "output/kit-inlego-v2/landing-page/index.html"
+    },
+    {
+      "tipo": "apresentacao",
+      "status": "concluido_autonomo",
+      "path": "output/kit-inlego-v2/apresentacao/index.html"
+    },
+    {
+      "tipo": "kit-consultor-v2",
+      "status": "concluido_autonomo",
+      "path": "output/kit-inlego-v2/kit-consultor-v2"
+    }
+  ],
+  "decisoes_design": [
+    "Capa da apostila com título temático 'Fim do Caos na Mandíbula Digital' (2 linhas equilibradas no bloco da capa, sem palavra isolada), parágrafo de apoio em 120-160 chars sem claim novo — ajustado durante a validação para atender o validar-pdf.py (título em bloco, remete ao tema do texto-mãe).",
+    "Landing sem componentes animados de dado: o único gatilho numérico ('metade do tempo de cadeira') não ganharia clareza sobre o card/texto puro — evitado enriquecimento forçado (REGRA 6).",
+    "Apresentação em 5 slides conforme mapeamento do diretor-de-arte (capa, o que é, para que serve, diferenciais técnicos em cards, CTA) — sem hífens nos títulos; diferenciais como cards em grid, sem numeração decorativa.",
+    "Kit-consultor renderizado com elementos_decorativos=false (escolha do operador): fundo limpo, 1 CTA pill por peça, sem badges de contexto."
+  ],
+  "informacoes_faltantes": [
+    "Texto-base não traz lista detalhada de componentes/peças do kit (contagem de hastes, pilares, alturas) — seção 'Composição' não criada em nenhum material.",
+    "Não há dados de preço/valores no texto-base — nenhum material menciona valor."
+  ],
+  "sugestoes_legenda": [
+    "Kit inLego: o fim do caos no escaneamento mandibular. Referências em PEEK de Grau Médico que o escâner lê como dente natural — fluxo contínuo, sem resina, sem elástico.",
+    "Seu escâner 'se perde' na mandíbula? O Kit inLego cria as referências que faltam: zero parafuso passante, etapa única e metade do tempo de cadeira.",
+    "Assentamento passivo sem gambiarras: conheça o Kit inLego e leve a Ciência da Continuidade para o seu próximo caso de protocolo."
+  ]
+}

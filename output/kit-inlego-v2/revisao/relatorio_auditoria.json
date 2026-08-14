@@ -1,0 +1,38 @@
+{
+  "slug": "kit-inlego-v2",
+  "tipos": {
+    "apresentacao": {
+      "conforme": true,
+      "validacao_tecnica": "[OK] apresentacao: sem erro de console, sem asset quebrado, sem overflow horizontal",
+      "fidelidade_marca": "[OK] apresentacao: nenhuma cor fora do design system fixo encontrada"
+    },
+    "kit-consultor-v2": {
+      "conforme": true,
+      "validacao_tecnica": "[OK] kit-consultor: 10 PNGs, 10 conteudo.json, 10 texto_whatsapp.txt (10 esperados de cada)\n[OK] kit-consultor: 1 badge por peca (somente o CTA pill, 0 badges de contexto)\n[OK] kit-consultor: paragrafo em >= 3 linhas, sem linha orfa em nenhuma peca",
+      "fidelidade_marca": "n/a"
+    },
+    "landing-page": {
+      "conforme": true,
+      "validacao_tecnica": "[OK] landing-page: sem erro de console, sem asset quebrado, sem overflow horizontal",
+      "fidelidade_marca": "[OK] landing-page: nenhuma cor fora do design system fixo encontrada"
+    },
+    "pdf": {
+      "conforme": true,
+      "validacao_tecnica": "[OK] apostila_kit-inlego-v2.pdf: 1389898 bytes (< 5 MB)\n[OK] apostila_kit-inlego-v2.pdf: 7 pagina(s)\n[OK] apostila_kit-inlego-v2.pdf: 6667 caracteres de texto vetorial extraidos\n[OK] titulo da capa com 2 linha(s)\n[OK] titulo remete ao tema do texto-base (3 palavras em comum)\n[OK] contracapa com logo da marca (1 imagem(ns) na ultima pagina)",
+      "fidelidade_marca": "n/a"
+    }
+  },
+  "r9_estado_final": {
+    "ok": true,
+    "motivo": "ok"
+  },
+  "r12_estrutura_output": {
+    "ok": true,
+    "motivo": "ok"
+  },
+  "preset_kit_completo": {
+    "ok": true,
+    "motivo": "ok"
+  },
+  "conforme": true
+}
