@@ -12,6 +12,9 @@ Regras:
 - A pasta distribuicao/ e sempre regenerada do zero (mesma disciplina do
   manifesto_materiais.json).
 - Inclui COPYRIGHT.txt (direitos autorais de marca) na raiz do pacote.
+- Inclui GUIA-DO-CONSULTOR.html (guia institucional fixo de como usar cada
+  material em cada canal, copiado de templates/guia-consultor-conexao.html)
+  na raiz do pacote.
 - Gera tambem o zip distribuicao_<slug>.zip DENTRO da pasta distribuicao/
   (conteudo identico ao da pasta, sem o proprio zip).
 - REGRA INTOCAVEL: kit-consultor, kit-distribuidor e arte-01/02/03, tanto na
@@ -179,6 +182,10 @@ def main():
 
     (pacote / "COPYRIGHT.txt").write_text(
         COPYRIGHT.format(slug=args.slug), encoding="utf-8")
+
+    guia = DIR_PROJETO / "templates" / "guia-consultor-conexao.html"
+    if guia.exists():
+        shutil.copy2(guia, pacote / "GUIA-DO-CONSULTOR.html")
 
     zip_path = pacote / f"{NOME_PACOTE}_{args.slug}.zip"
     arquivos = [

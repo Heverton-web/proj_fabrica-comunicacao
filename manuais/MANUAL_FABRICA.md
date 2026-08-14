@@ -87,7 +87,7 @@ Passo 2 — Produção autônoma
        ▼
   empacotar-projeto.py   → manifesto_materiais.json
        ▼
-  empacotar-distribuicao.py → output/<slug>/distribuicao/ (finais + .zip + COPYRIGHT.txt)
+  empacotar-distribuicao.py → output/<slug>/distribuicao/ (finais + .zip + COPYRIGHT.txt + GUIA-DO-CONSULTOR.html)
 ```
 
 Cada material tem seu próprio redator (fase 2), seu próprio compilador (fase 3) e seu próprio validador — mas todos passam pela mesma etapa final de revisão de marca e auditoria antes de serem empacotados.
@@ -143,7 +143,7 @@ output/<slug>/
 ├── kit-consultor/ kit-distribuidor/   10 PNGs + textos WhatsApp cada
 ├── textos/                      whatsapp.txt, instagram.txt, linkedin.txt
 ├── revisao/                     relatorio_auditoria.json
-└── distribuicao/                pacote final: .zip + COPYRIGHT.txt
+└── distribuicao/                pacote final: .zip + COPYRIGHT.txt + GUIA-DO-CONSULTOR.html
 ```
 
 ---
@@ -333,6 +333,9 @@ recente do projeto, nunca precisa ser pedido separadamente.
   - `textos/` → os `.txt` de WhatsApp/Instagram/LinkedIn;
   - `kit-consultor/`, `kit-distribuidor/` → os 10 PNGs + 10 `texto_whatsapp.txt` (+ `conteudo.json`);
 - `COPYRIGHT.txt` na raiz do pacote (direitos autorais da marca Conexão);
+- `GUIA-DO-CONSULTOR.html` na raiz do pacote — guia institucional fixo (não varia por
+  projeto) explicando o que é cada material e como/onde usá-lo em cada canal, copiado
+  de `templates/guia-consultor-conexao.html`;
 - `distribuicao_<slug>.zip` — o pacote inteiro compactado, dentro da própria pasta `distribuicao/`.
 
 **O que fica de fora (de propósito — REGRA 2, silenciamento estético):** insumos,
@@ -381,4 +384,4 @@ Use o `/gerar-<material>` do material que falta diretamente sobre o mesmo slug �
 - **Revisor de marca** (`revisor-marca`) — audita fidelidade à fonte e à marca depois da compilação, antes do empacotamento.
 - **Auditoria** (`auditar-projeto.py`) — verificação final de conformidade do projeto inteiro, com até 3 rodadas de autocorreção.
 - **Design system fixo** — `brand/design-system-conexao.json`, aplicado sempre da mesma forma pela skill `aplicador-marca-conexao`.
-- **Pacote de distribuição** (`output/<slug>/distribuicao/`, gerado por `empacotar-distribuicao.py`) — entrega final: só os resultados mais recentes dos materiais concluídos, sem arquivos internos de trabalho, com `COPYRIGHT.txt` e `distribuicao_<slug>.zip` dentro. Ver seção 6.1.
+- **Pacote de distribuição** (`output/<slug>/distribuicao/`, gerado por `empacotar-distribuicao.py`) — entrega final: só os resultados mais recentes dos materiais concluídos, sem arquivos internos de trabalho, com `COPYRIGHT.txt`, `GUIA-DO-CONSULTOR.html` e `distribuicao_<slug>.zip` dentro. Ver seção 6.1.

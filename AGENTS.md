@@ -172,7 +172,7 @@ brand/design-system-conexao.json (FIXO, mesmo para todo projeto)
                                                            │
                                                      empacotar-projeto.py → manifesto_materiais.json
                                                            │
-                                                     empacotar-distribuicao.py → output/<slug>/distribuicao/ (finais + distribuicao_<slug>.zip + COPYRIGHT.txt)
+                                                     empacotar-distribuicao.py → output/<slug>/distribuicao/ (finais + distribuicao_<slug>.zip + COPYRIGHT.txt + GUIA-DO-CONSULTOR.html)
                                                            (pacote de distribuição auto-atualizado a cada ciclo — só finais, versão mais recente, REGRAS 2 e 11)
 ```
 
@@ -192,7 +192,7 @@ brand/design-system-conexao.json (FIXO, mesmo para todo projeto)
 
 Toda vez que um material for adicionado/removido desta tabela, rode `python scripts/verificar-consistencia-pipeline.py --estrito` para validar a consistência entre todos os módulos.
 
-Todos os materiais passam por `revisor-marca` (fidelidade de fonte + marca) e `auditar-projeto.py --estrito` antes de `empacotar-projeto.py`. Depois de todo `empacotar-projeto.py <slug>` (produção completa ou regeneração pontual), rode `empacotar-distribuicao.py <slug>` para o pacote de distribuição (pasta `distribuicao/` com zip + `COPYRIGHT.txt` dentro) — ver `SPEC_COMANDOS.md`, Passo 6 de `/produzir-comunicacao-completa`.
+Todos os materiais passam por `revisor-marca` (fidelidade de fonte + marca) e `auditar-projeto.py --estrito` antes de `empacotar-projeto.py`. Depois de todo `empacotar-projeto.py <slug>` (produção completa ou regeneração pontual), rode `empacotar-distribuicao.py <slug>` para o pacote de distribuição (pasta `distribuicao/` com zip + `COPYRIGHT.txt` + `GUIA-DO-CONSULTOR.html` dentro) — ver `SPEC_COMANDOS.md`, Passo 6 de `/produzir-comunicacao-completa`.
 
 ## Skills globais reaproveitados (catálogo já disponível, não copiar)
 

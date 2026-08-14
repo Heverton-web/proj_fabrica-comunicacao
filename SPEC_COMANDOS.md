@@ -331,7 +331,9 @@ python scripts/empacotar-distribuicao.py <slug>
 Gera o **pacote de distribuição** (se auto-atualiza a cada ciclo/finalização): pasta
 `output/<slug>/distribuicao/` contendo os **resultados finais** dos materiais
 `concluido_autonomo` — sem insumos, briefs, JSONs de trabalho ou `revisao/`
-(REGRA 2) — com `COPYRIGHT.txt` e o zip `distribuicao_<slug>.zip` **dentro da
+(REGRA 2) — com `COPYRIGHT.txt`, `GUIA-DO-CONSULTOR.html` (guia institucional fixo
+de como usar cada material em cada canal, `templates/guia-consultor-conexao.html`)
+e o zip `distribuicao_<slug>.zip` **dentro da
 pasta**. Empacota a **versão mais recente** de cada material (maior sufixo `-vN` da
 REGRA 11); as versões antigas permanecem em `output/<slug>/`, o pacote é derivado e
 regenerado do zero, nunca apaga origem.
@@ -452,8 +454,8 @@ aplica). **Nunca decida "sobrescrever ou não" por julgamento do agente — a re
    `manifesto_materiais.json` passa a listar automaticamente toda pasta versionada
    encontrada em disco — nunca só a 1ª geração — sem afetar as demais já entregues).
    Em seguida rode `python scripts/empacotar-distribuicao.py <slug>` — o pacote de
-   distribuição (pasta `distribuicao/` com `distribuicao_<slug>.zip` e
-   `COPYRIGHT.txt` dentro) se auto-atualiza a cada ciclo, empacotando a versão mais
+   distribuição (pasta `distribuicao/` com `distribuicao_<slug>.zip`,
+   `COPYRIGHT.txt` e `GUIA-DO-CONSULTOR.html` dentro) se auto-atualiza a cada ciclo, empacotando a versão mais
    recente de cada material.
 5. Reporte (REGRA 2): path de cada material entregue **por pasta/versão** (deixando
    claro quando um material é uma nova versão e qual pasta anterior permanece
@@ -568,8 +570,8 @@ resolvidas — pule direto para o despacho abaixo usando a `<pasta>` recebida.
    pastas despachadas, separadas por vírgula>`.
 6. Rode `python scripts/empacotar-projeto.py <slug>`, depois
    `python scripts/empacotar-distribuicao.py <slug>` (pacote de distribuição
-   auto-atualizado: pasta `distribuicao/` com `distribuicao_<slug>.zip` e
-   `COPYRIGHT.txt` dentro — ver Passo 6 de
+   auto-atualizado: pasta `distribuicao/` com `distribuicao_<slug>.zip`,
+   `COPYRIGHT.txt` e `GUIA-DO-CONSULTOR.html` dentro — ver Passo 6 de
    `/produzir-comunicacao-completa`).
 7. Reporte (REGRA 2): path de cada PNG **por pasta/versão** (3 nesta variante, mais os
    demais materiais despachados), decisões de design, faltantes, sugestões de legenda
@@ -661,8 +663,8 @@ e "Procedimento (despacho)" de `/gerar-pdf` acima, trocando o material principal
    pastas despachadas, separadas por vírgula>`.
 8. Rode `python scripts/empacotar-projeto.py <slug>`, depois
    `python scripts/empacotar-distribuicao.py <slug>` (pacote de distribuição
-   auto-atualizado: pasta `distribuicao/` com `distribuicao_<slug>.zip` e
-   `COPYRIGHT.txt` dentro — ver Passo 6 de
+   auto-atualizado: pasta `distribuicao/` com `distribuicao_<slug>.zip`,
+   `COPYRIGHT.txt` e `GUIA-DO-CONSULTOR.html` dentro — ver Passo 6 de
    `/produzir-comunicacao-completa`).
 9. Reporte (REGRA 2): path de cada PNG **por pasta/versão** (10, mais os demais
    materiais despachados), decisões de design, faltantes, sugestões de legenda/CTA.
@@ -832,8 +834,8 @@ agente — a resolução é sempre feita por este script determinístico.
 5. Rode `python scripts/empacotar-projeto.py <slug>` (o manifesto lista todas as
    versões encontradas em disco, nunca só a mais recente — REGRA 11), depois
    `python scripts/empacotar-distribuicao.py <slug>` (pacote de distribuição
-   auto-atualizado: pasta `distribuicao/` com `distribuicao_<slug>.zip` e
-   `COPYRIGHT.txt` dentro — ver Passo 6 de
+   auto-atualizado: pasta `distribuicao/` com `distribuicao_<slug>.zip`,
+   `COPYRIGHT.txt` e `GUIA-DO-CONSULTOR.html` dentro — ver Passo 6 de
    `/produzir-comunicacao-completa`).
 6. Reporte (REGRA 2): path de cada material **por pasta/versão** (deixando claro
    quando um material é uma nova versão e qual pasta anterior permanece intocada),
