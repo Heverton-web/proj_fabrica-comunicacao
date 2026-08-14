@@ -14,6 +14,10 @@ Regras:
 - Inclui COPYRIGHT.txt (direitos autorais de marca) na raiz do pacote.
 - Gera tambem o zip distribuicao_<slug>.zip DENTRO da pasta distribuicao/
   (conteudo identico ao da pasta, sem o proprio zip).
+- REGRA INTOCAVEL: kit-consultor e kit-distribuidor, tanto na pasta distribuicao/
+  quanto no .zip, contem SOMENTE .png e .txt de cada arte - nunca index.html,
+  assets/ (fontes/logos/imagem de produto) ou conteudo.json (esses continuam
+  existindo em output/<slug>/kit-*/, so nao entram no pacote entregue ao cliente).
 
 Uso:
     python scripts/empacotar-distribuicao.py <slug>
@@ -26,6 +30,9 @@ import shutil
 import sys
 import zipfile
 from pathlib import Path
+
+sys.path.append(str(Path(__file__).resolve().parent))
+from _tipos_comuns import KITS, tipo_base
 
 DIR_PROJETO = Path(__file__).resolve().parent.parent
 DIR_OUTPUT = DIR_PROJETO / "output"
@@ -62,9 +69,12 @@ def pastas_do_tipo(base, tipo):
 
 
 def copiar_artefato(origem_tipo, destino_tipo, slug):
-    """Copia o artefato final do tipo para o pacote. PDF vira so o .pdf; os
-    demais tipos copiam a pasta inteira (HTML precisa de assets/, kits de
-    artes-*/texto_whatsapp.txt; textos dos .txt). Retorna True se copiou."""
+    """Copia o artefato final do tipo para o pacote. PDF vira so o .pdf; kits
+    (kit-consultor/kit-distribuidor) copiam SO .png e .txt de cada arte, sem
+    index.html/assets/conteudo.json (REGRA INTOCAVEL: kit no pacote de
+    distribuicao e no .zip so pode conter .png + .txt); os demais tipos copiam
+    a pasta inteira (HTML precisa de assets/; textos dos .txt). Retorna True
+    se copiou."""
     base_origem = DIR_OUTPUT / slug
     destino = base_origem / NOME_PACOTE / destino_tipo
     destino.mkdir(parents=True, exist_ok=True)
@@ -75,6 +85,22 @@ def copiar_artefato(origem_tipo, destino_tipo, slug):
             return False
         shutil.copy2(pdfs[0], destino / pdfs[0].name)
         return True
+
+    if tipo_base(destino_tipo) in KITS:
+        copiado = False
+        for arquivo in sorted(origem_tipo.rglob("*")):
+            if not arquivo.is_file() or arquivo.suffix.lower() not in (".png", ".txt"):
+                continue
+            relativo = arquivo.relative_to(origem_tipo)
+            if "assets" in relativo.parts:
+                # assets/ (fontes/logos/imagem de produto) sao insumo do render,
+                # nao artefato final - REGRA INTOCAVEL exclui do pacote
+                continue
+            alvo = destino / relativo
+            alvo.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(arquivo, alvo)
+            copiado = True
+        return copiado
 
     shutil.copytree(origem_tipo, destino, dirs_exist_ok=True)
     return True

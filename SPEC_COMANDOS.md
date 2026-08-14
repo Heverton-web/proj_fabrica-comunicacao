@@ -336,6 +336,13 @@ pasta**. Empacota a **versão mais recente** de cada material (maior sufixo `-vN
 REGRA 11); as versões antigas permanecem em `output/<slug>/`, o pacote é derivado e
 regenerado do zero, nunca apaga origem.
 
+**REGRA INTOCÁVEL:** `kit-consultor` e `kit-distribuidor`, tanto na pasta
+`distribuicao/` quanto dentro do `.zip`, contêm **somente `.png` e `.txt`** de cada
+arte — nunca `index.html`, `assets/` (fontes/logos/imagem de produto) ou
+`conteudo.json`. Esses arquivos de trabalho continuam existindo normalmente em
+`output/<slug>/kit-*/` para fins de auditoria/revisão; simplesmente não entram no
+pacote entregue ao cliente.
+
 ### Passo 7 — Relatório final (REGRA 2 — telegráfico, sem preâmbulo)
 
 Reporte: materiais entregues (com path), materiais esgotados (com motivo), decisões de
