@@ -223,19 +223,26 @@ def compilar_apresentacao(slug, pasta="apresentacao"):
         shutil.copy(l, dest_assets / "logos" / l.name)
 
     # Copia imagem do produto (path real vem de config_projeto.json, nunca
-    # hardcoded — cada projeto tem seu próprio nome/local de imagem)
-    img_produto_filename = "kit_start_flex_frontal.png"  # fallback histórico
+    # hardcoded — cada projeto tem seu próprio nome/local de imagem). Sem
+    # imagem em disco, nenhuma tag <img> e emitida (nunca fallback hardcoded
+    # de outro projeto, ex.: kit_start_flex_frontal.png — fallback legado removido, REGRA 6).
+    img_produto_filename = None
     config_para_imagem = carregar_json(slug_dir / "config_projeto.json")
     if config_para_imagem and config_para_imagem.get("imagens"):
         primeira_imagem = config_para_imagem["imagens"][0].get("path", "")
         if primeira_imagem:
-            img_produto_src = DIR_PROJETO / primeira_imagem
+            # config.imagens[].path e relativo a output/<slug>/ (ex.:
+            # "insumos/produto.png"); fallback legado: relativo ao repo.
+            img_produto_src = slug_dir / primeira_imagem
+            if not img_produto_src.exists():
+                img_produto_src = DIR_PROJETO / primeira_imagem
             if img_produto_src.exists():
                 img_produto_filename = img_produto_src.name
                 shutil.copy(img_produto_src, dest_assets / img_produto_filename)
     else:
         img_produto_src_legado = slug_dir / "insumos" / "kit_start_flex_frontal.png"
         if img_produto_src_legado.exists():
+            img_produto_filename = "kit_start_flex_frontal.png"  # fallback legado (config sem imagens)
             shutil.copy(img_produto_src_legado, dest_assets / "kit_start_flex_frontal.png")
 
     # Carrega dados
@@ -264,9 +271,7 @@ def compilar_apresentacao(slug, pasta="apresentacao"):
           <p style="font-size: 1.25rem; line-height: 1.5; color: var(--text-muted); max-width: 100%;">{corpo_formatado}</p>
         </div>
       </div>
-      <div class="capa-direita">
-        <img src="assets/{img_produto_filename}" alt="Produto">
-      </div>
+      {f'<div class="capa-direita"><img src="assets/{img_produto_filename}" alt="Produto"></div>' if img_produto_filename else ''}
     </div>"""
             html_slides.append(html)
 
@@ -473,19 +478,26 @@ def compilar_landing(slug, pasta="landing-page"):
         shutil.copy(l, dest_assets / "logos" / l.name)
 
     # Copia imagem do produto se existir (path real vem de config_projeto.json,
-    # nunca hardcoded — cada projeto tem seu próprio nome/local de imagem)
-    img_produto_filename = "kit_start_flex_frontal.png"  # fallback histórico
+    # nunca hardcoded — cada projeto tem seu próprio nome/local de imagem). Sem
+    # imagem em disco, nenhuma tag <img> e emitida (nunca fallback hardcoded de
+    # outro projeto, ex.: kit_start_flex_frontal.png — fallback legado removido, REGRA 6).
+    img_produto_filename = None
     config_para_imagem = carregar_json(slug_dir / "config_projeto.json")
     if config_para_imagem and config_para_imagem.get("imagens"):
         primeira_imagem = config_para_imagem["imagens"][0].get("path", "")
         if primeira_imagem:
-            img_produto_src = DIR_PROJETO / primeira_imagem
+            # config.imagens[].path e relativo a output/<slug>/ (ex.:
+            # "insumos/produto.png"); fallback legado: relativo ao repo.
+            img_produto_src = slug_dir / primeira_imagem
+            if not img_produto_src.exists():
+                img_produto_src = DIR_PROJETO / primeira_imagem
             if img_produto_src.exists():
                 img_produto_filename = img_produto_src.name
                 shutil.copy(img_produto_src, dest_assets / img_produto_filename)
     else:
         img_produto_src_legado = slug_dir / "insumos" / "kit_start_flex_frontal.png"
         if img_produto_src_legado.exists():
+            img_produto_filename = "kit_start_flex_frontal.png"  # fallback legado (config sem imagens)
             shutil.copy(img_produto_src_legado, dest_assets / "kit_start_flex_frontal.png")
 
     # Carrega dados
@@ -537,8 +549,10 @@ def compilar_landing(slug, pasta="landing-page"):
     prova = dados.get("prova", {})
     prova_html = []
     
-    # Imagem do produto em destaque centralizada antes das tabelas
-    prova_html.append(f"""
+    # Imagem do produto em destaque centralizada antes das tabelas (so se
+    # existir em disco — nunca fallback hardcoded de outro projeto)
+    if img_produto_filename:
+        prova_html.append(f"""
       <div style="display: flex; justify-content: center; margin-bottom: 3.5rem;">
         <img src="assets/{img_produto_filename}" alt="Produto" style="max-height: 50vh; filter: drop-shadow(0 15px 30px rgba(0,0,0,0.4)); object-fit: contain;">
       </div>""")

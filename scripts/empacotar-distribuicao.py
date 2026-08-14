@@ -154,6 +154,13 @@ def main():
         if material.get("status") != "concluido_autonomo":
             continue
         tipo = material["tipo"]
+        if tipo_base(tipo) != tipo:
+            # Entrada versionada do manifesto (ex.: 'pdf-v2', 'arte-01-v2') -
+            # a entrada base ('pdf', 'arte-01') ja empacota a versao mais
+            # recente (maior -vN, REGRA 11). Ignorar aqui evita duplicar
+            # 'pdf' + 'pdf-v2' no pacote e, pior, copiar a pasta versionada
+            # inteira (incluindo .md/assets de trabalho) no destino '-v2'.
+            continue
         variantes = pastas_do_tipo(base, tipo)
         if not variantes:
             print(f"[ERRO] {tipo}: nenhuma pasta de material encontrada em disco")

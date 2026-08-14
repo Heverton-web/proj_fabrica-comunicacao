@@ -146,19 +146,27 @@ def preparar_assets(dest_dir, slug_dir):
         shutil.copy(l, dest_assets / "logos" / l.name)
 
     # Imagem do produto (path real vem de config_projeto.json, nunca
-    # hardcoded — cada projeto tem seu próprio nome/local de imagem)
-    img_produto_filename = "kit_start_flex_frontal.png"  # fallback histórico
+    # hardcoded — cada projeto tem seu próprio nome/local de imagem). Sem
+    # imagem em disco, retorna None e o template nao emite tag <img> (nunca
+    # fallback hardcoded de outro projeto, ex.: kit_start_flex_frontal.png —
+    # REGRA 6).
+    img_produto_filename = None
     config_para_imagem = carregar_json(slug_dir / "config_projeto.json")
     if config_para_imagem and config_para_imagem.get("imagens"):
         primeira_imagem = config_para_imagem["imagens"][0].get("path", "")
         if primeira_imagem:
-            img_produto_src = DIR_PROJETO / primeira_imagem
+            # config.imagens[].path e relativo a output/<slug>/ (ex.:
+            # "insumos/produto.png"); fallback legado: relativo ao repo.
+            img_produto_src = slug_dir / primeira_imagem
+            if not img_produto_src.exists():
+                img_produto_src = DIR_PROJETO / primeira_imagem
             if img_produto_src.exists():
                 img_produto_filename = img_produto_src.name
                 shutil.copy(img_produto_src, dest_assets / img_produto_filename)
     else:
         img_produto_src_legado = slug_dir / "insumos" / "kit_start_flex_frontal.png"
         if img_produto_src_legado.exists():
+            img_produto_filename = "kit_start_flex_frontal.png"
             shutil.copy(img_produto_src_legado, dest_assets / "kit_start_flex_frontal.png")
 
     return img_produto_filename
@@ -297,7 +305,8 @@ def preencher_template(template_content, *, titulo, headline, subcopy, cta,
 
     html_final = re.sub(r'<!--\s*\{\{BADGE_CONTEXTO\}\}.*?-->', badge_tag, html_final, flags=re.DOTALL)
 
-    produto_tag = f'<img class="produto" src="assets/{img_produto_filename}" alt="Produto">'
+    produto_tag = (f'<img class="produto" src="assets/{img_produto_filename}" alt="Produto">'
+                   if img_produto_filename else "")
     html_final = re.sub(r'<!--\s*\{\{IMAGEM_PRODUTO\}\}.*?-->', produto_tag, html_final, flags=re.DOTALL)
 
     html_final = re.sub(r'<!--\s*\{\{HEADLINE\}\}.*?-->',

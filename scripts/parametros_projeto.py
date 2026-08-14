@@ -118,9 +118,17 @@ def validar_config(slug):
 
     imagens = config.get("imagens", [])
     for img in imagens:
-        p = DIR_PROJETO / img.get("path", "")
-        if img.get("path") and not p.exists():
-            erros.append(f"imagem referenciada nao encontrada no disco: {img.get('path')}")
+        # config.imagens[].path e relativo ao dir do projeto (output/<slug>/),
+        # ex.: "insumos/produto.png" - nunca ao repo inteiro. Fallback para o
+        # repo inteiro preserva projetos antigos que gravavam caminho
+        # absoluto-ao-repo (mesma disciplina de _coletar_textos_base de
+        # validar-pdf.py e de extrair_imagem_produto de compilar-pdf.py).
+        path_imagem = img.get("path", "")
+        p = (DIR_OUTPUT / slug / path_imagem) if path_imagem else None
+        if p is not None and not p.exists():
+            p = DIR_PROJETO / path_imagem
+        if path_imagem and (p is None or not p.exists()):
+            erros.append(f"imagem referenciada nao encontrada no disco: {path_imagem}")
 
     if "pdf" in materiais and not CAMINHO_BRAND.exists():
         erros.append(f"brand/design-system-conexao.json ausente - necessario mesmo para o PDF (uso interim)")

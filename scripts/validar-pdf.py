@@ -268,7 +268,13 @@ def _coletar_textos_base(slug_dir, config):
     if config:
         texto_base_config = config.get("texto_base")
         if texto_base_config:
-            caminho_config = DIR_PROJETO / texto_base_config
+            # config.texto_base e relativo ao dir do projeto (output/<slug>/),
+            # como config.imagens[].path (ex.: "insumos/texto_base.md") - nunca
+            # ao repo inteiro. Fallback para o repo inteiro preserva projetos
+            # antigos que gravavam caminho absoluto-ao-repo.
+            caminho_config = slug_dir / texto_base_config
+            if not caminho_config.exists():
+                caminho_config = DIR_PROJETO / texto_base_config
             if caminho_config.exists():
                 try:
                     conteudo = caminho_config.read_text(encoding="utf-8", errors="ignore")

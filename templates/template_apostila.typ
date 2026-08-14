@@ -238,7 +238,7 @@
         $if(imagem_produto)$
         #image("$imagem_produto$", width: 100%, height: 8cm, fit: "contain")
         $else$
-        #image("insumos/kit_start_flex_frontal.png", width: 100%, height: 8cm, fit: "contain")
+        #image("pdf/assets/logos/Logo_Conexão_vertical_texto_branco.png", width: 100%, height: 8cm, fit: "contain")
         $endif$
       ]
 
