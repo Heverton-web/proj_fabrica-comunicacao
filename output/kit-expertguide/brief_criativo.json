@@ -1,0 +1,85 @@
+{
+  "mensagem_central": "Kit ExpertGuide: precisão matemática total em cirurgia guiada",
+  "publico_alvo": "consultores",
+  "objetivo_tom": "educacional_comercial",
+  "objetivo": "educacional",
+  "tom_de_voz": "comercial",
+  "nota_de_escopo": "Material interno de capacitação/venda para o consultor da Conexão Digital Implant apresentar ao dentista — inclui camada didática (diferenciais técnicos e componentes do Kit ExpertGuide) seguida de camada comercial (script SPIN, contorno de objeções).",
+  "hierarquia_de_conteudo": [
+    "problema: processos manuais dependentes de ajustes — folga de 5mm entre anilha e implante, ajustes demorados de prótese por indexação fora do planejado e risco de desvio de eixo em extrações imediatas",
+    "solução: Kit ExpertGuide — conceito Hand Free (mãos livres), offset fixo de 9mm (fresa Plane), inserção 100% guiada (anéis redutores) e protocolo Coroa Pronta (anilha indexada + Chave Index)",
+    "destaques técnicos: fresa Plane como componente crítico do offset, anéis redutores eliminando a folga de 5mm para implantes 3,75/4,0, chaves Driver (motor) e Index (manual, marca amarela)",
+    "composição do kit: estojo organizado em alvéolos fechados (esquerda→direita) — linhas Slim 2,9mm (branca), Narrow 3,3/3,5mm (vermelha), Regular 3,75/4,3mm (preta), Short 6,5mm de altura (preta)",
+    "versatilidade: amplitude de diâmetros 2,9 a 4,3mm em um único estojo, protocolo para implantes Short 6,5mm (evita nervo alveolar inferior), técnica Top-Down para extrações imediatas",
+    "argumento comercial: script SPIN Selling e contorno de objeções para o consultor usar com o dentista"
+  ],
+  "mapeamento_por_material": {
+    "pdf": {
+      "secoes": [
+        "abertura",
+        "problema",
+        "solução",
+        "destaques",
+        "composição/especificações",
+        "aplicação",
+        "fechamento"
+      ]
+    },
+    "landing-page": {
+      "secoes": [
+        "hero",
+        "problema→solução",
+        "destaques",
+        "prova/composição técnica e comercial",
+        "cta final"
+      ]
+    },
+    "apresentacao": {
+      "slides": [
+        "capa",
+        "problema: fluxo manual dependente de ajustes",
+        "solução: conceito Hand Free",
+        "destaques técnicos: offset 9mm e inserção 100% guiada",
+        "composição: linhas do kit e codificação por cores",
+        "versatilidade: Top-Down e implantes Short",
+        "argumento comercial: script SPIN",
+        "contorno de objeções",
+        "fechamento/CTA"
+      ]
+    },
+    "arte": {
+      "angulos_criativos": [
+        "problema/isca: folga de 5mm da anilha, ajustes manuais demorados e desvios de eixo em extrações imediatas — mãos livres resolve",
+        "diferencial técnico: offset fixo de 9mm (fresa Plane) + inserção 100% guiada (anéis redutores eliminam a folga)",
+        "versatilidade/eficiência: protocolo Coroa Pronta na hora (anilha indexada + Chave Index) + amplitude 2,9 a 4,3mm em um único estojo"
+      ]
+    },
+    "textos": {
+      "canais": ["whatsapp", "instagram", "linkedin"]
+    },
+    "kit": {
+      "angulos_por_tom": {
+        "informativa": [
+          "offset fixo de 9mm garantido pela fresa Plane: distância exata entre anilha e plataforma, respeitando o planejamento biológico do software",
+          "linhas do kit e codificação por cores: Slim 2,9mm (branca), Narrow 3,3/3,5mm (vermelha), Regular 3,75/4,3mm (preta) e Short 6,5mm de altura (preta)"
+        ],
+        "contra-intuitiva": [
+          "mãos livres parece menos controle, mas é o controle tridimensional total — o Hand Free elimina a intervenção manual para estabilizar fresas e implantes",
+          "codificação por cores não é simplificação, é um sistema à prova de erros que guia a equipe auxiliar do estojo à boca"
+        ],
+        "tecnica": [
+          "fresa Plane como componente crítico do offset fixo de 9mm entre anilha e plataforma do implante",
+          "técnica Top-Down: fresas de diâmetro menor 100% presas ao 'tambor' da anilha, pique inicial com guia total e zero desvio em extrações imediatas"
+        ],
+        "efeito-uau": [
+          "coroa pronta na hora: indexação mesial, distal e oclusal resolvida com o guia ainda em posição, via anilha indexada e Chave Index (marca amarela)",
+          "de 2,9 a 4,3mm de diâmetro em um único estojo — Slim, Narrow, Regular e Short no mesmo alvéolo organizado"
+        ],
+        "educativa": [
+          "por que a folga de 5mm das anilhas compromete o eixo em implantes de 3,75/4,0 e como os anéis redutores garantem a inserção 100% guiada",
+          "por que a técnica Top-Down (cima para baixo) neutraliza o desvio de eixo em alvéolos abertos — a lógica do pique inicial preso ao tambor"
+        ]
+      }
+    }
+  }
+}

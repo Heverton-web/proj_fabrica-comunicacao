@@ -1,0 +1,16 @@
+{
+  "hero": {"headline": "Ícones da Conexão", "subheadline": "Biblioteca fixa de símbolos vetoriais", "cta": "Ver destaque"},
+  "problema_solucao": {
+    "problema": {"titulo": "O Desafio", "texto": "Dor real extraída do texto-base.", "categoria": "problema"},
+    "solucao": {"titulo": "A Solução", "texto": "Como o produto resolve.", "categoria": "solucao"}
+  },
+  "destaques": [
+    {"titulo": "Evidência Clínica", "texto": "Resultado demonstrado.", "categoria": "evidencia"},
+    {"titulo": "Dado Técnico", "texto": "Especificação medida.", "categoria": "dado_tecnico"},
+    {"titulo": "Check-list de Uso", "texto": "Passo a passo do kit.", "categoria": "checklist"},
+    {"titulo": "Tempo", "texto": "Agilidade no procedimento.", "categoria": "tempo"},
+    {"titulo": "Fale Conosco", "texto": "WhatsApp do consultor.", "categoria": "contato"}
+  ],
+  "prova": {},
+  "cta_final": {"headline": "Comece hoje", "cta": "Consultar Guia", "dica_ouro": "Dica de ouro."}
+}

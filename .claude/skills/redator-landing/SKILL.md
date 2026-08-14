@@ -20,7 +20,10 @@ didático que a apostila. Ver `SPEC_HTML.md`.
   `/gerar-landing` — REGRA 11 do `AGENTS.md`: nunca escreva por cima de uma versão já
   entregue). Schema:
   `{hero: {headline, subheadline, cta}, problema_solucao: {...}, destaques: [...], prova: {...}, cta_final: {...}, enriquecimentos?: [...]}`,
-  consumido por `compilador-html`.
+  consumido por `compilador-html`. Cada item de `destaques[]` e cada lado de
+  `problema_solucao` (`problema`/`solucao`) pode carregar `categoria` (vocabulário
+  fechado da seção "Ícones" do `aplicador-marca-conexao`, 8 valores) para receber o
+  ícone da biblioteca fixa no card — nunca invente categoria, nunca use emoji.
 
 ## Procedimento
 

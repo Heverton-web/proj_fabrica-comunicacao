@@ -228,21 +228,76 @@ mesmo espírito: fundo `rgba(255,255,255,0.02)`, borda `var(--border-subtle)`, m
 .input:focus { border-color: var(--accent); outline: none; }
 ```
 
-## Motion — todo material tem alguma transição, nunca é estático
+## Ícones — biblioteca fixa, nunca emoji
 
-Material sem nenhuma animação/transição foi rejeitado junto com fundo chapado e título
-sólido. Use sempre `var(--ease-premium)`, nunca `linear`/`ease-in-out` padrão, e anime
-só `opacity`/`transform` (GPU-safe, nunca `top`/`left`/`width`/`height`).
+Iconografia de marca é biblioteca **fixa** de 8 símbolos vetoriais (nunca emoji —
+emoji como ícone/decoração é falha detectada por `validar-html.py --estrito`).
+Cada ícone tem um `categoria` (vocabulário fechado) e um `<symbol id="icone-<categoria>">`
+no sprite escondido de `templates/apresentacao.html` e `templates/landing.html`
+(logos após `<body>`). O compilador injeta o ícone em cartões marcados com
+`data-categoria`, referenciando o sprite via `<svg class="icone"><use href="#icone-<categoria>"></use></svg>`.
 
-- **Apresentação (slides):** troca de slide anima opacidade + `translateY` + leve
-  `scale` (~600ms, `var(--ease-premium)`) — nunca corte seco (`display:none↔flex`
-  direto sem transição).
-- **Landing page (scroll):** seções entram com fade-up (`opacity 0→1`,
-  `translateY(28px)→0`) disparado por `IntersectionObserver` quando entram na
-  viewport — nunca aparecem estáticas no load. Ver classe `.revela`/`.visivel` nos
-  templates.
-- **Arte (`arte-*`):** é uma imagem estática (screenshot único) — não precisa de
-  motion, mas o fundo em gradiente + glows + título-gradiente valem do mesmo jeito.
+### Vocabulário fechado de `categoria` (única fonte determinística: `scripts/_icones_conexao.py`)
+
+| categoria | Uso (semântica) | Símbolo |
+|---|---|---|
+| `problema` | O desafio/contexto que motiva o produto | triângulo de alerta |
+| `solucao` | A solução proposta | lâmpada |
+| `dado_tecnico` | Especificação, métrica, número técnico | gráfico de barras com eixo |
+| `evidencia` | Prova clínica/científica, resultado demonstrado | lupa + check |
+| `processo` | Fluxo de trabalho, etapas, como funciona | nós de processo |
+| `checklist` | Itens de uso, passos a seguir, material | prancheta com checks |
+| `tempo` | Prazo, tempo de tratamento, agilidade | relógio |
+| `contato` | CTA de conversa, WhatsApp, falar com consultor | balão de conversa |
+
+### Regras de uso
+
+- **Nunca** inventar categoria nova: se o conteúdo pedir um ícone fora das 8,
+  é informação faltante (REGRA 6), não licença para desenhar símbolo novo.
+- `categoria` é campo **determinístico** no schema de `slides.json` (por slide ou
+  por item de `corpo` como `{"texto": ..., "categoria": ...}`) e de `conteudo.json`
+  (em `destaques[]` e em `problema_solucao.problema`/`.solucao`). O redator
+  escolhe; o compilador injeta; o validador arbitra (REGRA 8).
+- O ícone entra **reusando a animação `entradaSuave`** (ver "Animações" abaixo) —
+  nunca motion novo só para o ícone.
+- Stroke é definida em `.icone` (CSS, `currentColor` → `--accent`); os paths do
+  sprite herdam. Sempre com `aria-hidden="true"` (ícone decorativo, o card tem o
+  texto).
+
+## Animações — vocabulário único de motion (consolidado, não disperso nos templates)
+
+Todo o motion dos templates HTML compartilha **um único vocabulário** de
+`@keyframes` e regras — definido aqui e replicado (consolidado) em
+`templates/apresentacao.html` e `templates/landing.html`. Se uma animação não
+estiver nesta seção, não é para usar; reaproveite sempre as existentes, nunca
+invente keyframe novo para um caso pontual.
+
+### Keyframes do vocabulário
+
+| keyframe | O que faz | Onde nasce |
+|---|---|---|
+| `entradaSuave` | `opacity 0→1` + `translateY(18px→0)` | bullets, cards, ícones |
+| `entradaEscala` | `opacity 0→1` + `scale(0.92→1)` + `translateY(16px→0)` | cards-grid |
+| `assentamento3D` | `perspective(800px) rotateX(-10deg) rotateY(8deg)` + entrada | cards da landing (tilt) |
+| `focoProgressivo` | `blur(28px→0)` + `scale(1.06→1)` | título da capa (apresentação) |
+| `pulsoAnel` | anel de badge piscando | badge |
+| stroke-dashoffset | `transition` de traçado (gauge, donut, divisor, barras) | componentes de dado |
+
+### Regras universais (todo material HTML)
+
+- Sempre `var(--ease-premium)`, nunca `linear`/`ease-in-out` padrão; anime só
+  `opacity`/`transform`/`filter`/`stroke-dashoffset` (GPU-safe).
+- Entrada em **stagger** por `nth-child` com atrasos crescentes (~0.1s).
+- Sempre o par `animation: <keyframe> ... both` + `@media (prefers-reduced-motion: reduce) { animation: none; }`.
+- **Apresentação:** transição de slide anima opacidade + translateY + leve scale
+  (~600ms) — nunca corte seco.
+- **Landing:** seções entram com fade-up via `IntersectionObserver` (classe
+  `.revela`/`.visivel`) — nunca aparecem estáticas no load.
+- **Arte (`arte-*`):** estática (screenshot) — não precisa de motion, mas o fundo
+  em gradiente + glows + título-gradiente valem do mesmo jeito.
+- **Ícones:** entram com `entradaSuave` junto do card pai (ex.:
+  `.slide.ativo .card-destaque .icone { animation: entradaSuave 0.45s var(--ease-premium) both; }`),
+  com o mesmo `@media (prefers-reduced-motion: reduce)` anulando.
 
 ## Logo — OBRIGATÓRIO em todo material (não é opcional)
 
@@ -418,6 +473,10 @@ não deve virar bullet cru; vira card com barra de assinatura no topo. CSS grid
 `auto-fit` resolve o número de colunas sozinho (sem lógica de "duas colunas" no
 Python). Parser reaproveita o padrão `"**Título** — Texto"` já usado por
 gauge/objeções.
+
+Um card pode receber ícone da biblioteca fixa via `categoria` (ver seção
+"Ícones"): o compilador injeta `data-categoria="<cat>"` + `<svg class="icone">`
+no topo do card; o gate `validar-html.py --estrito` confere `<use>`↔`<symbol>`.
 
 ```css
 .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.2rem; width: 100%; margin-top: 1rem; }

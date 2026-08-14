@@ -29,19 +29,25 @@ TIPOS_VALIDOS = ["pdf", "landing-page", "apresentacao", "arte-01", "arte-02", "a
                   "textos", "kit-consultor", "kit-distribuidor"]
 
 
-def rodar_validador(slug, tipo):
+def rodar_validador(slug, tipo, estrito=False):
     """Retorna (ok, saida) rodando o script validar-*.py apropriado para o tipo.
 
     `tipo` pode ser uma pasta versionada (ex.: "pdf-v2", gerada por
     /gerar-<material> - ver REGRA 11 do AGENTS.md): o dispatch usa sempre
     tipo_base(tipo) para escolher o validador certo, mas passa a string
-    completa via --pasta para que o script valide a pasta real em disco."""
+    completa via --pasta para que o script valide a pasta real em disco.
+
+    `estrito` propaga o gate determinístico (--estrito) aos validadores de
+    HTML (validar-html.py), que passam a bloquear emoji e categoria<->icone
+    incoerente (ver aplicador-marca-conexao/SKILL.md, seção "Ícones")."""
     py = sys.executable
     base = tipo_base(tipo)
     if base == "pdf":
         cmd = [py, str(DIR_SCRIPTS / "validar-pdf.py"), slug, "--pasta", tipo]
     elif base in ("landing-page", "apresentacao"):
         cmd = [py, str(DIR_SCRIPTS / "validar-html.py"), slug, base, "--pasta", tipo]
+        if estrito:
+            cmd.append("--estrito")
     elif base.startswith("arte-"):
         cmd = [py, str(DIR_SCRIPTS / "validar-dimensoes.py"), slug, base, "--pasta", tipo]
     elif base == "textos":
@@ -136,7 +142,7 @@ def main():
     relatorio = {"slug": args.slug, "tipos": {}}
 
     for tipo in tipos:
-        ok_validacao, saida_validacao = rodar_validador(args.slug, tipo)
+        ok_validacao, saida_validacao = rodar_validador(args.slug, tipo, estrito=args.estrito)
         ok_marca, saida_marca = rodar_validador_marca(args.slug, tipo)
         ok_tipo = ok_validacao and ok_marca
 

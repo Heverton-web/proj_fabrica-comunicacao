@@ -1,0 +1,23 @@
+{
+  "slug": "_teste-icones",
+  "tipos": {
+    "landing-page-v2": {
+      "conforme": false,
+      "validacao_tecnica": "[FALHA] landing-page:\n  - emoji fonte (1 tipo(s): U+1F4F1) - design system exige SVG, nunca emoji\n  - emoji renderizado (1 tipo(s): U+1F4F1) - design system exige SVG, nunca emoji",
+      "fidelidade_marca": "[OK] landing-page-v2: nenhuma cor fora do design system fixo encontrada"
+    }
+  },
+  "r9_estado_final": {
+    "ok": false,
+    "motivo": "_pool_estado.json nao encontrado - pool-materiais.py ainda nao rodou"
+  },
+  "r12_estrutura_output": {
+    "ok": true,
+    "motivo": "ok"
+  },
+  "preset_kit_completo": {
+    "ok": true,
+    "motivo": "n/a"
+  },
+  "conforme": false
+}

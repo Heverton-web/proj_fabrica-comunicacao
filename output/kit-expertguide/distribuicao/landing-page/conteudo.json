@@ -1,0 +1,103 @@
+{
+  "hero": {
+    "headline": "Kit ExpertGuide: precisão matemática total em cirurgia guiada",
+    "subheadline": "Domine o conceito Hand Free, o offset fixo de 9mm e o protocolo Coroa Pronta — e transforme o Kit ExpertGuide em um argumento de venda de alto impacto para o dentista.",
+    "cta": "Acessar o guia completo"
+  },
+  "problema_solucao": {
+    "problema": {
+      "titulo": "O fluxo manual dependente de ajustes",
+      "texto": "Com anilhas convencionais, a folga de 5mm entre anilha e implante de 3,75/4,0 compromete a fidelidade do eixo de inserção. A indexação fora do planejado exige ajustes manuais demorados na prótese — e cada minuto de ajuste manual é lucro perdido no tempo de cadeira. Em extrações imediatas, o desvio angular compromete a estética final das cargas imediatas."
+    },
+    "solucao": {
+      "titulo": "Kit ExpertGuide: precisão matemática total",
+      "texto": "O conceito **Hand Free** assume o controle tridimensional absoluto: sem intervenção manual para estabilizar fresas ou implantes. A **fresa Plane** garante o offset fixo de 9mm entre anilha e plataforma, os **anéis redutores** entregam a inserção 100% guiada e o protocolo **Coroa Pronta** (anilha indexada + Chave Index) resolve a indexação com o guia ainda em posição — prótese imediata na hora."
+    }
+  },
+  "destaques": [
+    {
+      "titulo": "Hand Free (mãos livres)",
+      "texto": "A tecnologia assume o controle tridimensional absoluto do procedimento — sem intervenção manual para estabilizar fresas ou implantes durante o ato cirúrgico."
+    },
+    {
+      "titulo": "Offset fixo de 9mm",
+      "texto": "Garantido pela fresa Plane: distância exata entre anilha e plataforma do implante, respeitando rigorosamente o planejamento biológico feito no software."
+    },
+    {
+      "titulo": "Inserção 100% guiada",
+      "texto": "Os anéis redutores eliminam a folga de 5mm das anilhas em implantes de 3,75/4,0 — o implante entra totalmente centrado e fiel ao eixo planejado."
+    },
+    {
+      "titulo": "Protocolo Coroa Pronta",
+      "texto": "Anilha indexada + Chave Index (marcação amarela) resolvem a indexação mesial, distal e oclusal com o guia ainda em posição: entrega da prótese imediata."
+    },
+    {
+      "titulo": "Organização ergonômica",
+      "texto": "Estojo organizado da esquerda para a direita em alvéolos fechados, guiando a equipe auxiliar e evitando erros operacionais."
+    },
+    {
+      "titulo": "Top-Down para extrações imediatas",
+      "texto": "O pique inicial usa fresas de diâmetro menor presas ao “tambor” da anilha — estabilidade onde não há osso — expandindo o diâmetro somente após a profundidade final. Zero desvio de eixo em alvéolos abertos."
+    }
+  ],
+  "prova": {
+    "linhas": {
+      "titulo": "Linhas de implante atendidas",
+      "cabecalho": ["Linha", "Diâmetro", "Identificação", "Aplicação"],
+      "linhas": [
+        ["Slim", "2,9mm", "Branca", "Reabilitação em espaços protéticos limitados"],
+        ["Narrow", "3,3 e 3,5mm", "Vermelha", "Anatomias estreitas com guia total"],
+        ["Regular", "3,75 e 4,3mm", "Preta", "Casos universais com suporte a anéis redutores"],
+        ["Short", "6,5mm (altura)", "Preta", "Regiões com limitação de altura óssea"]
+      ]
+    },
+    "componentes": {
+      "titulo": "Componentes críticos do kit",
+      "cabecalho": ["Componente", "Função"],
+      "linhas": [
+        ["Fresa Plane", "Define o offset fixo de 9mm entre anilha e plataforma do implante"],
+        ["Anéis redutores", "Inserção 100% guiada: eliminam a folga de 5mm em implantes de 3,75/4,0"],
+        ["Chave Driver (motor)", "Garante a descida do implante"],
+        ["Chave Index (manual, marca amarela)", "Garante o travamento final do implante"],
+        ["Anilha indexada", "Resolve a indexação mesial, distal e oclusal com o guia em posição"]
+      ]
+    },
+    "spin": {
+      "titulo": "Argumentário comercial: script SPIN Selling",
+      "cabecalho": ["Etapa", "Condução com o dentista"],
+      "linhas": [
+        ["Situação", "O offset de 9mm respeita o espaço biológico com fidelidade milimétrica"],
+        ["Problema", "Folga de 5mm entre anilha e implante 3,75 gera insegurança; indexação fora do planejado exige ajustes manuais na prótese"],
+        ["Implicação", "Cada minuto de ajuste manual é lucro perdido no tempo de cadeira; o desvio angular compromete a estética final em cargas imediatas"],
+        ["Necessidade de solução", "Hand Free + fresa Plane + anéis redutores + coroa pronta na hora"]
+      ]
+    }
+  },
+  "cta_final": {
+    "headline": "Transforme precisão milimétrica em argumento de venda",
+    "cta": "Consultar o guia estratégico",
+    "dica_ouro": "Dica de ouro: conduza o dentista pela sequência SPIN — da situação (offset de 9mm respeitado) até a necessidade de solução (mãos livres + coroa pronta na hora)."
+  },
+  "enriquecimentos": [
+    {
+      "secao": "prova",
+      "tipo": "accordion",
+      "dados": {
+        "itens": [
+          {
+            "pergunta": "“Meu kit atual já funciona”",
+            "resposta": "Pergunte: o sistema atual resolve a orientação mesial, distal e oclusal sem tirar o guia da boca? Com a anilha indexada e a Chave Index, o paciente sai com a coroa pronta — elevando o valor percebido do trabalho."
+          },
+          {
+            "pergunta": "“Sistema de anéis redutores complexo”",
+            "resposta": "É o contrário: o kit é referência em ergonomia, com codificação por cores (Branca, Vermelha, Preta) e marca amarela nas chaves de finalização — um sistema à prova de erros."
+          },
+          {
+            "pergunta": "“Medo de desvios de eixo em extrações imediatas”",
+            "resposta": "A técnica Top-Down prende a fresa de diâmetro menor 100% ao “tambor” da anilha: o pique inicial sai com guia total e zero desvio no osso remanescente."
+          }
+        ]
+      }
+    }
+  ]
+}

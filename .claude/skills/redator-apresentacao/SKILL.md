@@ -19,8 +19,12 @@ suficiente para leitura em tela durante uma reunião. Ver `SPEC_HTML.md`.
   invoca (normalmente `"apresentacao"`, ou `"apresentacao-v2"` numa regeneração via
   `/gerar-apresentacao` — REGRA 11 do `AGENTS.md`: nunca escreva por cima de uma
   versão já entregue). Lista de slides, schema:
-  `{slides: [{tipo: "capa"|"conteudo"|"cta", titulo, corpo?, imagem?, componente?}]}`,
-  consumido por `compilador-html`.
+  `{slides: [{tipo: "capa"|"conteudo"|"cta", titulo, corpo?, imagem?, categoria?, componente?}]}`,
+  consumido por `compilador-html`. No item de `corpo`, além da string legada
+  `"**Titulo** — Texto"`, pode-se usar o objeto `{"texto": "...", "categoria": "<cat>"}`
+  para marcar um card individual; `categoria` no slide aplica o ícone a todos os
+  cards do slide. `categoria` é o vocabulário fechado da seção "Ícones" do
+  `aplicador-marca-conexao` (8 valores) — nunca invente categoria.
 
 ## Procedimento
 
@@ -48,6 +52,12 @@ suficiente para leitura em tela durante uma reunião. Ver `SPEC_HTML.md`.
    sempre o campo `componente` explícito.
    - **Composição/Versatilidade/Diferenciais** sem gatilho de componente continuam como
      bullets em painel double-bezel — 4+ itens dividem automaticamente em duas colunas.
+   - **Ícones da biblioteca fixa (opcional — ver
+     `.claude/skills/aplicador-marca-conexao/SKILL.md`, seção "Ícones"):** para slides
+     descritivos (Problema, Solução, Evidência, Processo, Check-list, Prazo, Contato),
+     marque `categoria` no slide (aplica a todos os cards) ou por item de `corpo` via
+     objeto. O ícone entra reusando `entradaSuave` — nunca invente categoria fora do
+     vocabulário de 8, nem use emoji.
 4. **Sem Hífens nos Títulos:** É expressamente proibido usar hífens (-) nos títulos de slides. Use sempre dois-pontos (:) para divisões ou subtítulos.
 5. **Slide de fechamento** — CTA + assinatura de marca.
 

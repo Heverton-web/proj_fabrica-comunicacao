@@ -1,6 +1,0 @@
-[submodule ".token-economy"]
-	path = .token-economy
-	url = https://github.com/Heverton-web/token-economy-shared.git
-[submodule "tooling/kit-fundacao-aidd"]
-	path = tooling/kit-fundacao-aidd
-	url = https://github.com/Heverton-web/kit-fundacao-aidd.git

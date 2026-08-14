@@ -1,0 +1,8 @@
+{
+  "slug": "_teste-icones",
+  "nome_produto": "Produto Teste",
+  "publico_alvo": "Dentistas",
+  "objetivo_tom": "educacional_comercial",
+  "materiais_selecionados": ["apresentacao", "landing-page"],
+  "imagens": []
+}

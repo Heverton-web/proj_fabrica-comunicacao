@@ -11,6 +11,9 @@ import re
 import shutil
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _icones_conexao import categoria_valida, html_icone
+
 DIR_PROJETO = Path(__file__).resolve().parent.parent
 DIR_OUTPUT = DIR_PROJETO / "output"
 DIR_FONTS = DIR_PROJETO / "templates" / "fonts"
@@ -147,26 +150,46 @@ def renderizar_barras(dados):
     return f'<div class="barras-container">{"".join(blocos)}</div>'
 
 
-def renderizar_cards_destaque(itens):
+def renderizar_cards_destaque(itens, categoria_padrao=None):
     """Layout padrão de slides/seções sem componente de dado (substitui a
     antiga lista <ul><li> plana): cada bullet vira um card com barra de
     assinatura no topo, mesma linguagem visual dos demais componentes.
     Reaproveita o padrao "**Titulo** — Texto" ja usado pelos parsers de
-    torque/objecoes."""
+    torque/objecoes.
+
+    Cada item pode ser:
+      - string (legado): card sem icone, ou com o icone de `categoria_padrao`
+        quando o slide/secao declarar `categoria`;
+      - dict {"texto": str, "categoria": str}: card marcado com a categoria
+        (vocabulario fechado em _icones_conexao.CATEGORIAS_ICONES), que
+        determina qual icone do sprite entra no card. Categoria fora do
+        vocabulario emite aviso e deixa o card sem icone (o gate --estrito
+        do validar-html.py aponta a falha)."""
     cards = []
     for item in itens:
-        if not isinstance(item, str):
+        if isinstance(item, dict):
+            texto_item = item.get("texto", "")
+            categoria_item = item.get("categoria") or categoria_padrao
+        elif isinstance(item, str):
+            texto_item = item
+            categoria_item = categoria_padrao
+        else:
             continue
-        partes = item.split(" — ") if " — " in item else (item.split(" - ") if " - " in item else [item])
+        partes = texto_item.split(" — ") if " — " in texto_item else (texto_item.split(" - ") if " - " in texto_item else [texto_item])
         if len(partes) >= 2:
             titulo_item = formatar_markdown(partes[0].replace("**", "").strip())
             corpo_item = formatar_markdown(" — ".join(partes[1:]).strip())
         else:
             titulo_item = ""
-            corpo_item = formatar_markdown(item)
+            corpo_item = formatar_markdown(texto_item)
         titulo_html = f"<h4>{titulo_item}</h4>" if titulo_item else ""
+        icone_html = html_icone(categoria_item) if categoria_item else ""
+        if categoria_item and not icone_html:
+            print(f"[AVISO] categoria desconhecida em card: {categoria_item!r} - card sem icone")
+        data_categoria = f' data-categoria="{categoria_item}"' if categoria_item else ""
         cards.append(f"""
-        <div class="card-destaque">
+        <div class="card-destaque"{data_categoria}>
+          {icone_html}
           {titulo_html}
           <p>{corpo_item}</p>
         </div>""")
@@ -413,7 +436,7 @@ def compilar_apresentacao(slug, pasta="apresentacao"):
                 # grid auto-fit cuida do número de colunas, sem precisar mais
                 # de divisão manual em duas-colunas por tamanho de lista).
                 itens = corpo if isinstance(corpo, list) else ([corpo] if isinstance(corpo, str) else [])
-                cards_html = renderizar_cards_destaque(itens)
+                cards_html = renderizar_cards_destaque(itens, s.get("categoria"))
                 html = f"""
     <div class="slide conteudo{ativo_class}">
       <h2>{titulo}</h2>
@@ -522,12 +545,24 @@ def compilar_landing(slug, pasta="landing-page"):
     p_texto = formatar_markdown(ps.get("problema", {}).get("texto", ""))
     s_titulo = formatar_markdown(ps.get("solucao", {}).get("titulo", "A Solução"))
     s_texto = formatar_markdown(ps.get("solucao", {}).get("texto", ""))
+    p_categoria = ps.get("problema", {}).get("categoria")
+    s_categoria = ps.get("solucao", {}).get("categoria")
+    p_icone = html_icone(p_categoria) if p_categoria else ""
+    s_icone = html_icone(s_categoria) if s_categoria else ""
+    if p_categoria and not p_icone:
+        print(f"[AVISO] categoria desconhecida em problema: {p_categoria!r} - card sem icone")
+    if s_categoria and not s_icone:
+        print(f"[AVISO] categoria desconhecida em solucao: {s_categoria!r} - card sem icone")
+    p_data = f' data-categoria="{p_categoria}"' if p_categoria else ""
+    s_data = f' data-categoria="{s_categoria}"' if s_categoria else ""
     ps_html = f"""
-      <div class="card">
+      <div class="card"{p_data}>
+        {p_icone}
         <h3>{p_titulo}</h3>
         <p>{p_texto}</p>
       </div>
-      <div class="card">
+      <div class="card"{s_data}>
+        {s_icone}
         <h3>{s_titulo}</h3>
         <p>{s_texto}</p>
       </div>"""
@@ -538,8 +573,14 @@ def compilar_landing(slug, pasta="landing-page"):
     for d in destaques_list:
         d_titulo = formatar_markdown(d.get("titulo", ""))
         d_texto = formatar_markdown(d.get("texto", ""))
+        d_categoria = d.get("categoria")
+        d_icone = html_icone(d_categoria) if d_categoria else ""
+        if d_categoria and not d_icone:
+            print(f"[AVISO] categoria desconhecida em destaque: {d_categoria!r} - card sem icone")
+        d_data = f' data-categoria="{d_categoria}"' if d_categoria else ""
         destaques_html.append(f"""
-        <div class="card">
+        <div class="card"{d_data}>
+          {d_icone}
           <h3>{d_titulo}</h3>
           <p>{d_texto}</p>
         </div>""")

@@ -1,0 +1,43 @@
+{
+  "slides": [
+    {"tipo": "capa", "titulo": "Ícones da Conexão"},
+    {
+      "tipo": "conteudo",
+      "titulo": "O PROBLEMA",
+      "categoria": "problema",
+      "corpo": [
+        "**Desafio** — O problema central do texto-base",
+        "**Limitação** — A limitação clínica encontrada"
+      ]
+    },
+    {
+      "tipo": "conteudo",
+      "titulo": "A SOLUÇÃO",
+      "categoria": "solucao",
+      "corpo": [
+        "**Produto** — Como a solução resolve",
+        {"texto": "**Tempo** — Redução do tempo", "categoria": "tempo"},
+        {"texto": "**Contato** — Fale com o consultor", "categoria": "contato"}
+      ]
+    },
+    {
+      "tipo": "conteudo",
+      "titulo": "EVIDÊNCIA",
+      "categoria": "evidencia",
+      "corpo": [
+        "**Estudo** — Resultado clínico randomizado",
+        {"texto": "**Dado** — Especificação técnica medida", "categoria": "dado_tecnico"}
+      ]
+    },
+    {
+      "tipo": "conteudo",
+      "titulo": "PROCESSO E CHECKLIST",
+      "categoria": "processo",
+      "corpo": [
+        "**Etapa 1** — Preparo do sítio cirúrgico",
+        {"texto": "**Check** — Itens obrigatórios do kit", "categoria": "checklist"}
+      ]
+    },
+    {"tipo": "cta", "titulo": "FALE COM A CONEXÃO"}
+  ]
+}
