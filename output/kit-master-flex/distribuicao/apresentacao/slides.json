@@ -1,0 +1,96 @@
+{
+  "slides": [
+    {
+      "tipo": "capa",
+      "titulo": "Kit MasterFlex",
+      "corpo": "O Guia Definitivo de Alta Performance para Consultores de Vendas",
+      "imagem": "../insumos/kit-master-flex.png"
+    },
+    {
+      "tipo": "conteudo",
+      "titulo": "Single Kit: o problema da multiplicidade de estojos",
+      "corpo": "No cenário atual, consultores e cirurgiões lidam com múltiplos estojos para atender diferentes linhas de implantes — cada um com suas fresas, chaves e protocolos próprios.\n\nIsso gera:\n- **Complexidade logística** no gerenciamento de estoque\n- **Custos elevados** de esterilização e reposição\n- **Risco de erro** na escolha do kit durante a cirurgia\n- **Perda de tempo** trocando de instrumental entre procedimentos"
+    },
+    {
+      "tipo": "conteudo",
+      "titulo": "Solução: unificação operacional em um único estojo",
+      "corpo": "O **Kit MasterFlex** é a plataforma universal que atende **todas as linhas de implantes da Conexão** — independentemente de diâmetro, comprimento ou conexão protética.\n\n- **Single Kit** = um único estojo para todas as cirurgias\n- Elimina a necessidade de múltiplos estojos\n- Reduz custos de esterilização e gestão de estoque\n- Solução de **eficiência cirúrgica** comprovada"
+    },
+    {
+      "tipo": "conteudo",
+      "titulo": "Diferencial: Stop Drill + Fresa Start",
+      "corpo": "O MasterFlex é o **único sistema no mercado** que integra a Fresa Start (Lança) com um sistema de **Stop Drill** dedicado.\n\n- Controle de **profundidade absoluto** desde o primeiro passo da perfuração\n- Segurança cirúrgica em todos os tipos de osso\n- Previsibilidade no preparo do leito implantar\n- Base para todos os diferenciais seguintes"
+    },
+    {
+      "tipo": "conteudo",
+      "titulo": "Diferencial: Protocolo de Fresagem na tampa",
+      "corpo": "O **Flex - Bone Drill Protocol** está estampado diretamente na tampa da caixa organizadora.\n\n- Orientação visual para ossos **Soft (III-IV)** e **Hard (I-II)**\n- Sequência exata de fresas impressa no estojo\n- Sem necessidade de consultar manuais durante a cirurgia\n- Protocolo guiado que reduz erros de instrumentação"
+    },
+    {
+      "tipo": "conteudo",
+      "titulo": "Diferencial: Identificação Visual de Alta Precisão",
+      "corpo": "As fresas possuem **marcações duplas** para evitar erros na instrumentação:\n\n- Número da fresa em **negrito** — identificação rápida\n- Diâmetro correspondente em *itálico* — referência dimensional\n- Leitura instantânea durante o procedimento\n- Elimina confusão entre fresas de diâmetros próximos"
+    },
+    {
+      "tipo": "conteudo",
+      "titulo": "Diferencial: Sistema de Captura Ativa",
+      "corpo": "As chaves **Driver** capturam o implante diretamente da embalagem e o transportam com segurança total até o alvéolo cirúrgico.\n\n- Acionamento via **motor** ou **catraca**\n- Transporte seguro sem contato manual\n- Chaves identificadas por **cores**:\n  - **Azul:** Linha NP\n  - **Verde:** Linha GMF, FIT e HE-RD\n  - **Vermelho:** Linha SL e HE-SD"
+    },
+    {
+      "tipo": "conteudo",
+      "titulo": "Composição: Fresas e Direction Pins",
+      "corpo": "A organização do kit foi desenhada para máxima fluidez no ato cirúrgico:\n\n- **9 linhas de fresas helicoidais** — diâmetro 2.4 a 4.6\n- **4 Pinos de Paralelismo (Direction Pins)** — orientam fresagem em casos múltiplos\n- **5 Countersinks (A a E)** — preparo da cortical em ossos de alta densidade (Tipo I e II)\n- Disposição horizontal para acesso rápido"
+    },
+    {
+      "tipo": "conteudo",
+      "titulo": "Composição: Drivers e Acessórios",
+      "corpo": "Chaves de instalação e acessórios para cobertura completa:\n\n- **Implant Drivers** curtos e longos — identificados por anéis coloridos\n- **Chave 0.9mm (Lilás)** — parafusos de cobertura\n- **Chave 1.2mm (Azul)** — cicatrizadores e prótese\n- **Adaptadores Fitness** — transformam chaves de transporte em chaves sólidas de finalização (catraca)"
+    },
+    {
+      "tipo": "conteudo",
+      "titulo": "Versatilidade: Conexões e Diâmetros Compatíveis",
+      "corpo": "Cobertura clínica total com um único estojo:\n\n- **Conexões Cônicas (Morse):** NP (24°), GMF (16°), FIT (11,5°)\n- **Hexágono Externo:** HE-RD (Regular Diameter) e HE-SD (Small Diameter)\n- **Amplitude de diâmetros:** Slim (2.9mm) a 5.0mm\n- **Extension Drill** para dentes vizinhos altos ou acesso limitado"
+    },
+    {
+      "tipo": "conteudo",
+      "titulo": "Script de Vendas SPIN",
+      "corpo": "Framework de 4 etapas para consultores dominarem o argumento de venda:\n\n**S (Situação):** \"Doutor, como sua equipe organiza a esterilização e o estoque para atender cirurgias de Hexágono Externo e conexões Morse simultaneamente?\"\n\n**P (Problema):** \"O senhor já sentiu que a falta de um protocolo visual claro ou a necessidade de trocar de kit durante a cirurgia aumenta o tempo de cadeira?\"\n\n**I (Implicação):** \"Essa complexidade eleva o custo operacional e pode gerar insegurança quanto à estabilidade primária, correto?\"\n\n**N (Necessidade):** \"Se o senhor pudesse unificar tudo em um 'Single Kit' com protocolo na tampa e Stop Drills na fresa inicial, isso traria mais agilidade e rentabilidade?\"",
+      "componente": {
+        "tipo": "fluxo",
+        "etapas": [
+          {"rotulo": "S", "titulo": "Situação", "descricao": "Pergunta sobre organização atual"},
+          {"rotulo": "P", "titulo": "Problema", "descricao": "Identifica a dor do cirurgião"},
+          {"rotulo": "I", "titulo": "Implicação", "descricao": "Consequências da situação atual"},
+          {"rotulo": "N", "titulo": "Necessidade", "descricao": "Apresenta a solução MasterFlex"}
+        ]
+      }
+    },
+    {
+      "tipo": "conteudo",
+      "titulo": "Contorno de Objeções",
+      "corpo": "Respostas técnicas para os argumentos mais comuns dos dentistas:",
+      "componente": {
+        "tipo": "accordion",
+        "itens": [
+          {
+            "pergunta": "\"Já tenho muitos kits de outras marcas\"",
+            "resposta": "O MasterFlex substitui todos eles. Centraliza a logística e reduz custos de reposição ao oferecer uma plataforma única para todas as linhas."
+          },
+          {
+            "pergunta": "\"É difícil treinar minha auxiliar para um kit tão completo\"",
+            "resposta": "Pelo contrário. O layout é didático e intuitivo, com marcações em negrito/itálico e identificação por cores que tornam a instrumentação à prova de erros."
+          },
+          {
+            "pergunta": "\"E em casos de pouco espaço de abertura de boca?\"",
+            "resposta": "O kit contempla chaves de captura (Drivers) curtas e longas, além de adaptadores Fitness de dois tamanhos, garantindo acesso mesmo em áreas restritas."
+          }
+        ]
+      }
+    },
+    {
+      "tipo": "cta",
+      "titulo": "Se positione como parceiro estratégico",
+      "corpo": "Vender o Kit MasterFlex é vender **eficiência operacional**. Ao oferecer este ativo, você está entregando ao dentista menos tempo de cirurgia, maior segurança com o sistema exclusivo de Stop Drills e a confiança de um protocolo guiado.\n\nUtilize este conhecimento técnico para se posicionar como um parceiro estratégico que ajuda o profissional a simplificar sua rotina e focar no sucesso clínico do paciente."
+    }
+  ]
+}

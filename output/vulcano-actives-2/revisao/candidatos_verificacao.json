@@ -1,0 +1,229 @@
+{
+  "slug": "vulcano-actives-2",
+  "tipo": "textos",
+  "gerado_em": "2026-08-14T11:54:48.166679+00:00",
+  "candidatos": [
+    {
+      "arquivo": "instagram.txt",
+      "categoria": "hashtag",
+      "trecho": "#ImplantesDentários",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "instagram.txt",
+      "categoria": "hashtag",
+      "trecho": "#SaúdeBucal",
+      "encontrado_no_dossie": false
+    },
+    {
+      "arquivo": "instagram.txt",
+      "categoria": "hashtag",
+      "trecho": "#Osseointegração",
+      "encontrado_no_dossie": false
+    },
+    {
+      "arquivo": "instagram.txt",
+      "categoria": "hashtag",
+      "trecho": "#CargaPrecoce",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "instagram.txt",
+      "categoria": "hashtag",
+      "trecho": "#ConexãoSistemasDePrótese",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "instagram.txt",
+      "categoria": "hashtag",
+      "trecho": "#Bioatividade",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "instagram.txt",
+      "categoria": "hashtag",
+      "trecho": "#Odontologia",
+      "encontrado_no_dossie": false
+    },
+    {
+      "arquivo": "instagram.txt",
+      "categoria": "percentual",
+      "trecho": "7%",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "instagram.txt",
+      "categoria": "percentual",
+      "trecho": "100%",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "instagram.txt",
+      "categoria": "percentual",
+      "trecho": "91,11%",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "instagram.txt",
+      "categoria": "percentual",
+      "trecho": "97,7%",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "instagram.txt",
+      "categoria": "numero_unidade",
+      "trecho": "45 dias",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "instagram.txt",
+      "categoria": "numero_unidade",
+      "trecho": "60 dias",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "instagram.txt",
+      "categoria": "nome_proprio",
+      "trecho": "Vulcano Actives",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "instagram.txt",
+      "categoria": "nome_proprio",
+      "trecho": "Conexão Sistemas",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "instagram.txt",
+      "categoria": "nome_proprio",
+      "trecho": "Vulcano Actives",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "linkedin.txt",
+      "categoria": "percentual",
+      "trecho": "7%",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "linkedin.txt",
+      "categoria": "percentual",
+      "trecho": "100%",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "linkedin.txt",
+      "categoria": "percentual",
+      "trecho": "91,11%",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "linkedin.txt",
+      "categoria": "percentual",
+      "trecho": "97,7%",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "linkedin.txt",
+      "categoria": "numero_unidade",
+      "trecho": "45 dias",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "linkedin.txt",
+      "categoria": "numero_unidade",
+      "trecho": "60 dias",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "linkedin.txt",
+      "categoria": "nome_proprio",
+      "trecho": "Vulcano Actives",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "linkedin.txt",
+      "categoria": "nome_proprio",
+      "trecho": "Conexão Sistemas",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "linkedin.txt",
+      "categoria": "nome_proprio",
+      "trecho": "Carlos Nelson Elias",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "linkedin.txt",
+      "categoria": "nome_proprio",
+      "trecho": "Vulcano Actives",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "whatsapp.txt",
+      "categoria": "percentual",
+      "trecho": "100%",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "whatsapp.txt",
+      "categoria": "percentual",
+      "trecho": "91,11%",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "whatsapp.txt",
+      "categoria": "percentual",
+      "trecho": "97,7%",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "whatsapp.txt",
+      "categoria": "percentual",
+      "trecho": "7%",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "whatsapp.txt",
+      "categoria": "numero_unidade",
+      "trecho": "45 dias",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "whatsapp.txt",
+      "categoria": "numero_unidade",
+      "trecho": "45 dias",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "whatsapp.txt",
+      "categoria": "numero_unidade",
+      "trecho": "60 dias",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "whatsapp.txt",
+      "categoria": "numero_unidade",
+      "trecho": "60 dias",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "whatsapp.txt",
+      "categoria": "nome_proprio",
+      "trecho": "Vulcano Actives",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "whatsapp.txt",
+      "categoria": "nome_proprio",
+      "trecho": "Conexão Sistemas",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "whatsapp.txt",
+      "categoria": "nome_proprio",
+      "trecho": "Vulcano Actives",
+      "encontrado_no_dossie": true
+    }
+  ]
+}

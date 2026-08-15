@@ -1,0 +1,23 @@
+{
+  "slug": "vulcano-actives",
+  "texto_base": "insumos/texto_base.md",
+  "imagens": [
+    {
+      "path": "insumos/flex_01.png",
+      "descricao": "Render 3D de dois implantes dentários de titânio lado a lado sobre fundo preto: à esquerda, implante com soquete de conexão interna (topo com abertura cônica/hexagonal polida); à direita, implante com colar liso refletivo e hexágono externo usinado com orifício central. Superfície fosca texturizada prateado-acinzentada e roscas helicoidais profundas em ambos. (2560x2230 PNG, RGBA)"
+    }
+  ],
+  "publico_alvo": "clientes",
+  "objetivo_tom": "informacional_tecnico",
+  "materiais_selecionados": [
+    "pdf",
+    "apresentacao",
+    "arte-01",
+    "arte-02",
+    "arte-03",
+    "textos",
+    "kit-consultor"
+  ],
+  "edicao": "1ª Edição do Cliente",
+  "elementos_decorativos": false
+}

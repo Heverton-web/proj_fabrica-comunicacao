@@ -1,0 +1,7 @@
+Stop Drill trava na fresa: zero erro de leitura a laser.
+
+A medição visual por marcas a laser deixa margem para erro humano sob sangramento e variação de luz. O Stop Drill substitui essa leitura por um limitador físico que trava diretamente na fresa, garantindo fidelidade entre o planejamento no software e a execução cirúrgica.
+
+Segundo o Playbook de Performance do Kit Stop Drill, vender esse acessório é reforçar o compromisso da Conexão com a Engenharia de Previsibilidade — e o consultor que domina essa aplicação técnica deixa de ser vendedor de peças para se tornar parceiro da segurança clínica do cirurgião.
+
+Consultor Conexão, esse é o argumento técnico que sustenta a conversa sobre segurança clínica com o cirurgião.

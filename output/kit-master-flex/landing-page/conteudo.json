@@ -1,0 +1,65 @@
+{
+  "hero": {
+    "headline": "Um Único Kit. Todas as Linhas Conexão.",
+    "subheadline": "O MasterFlex unifica todas as conexões e diâmetros em um único estojo cirúrgico, eliminando a multiplicidade de estojos e otimizando a eficiência operacional.",
+    "cta": "Saiba mais sobre a aplicação clínica",
+    "imagem": "insumos/kit-master-flex.png"
+  },
+  "problema_solucao": {
+    "problema": {
+      "titulo": "O Desafio da Multiplicidade",
+      "texto": "Gerenciar múltiplos estojos para diferentes conexões e diâmetros gera complexidade operacional, custos elevados de esterilização e risco de erro na escolha dos componentes durante o procedimento cirúrgico."
+    },
+    "solucao": {
+      "titulo": "A Solução MasterFlex",
+      "texto": "O Kit MasterFlex é a plataforma universal que atende todas as linhas de implantes da Conexão — independentemente de diâmetro, comprimento ou conexão protética. Um único estojo para todas as necessidades clínicas."
+    }
+  },
+  "destaques": [
+    {
+      "titulo": "Stop Drill Exclusivo",
+      "texto": "Único sistema no mercado com Fresa Start (Lança) integrada a Stop Drill dedicado, garantindo controle de profundidade absoluto desde o primeiro passo da perfuração."
+    },
+    {
+      "titulo": "Protocolo na Tampa",
+      "texto": "Flex-Bone Drill Protocol estampado na tampa da caixa organizadora, orientando visualmente a sequência exata para ossos Soft (III-IV) e Hard (I-II)."
+    },
+    {
+      "titulo": "Identificação Visual",
+      "texto": "Marcações duplas nas fresas: número em negrito + diâmetro em itálico, eliminando erros na instrumentação e agilizando a seleção."
+    },
+    {
+      "titulo": "Captura Ativa",
+      "texto": "Chaves Driver com dispositivo de captura que transporta o implante diretamente da embalagem até o alvéolo cirúrgico, acionamento via motor ou catraca."
+    }
+  ],
+  "prova": {
+    "Composição do Kit": {
+      "titulo": "Composição do Kit",
+      "cabecalho": ["Componente", "Especificação"],
+      "linhas": [
+        ["Fresas Helicoidais", "9 linhas (diâmetro 2.4 a 4.6)"],
+        ["Direction Pins", "4 unidades para orientação de fresagem"],
+        ["Countersinks", "A a E para preparo cortical (Tipo I e II)"],
+        ["Implant Drivers", "Curto e longo — Azul (NP), Verde (GMF/FIT/HE-RD), Vermelho (SL/HE-SD)"],
+        ["Chaves Digitais", "0.9mm (Lilás) e 1.2mm (Azul)"],
+        ["Adaptadores Fitness", "Transformam chaves de transporte em chaves sólidas"]
+      ]
+    },
+    "Versatilidade Clínica": {
+      "titulo": "Versatilidade Clínica",
+      "cabecalho": ["Plataforma", "Compatibilidade"],
+      "linhas": [
+        ["Conexões Cônicas (Morse)", "NP (24°), GMF (16°), FIT (11,5°)"],
+        ["Hexágono Externo", "HE-RD (Regular) e HE-SD (Small)"],
+        ["Amplitude de Diâmetros", "Slim (2.9mm) a 5.0mm"],
+        ["Extension Drill", "Para dentes vizinhos altos ou acesso limitado"]
+      ]
+    }
+  },
+  "cta_final": {
+    "headline": "Eficiência Cirúrgica com Protocolo Guiado",
+    "cta": "Consultar aplicação clínica",
+    "dica_ouro": "Material técnico para consultores de vendas Conexão — domine os argumentos e posicione-se como parceiro estratégico."
+  }
+}

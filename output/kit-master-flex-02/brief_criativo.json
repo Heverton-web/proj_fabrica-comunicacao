@@ -1,0 +1,82 @@
+{
+  "mensagem_central": "MasterFlex: um único kit, previsibilidade e excelência clínica.",
+  "publico_alvo": "clientes",
+  "objetivo_tom": "informacional_tecnico",
+  "objetivo": "informacional",
+  "tom_de_voz": "tecnico",
+  "nota_de_escopo": "Regeneracao /gerar-pdf (2a Edicao) com novo texto-base (Diferenciais Estrategicos do Kit MasterFlex) e tom trocado para informacional_tecnico. Conjunto regenerado: pdf, apresentacao, arte-01, textos, kit-consultor, kit-distribuidor. Publico clientes: conceitos tecnicos (Stop Drill, Flex-Bone Drill Protocol, conexoes Morse/HE, drivers) traduzidos em beneficio concreto. Kits usam publico fixo dentista_implantodontista.",
+  "hierarquia_de_conteudo": [
+    "problema clínico: hesitação e risco no transoperatório sem controle de profundidade",
+    "solução: Single Kit MasterFlex com Stop Drill dedicado e protocolo didático",
+    "destaques técnicos: Stop Drill exclusivo, Flex-Bone Drill Protocol, identificação dual das fresas",
+    "versatilidade: conexões cônicas (NP/GMF/FIT) e hexágono externo (HE-RD/HE-SD/HI), diâmetros 2.9mm a 5.0mm",
+    "eficiência protética: drivers de captura ativa, Extension Fitness, 4 pinos de paralelismo, Extension Drill"
+  ],
+  "mapeamento_por_material": {
+    "pdf": {
+      "secoes": [
+        "abertura",
+        "problema",
+        "solução",
+        "destaques",
+        "composição/especificações",
+        "aplicação",
+        "fechamento"
+      ]
+    },
+    "landing-page": {
+      "secoes": [
+        "hero",
+        "problema→solução",
+        "destaques",
+        "prova/composição técnica",
+        "cta final"
+      ]
+    },
+    "apresentacao": {
+      "slides": [
+        "capa",
+        "problema (hesitação e risco no transoperatório)",
+        "solução (Single Kit com Stop Drill)",
+        "destaques técnicos (1 por slide)",
+        "versatilidade de conexões",
+        "eficiência protética",
+        "fechamento/CTA"
+      ]
+    },
+    "arte": {
+      "angulos_criativos": [
+        "problema: hesitação e risco no transoperatório sem controle de profundidade",
+        "diferencial: Stop Drill exclusivo + Flex-Bone Drill Protocol estampado na tampa",
+        "versatilidade: um único kit para todas as conexões e diâmetros (2.9mm a 5.0mm)"
+      ]
+    },
+    "textos": {
+      "canais": ["whatsapp", "instagram", "linkedin"]
+    },
+    "kit": {
+      "angulos_por_tom": {
+        "informativa": [
+          "O que é o Kit MasterFlex: Single Kit que unifica a prática clínica com rigor científico",
+          "Conexões e diâmetros cobertos: cônicas Morse NP/GMF/FIT e hexágono externo HE-RD/HE-SD/HI, de 2.9mm a 5.0mm"
+        ],
+        "contra-intuitiva": [
+          "'Mais fresas, mais complexidade'? Não: as 9 fresas têm limitador de profundidade próprio (Stop Drill)",
+          "Um único estojo substitui vários: da Fresa Start (Lança) ao Extension Drill, para todos os casos"
+        ],
+        "tecnica": [
+          "Stop Drill dedicado: fidelidade ao planejamento digital/tomográfico desde o primeiro contato ósseo",
+          "Flex-Bone Drill Protocol: sequência de fresagem por densidade (Soft III-IV / Hard I-II) na tampa da caixa"
+        ],
+        "efeito-uau": [
+          "Único sistema no mercado com Fresa Start + Stop Drill dedicado",
+          "Instrumentação completa de 2.9mm (espaços estreitos) a 5.0mm (extração imediata)"
+        ],
+        "educativa": [
+          "Por que o controle de profundidade é o pilar da osseointegração e da preservação anatômica",
+          "Anéis coloridos dos drivers: Azul NP, Verde GMF/FIT/HE-RD, Vermelho SL/HE-SD — reconhecimento imediato"
+        ]
+      }
+    }
+  }
+}

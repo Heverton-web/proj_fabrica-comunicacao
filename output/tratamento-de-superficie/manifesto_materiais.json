@@ -1,0 +1,52 @@
+{
+  "slug": "tratamento-de-superficie",
+  "materiais": [
+    {
+      "tipo": "pdf",
+      "status": "concluido_autonomo",
+      "path": "output/tratamento-de-superficie/pdf/apostila_tratamento-de-superficie.pdf"
+    },
+    {
+      "tipo": "apresentacao",
+      "status": "concluido_autonomo",
+      "path": "output/tratamento-de-superficie/apresentacao/index.html"
+    },
+    {
+      "tipo": "arte-01",
+      "status": "concluido_autonomo",
+      "path": "output/tratamento-de-superficie/arte-01"
+    },
+    {
+      "tipo": "arte-02",
+      "status": "concluido_autonomo",
+      "path": "output/tratamento-de-superficie/arte-02"
+    },
+    {
+      "tipo": "arte-03",
+      "status": "concluido_autonomo",
+      "path": "output/tratamento-de-superficie/arte-03"
+    },
+    {
+      "tipo": "textos",
+      "status": "concluido_autonomo",
+      "path": "output/tratamento-de-superficie/textos"
+    },
+    {
+      "tipo": "kit-consultor",
+      "status": "concluido_autonomo",
+      "path": "output/tratamento-de-superficie/kit-consultor"
+    }
+  ],
+  "decisoes_design": [
+    "pdf: aprovado sem correcoes. Capa remete ao tema (validar-pdf.py OK), todos os claims tecnicos (98,4%, 100% Tipo IV, 45-60 dias, Ca/Fosforo >7%, Fase Anatase, rugosidade 1,26 um, MAO) rastreaveis ao dossie. Tom educacional_comercial para consultores respeitado (script de objecoes tatico, sem eixo de giro de estoque de distribuidor).",
+    "apresentacao: aprovada sem correcoes. Uso de componente 'contador' para os 3 dados numericos (100%, >7%, 1,26 um) e coerente com a orientacao de julgamento de design (dado numerico animado agrega clareza). Fontes Inter (titulo/corpo) conferem com a atualizacao vigente do design system (Poppins descontinuada para titulo/corpo). Gradiente de assinatura usado no CTA, nenhuma cor fora do design system (validar-design-tokens.py OK).",
+    "arte-01/02/03: aprovadas sem correcoes. As 3 copies compartilhadas (arte/copies.json) cobrem 3 angulos genuinamente distintos do brief (problema/casos criticos, diferencial tecnico/bioatividade, velocidade/previsibilidade), todas com claims rastreaveis ao dossie. 1 badge (CTA pill) por peca confirmado nas 3 variantes de formato.",
+    "textos: correcao aplicada em linkedin.txt (REGRA 4) — trecho 'Para a operacao, isso significa giro de cadeira mais rapido...' usava o enquadramento de produtividade/giro de cadeira que o dossie classifica como argumento de Distribuidores, fora do eixo central esperado para o publico consultores desta rodada. Reescrito para manter o eixo tatico do consultor ('argumento tecnico pronto para os casos que mais geram hesitacao do dentista... posicionar o portfolio completo'). Revalidado com validar-textos.py apos a correcao. Hashtags do instagram.txt sinalizadas pelo pre-filtro (extrair-claims-candidatos.py) como 'nao encontradas no dossie' foram checadas manualmente e sao termos genericos legitimos do nicho/marca (ex.: #ConexaoImplantes, #Implantodontia, #SuperficieBioativa) — nao sao claims factuais, falso positivo esperado do pre-filtro."
+  ],
+  "informacoes_faltantes": [],
+  "sugestoes_legenda": [
+    "arte-01 (1080x1080, copy-01/problema): legenda Instagram do copies.json ja pronta para uso — enfatiza 100% de sucesso em Tipo IV vs. 98,4% da Porous em casos convencionais.",
+    "arte-02 (1080x1350, copy-02/diferencial tecnico): legenda Instagram ja pronta — foco em bioatividade (Ca/Fosforo) e hidrofilia (Fase Anatase, segundo zero).",
+    "arte-03 (1080x1920, copy-03/velocidade): legenda Instagram ja pronta — contraste 4-6 meses vs. 45-60 dias, ancorado na tecnologia MAO."
+  ]
+}

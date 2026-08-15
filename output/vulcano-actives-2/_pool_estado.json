@@ -1,0 +1,51 @@
+{
+  "slug": "vulcano-actives-2",
+  "lote": 4,
+  "materiais": {
+    "pdf": {
+      "tentativas": 1,
+      "ultimo_erro": "",
+      "estado": "concluido_autonomo"
+    },
+    "landing-page": {
+      "tentativas": 1,
+      "ultimo_erro": "",
+      "estado": "concluido_autonomo"
+    },
+    "apresentacao": {
+      "tentativas": 1,
+      "ultimo_erro": "",
+      "estado": "concluido_autonomo"
+    },
+    "arte-01": {
+      "tentativas": 1,
+      "ultimo_erro": "",
+      "estado": "concluido_autonomo"
+    },
+    "arte-02": {
+      "tentativas": 1,
+      "ultimo_erro": "",
+      "estado": "concluido_autonomo"
+    },
+    "arte-03": {
+      "tentativas": 1,
+      "ultimo_erro": "",
+      "estado": "concluido_autonomo"
+    },
+    "textos": {
+      "tentativas": 1,
+      "ultimo_erro": "",
+      "estado": "concluido_autonomo"
+    },
+    "kit-consultor": {
+      "tentativas": 1,
+      "ultimo_erro": "",
+      "estado": "concluido_autonomo"
+    },
+    "kit-distribuidor": {
+      "tentativas": 1,
+      "ultimo_erro": "",
+      "estado": "concluido_autonomo"
+    }
+  }
+}

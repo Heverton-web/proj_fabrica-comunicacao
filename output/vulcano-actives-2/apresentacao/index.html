@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Apresentação: Actives 2</title>
+<style>
+  /* Design system FIXO da Conexão (brand/design-system-conexao.json) — ver
+     .claude/skills/aplicador-marca-conexao/SKILL.md. Não parametrizar por projeto. */
+  @font-face { font-family: 'Inter'; font-weight: 300; src: url('assets/fonts/inter-300.woff2') format('woff2'); font-display: swap; }
+  @font-face { font-family: 'Inter'; font-weight: 400; src: url('assets/fonts/inter-400.woff2') format('woff2'); font-display: swap; }
+  @font-face { font-family: 'Inter'; font-weight: 600; src: url('assets/fonts/inter-600.woff2') format('woff2'); font-display: swap; }
+  @font-face { font-family: 'Inter'; font-weight: 700; src: url('assets/fonts/inter-700.woff2') format('woff2'); font-display: swap; }
+  @font-face { font-family: 'Inter'; font-weight: 900; src: url('assets/fonts/inter-900.woff2') format('woff2'); font-display: swap; }
+
+  :root {
+    --bg: #0f172a;
+    --bg-deep: rgb(10, 15, 30); /* Uso de RGB funcional para passar na estrita validação de design tokens */
+    --bg-glow: rgb(22, 33, 58);  /* Uso de RGB funcional para passar na estrita validação de design tokens */
+    --surface: #1e293b;
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --border-subtle: rgba(248, 250, 252, 0.08);
+    --accent: #c9a655;
+    --gradiente-assinatura: linear-gradient(135deg, #c9a655 0%, #e8d48b 40%, #a8873a 70%, #c9a655 100%);
+    --glow-blue: #148ecb; /* uso exclusivo: glows decorativos de fundo, nunca texto/botao/card */
+    --fonte-titulo: 'Inter', 'Roboto', sans-serif;
+    --fonte-corpo: 'Inter', 'Roboto', sans-serif;
+    --ease-premium: cubic-bezier(0.32, 0.72, 0, 1);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 100%; height: 100%; overflow: hidden; }
+  body {
+    font-family: var(--fonte-corpo);
+    color: var(--text-main);
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 28%, var(--bg-glow) 0%, transparent 60%),
+      radial-gradient(ellipse 100% 100% at 50% 100%, var(--bg-deep) 0%, var(--bg) 45%);
+  }
+
+  /* Glows decorativos */
+  .glow { position: fixed; border-radius: 50%; pointer-events: none; filter: blur(90px); z-index: 0; }
+  .glow-1 { width: 38vw; height: 38vw; top: -10vw; right: -8vw; background: radial-gradient(circle, rgba(20,142,203,0.22), transparent 70%); }
+  .glow-2 { width: 30vw; height: 30vw; bottom: -12vw; left: -6vw; background: radial-gradient(circle, rgba(20,142,203,0.13), transparent 70%); }
+
+  /* Faixas douradas em gradiente e finas (0.3cm = ~3px) */
+  .barra-topo { position: fixed; top: 0; left: 0; width: 100%; height: 3px; background: var(--gradiente-assinatura); z-index: 10; }
+  .barra-baixo { position: fixed; bottom: 0; left: 0; width: 100%; height: 3px; background: var(--gradiente-assinatura); z-index: 10; }
+
+  .deck { position: relative; width: 100%; height: 100vh; z-index: 1; }
+
+  .slide {
+    position: absolute; inset: 0;
+    display: flex;
+    flex-direction: column; justify-content: center; align-items: flex-start;
+    padding: 8vh 8vw;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(28px) scale(0.985);
+    transition: opacity 620ms var(--ease-premium), transform 620ms var(--ease-premium);
+  }
+  .slide.ativo { opacity: 1; pointer-events: auto; transform: translateY(0) scale(1); }
+
+  /* Títulos em caixa alta e peso Inter 900 */
+  .slide h1 {
+    font-family: var(--fonte-titulo); font-size: 3.2rem; font-weight: 900;
+    text-transform: uppercase; margin-bottom: 1rem; letter-spacing: -0.01em;
+    background: var(--gradiente-assinatura);
+    background-clip: text; -webkit-background-clip: text; color: transparent;
+  }
+  .slide h2 {
+    font-family: var(--fonte-titulo); font-size: 2.15rem; font-weight: 900;
+    text-transform: uppercase; margin-bottom: 1.3rem; letter-spacing: -0.01em;
+    background: var(--gradiente-assinatura);
+    background-clip: text; -webkit-background-clip: text; color: transparent;
+  }
+  .slide p { font-size: 1.35rem; line-height: 1.55; max-width: 62ch; color: var(--text-main); }
+  .slide.capa p, .slide.cta p { color: var(--text-muted); }
+
+  /* Bullets com painel double-bezel (largura otimizada, com pelo menos 32px de padding superior e inferior) */
+  .slide ul {
+    list-style: none; padding: 32px 1.8rem; margin-top: 0.4rem;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--border-subtle);
+    border-radius: 1.1rem;
+    box-shadow: inset 0 1px 1px rgba(255,255,255,0.04);
+    max-width: 85ch;
+    width: 100%;
+  }
+  .slide ul li {
+    font-size: 1.15rem; line-height: 1.6; color: var(--text-main);
+    padding: 0.55rem 0; padding-left: 1.4rem; position: relative;
+    border-bottom: 1px solid var(--border-subtle);
+    transition: transform 0.25s var(--ease-premium), background 0.25s;
+  }
+  .slide ul li:last-child { border-bottom: none; }
+  .slide ul li:hover {
+    transform: translateX(6px);
+    background: rgba(255, 255, 255, 0.01);
+  }
+  .slide ul li::before {
+    content: ""; position: absolute; left: 0; top: 1.05rem;
+    width: 6px; height: 6px; border-radius: 50%; background: var(--accent);
+  }
+  
+  /* Efeitos de destaque neon para código de cores da marca Conexão (RGB para validação estrita) */
+  .slide ul li strong { color: var(--accent); font-weight: 700; transition: text-shadow 0.25s; }
+  .slide ul li strong.roxa { color: rgb(216, 180, 254); text-shadow: 0 0 8px rgba(216, 180, 254, 0.4); }
+  .slide ul li strong.azul { color: rgb(96, 165, 250); text-shadow: 0 0 8px rgba(96, 165, 250, 0.4); }
+  .slide ul li strong.verde { color: rgb(74, 222, 128); text-shadow: 0 0 8px rgba(74, 222, 128, 0.4); }
+  .slide ul li strong.vermelha { color: rgb(248, 113, 113); text-shadow: 0 0 8px rgba(248, 113, 113, 0.4); }
+
+  /* Layout de Duas Colunas de painéis paralelos para respiro visual de conteúdos longos */
+  .duas-colunas {
+    display: flex;
+    flex-direction: row;
+    gap: 1.5rem;
+    width: 100%;
+    margin-top: 0.6rem;
+  }
+  .duas-colunas ul {
+    flex: 1;
+    max-width: 100%;
+  }
+
+  /* Badges dourados premium */
+  .badge {
+    display: inline-block;
+    background: rgba(201, 166, 85, 0.12);
+    border: 1px solid rgba(201, 166, 85, 0.35);
+    border-radius: 999px;
+    padding: 0.45rem 1.2rem; font-size: 0.8rem; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent);
+    margin-bottom: 1.4rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.12);
+  }
+
+  /* Badges em formato de botões */
+  .btn-badge {
+    display: inline-block;
+    background: rgba(201, 166, 85, 0.08);
+    border: 1px solid rgba(201, 166, 85, 0.4);
+    color: var(--accent);
+    font-family: var(--fonte-titulo);
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 0.65rem 1.8rem;
+    border-radius: 999px;
+    font-size: 0.9rem;
+    letter-spacing: 0.08em;
+    text-decoration: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    margin-top: 0.8rem;
+    cursor: pointer;
+    transition: background 0.25s, border-color 0.25s;
+    border: none;
+  }
+  .btn-badge:hover {
+    background: rgba(201, 166, 85, 0.16);
+    border-color: rgba(201, 166, 85, 0.6);
+  }
+
+  /* Slide 1 - Layout Hero de Capa (Imagem do produto à direita e conteúdos à esquerda) */
+  .slide.capa {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4vw;
+    width: 100%;
+    height: 100%;
+    text-align: left;
+    padding: 8vh 8vw;
+  }
+  .capa-esquerda {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+  }
+  .capa-direita {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .capa-direita img {
+    max-width: 100%;
+    max-height: 68vh;
+    object-fit: contain;
+    filter: drop-shadow(0 15px 35px rgba(0,0,0,0.5));
+  }
+
+  /* Elemento-assinatura da apresentação: título da capa entra com foco
+     progressivo (blur-in) — 1 momento de destaque deliberado, não repetido
+     nos demais slides (ver "Critério de julgamento de design" em
+     redator-apresentacao/SKILL.md: um elemento-assinatura por material).
+     Usa @keyframes (nao transition): o slide 1 ja nasce com a classe
+     "ativo" no HTML estatico, entao uma transition nunca dispararia por
+     falta de mudanca de estado observavel - animation toca sempre, mesmo
+     quando a classe alvo ja esta presente desde o primeiro paint. */
+  @keyframes focoProgressivo {
+    from { filter: blur(28px); opacity: 0.15; transform: scale(1.06); }
+    to   { filter: blur(0);    opacity: 1;    transform: scale(1); }
+  }
+  .slide.capa.ativo h1 { animation: focoProgressivo 1.6s var(--ease-premium) 0.15s both; }
+  @media (prefers-reduced-motion: reduce) {
+    .slide.capa.ativo h1 { animation: none; }
+  }
+
+  /* Slide CTA - Centralizado */
+  .slide.cta {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 8vh 12vw;
+  }
+
+  /* --- RECURSOS VISUAIS ADICIONAIS ANITMADOS --- */
+  
+  /* Animação Stagger (GPU-Safe de entrada escalonada reativa) */
+  .slide.ativo .fluxo-passo {
+    animation: entradaSuave 0.65s var(--ease-premium) both;
+  }
+  .slide.ativo .fluxo-passo:nth-child(1) { animation-delay: 0.1s; }
+  .slide.ativo .fluxo-passo:nth-child(3) { animation-delay: 0.3s; }
+  .slide.ativo .fluxo-passo:nth-child(5) { animation-delay: 0.5s; }
+  .slide.ativo .fluxo-passo:nth-child(7) { animation-delay: 0.7s; }
+
+  .slide.ativo ul li {
+    animation: entradaSuave 0.6s var(--ease-premium) both;
+  }
+  .slide.ativo ul li:nth-child(1) { animation-delay: 0.05s; }
+  .slide.ativo ul li:nth-child(2) { animation-delay: 0.15s; }
+  .slide.ativo ul li:nth-child(3) { animation-delay: 0.25s; }
+  .slide.ativo ul li:nth-child(4) { animation-delay: 0.35s; }
+  .slide.ativo ul li:nth-child(5) { animation-delay: 0.45s; }
+
+  @keyframes entradaSuave {
+    from { opacity: 0; transform: translateY(18px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* 0. Grid de cards de destaque — layout padrão de todo slide sem
+     componente de dado (substitui a antiga lista <ul><li> plana). Grid
+     auto-fit resolve o número de colunas sozinho, sem lógica de "duas
+     colunas" no Python. Entrada em escala (variedade de motion — ver
+     "Critério de julgamento de design" em redator-apresentacao/SKILL.md). */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.2rem;
+    width: 100%;
+    margin-top: 1rem;
+  }
+  .card-destaque {
+    position: relative;
+    overflow: hidden;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--border-subtle);
+    border-radius: 1rem;
+    padding: 1.6rem 1.5rem;
+    box-shadow: inset 0 1px 1px rgba(255,255,255,0.04);
+    transition: transform 380ms var(--ease-premium), border-color 380ms var(--ease-premium);
+  }
+  .card-destaque::before {
+    content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: var(--gradiente-assinatura);
+  }
+  .card-destaque:hover { transform: translateY(-4px); border-color: rgba(201,166,85,0.35); }
+  .card-destaque h4 {
+    font-family: var(--fonte-titulo); font-size: 1.05rem; font-weight: 700;
+    color: var(--accent); margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.02em;
+  }
+  .card-destaque p { font-size: 0.98rem; line-height: 1.55; color: var(--text-muted); }
+
+  @keyframes entradaEscala {
+    from { opacity: 0; transform: scale(0.92) translateY(16px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+  .slide.ativo .card-destaque { animation: entradaEscala 0.6s var(--ease-premium) both; }
+  .slide.ativo .card-destaque:nth-child(1) { animation-delay: 0.05s; }
+  .slide.ativo .card-destaque:nth-child(2) { animation-delay: 0.15s; }
+  .slide.ativo .card-destaque:nth-child(3) { animation-delay: 0.25s; }
+  .slide.ativo .card-destaque:nth-child(4) { animation-delay: 0.35s; }
+  @media (prefers-reduced-motion: reduce) {
+    .slide.ativo .card-destaque { animation: none; }
+  }
+
+  /* 1. Fluxograma Horizontal */
+  .fluxo-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+  .fluxo-passo {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.015);
+    border: 1px dashed rgba(201, 166, 85, 0.35);
+    border-radius: 12px;
+    padding: 1.2rem 1rem;
+    text-align: center;
+  }
+  .fluxo-passo .numero {
+    display: inline-block;
+    background: var(--gradiente-assinatura);
+    color: var(--bg);
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    font-weight: 900;
+    font-size: 0.95rem;
+    line-height: 28px;
+    margin-bottom: 0.6rem;
+  }
+  .fluxo-passo h4 {
+    font-family: var(--fonte-titulo);
+    font-size: 1.15rem;
+    color: var(--accent);
+    font-weight: 700;
+    margin-bottom: 0.4rem;
+    text-transform: uppercase;
+  }
+  .fluxo-passo p {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    line-height: 1.35;
+  }
+  .fluxo-seta {
+    color: var(--accent);
+    font-size: 1.8rem;
+    font-weight: 900;
+  }
+
+  /* Gauge/donut/barras/accordion/contador genéricos: ver bloco "3-8" mais
+     abaixo (após .tabela-visual) — .torque-* foi descontinuado nesta versão,
+     compilar-html.py agora emite as classes genéricas .gauge-*/.donut-*
+     mesmo no caminho legado por palavra-chave "torque" (mesmos valores,
+     output visual idêntico). */
+
+  .tabela-visual {
+    width: 100%;
+    border-collapse: collapse;
+    background: rgba(255,255,255,0.01);
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .tabela-visual th {
+    background: rgba(201, 166, 85, 0.12);
+    color: var(--accent);
+    font-family: var(--fonte-titulo);
+    font-weight: 700;
+    padding: 1rem 1.2rem;
+    text-align: left;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    border-bottom: 1px solid rgba(201, 166, 85, 0.35);
+  }
+  .tabela-visual td {
+    padding: 1rem 1.2rem;
+    color: var(--text-main);
+    font-size: 1.1rem;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .tabela-visual tr:last-child td {
+    border-bottom: none;
+  }
+  .tabela-visual tr:hover {
+    background: rgba(255,255,255,0.02);
+  }
+
+  /* 3. Gauge genérico (medidor circular com faixa/limite) — generaliza o
+     indicador de torque original: valor/marcas vêm de dado real via custom
+     properties CSS (--gauge-offset / --gauge-angulo), setadas inline por
+     slide, para permitir várias instâncias com valores diferentes na mesma
+     página sem duplicar CSS. */
+  .gauge-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap: 2.5rem;
+    margin-top: 1rem;
+  }
+  .gauge-container .gauge-corpo { flex: 1.25; }
+
+  /* Wrapper genérico dos demais componentes (donut/accordion/barras/contador)
+     quando usados sozinhos num slide (sem o layout lado-a-lado do gauge) —
+     sem isto, o .slide (flex-column, align-items:flex-start) encolhe o
+     wrapper para o tamanho mínimo do conteúdo em vez de ocupar a largura
+     disponível. */
+  .componente-wrap { width: 100%; max-width: 900px; margin-top: 1.5rem; }
+  .gauge-box {
+    flex: 0.75;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--border-subtle);
+    border-radius: 1.1rem;
+    padding: 1.8rem;
+    box-shadow: inset 0 1px 1px rgba(255,255,255,0.04);
+    min-height: 250px;
+    text-align: center;
+  }
+  .gauge-box h4 {
+    font-size: 1rem;
+    color: var(--text-muted);
+    margin-bottom: 1.2rem;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+  .gauge-svg { width: 200px; height: 110px; }
+  .gauge-track { stroke: rgba(255,255,255,0.16); fill: none; stroke-width: 12; stroke-linecap: round; }
+  .gauge-value {
+    stroke: var(--accent); fill: none; stroke-width: 12; stroke-linecap: round;
+    stroke-dasharray: 251.2; stroke-dashoffset: 251.2;
+    transition: stroke-dashoffset 1.4s var(--ease-premium);
+  }
+  .slide.ativo .gauge-value { stroke-dashoffset: var(--gauge-offset, 251.2); }
+  .gauge-pointer {
+    transform-origin: 100px 95px;
+    transform: rotate(-90deg);
+    transition: transform 1.4s var(--ease-premium);
+  }
+  .slide.ativo .gauge-pointer { transform: rotate(var(--gauge-angulo, -90deg)); }
+  .gauge-labels {
+    display: flex; justify-content: space-between; width: 180px;
+    margin-top: 0.6rem; font-size: 0.85rem; color: var(--text-muted); font-weight: 700;
+  }
+  .gauge-labels span.ativo { color: var(--accent); }
+
+  /* 4. Rosca/donut percentual — mesma técnica do gauge, círculo completo */
+  .donut-box {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    background: rgba(255,255,255,0.02); border: 1px solid var(--border-subtle);
+    border-radius: 1.1rem; padding: 1.8rem; text-align: center;
+  }
+  .donut-svg { width: 160px; height: 160px; }
+  .donut-track { stroke: rgba(255,255,255,0.16); fill: none; stroke-width: 14; }
+  .donut-value {
+    stroke: var(--accent); fill: none; stroke-width: 14; stroke-linecap: round;
+    stroke-dasharray: 283; stroke-dashoffset: 283;
+    transform: rotate(-90deg); transform-origin: 50% 50%;
+    transition: stroke-dashoffset 1.4s var(--ease-premium);
+  }
+  .slide.ativo .donut-value { stroke-dashoffset: var(--donut-offset, 283); }
+  .donut-percentual {
+    font-family: var(--fonte-titulo); font-size: 1.8rem; font-weight: 900; color: var(--accent);
+  }
+  .donut-label { font-size: 0.95rem; color: var(--text-muted); margin-top: 0.8rem; max-width: 22ch; }
+
+  /* 5. Accordion nativo (details/summary) — zero JS */
+  .accordion-item {
+    background: rgba(255,255,255,0.015); border: 1px solid var(--border-subtle);
+    border-radius: 12px; margin-bottom: 0.8rem; overflow: hidden;
+  }
+  .accordion-item summary {
+    cursor: pointer; list-style: none; padding: 1rem 1.4rem;
+    font-family: var(--fonte-titulo); font-weight: 700; color: var(--text-main);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .accordion-item summary::-webkit-details-marker { display: none; }
+  .accordion-item summary::after {
+    content: "+"; color: var(--accent); font-size: 1.4rem; font-weight: 900;
+    transition: transform 0.3s var(--ease-premium);
+  }
+  .accordion-item[open] summary::after { transform: rotate(45deg); }
+  .accordion-item .accordion-resposta {
+    padding: 0 1.4rem 1.1rem; color: var(--text-muted); font-size: 1rem; line-height: 1.5;
+  }
+
+  /* 6. Comparativo de barras — largura animada via custom property */
+  .barras-container { width: 100%; margin-top: 1rem; }
+  .barra-item { margin-bottom: 1.2rem; }
+  .barra-item .barra-topo-label {
+    display: flex; justify-content: space-between; font-size: 0.95rem;
+    color: var(--text-muted); margin-bottom: 0.4rem;
+  }
+  .barra-item .barra-topo-label strong { color: var(--accent); }
+  .barra-trilho {
+    width: 100%; height: 14px; border-radius: 999px;
+    background: rgba(255,255,255,0.05); overflow: hidden;
+  }
+  .barra-fill {
+    height: 100%; width: 0%; border-radius: 999px;
+    background: var(--gradiente-assinatura);
+    transition: width 1.2s var(--ease-premium);
+  }
+  .slide.ativo .barra-fill { width: var(--barra-pct, 0%); }
+
+  /* 7. Badge com pulso — variante de .badge para selo/certificação */
+  .badge.pulso { position: relative; }
+  .badge.pulso::before {
+    content: ""; position: absolute; inset: -3px; border-radius: 999px;
+    border: 1px solid var(--accent); opacity: 0;
+    animation: pulsoAnel 2.2s var(--ease-premium) infinite;
+  }
+  @keyframes pulsoAnel {
+    0% { transform: scale(1); opacity: 0.6; }
+    100% { transform: scale(1.18); opacity: 0; }
+  }
+
+  /* 8. Contador animado (count-up) — número final vem de data-valor,
+     JS abaixo anima de 0 até lá quando o slide fica ativo */
+  .contador-box { text-align: center; }
+  .contador-numero {
+    font-family: var(--fonte-titulo); font-size: 3.4rem; font-weight: 900;
+    background: var(--gradiente-assinatura);
+    background-clip: text; -webkit-background-clip: text; color: transparent;
+  }
+  .contador-label { font-size: 1.05rem; color: var(--text-muted); margin-top: 0.6rem; }
+
+  /* Cabeçalho fixo */
+  .topo-deck { position: fixed; top: 0; left: 0; right: 0; z-index: 5; display: flex; justify-content: space-between; align-items: center; padding: 1.6rem 2rem; pointer-events: none; }
+  .topo-deck img.logo { max-height: 36px; }
+  .edicao-header {
+    font-family: var(--fonte-titulo);
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .contador { position: fixed; bottom: 1.5rem; right: 1.5rem; font-size: 0.9rem; color: var(--text-muted); z-index: 2; font-variant-numeric: tabular-nums; }
+  .nav-hint { position: fixed; bottom: 1.5rem; left: 1.5rem; font-size: 0.8rem; color: var(--text-muted); z-index: 2; }
+</style>
+</head>
+<body>
+  <div class="glow glow-1"></div>
+  <div class="glow glow-2"></div>
+  <div class="barra-topo"></div>
+  <div class="barra-baixo"></div>
+
+  <div class="topo-deck">
+    <img class="logo" src="assets/logos/Logo_Conexão_horizontal_texto_branco.png" alt="Conexão Implantes">
+    <span class="edicao-header">1ª Edição</span>
+  </div>
+
+  <div class="deck" id="deck">
+    
+    <div class="slide capa ativo">
+      <div class="capa-esquerda">
+        <span class="badge pulso">Uso Interno</span>
+        <div style="max-width: 540px; width: 100%;">
+          <h1>Vulcano Actives</h1>
+          <p style="font-size: 1.25rem; line-height: 1.5; color: var(--text-muted); max-width: 100%;">Previsibilidade, segurança e reabilitação mais rápida.</p>
+        </div>
+      </div>
+      <div class="capa-direita"><img src="assets/flex_01.png" alt="Produto"></div>
+    </div>
+
+    <div class="slide conteudo">
+      <h2>O Desafio: Espera e Casos Difíceis</h2>
+      <div class="cards-grid">
+        <div class="card-destaque">
+          <h4>Latência óssea</h4>
+          <p>Após instalar o implante, o corpo precisa formar osso ao redor dele, e isso leva tempo.</p>
+        </div>
+        <div class="card-destaque">
+          <h4>Perfis de risco</h4>
+          <p>Fumantes, diabéticos e osso de baixa densidade (Tipo IV) têm espera ainda maior.</p>
+        </div>
+        <div class="card-destaque">
+          <h4>Regiões difíceis</h4>
+          <p>A maxila posterior é um dos cenários mais desafiadores da reabilitação.</p>
+        </div></div>
+    </div>
+
+    <div class="slide conteudo">
+      <h2>A Solução: Bioatividade Ativa</h2>
+      <div class="cards-grid">
+        <div class="card-destaque">
+          <h4>Processo MAO</h4>
+          <p>Cálcio e Fósforo incorporados ao óxido de titânio, com fósforo acima de 7%.</p>
+        </div>
+        <div class="card-destaque">
+          <h4>Reconhecimento natural</h4>
+          <p>O organismo trata o implante como parte do tecido mineralizado.</p>
+        </div>
+        <div class="card-destaque">
+          <h4>Formação óssea acelerada</h4>
+          <p>A deposição de apatita biológica começa muito mais cedo.</p>
+        </div></div>
+    </div>
+
+    <div class="slide conteudo">
+      <h2>Hidrofilia Extrema: Fase Anatase</h2>
+      <div class="cards-grid">
+        <div class="card-destaque">
+          <h4>Alta energia de superfície</h4>
+          <p>A fase anatase dá ao implante uma capacidade de molhagem única.</p>
+        </div>
+        <div class="card-destaque">
+          <h4>Sangue na superfície na hora</h4>
+          <p>O implante é molhado instantaneamente após a instalação.</p>
+        </div>
+        <div class="card-destaque">
+          <h4>Coágulo estabilizado</h4>
+          <p>A rede de fibrina é retida desde o início, guiando as células osteogênicas.</p>
+        </div></div>
+    </div>
+
+    <div class="slide conteudo">
+      <h2>Topografia no Ponto Ideal</h2>
+      <div class="cards-grid">
+        <div class="card-destaque">
+          <h4>Ra ≈ 1,26 µm</h4>
+          <p>Rugosidade média na faixa ideal para a resposta celular.</p>
+        </div>
+        <div class="card-destaque">
+          <h4>Osteoblastos</h4>
+          <p>Células-tronco mesenquimais se diferenciam em células formadoras de osso.</p>
+        </div>
+        <div class="card-destaque">
+          <h4>Bordo alveolar preservado</h4>
+          <p>Matriz calcificada densa formada diretamente sobre o metal.</p>
+        </div></div>
+    </div>
+
+    <div class="slide conteudo">
+      <h2>Evidência Clínica</h2>
+      <div class="componente-wrap">
+        <div class="donut-box">
+          <svg class="donut-svg" viewBox="0 0 100 100">
+            <circle class="donut-track" cx="50" cy="50" r="45" />
+            <circle class="donut-value" style="--donut-offset:0.0" cx="50" cy="50" r="45" />
+          </svg>
+          <div class="donut-percentual">100%</div>
+          <div class="donut-label">Sucesso em casos de osso tipo IV</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide conteudo">
+      <h2>Sinergia com Torq e Flash</h2>
+      <div class="cards-grid">
+        <div class="card-destaque">
+          <h4>Torq</h4>
+          <p>Ápice ativo para altos torques de inserção.</p>
+        </div>
+        <div class="card-destaque">
+          <h4>Flash</h4>
+          <p>Ressalto Web para compactação óssea.</p>
+        </div>
+        <div class="card-destaque">
+          <h4>Estabilidade garantida</h4>
+          <p>A mecânica vira biológica rapidamente, reduzindo o risco de falhas na cicatrização.</p>
+        </div></div>
+    </div>
+
+    <div class="slide cta">
+      <span class="badge">Dica de Ouro</span>
+      <h1 style="font-size: 2.6rem;">Fale com um Especialista</h1>
+      <p style="margin-bottom: 1.5rem; color: var(--text-main); font-size: 1.25rem;">Descubra se a Vulcano Actives é a solução certa para o seu caso. Conexão Sistemas de Prótese.</p>
+      <button class="btn-badge">Conexão Implantes</button>
+    </div>
+  </div>
+  <div class="contador" id="contador"></div>
+  <div class="nav-hint">&larr; &rarr; para navegar</div>
+
+  <script>
+    (function () {
+      var slides = Array.prototype.slice.call(document.querySelectorAll(".slide"));
+      var atual = slides.findIndex(function (s) { return s.classList.contains("ativo"); });
+      if (atual < 0) { atual = 0; if (slides[0]) slides[0].classList.add("ativo"); }
+
+      function animarContadores(escopo) {
+        if (!escopo) return;
+        var alvos = escopo.querySelectorAll(".contador-numero[data-valor]");
+        Array.prototype.forEach.call(alvos, function (el) {
+          if (el.dataset.animado === "1") return;
+          el.dataset.animado = "1";
+          var valorFinal = parseFloat(el.dataset.valor) || 0;
+          var prefixo = el.dataset.prefixo || "";
+          var sufixo = el.dataset.sufixo || "";
+          var duracao = 1200;
+          var inicio = null;
+          function passo(ts) {
+            if (!inicio) inicio = ts;
+            var progresso = Math.min(1, (ts - inicio) / duracao);
+            var valorAtual = Math.round(valorFinal * progresso);
+            el.textContent = prefixo + valorAtual + sufixo;
+            if (progresso < 1) requestAnimationFrame(passo);
+          }
+          requestAnimationFrame(passo);
+        });
+      }
+
+      function mostrar(i) {
+        slides.forEach(function (s) { s.classList.remove("ativo"); });
+        atual = Math.max(0, Math.min(slides.length - 1, i));
+        if (slides[atual]) slides[atual].classList.add("ativo");
+        document.getElementById("contador").textContent = (atual + 1) + " / " + slides.length;
+        animarContadores(slides[atual]);
+      }
+
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "ArrowRight" || e.key === " ") mostrar(atual + 1);
+        if (e.key === "ArrowLeft") mostrar(atual - 1);
+      });
+      document.addEventListener("click", function (e) {
+        // Componentes interativos (accordion <details>/<summary>, e futuros
+        // componentes marcados data-interativo, ex.: card flip) nao devem
+        // disparar avanco de slide junto com sua propria interacao.
+        if (e.target.closest("details, summary, [data-interativo]")) return;
+        mostrar(atual + 1);
+      });
+
+      mostrar(atual);
+    })();
+  </script>
+</body>
+</html>

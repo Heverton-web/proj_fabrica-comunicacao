@@ -1,0 +1,21 @@
+Precisão milimétrica travada na fresa, não no olho.
+
+A confiabilidade de um planejamento reabilitador depende da fidelidade entre a profundidade definida no software e a profundidade efetivamente executada em boca. Quando essa etapa depende exclusivamente da leitura visual de marcas a laser, muitas vezes sob sangramento, a margem de erro relatada chega a 1.5mm, um risco relevante em regiões próximas ao nervo alveolar.
+
+A Conexão Implantes desenvolveu o Kit Stop Drill como resposta de engenharia a esse problema: limitadores físicos que travam diretamente na fresa e eliminam a dependência da medição visual.
+
+Especificações técnicas:
+
+Material: POM (Polioximetileno / Poliacetal), dimensionalmente estável sob ciclos repetidos de autoclave, sem deformação por temperatura ou umidade.
+
+Desempenho térmico: baixa condutibilidade, reduzindo o risco de superaquecimento do tecido ósseo por atrito durante a perfuração.
+
+Fixação: travamento seguro na fresa, sem deslocamento durante o ato cirúrgico.
+
+Composição: 7 profundidades codificadas por cor (branco 5.5mm, pink 7.0mm, verde 8.5mm, amarelo 10mm, azul 11.5mm, roxo 13mm, laranja 15mm), com identificação dual — número da fresa em negrito e diâmetro em itálico.
+
+Integração sistêmica: extensor direto dos kits Master Flex e Start Flex, cobrindo as fresas de 1 a 9.
+
+Para o consultor Conexão, o Kit Stop Drill representa a extensão natural de portfólio que converte um sistema de fresagem padrão em um sistema de alta precisão, sem exigir curva de aprendizado adicional, já que segue a mesma lógica numérica e cromática dos kits já em uso.
+
+Entre em contato com a equipe Conexão Implantes para incluir o Kit Stop Drill no seu próximo planejamento comercial.

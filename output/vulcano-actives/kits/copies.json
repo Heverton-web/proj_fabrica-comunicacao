@@ -1,0 +1,74 @@
+{
+  "copies": [
+    {
+      "id": "kit-01",
+      "tom": "informativa",
+      "angulo": "O que é a superfície Vulcano Actives: bioatividade ativa por oxidação por arco micro-elétrico (MAO), com Cálcio e Fósforo incorporados ao titânio",
+      "headline": "Vulcano Actives: superfície com bioatividade ativa.",
+      "subcopy": "A superfície passa por oxidação por arco micro-elétrico (MAO), que incorpora Cálcio e Fósforo ao titânio. O organismo reconhece o implante como tecido mineralizado."
+    },
+    {
+      "id": "kit-02",
+      "tom": "informativa",
+      "angulo": "A diferença essencial: Porous (bioatividade passiva, fixação mecânica) vs Vulcano Actives (bioatividade ativa, sinalização química)",
+      "headline": "Porous e Vulcano Actives: duas gerações de bioengenharia.",
+      "subcopy": "A Porous estabiliza o coágulo pela topografia. A Vulcano Actives soma sinalização química e acelera a precipitação de apatita biológica."
+    },
+    {
+      "id": "kit-03",
+      "tom": "contra-intuitiva",
+      "angulo": "'Superfície rugosa' parece simples, mas o ponto ideal é preciso: 1,26 µm — o 'sweet spot' que diferencia células-tronco mesenquimais em osteoblastos",
+      "headline": "Rugosidade não é só rugosidade.",
+      "subcopy": "Parece detalhe, mas a média de 1,26 µm é o 'ponto ideal' para diferenciar células-tronco em osteoblastos. A rugosidade certa evita tecido fibroso e promove matriz densa."
+    },
+    {
+      "id": "kit-04",
+      "tom": "contra-intuitiva",
+      "angulo": "Hidrofilia extrema: o sangue molha a superfície instantaneamente — quanto antes o coágulo estabiliza, antes começa a formação óssea",
+      "headline": "O sangue molha o implante na hora.",
+      "subcopy": "A hidrofilia extrema da fase anatase faz o sangue molhar toda a superfície instantaneamente. Quanto antes o coágulo estabiliza, antes começa a formação óssea."
+    },
+    {
+      "id": "kit-05",
+      "tom": "tecnica",
+      "angulo": "MAO: oxidação por arco micro-elétrico incorpora íons de Cálcio (Ca) e Fósforo (P) na estrutura do titânio, com concentração de fósforo acima de 7%",
+      "headline": "MAO: Cálcio e Fósforo na estrutura do titânio.",
+      "subcopy": "A oxidação por arco micro-elétrico incorpora íons de Ca e P ao titânio, com fósforo acima de 7%. O implante passa a se comportar como biomaterial bioativo."
+    },
+    {
+      "id": "kit-06",
+      "tom": "tecnica",
+      "angulo": "Fase cristalina anatase: alta energia de superfície que garante molhagem total e retenção da rede de fibrina",
+      "headline": "Fase anatase: alta energia de superfície.",
+      "subcopy": "O tratamento induz a fase cristalina anatase, de alta energia de superfície. Isso garante molhagem total do implante e retenção da rede de fibrina desde a instalação."
+    },
+    {
+      "id": "kit-07",
+      "tom": "efeito-uau",
+      "angulo": "100% de sucesso em casos de osso tipo IV — a superfície indicada justamente onde a biologia é mais adversa",
+      "headline": "100% de sucesso em osso tipo IV.",
+      "subcopy": "No cenário biologicamente mais adverso — osso de baixa densidade — a Vulcano Actives registrou 100% de sucesso. Onde a biologia dificulta, ela trabalha a favor."
+    },
+    {
+      "id": "kit-08",
+      "tom": "efeito-uau",
+      "angulo": "Carga precoce em 45 a 60 dias com 97,7% de sucesso em protocolos humanos de 60 dias",
+      "headline": "Carga precoce em 45 a 60 dias.",
+      "subcopy": "Protocolos de 60 dias em humanos registraram 97,7% de sucesso. O período de latência óssea é eliminado pela sinalização química da superfície."
+    },
+    {
+      "id": "kit-09",
+      "tom": "educativa",
+      "angulo": "Como a bioatividade ativa acelera a precipitação de apatita biológica: o implante é reconhecido como parte do tecido mineralizado",
+      "headline": "Por que a bioatividade acelera a osseointegração.",
+      "subcopy": "A superfície 'engana' o organismo para reconhecê-la como parte do tecido mineralizado. Com isso, a precipitação de apatita biológica começa mais cedo — e o osso também."
+    },
+    {
+      "id": "kit-10",
+      "tom": "educativa",
+      "angulo": "Quando indicar a Vulcano Actives: carga precoce, fumantes, diabéticos e ossos de baixa densidade (Tipo IV)",
+      "headline": "Quando indicar a Vulcano Actives.",
+      "subcopy": "É a ferramenta de eleição para carga precoce (45 a 60 dias) e para fumantes, diabéticos e osso tipo IV. Nos casos convencionais, a Porous segue consagrada."
+    }
+  ]
+}

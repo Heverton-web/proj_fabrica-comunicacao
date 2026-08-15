@@ -1,0 +1,109 @@
+{
+  "hero": {
+    "headline": "MasterFlex: previsibilidade cirúrgica em um único kit",
+    "subheadline": "O sistema cirúrgico Single Kit com Stop Drill exclusivo e protocolo de fresagem guiado pela densidade óssea — controle de profundidade desde o primeiro contato ósseo.",
+    "cta": "Fale com seu consultor Conexão"
+  },
+  "problema_solucao": {
+    "problema": {
+      "titulo": "O Desafio",
+      "texto": "A perfuração sem controle exato de profundidade coloca estruturas nobres e a osseointegração em risco. Na cadeira, isso significa hesitação transoperatória e dependência de identificação manual — exatamente onde o erro humano entra."
+    },
+    "solucao": {
+      "titulo": "A Solução",
+      "texto": "O **Kit MasterFlex** executa o planejamento digital/tomográfico com fidelidade desde o primeiro contato ósseo: todas as fresas helicoidais, do nº 1 ao 9, têm limitador de profundidade — a cavidade cirúrgica nasce exata para o comprimento do implante."
+    }
+  },
+  "destaques": [
+    {
+      "titulo": "Stop Drill exclusivo",
+      "texto": "Único sistema no mercado a integrar a Fresa Start (Lança) com um dispositivo Stop Drill dedicado — o controle de profundidade começa no primeiro contato ósseo."
+    },
+    {
+      "titulo": "Fresas 1 a 9 com limitadores",
+      "texto": "Todas as fresas helicoidais possuem limitadores de profundidade, gerando cavidade cirúrgica exata para o comprimento do implante e mitigando riscos em estruturas nobres."
+    },
+    {
+      "titulo": "Flex-Bone Drill Protocol",
+      "texto": "Protocolo de fresagem por densidade óssea (Soft III-IV e Hard I-II) estampado na tampa da caixa organizadora — elimina a hesitação no transoperatório."
+    },
+    {
+      "titulo": "Identificação dual",
+      "texto": "Marcações duplas nas fresas: número em negrito (sequência) e diâmetro em itálico — comunicação imediata com a equipe auxiliar e menos tempo de cadeira."
+    },
+    {
+      "titulo": "Uma plataforma, todos os casos",
+      "texto": "Conexões cônicas NP (24°), GMF (16°) e FIT (11,5°) + hexágono externo HE-RD, HE-SD e linha HI — instrumentação de Slim 2,9 mm a 5,0 mm."
+    },
+    {
+      "titulo": "Eficiência protética",
+      "texto": "Drivers de captura ativa com anéis coloridos (Azul NP, Verde GMF/FIT/HE-RD, Vermelho SL/HE-SD), Extension Fitness com catraca de torque, 4 pinos de paralelismo e Extension Drill."
+    }
+  ],
+  "prova": {
+    "conexoes": {
+      "titulo": "Compatibilidade de conexões",
+      "cabecalho": ["Conexão", "Especificação"],
+      "linhas": [
+        ["Cônica NP", "Morse 24°"],
+        ["Cônica GMF", "Morse 16°"],
+        ["Cônica FIT", "Morse 11,5°"],
+        ["Hexágono externo HE-RD", "Regular"],
+        ["Hexágono externo HE-SD", "Small"],
+        ["Linha HI", "Hexágono externo"]
+      ]
+    },
+    "drivers": {
+      "titulo": "Drivers de captura ativa — anéis coloridos",
+      "cabecalho": ["Anel", "Conexão"],
+      "linhas": [
+        ["Azul", "NP"],
+        ["Verde", "GMF / FIT / HE-RD"],
+        ["Vermelho", "SL / HE-SD"]
+      ]
+    },
+    "diametros": {
+      "titulo": "Amplitude de diâmetros",
+      "cabecalho": ["Diâmetro", "Indicação"],
+      "linhas": [
+        ["Slim 2,9 mm", "Espaços protéticos estreitos"],
+        ["Até 5,0 mm", "Alvéolos de extração imediata"]
+      ]
+    },
+    "protocolo": {
+      "titulo": "Flex-Bone Drill Protocol",
+      "cabecalho": ["Densidade óssea", "Contexto clínico"],
+      "linhas": [
+        ["Soft III-IV", "Ossos medulares de maxila"],
+        ["Hard I-II", "Corticais densas de mandíbula"]
+      ]
+    }
+  },
+  "cta_final": {
+    "headline": "Reduza o erro humano. Eleve o sucesso clínico de cada reabilitação.",
+    "cta": "Fale com seu consultor Conexão",
+    "dica_ouro": "O respeito aos limites biológicos e estéticos começa na primeira fresa: com o MasterFlex, o controle de profundidade acompanha do primeiro contato ósseo ao torque de assentamento."
+  },
+  "enriquecimentos": [
+    {
+      "secao": "prova",
+      "tipo": "fluxo",
+      "dados": {
+        "passos": [
+          {
+            "titulo": "Captura ativa",
+            "texto": "O driver captura o implante direto da embalagem — anel colorido identifica a conexão (Azul NP, Verde GMF/FIT/HE-RD, Vermelho SL/HE-SD)."
+          },
+          {
+            "titulo": "Transporte seguro",
+            "texto": "O implante é transportado com segurança total até o alvéolo, pronto para a etapa de assentamento."
+          },
+          {
+            "titulo": "Assentamento preciso",
+            "texto": "Extension Fitness transforma a chave de transporte em chave sólida de finalização, com catraca de torque para o assentamento exato."
+          }
+        ]
+      }
+    }
+  ]
+}

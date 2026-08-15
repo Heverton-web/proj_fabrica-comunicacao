@@ -1,0 +1,74 @@
+{
+  "copies": [
+    {
+      "id": "kit-01",
+      "tom": "informativa",
+      "angulo": "O que é a superfície Vulcano Actives: bioatividade ativa por MAO, desenvolvida sob fundamentação científica do Dr. Carlos Nelson Elias",
+      "headline": "Vulcano Actives: bioatividade ativa, com base científica.",
+      "subcopy": "A superfície usa oxidação por arco micro-elétrico (MAO) para se tornar bioativa. O organismo reconhece o implante como parte do tecido mineralizado."
+    },
+    {
+      "id": "kit-02",
+      "tom": "informativa",
+      "angulo": "A diferença essencial: superfícies passivas vs ativas — MAO incorpora Cálcio e Fósforo (P > 7%) ao óxido de titânio",
+      "headline": "Superfície passiva ou ativa: a diferença é decisiva.",
+      "subcopy": "Superfícies passivas apenas se fixam mecanicamente; a Vulcano Actives vai além. O processo MAO incorpora Cálcio e Fósforo ao óxido de titânio, com fósforo acima de 7%."
+    },
+    {
+      "id": "kit-03",
+      "tom": "contra-intuitiva",
+      "angulo": "45 dias é tempo de carga precoce com 91,11% de sucesso — 'quanto antes, mais arriscado' nem sempre vale para esta superfície",
+      "headline": "Carga precoce em 45 dias: 91,11% de sucesso.",
+      "subcopy": "'Quanto antes, mais arriscado' nem sempre vale: a Vulcano Actives valida protocolos ultra-rápidos. Aos 60 dias, a taxa sobe para 97,7% com contra-torque de 25 N.cm."
+    },
+    {
+      "id": "kit-04",
+      "tom": "contra-intuitiva",
+      "angulo": "Hidrofilia extrema: o sangue molha o implante instantaneamente — o coágulo estabiliza antes do que a maioria imagina",
+      "headline": "O sangue molha o implante na hora da instalação.",
+      "subcopy": "A fase anatase dá energia de superfície tão alta que o sangue molha o implante instantaneamente. O coágulo estabiliza na hora e a rede de fibrina é retida desde o início."
+    },
+    {
+      "id": "kit-05",
+      "tom": "tecnica",
+      "angulo": "MAO: oxidação por arco micro-elétrico incorpora Ca e P na estrutura do óxido de titânio, com fósforo acima de 7%",
+      "headline": "MAO: Cálcio e Fósforo na estrutura do óxido de titânio.",
+      "subcopy": "A oxidação por arco micro-elétrico incorpora íons de Ca e P diretamente no óxido de titânio, com fósforo acima de 7%. A deposição de apatita biológica é acelerada."
+    },
+    {
+      "id": "kit-06",
+      "tom": "tecnica",
+      "angulo": "Ra ≈ 1,26 µm: o 'ponto ideal' para diferenciação de células-tronco mesenquimais em osteoblastos",
+      "headline": "Ra ≈ 1,26 µm: a topografia no ponto ideal.",
+      "subcopy": "A rugosidade média de 1,26 µm é o 'ponto ideal' para células-tronco virarem osteoblastos. Resultado: matriz densa sobre o metal, preservando o bordo alveolar."
+    },
+    {
+      "id": "kit-07",
+      "tom": "efeito-uau",
+      "angulo": "100% de sucesso em casos de osso tipo IV — segurança onde a biologia é mais adversa",
+      "headline": "100% de sucesso em osso tipo IV.",
+      "subcopy": "No cenário biologicamente mais adverso — osso de baixa densidade — a Vulcano Actives registrou 100% de sucesso. Segurança validada em fumantes e diabéticos."
+    },
+    {
+      "id": "kit-08",
+      "tom": "efeito-uau",
+      "angulo": "60 dias com 97,7% de sucesso, suportando contra-torque de 25 N.cm",
+      "headline": "60 dias: 97,7% de sucesso, 25 N.cm de contra-torque.",
+      "subcopy": "Aos 60 dias, a carga precoce atinge 97,7% de sucesso, suportando testes de contra-torque de 25 N.cm. Reabilitação mais rápida com segurança biológica."
+    },
+    {
+      "id": "kit-09",
+      "tom": "educativa",
+      "angulo": "Como a bioatividade ativa encurta a latência óssea: deposição de apatita biológica e retenção da rede de fibrina",
+      "headline": "Como a bioatividade encurta a latência óssea.",
+      "subcopy": "O implante é reconhecido como tecido mineralizado, acelerando a deposição de apatita. A hidrofilia extrema retém a fibrina, o andaime das células osteogênicas."
+    },
+    {
+      "id": "kit-10",
+      "tom": "educativa",
+      "angulo": "Sinergia com a macrogeometria: linhas Torq e Flash — da estabilidade primária (mecânica) à secundária (biológica)",
+      "headline": "Torq e Flash: da estabilidade mecânica à biológica.",
+      "subcopy": "Nas linhas Torq e Flash, a Vulcano Actives troca a estabilidade mecânica pela biológica rapidamente. Menos risco de falha na janela crítica de cicatrização."
+    }
+  ]
+}

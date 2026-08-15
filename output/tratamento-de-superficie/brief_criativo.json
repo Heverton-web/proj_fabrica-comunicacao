@@ -1,0 +1,56 @@
+{
+  "mensagem_central": "Vulcano Actives entrega previsibilidade em até 45 dias",
+  "publico_alvo": "consultores",
+  "objetivo_tom": "educacional_comercial",
+  "objetivo": "educacional",
+  "tom_de_voz": "comercial",
+  "hierarquia_de_conteudo": [
+    "problema (casos críticos: osso tipo IV, fumantes, diabéticos, tempo de tratamento convencional de 4 a 6 meses)",
+    "solução (superfície Vulcano Actives — bioativa e eletroquímica)",
+    "destaques técnicos (Cálcio e Fósforo >7%, Fase Anatase/hidrofilia, rugosidade 1,26 µm)",
+    "comparação técnica (Porous x Vulcano Actives)",
+    "argumentos comerciais e contorno de objeções para o consultor"
+  ],
+  "mapeamento_por_material": {
+    "pdf": {
+      "secoes": ["abertura", "problema", "solução", "destaques", "composição/comparação técnica", "aplicação", "fechamento"]
+    },
+    "apresentacao": {
+      "slides": ["capa", "problema", "solução", "destaques (1 por slide)", "comparação Porous x Vulcano Actives", "cta"]
+    },
+    "arte": {
+      "angulos_criativos": [
+        "problema (casos críticos: osso tipo IV, fumantes, diabéticos)",
+        "diferencial técnico (bioatividade e hidrofilia da Vulcano Actives)",
+        "velocidade/previsibilidade (finalização em 45 a 60 dias)"
+      ]
+    },
+    "textos": {
+      "canais": ["whatsapp", "instagram", "linkedin"]
+    },
+    "kit": {
+      "angulos_por_tom": {
+        "informativa": [
+          "Vulcano Actives incorpora Cálcio e Fósforo (>7%) na estrutura do implante",
+          "Rugosidade de 1,26 µm da Vulcano Actives favorece a formação óssea"
+        ],
+        "contra-intuitiva": [
+          "Mais tecnologia não significa mais espera: Vulcano Actives finaliza em 45 a 60 dias",
+          "Osso tipo IV não precisa ser um risco: 100% de sucesso com Vulcano Actives"
+        ],
+        "tecnica": [
+          "Anodização MAO cria a Fase Anatase que atrai o sangue instantaneamente",
+          "Porous (ataque ácido, titânio puro) x Vulcano Actives (eletroquímica, Cálcio e Fósforo)"
+        ],
+        "efeito-uau": [
+          "100% de sucesso em ossos de baixa densidade (Tipo IV)",
+          "O sangue molha o implante Vulcano Actives desde o segundo zero"
+        ],
+        "educativa": [
+          "Por que a superfície do implante decide a velocidade da cicatrização óssea?",
+          "Superfície passiva x superfície ativa: qual a diferença na prática clínica?"
+        ]
+      }
+    }
+  }
+}

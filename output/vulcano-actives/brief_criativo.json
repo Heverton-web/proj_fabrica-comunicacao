@@ -1,0 +1,73 @@
+{
+  "mensagem_central": "Vulcano Actives: bioatividade ativa para osseointegração mais rápida e segura.",
+  "publico_alvo": "clientes",
+  "objetivo_tom": "informacional_tecnico",
+  "objetivo": "informacional",
+  "tom_de_voz": "tecnico",
+  "nota_de_escopo": "Rodada 4 do /esbocar: o operador citou 'Kit do Cliente' — tipo não suportado pela fábrica (TIPOS_VALIDOS), registrado no dossiê mas não produzido. Imagem do produto anexada na entrevista sem arquivo físico em disco — faltante para produção visual (ver insumos/imagem_descricao.md).",
+  "hierarquia_de_conteudo": [
+    "problema clínico: período de latência óssea e cenários desafiadores (fumantes, diabéticos, osso Tipo IV)",
+    "solução: bioatividade ativa — processo MAO incorpora Cálcio e Fósforo (P > 7%) ao titânio",
+    "destaques técnicos: fase cristalina anatase (hidrofilia extrema), rugosidade 1,26 µm",
+    "evidência clínica: 97,7% de sucesso em 60 dias e 100% em osso tipo IV",
+    "indicações estratégicas: carga precoce (45 a 60 dias)"
+  ],
+  "mapeamento_por_material": {
+    "pdf": {
+      "secoes": [
+        "abertura",
+        "problema",
+        "solução",
+        "destaques",
+        "composição/especificações",
+        "aplicação",
+        "fechamento"
+      ]
+    },
+    "apresentacao": {
+      "slides": [
+        "capa",
+        "problema (latência óssea)",
+        "solução (bioatividade ativa)",
+        "destaques técnicos (1 por slide)",
+        "evidência clínica",
+        "indicações e segurança",
+        "fechamento/CTA"
+      ]
+    },
+    "arte": {
+      "angulos_criativos": [
+        "problema: período de latência óssea e cenários desafiadores (fumantes, diabéticos, osso Tipo IV)",
+        "diferencial técnico: bioatividade ativa — MAO incorpora Cálcio e Fósforo (P > 7%) ao titânio",
+        "resultado: carga precoce em 45 a 60 dias com 97,7% de sucesso e 100% em osso tipo IV"
+      ]
+    },
+    "textos": {
+      "canais": ["whatsapp", "instagram", "linkedin"]
+    },
+    "kit": {
+      "angulos_por_tom": {
+        "informativa": [
+          "O que é a superfície Vulcano Actives: bioatividade ativa por oxidação por arco micro-elétrico (MAO), com Cálcio e Fósforo incorporados ao titânio",
+          "A diferença essencial: Porous (bioatividade passiva, fixação mecânica) vs Vulcano Actives (bioatividade ativa, sinalização química)"
+        ],
+        "contra-intuitiva": [
+          "'Superfície rugosa' parece simples, mas o ponto ideal é preciso: 1,26 µm — o 'sweet spot' que diferencia células-tronco mesenquimais em osteoblastos",
+          "Hidrofilia extrema: o sangue molha a superfície instantaneamente — quanto antes o coágulo estabiliza, antes começa a formação óssea"
+        ],
+        "tecnica": [
+          "MAO: oxidação por arco micro-elétrico incorpora íons de Cálcio (Ca) e Fósforo (P) na estrutura do titânio, com concentração de fósforo acima de 7%",
+          "Fase cristalina anatase: alta energia de superfície que garante molhagem total e retenção da rede de fibrina"
+        ],
+        "efeito-uau": [
+          "100% de sucesso em casos de osso tipo IV — a superfície indicada justamente onde a biologia é mais adversa",
+          "Carga precoce em 45 a 60 dias com 97,7% de sucesso em protocolos humanos de 60 dias"
+        ],
+        "educativa": [
+          "Como a bioatividade ativa acelera a precipitação de apatita biológica: o implante é reconhecido como parte do tecido mineralizado",
+          "Quando indicar a Vulcano Actives: carga precoce, fumantes, diabéticos e ossos de baixa densidade (Tipo IV)"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "slug": "kit-master-flex-02",
+  "tipos": {
+    "pdf-v3": {
+      "conforme": true,
+      "validacao_tecnica": "[OK] apostila_kit-master-flex-02.pdf: 1977731 bytes (< 5 MB)\n[OK] apostila_kit-master-flex-02.pdf: 8 pagina(s)\n[OK] apostila_kit-master-flex-02.pdf: 8556 caracteres de texto vetorial extraidos\n[OK] titulo da capa com 2 linha(s)\n[OK] titulo remete ao tema do texto-base (3 palavras em comum)\n[OK] contracapa com logo da marca (1 imagem(ns) na ultima pagina)",
+      "fidelidade_marca": "n/a"
+    },
+    "landing-page": {
+      "conforme": true,
+      "validacao_tecnica": "[OK] landing-page: sem erro de console, sem asset quebrado, sem overflow horizontal",
+      "fidelidade_marca": "[OK] landing-page: nenhuma cor fora do design system fixo encontrada"
+    },
+    "apresentacao-v2": {
+      "conforme": true,
+      "validacao_tecnica": "[OK] apresentacao: sem erro de console, sem asset quebrado, sem overflow horizontal",
+      "fidelidade_marca": "[OK] apresentacao-v2: nenhuma cor fora do design system fixo encontrada"
+    },
+    "arte-01-v2": {
+      "conforme": true,
+      "validacao_tecnica": "[OK] arte_kit-master-flex-02_01_copy01.png: 1080x1080, 545769 bytes\n[OK] arte_kit-master-flex-02_01_copy02.png: 1080x1080, 541839 bytes\n[OK] arte_kit-master-flex-02_01_copy03.png: 1080x1080, 535864 bytes\n[OK] arte-01: 1 badge por peca (somente o CTA pill, 0 badges de contexto)\n[OK] arte-01: paragrafo em >= 3 linhas, sem linha orfa em nenhuma peca\n[OK] arte: 9 legendas de publicacao presentes em C:\\Users\\trcnologia\\Desktop\\01_Projetos_e_Desenvolvimento\\proj_fabrica-comunicacao\\output\\kit-master-flex-02\\arte",
+      "fidelidade_marca": "n/a"
+    },
+    "arte-02": {
+      "conforme": true,
+      "validacao_tecnica": "[OK] arte_kit-master-flex-02_02_copy01.png: 1080x1350, 698944 bytes\n[OK] arte_kit-master-flex-02_02_copy02.png: 1080x1350, 699511 bytes\n[OK] arte_kit-master-flex-02_02_copy03.png: 1080x1350, 699249 bytes\n[OK] arte-02: 1 badge por peca (somente o CTA pill, 0 badges de contexto)\n[OK] arte-02: paragrafo em >= 3 linhas, sem linha orfa em nenhuma peca\n[OK] arte: 9 legendas de publicacao presentes em C:\\Users\\trcnologia\\Desktop\\01_Projetos_e_Desenvolvimento\\proj_fabrica-comunicacao\\output\\kit-master-flex-02\\arte",
+      "fidelidade_marca": "n/a"
+    },
+    "arte-03": {
+      "conforme": true,
+      "validacao_tecnica": "[OK] arte_kit-master-flex-02_03_copy01.png: 1080x1920, 909320 bytes\n[OK] arte_kit-master-flex-02_03_copy02.png: 1080x1920, 909849 bytes\n[OK] arte_kit-master-flex-02_03_copy03.png: 1080x1920, 908511 bytes\n[OK] arte-03: 1 badge por peca (somente o CTA pill, 0 badges de contexto)\n[OK] arte-03: paragrafo em >= 3 linhas, sem linha orfa em nenhuma peca\n[OK] arte: 9 legendas de publicacao presentes em C:\\Users\\trcnologia\\Desktop\\01_Projetos_e_Desenvolvimento\\proj_fabrica-comunicacao\\output\\kit-master-flex-02\\arte",
+      "fidelidade_marca": "n/a"
+    },
+    "textos-v2": {
+      "conforme": true,
+      "validacao_tecnica": "[OK] textos: todos os 3 arquivos (.txt) existem, possuem conteúdo e estão em UTF-8",
+      "fidelidade_marca": "n/a"
+    },
+    "kit-consultor-v2": {
+      "conforme": true,
+      "validacao_tecnica": "[OK] kit-consultor: 10 PNGs, 10 conteudo.json, 10 texto_whatsapp.txt (10 esperados de cada)\n[OK] kit-consultor: 1 badge por peca (somente o CTA pill, 0 badges de contexto)\n[OK] kit-consultor: paragrafo em >= 3 linhas, sem linha orfa em nenhuma peca",
+      "fidelidade_marca": "n/a"
+    },
+    "kit-distribuidor-v2": {
+      "conforme": true,
+      "validacao_tecnica": "[OK] kit-distribuidor: 10 PNGs, 10 conteudo.json, 10 texto_whatsapp.txt (10 esperados de cada)\n[OK] kit-distribuidor: 1 badge por peca (somente o CTA pill, 0 badges de contexto)\n[OK] kit-distribuidor: paragrafo em >= 3 linhas, sem linha orfa em nenhuma peca",
+      "fidelidade_marca": "n/a"
+    }
+  },
+  "r9_estado_final": {
+    "ok": true,
+    "motivo": "ok"
+  },
+  "r12_estrutura_output": {
+    "ok": true,
+    "motivo": "ok"
+  },
+  "preset_kit_completo": {
+    "ok": true,
+    "motivo": "n/a"
+  },
+  "conforme": true
+}

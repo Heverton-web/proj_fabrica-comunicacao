@@ -1,0 +1,85 @@
+{
+  "mensagem_central": "Kit Start Flex: o GPS cirúrgico dos casos frequentes",
+  "publico_alvo": "consultores",
+  "objetivo_tom": "educacional_comercial",
+  "objetivo": "educacional",
+  "tom_de_voz": "comercial",
+  "nota_de_escopo": "Material interno de capacitação/venda para o consultor da Conexão Digital Implant apresentar ao dentista — inclui camada didática (posicionamento, diferenciais técnicos e componentes do Kit Start Flex) seguida de camada comercial (script SPIN, contorno de objeções).",
+  "hierarquia_de_conteudo": [
+    "problema: confusão para identificar a fresa/chave correta, torque inadequado e fresagem excessiva comprometendo a osseointegração e a previsibilidade clínica",
+    "solução: Kit Start Flex — kit de entrada eficiente, 'GPS Cirúrgico', com protocolo de perfuração gravado na caixa e chaves codificadas por cores (anéis O-ring)",
+    "destaques técnicos: integração com Stop Drill (limitadores de profundidade), marcações a laser de 5.5 a 18mm, leitura intuitiva (negrito = nº da fresa, itálico = diâmetro), protocolo visível na caixa",
+    "composição do kit: Chave Drive Roxa 0.9mm (cover screw), Chave Drive Azul 1.2mm (cicatrizadores), drivers de instalação curto (anel azul NP 24°, anel verde HE-RD/FIT/GMF, anel vermelho HE-SD/Slim), chave catraca com referenciador de torque, adaptador Fitness Square, extensor de fresa",
+    "versatilidade: diâmetros 2.9, 3.3, 3.5, 3.75 e 4.0mm em qualquer plataforma (HE, NP, GMF, FIT), 4.3mm em maxila Tipo III/IV, densidade óssea Tipo I a IV",
+    "argumento comercial: script SPIN Selling e contorno de objeções (90% das demandas, torques 45/60 Ncm, marcações a laser duráveis)"
+  ],
+  "mapeamento_por_material": {
+    "pdf": {
+      "secoes": [
+        "abertura",
+        "problema",
+        "solução",
+        "destaques",
+        "composição/especificações",
+        "aplicação",
+        "fechamento"
+      ]
+    },
+    "landing-page": {
+      "secoes": [
+        "hero",
+        "problema→solução",
+        "destaques",
+        "prova/composição técnica e comercial",
+        "cta final"
+      ]
+    },
+    "apresentacao": {
+      "slides": [
+        "capa",
+        "problema: rotina cirúrgica dependente de identificação manual",
+        "solução: Kit Start Flex, o GPS Cirúrgico",
+        "destaques técnicos: Stop Drill, marcações a laser, protocolo na caixa",
+        "composição: chaves, drivers e códigos de cores",
+        "versatilidade: plataformas, densidades ósseas e maxila",
+        "argumento comercial: script SPIN",
+        "contorno de objeções",
+        "fechamento/CTA"
+      ]
+    },
+    "arte": {
+      "angulos_criativos": [
+        "problema/isca: confusão na hora de achar a fresa certa e torque inadequado — o GPS Cirúrgico com protocolo gravado na caixa resolve",
+        "diferencial técnico: marcações a laser de 5.5 a 18mm + integração com Stop Drill (limitadores de profundidade)",
+        "versatilidade/eficiência: 2.9 a 4.0mm em qualquer plataforma (HE, NP, GMF, FIT) + 4.3mm em maxila Tipo III/IV"
+      ]
+    },
+    "textos": {
+      "canais": ["whatsapp", "instagram", "linkedin"]
+    },
+    "kit": {
+      "angulos_por_tom": {
+        "informativa": [
+          "diâmetros atendidos 2.9, 3.3, 3.5, 3.75 e 4.0mm em qualquer plataforma (HE, NP, GMF ou FIT)",
+          "protocolo de perfuração gravado na própria caixa + marcações a laser de 5.5 a 18mm correspondentes aos comprimentos dos implantes"
+        ],
+        "contra-intuitiva": [
+          "kit de entrada não é limitação: cobre 90% das demandas do dia a dia sem excesso de peças que não se usa",
+          "código de cores nos anéis O-ring não é estética — é prevenção de confusão no ato cirúrgico"
+        ],
+        "tecnica": [
+          "marcações a laser de 5.5 a 18mm com alta durabilidade, visíveis após múltiplas esterilizações",
+          "torque recomendado: até 45 Ncm para Slim e até 60 Ncm para NP, FIT e GMF — estabilidade primária sem risco ao componente"
+        ],
+        "efeito-uau": [
+          "um único estojo cobre de 2.9 a 4.0mm em qualquer plataforma — HE, NP, GMF ou FIT — e ainda instala 4.3mm em maxila Tipo III/IV",
+          "extensor de fresa que aumenta a haste e resolve cirurgias entre dentes com pouco espaço"
+        ],
+        "educativa": [
+          "por que o protocolo de perfuração gravado na caixa reduz o erro humano e acelera o procedimento",
+          "por que o torque correto (45/60 Ncm) protege a osseointegração — o risco da fresagem excessiva"
+        ]
+      }
+    }
+  }
+}

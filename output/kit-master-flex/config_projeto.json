@@ -1,0 +1,10 @@
+{
+  "slug": "kit-master-flex",
+  "texto_base": "output/kit-master-flex/insumos/texto-mae.txt",
+  "imagens": [{"path": "output/kit-master-flex/insumos/kit-master-flex.png", "descricao": "foto do Kit Master Flex - kit cirúrgico de implantes Conexão"}],
+  "publico_alvo": "consultores",
+  "objetivo_tom": "educacional_comercial",
+  "materiais_selecionados": ["pdf", "landing-page", "apresentacao", "textos", "arte-01", "arte-02", "arte-03", "kit-consultor", "kit-distribuidor"],
+  "elementos_decorativos": true,
+  "edicao": "1ª Edição"
+}

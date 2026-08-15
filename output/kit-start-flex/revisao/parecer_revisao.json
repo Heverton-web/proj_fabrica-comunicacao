@@ -1,0 +1,23 @@
+{
+  "decisoes_design": [
+    "textos: WhatsApp em linguagem direta de venda consultiva para o consultor (público escolhido pelo operador), com emojis funcionais de seção; Instagram e LinkedIn em registro educacional_comercial, listando diferenciais rastreáveis ao dossiê; CTA sem link externo (sem URL fornecida).",
+    "kits: 10 copies compartilhadas (copies.json) auditaram 2 ângulos genuinamente distintos por tom nos 5 tons fixos de brand/tons-kit.json; corpo (headline+subcopy) idêntico entre kit-consultor e kit-distribuidor, diferindo apenas CTA e assinatura vindos de brand/kits-conexao.json.",
+    "kits: gradiente canônico 0/40/70/100 aplicado em CTA/headline de todos os 10 itens por variante; fontes Inter auto-hospedadas (assets/fonts/inter-*.woff2); logo e imagem oficial do produto presentes em cada render.",
+    "pdf: apostila segue estrutura de 7 seções (abertura→fechamento) com claims 100% rastreáveis ao dossiê; foto oficial do produto embutida na capa e na seção de abertura (x0.png 114KB logo + x1.png 785KB produto); as 9 imagens faltantes documentadas em comentário FALTANTE, nunca ilustradas; sem emoji (REGRA 2).",
+    "landing-page: auto-correção REGRA 4 — dois tokens do :root divergiam do digest canônico do aplicador-marca-conexao (--surface-hover #24304c→#334155; --accent-hover #e8d48b→#d4b366); corrigidos e revalidados (validar-design-tokens + validar-html OK).",
+    "landing-page/apresentacao: componentes de dado usados com função de clareza — donut (90% das demandas), gauge (60 Ncm, marcas 45/60), accordion (3 objeções), fluxo (script SPIN de 4 passos na apresentação); gradiente de assinatura em CTA e títulos (background-clip: text), fundo com vinheta radial + glows (nunca chapado).",
+    "artes: 3 copies compartilhadas (copies.json) com ângulos genuinamente distintos (problema/isca, diferencial técnico, versatilidade), auditadas nas 9 combinações copy×formato (arte-01/02/03); título em gradiente de texto, barras douradas em gradiente, logo horizontal_texto_branco e imagem oficial do produto; nenhuma das 9 imagens faltantes ilustrada."
+  ],
+  "informacoes_faltantes": [
+    "9 imagens citadas no texto-base não localizadas (logo_conexao.png, mapa_kit_cirurgico_start_flex.png, chaves drive roxa/azul, drivers de instalação azul/verde/vermelho, chave de torque, adaptador Fitness Square) — kits usaram apenas kit_startflex_01.png.",
+    "Sem preço, prazo ou condições comerciais no texto-base — nenhum valor inventado em textos nem kits.",
+    "PDF, landing-page e artes assinam rodapé 'Conexão Sistemas de Próteses' — razão social não confirmada no texto-base; manter como está até o operador confirmar (não é claim técnico, é assinatura institucional)."
+  ],
+  "sugestoes_legenda": [
+    "WhatsApp: 'Kit Start Flex: o GPS cirúrgico dos casos frequentes. 90% das demandas de 2.9 a 4.0mm em qualquer plataforma.'",
+    "Instagram: 'Kit de entrada que não é limitação: protocolo na caixa, laser de 5.5 a 18mm e torque com segurança. Kit Start Flex.'",
+    "LinkedIn: 'Venda consultiva com fundamento técnico: o Kit Start Flex e a abordagem SPIN para o dentista que busca previsibilidade.'",
+    "Kits: 'Fale com seu consultor Conexão' (consultor) / 'Peça ao seu distribuidor Conexão' (distribuidor) como CTA único de compartilhamento.",
+    "Artes: 'A fresa certa na hora certa — protocolo gravado na caixa. Kit Start Flex.' / 'Laser 5.5–18mm + Stop Drill: segurança absoluta.' / '2.9 a 4.0mm, qualquer plataforma, um estojo.'"
+  ]
+}

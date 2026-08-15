@@ -1,0 +1,83 @@
+{
+  "mensagem_central": "Torque exato e chaves completas, sem improviso clínico",
+  "publico_alvo": "consultores",
+  "objetivo_tom": "educacional_comercial",
+  "objetivo": "educacional",
+  "tom_de_voz": "comercial",
+  "nota_de_escopo": "Material de capacitação/venda para o consultor da Conexão Digital Implant apresentar ao dentista — inclui camada didática (diferenciais técnicos e composição do kit) seguida de camada comercial (script SPIN, contorno de objeções).",
+  "hierarquia_de_conteudo": [
+    "problema: falha protética por torque impreciso ou chave incompleta compromete a reputação do dentista e gera retrabalho",
+    "solução: Kit Protético Conexão Digital entrega torque exato via chave catraca com referenciador + chave digital",
+    "destaques técnicos: biossegurança (esterilizável em autoclave), chaves usinadas especificamente para os parafusos Conexão",
+    "composição do kit: controle de torque, chaves de fenda/fricção, variedade hexagonal e quadrada em 3 tamanhos, hexagonais internas",
+    "versatilidade: chaves em 3 tamanhos (curta, média, longa) elimina improviso ou peças avulsas de terceiros",
+    "argumento comercial: script SPIN Selling e contorno de objeções (preço, compatibilidade) para o consultor usar com o dentista"
+  ],
+  "mapeamento_por_material": {
+    "pdf": {
+      "secoes": [
+        "abertura",
+        "problema",
+        "solução",
+        "destaques",
+        "composição/especificações",
+        "aplicação",
+        "fechamento"
+      ]
+    },
+    "landing-page": {
+      "secoes": [
+        "hero",
+        "problema→solução",
+        "destaques",
+        "prova/composição técnica e comercial",
+        "cta final"
+      ]
+    },
+    "apresentacao": {
+      "slides": [
+        "capa",
+        "diferenciais",
+        "composição",
+        "especificações",
+        "scripts/SPIN",
+        "objeções",
+        "fechamento/CTA"
+      ]
+    },
+    "arte": {
+      "angulos_criativos": [
+        "problema: falha protética por torque impreciso ou chave incompleta compromete reputação e gera retrabalho",
+        "diferencial técnico: chave catraca com referenciador de torque + biossegurança (esterilizável em autoclave)",
+        "versatilidade: chaves em 3 tamanhos (curta, média, longa) elimina improviso e peças de terceiros"
+      ]
+    },
+    "textos": {
+      "canais": ["whatsapp", "instagram", "linkedin"]
+    },
+    "kit": {
+      "angulos_por_tom": {
+        "informativa": [
+          "composição do kit: controle de torque, fenda/fricção, hexagonal/quadrada, hexagonais internas",
+          "chave catraca com referenciador de torque + chave digital para controle de torque"
+        ],
+        "contra-intuitiva": [
+          "mais peças no kit não é redundância — é o que elimina precisar de peças de terceiros",
+          "o kit não é 'só um conjunto de chaves' — é um sistema de garantia clínica"
+        ],
+        "tecnica": [
+          "chaves usinadas especificamente para os parafusos Conexão — chaves de terceiros geram folgas microscópicas e desgaste prematuro",
+          "kit totalmente esterilizável em autoclave antes de cada procedimento"
+        ],
+        "efeito-uau": [
+          "o valor do kit se paga na primeira intercorrência evitada — torque inadequado é a principal causa de retorno de pacientes",
+          "3 tamanhos de chave (curta, média, longa) cobrem até as regiões posteriores de difícil acesso"
+        ],
+        "educativa": [
+          "por que o torque exato importa: carga incorreta pode causar soltura ou fratura do parafuso",
+          "por que chaves de outra marca podem invalidar garantias: folgas microscópicas e desgaste prematuro do componente"
+        ]
+      }
+    }
+  }
+}

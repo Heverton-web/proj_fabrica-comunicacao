@@ -1,0 +1,74 @@
+{
+  "copies": [
+    {
+      "id": "kit-01",
+      "tom": "informativa",
+      "angulo": "Vulcano Actives incorpora Cálcio e Fósforo (>7%) na estrutura do implante",
+      "headline": "Cálcio e Fósforo incorporados à estrutura do implante",
+      "subcopy": "A superfície Vulcano Actives incorpora mais de 7% de Cálcio e Fósforo. Isso muda a forma como o osso reconhece o implante desde o início."
+    },
+    {
+      "id": "kit-02",
+      "tom": "informativa",
+      "angulo": "Rugosidade de 1,26 µm da Vulcano Actives favorece a formação óssea",
+      "headline": "Rugosidade de 1,26 µm: o ponto ideal para o osso",
+      "subcopy": "A superfície Vulcano Actives tem rugosidade de 1,26 µm. É o valor identificado como o mais eficiente para a formação óssea."
+    },
+    {
+      "id": "kit-03",
+      "tom": "contra-intuitiva",
+      "angulo": "Mais tecnologia não significa mais espera: Vulcano Actives finaliza em 45 a 60 dias",
+      "headline": "Mais tecnologia não é sinônimo de mais espera",
+      "subcopy": "Parece contraditório, mas quanto mais avançada a superfície, mais rápido o caso pode ser finalizado. Vulcano Actives entrega em 45 a 60 dias."
+    },
+    {
+      "id": "kit-04",
+      "tom": "contra-intuitiva",
+      "angulo": "Osso tipo IV não precisa ser um risco: 100% de sucesso com Vulcano Actives",
+      "headline": "Osso tipo IV não é sinônimo de risco maior",
+      "subcopy": "A crença é que osso de baixa densidade complica o caso. Com Vulcano Actives, o Tipo IV teve 100% de sucesso registrado."
+    },
+    {
+      "id": "kit-05",
+      "tom": "tecnica",
+      "angulo": "Anodização MAO cria a Fase Anatase que atrai o sangue instantaneamente",
+      "headline": "Anodização MAO: a base técnica da Fase Anatase",
+      "subcopy": "A superfície Vulcano Actives é produzida por anodização eletroquímica (MAO). O resultado é a Fase Anatase, que atrai o sangue de forma imediata."
+    },
+    {
+      "id": "kit-06",
+      "tom": "tecnica",
+      "angulo": "Porous (ataque ácido, titânio puro) x Vulcano Actives (eletroquímica, Cálcio e Fósforo)",
+      "headline": "Ataque ácido x anodização eletroquímica: a diferença real",
+      "subcopy": "Porous usa processo subtrativo em titânio puro. Vulcano Actives usa processo eletroquímico e incorpora Cálcio e Fósforo à superfície."
+    },
+    {
+      "id": "kit-07",
+      "tom": "efeito-uau",
+      "angulo": "100% de sucesso em ossos de baixa densidade (Tipo IV)",
+      "headline": "100% de sucesso em ossos de baixa densidade",
+      "subcopy": "Osso Tipo IV é um dos maiores desafios da implantodontia. Vulcano Actives registrou 100% de sucesso exatamente nesse cenário."
+    },
+    {
+      "id": "kit-08",
+      "tom": "efeito-uau",
+      "angulo": "O sangue molha o implante Vulcano Actives desde o segundo zero",
+      "headline": "O sangue molha o implante no segundo zero",
+      "subcopy": "Hidrofilia extrema é a marca da Fase Anatase da Vulcano Actives. A cura biológica começa antes do que você imagina."
+    },
+    {
+      "id": "kit-09",
+      "tom": "educativa",
+      "angulo": "Por que a superfície do implante decide a velocidade da cicatrização óssea?",
+      "headline": "Por que a superfície decide a velocidade da cicatrização?",
+      "subcopy": "A forma como o implante interage com o sangue e o osso muda o ritmo da cicatrização. Entenda por que isso está na superfície, não só no material."
+    },
+    {
+      "id": "kit-10",
+      "tom": "educativa",
+      "angulo": "Superfície passiva x superfície ativa: qual a diferença na prática clínica?",
+      "headline": "Superfície passiva ou ativa: qual a diferença na prática?",
+      "subcopy": "Uma superfície passiva espera a biologia agir; uma ativa sinaliza quimicamente ao organismo. Essa diferença está por trás do tempo de carga do caso."
+    }
+  ]
+}

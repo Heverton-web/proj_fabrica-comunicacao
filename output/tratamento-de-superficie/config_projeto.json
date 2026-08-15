@@ -1,0 +1,12 @@
+{
+  "slug": "tratamento-de-superficie",
+  "texto_base": "output/tratamento-de-superficie/insumos/texto_base.md",
+  "imagens": [
+    {"path": "output/tratamento-de-superficie/insumos/flex_01.png", "descricao": "Comparativo visual dos implantes com superfícies Porous e Vulcano Actives"}
+  ],
+  "publico_alvo": "consultores",
+  "objetivo_tom": "educacional_comercial",
+  "materiais_selecionados": ["pdf", "apresentacao", "arte-01", "arte-02", "arte-03", "textos", "kit-consultor"],
+  "edicao": "1ª Edição do Consultor",
+  "elementos_decorativos": false
+}

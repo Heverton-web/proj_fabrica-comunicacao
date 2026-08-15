@@ -1,0 +1,95 @@
+{
+  "slug": "vulcano-actives",
+  "materiais": [
+    {
+      "tipo": "pdf",
+      "status": "concluido_autonomo",
+      "path": "output/vulcano-actives/pdf/apostila_vulcano-actives.pdf"
+    },
+    {
+      "tipo": "apresentacao",
+      "status": "concluido_autonomo",
+      "path": "output/vulcano-actives/apresentacao/index.html"
+    },
+    {
+      "tipo": "arte-01",
+      "status": "concluido_autonomo",
+      "path": "output/vulcano-actives/arte-01"
+    },
+    {
+      "tipo": "arte-02",
+      "status": "concluido_autonomo",
+      "path": "output/vulcano-actives/arte-02"
+    },
+    {
+      "tipo": "arte-03",
+      "status": "concluido_autonomo",
+      "path": "output/vulcano-actives/arte-03"
+    },
+    {
+      "tipo": "textos",
+      "status": "concluido_autonomo",
+      "path": "output/vulcano-actives/textos"
+    },
+    {
+      "tipo": "kit-consultor",
+      "status": "concluido_autonomo",
+      "path": "output/vulcano-actives/kit-consultor"
+    },
+    {
+      "tipo": "pdf-v2",
+      "status": "concluido_autonomo",
+      "path": "output/vulcano-actives/pdf-v2/apostila_vulcano-actives.pdf"
+    },
+    {
+      "tipo": "apresentacao-v2",
+      "status": "concluido_autonomo",
+      "path": "output/vulcano-actives/apresentacao-v2/index.html"
+    },
+    {
+      "tipo": "arte-01-v2",
+      "status": "concluido_autonomo",
+      "path": "output/vulcano-actives/arte-01-v2"
+    },
+    {
+      "tipo": "arte-02-v2",
+      "status": "concluido_autonomo",
+      "path": "output/vulcano-actives/arte-02-v2"
+    },
+    {
+      "tipo": "arte-03-v2",
+      "status": "concluido_autonomo",
+      "path": "output/vulcano-actives/arte-03-v2"
+    },
+    {
+      "tipo": "kit-consultor-v2",
+      "status": "concluido_autonomo",
+      "path": "output/vulcano-actives/kit-consultor-v2"
+    }
+  ],
+  "decisoes_design": [
+    "pdf: titulo da capa 'Agilidade e Segurança Clínica' escolhido para renderizar em 2 linhas com >= 2 palavras cada (bloco altura/largura >= 0.18 do validar-pdf.py) e remeter ao tema do texto-base (agilidade/seguranca/clinica).",
+    "pdf (v1): capa usava fallback do logo vertical da marca, pois a imagem do produto nao existia em disco (faltante) - nunca ilustracao inventada (REGRA 6).",
+    "pdf: apostila em 7 secoes (SPEC_PDF) com comparativo Porous x Vulcano Actives em tabela escaneavel na secao Composicao/especificacoes.",
+    "apresentacao: slide 'Evidencia Clinica' usa componente animado donut (100% sucesso em osso tipo IV) - dado percentual do dossie; unico elemento-assinatura animado da apresentacao (1 destaque, sem motion espalhado).",
+    "apresentacao: narrativa dor -> alivio para publico clientes (problema latencia ossea -> solucao bioatividade ativa -> evidencias), sem tabela de specs como slide principal.",
+    "arte: 3 copies em 3 angulos distintos do dossie (problema/latencia; diferencial MAO; resultado carga precoce), compartilhadas pelos 3 formatos; CTA padrao clientes 'Fale com um especialista'.",
+    "arte/kit: elementos decorativos de fundo desativados conforme pedido do operador (config_projeto.elementos_decorativos=false) - fundo limpo nas artes.",
+    "kit-consultor: 10 copies, 2 por tom (informativa, contra-intuitiva, tecnica, efeito-uau, educativa), registro dentista_implantodontista 2a pessoa, sem CTA no corpo (CTA resolvido por compilador-kit via brand/kits-conexao.json).",
+    "kit-02 subcopy reformulada para eliminar linha orfa de 1 palavra na renderizacao 1080x1350 (validar-kit.py).",
+    "REGENERACAO v2 (imagem do produto fornecida): imagem flex_01.png (2560x2230, 6 MB) redimensionada para 1600x1394 e quantizada a 256 cores (1,17 MB) para caber no teto de 5 MB do PDF com a foto embutida 2x (capa + Abertura) - resolucao 1600px e o padrao da SPEC_PDF e cobre folgadamente os 1080px das artes.",
+    "REGENERACAO v2: pastas versionadas pdf-v2, apresentacao-v2, arte-01-v2, arte-02-v2, arte-03-v2, kit-consultor-v2 (REGRA 11) - originais v1 preservadas intactas."
+  ],
+  "informacoes_faltantes": [
+    "Imagem do produto (render 3D) - RESOLVIDO em 2026-08-14 (flex_01.png fornecida pelo operador, copiada para insumos/ e usada nas versoes v2 dos materiais visuais).",
+    "Dados comerciais (preco, codigos de produto, condicoes) ausentes do texto-base.",
+    "Referencias completas dos estudos clinicos citados (nomes/datas/autores dos estudos de 6 anos, 60 dias e osso tipo IV) nao constam no texto-base.",
+    "'Kit do Cliente' citado pelo operador na rodada 4 nao e tipo de material suportado pela fabrica - registrado, nao produzido."
+  ],
+  "sugestoes_legenda": [
+    "copy-01 (problema): 'Recuperacao mais rapida, mesmo nos casos dificeis. A superfcie Vulcano Actives alcançou 100% de sucesso em osso tipo IV - fale com um especialista.'",
+    "copy-02 (diferencial): 'O implante que ativa a formacao ossea. MAO incorpora Calcio e Fosforo ao titanio (P > 7%) e o corpo reconhece o implante como tecido natural.'",
+    "copy-03 (resultado): 'Sua protese mais cedo, com seguranca comprovada. Carga precoce entre 45 e 60 dias com 97,7% de sucesso em protocolos humanos.'",
+    "CTA compartilhado: 'Fale com um especialista' (padrao clientes de brand/publicos-alvo.json)."
+  ]
+}

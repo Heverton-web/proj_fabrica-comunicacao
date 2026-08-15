@@ -1,0 +1,295 @@
+{
+  "slug": "kit-master-flex-02",
+  "tipo": "textos-v2",
+  "gerado_em": "2026-08-14T12:10:33.339798+00:00",
+  "candidatos": [
+    {
+      "arquivo": "instagram.txt",
+      "categoria": "hashtag",
+      "trecho": "#ConexaoImplantes",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "instagram.txt",
+      "categoria": "hashtag",
+      "trecho": "#MasterFlex",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "instagram.txt",
+      "categoria": "hashtag",
+      "trecho": "#Implantodontia",
+      "encontrado_no_dossie": false
+    },
+    {
+      "arquivo": "instagram.txt",
+      "categoria": "hashtag",
+      "trecho": "#CirurgiaOral",
+      "encontrado_no_dossie": false
+    },
+    {
+      "arquivo": "instagram.txt",
+      "categoria": "hashtag",
+      "trecho": "#ImplantesDentarios",
+      "encontrado_no_dossie": false
+    },
+    {
+      "arquivo": "instagram.txt",
+      "categoria": "hashtag",
+      "trecho": "#Odontologia",
+      "encontrado_no_dossie": false
+    },
+    {
+      "arquivo": "instagram.txt",
+      "categoria": "hashtag",
+      "trecho": "#Dentista",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "instagram.txt",
+      "categoria": "hashtag",
+      "trecho": "#StopDrill",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "instagram.txt",
+      "categoria": "hashtag",
+      "trecho": "#ReabilitacaoOral",
+      "encontrado_no_dossie": false
+    },
+    {
+      "arquivo": "instagram.txt",
+      "categoria": "hashtag",
+      "trecho": "#InovacaoOdontologica",
+      "encontrado_no_dossie": false
+    },
+    {
+      "arquivo": "instagram.txt",
+      "categoria": "numero_unidade",
+      "trecho": "2,9mm",
+      "encontrado_no_dossie": false
+    },
+    {
+      "arquivo": "instagram.txt",
+      "categoria": "numero_unidade",
+      "trecho": "5,0mm",
+      "encontrado_no_dossie": false
+    },
+    {
+      "arquivo": "instagram.txt",
+      "categoria": "nome_proprio",
+      "trecho": "Kit Master",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "instagram.txt",
+      "categoria": "nome_proprio",
+      "trecho": "Single Kit",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "instagram.txt",
+      "categoria": "nome_proprio",
+      "trecho": "Conexão Implantes",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "instagram.txt",
+      "categoria": "nome_proprio",
+      "trecho": "Fresa Start",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "instagram.txt",
+      "categoria": "nome_proprio",
+      "trecho": "Stop Drill",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "instagram.txt",
+      "categoria": "nome_proprio",
+      "trecho": "Bone Drill Protocol",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "instagram.txt",
+      "categoria": "nome_proprio",
+      "trecho": "Extension Fitness",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "instagram.txt",
+      "categoria": "nome_proprio",
+      "trecho": "Extension Drill",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "linkedin.txt",
+      "categoria": "hashtag",
+      "trecho": "#Implantodontia",
+      "encontrado_no_dossie": false
+    },
+    {
+      "arquivo": "linkedin.txt",
+      "categoria": "hashtag",
+      "trecho": "#Odontologia",
+      "encontrado_no_dossie": false
+    },
+    {
+      "arquivo": "linkedin.txt",
+      "categoria": "hashtag",
+      "trecho": "#ConexaoImplantes",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "linkedin.txt",
+      "categoria": "hashtag",
+      "trecho": "#MasterFlex",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "linkedin.txt",
+      "categoria": "hashtag",
+      "trecho": "#ReabilitacaoOral",
+      "encontrado_no_dossie": false
+    },
+    {
+      "arquivo": "linkedin.txt",
+      "categoria": "hashtag",
+      "trecho": "#CirurgiaOral",
+      "encontrado_no_dossie": false
+    },
+    {
+      "arquivo": "linkedin.txt",
+      "categoria": "numero_unidade",
+      "trecho": "2,9mm",
+      "encontrado_no_dossie": false
+    },
+    {
+      "arquivo": "linkedin.txt",
+      "categoria": "numero_unidade",
+      "trecho": "5,0mm",
+      "encontrado_no_dossie": false
+    },
+    {
+      "arquivo": "linkedin.txt",
+      "categoria": "nome_proprio",
+      "trecho": "Conexão Implantes",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "linkedin.txt",
+      "categoria": "nome_proprio",
+      "trecho": "Kit Master",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "linkedin.txt",
+      "categoria": "nome_proprio",
+      "trecho": "Single Kit",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "linkedin.txt",
+      "categoria": "nome_proprio",
+      "trecho": "Stop Drill",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "linkedin.txt",
+      "categoria": "nome_proprio",
+      "trecho": "Fresa Start",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "linkedin.txt",
+      "categoria": "nome_proprio",
+      "trecho": "Stop Drill",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "linkedin.txt",
+      "categoria": "nome_proprio",
+      "trecho": "Bone Drill Protocol",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "linkedin.txt",
+      "categoria": "nome_proprio",
+      "trecho": "Extension Fitness",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "linkedin.txt",
+      "categoria": "nome_proprio",
+      "trecho": "Extension Drill",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "whatsapp.txt",
+      "categoria": "numero_unidade",
+      "trecho": "2,9mm",
+      "encontrado_no_dossie": false
+    },
+    {
+      "arquivo": "whatsapp.txt",
+      "categoria": "numero_unidade",
+      "trecho": "5,0mm",
+      "encontrado_no_dossie": false
+    },
+    {
+      "arquivo": "whatsapp.txt",
+      "categoria": "nome_proprio",
+      "trecho": "Kit Master",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "whatsapp.txt",
+      "categoria": "nome_proprio",
+      "trecho": "Single Kit",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "whatsapp.txt",
+      "categoria": "nome_proprio",
+      "trecho": "Stop Drill",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "whatsapp.txt",
+      "categoria": "nome_proprio",
+      "trecho": "Fresa Start",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "whatsapp.txt",
+      "categoria": "nome_proprio",
+      "trecho": "Stop Drill",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "whatsapp.txt",
+      "categoria": "nome_proprio",
+      "trecho": "Bone Drill Protocol",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "whatsapp.txt",
+      "categoria": "nome_proprio",
+      "trecho": "Extension Fitness",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "whatsapp.txt",
+      "categoria": "nome_proprio",
+      "trecho": "Extension Drill",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "whatsapp.txt",
+      "categoria": "nome_proprio",
+      "trecho": "Conexão Implantes",
+      "encontrado_no_dossie": true
+    }
+  ]
+}

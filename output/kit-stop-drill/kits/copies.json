@@ -1,0 +1,74 @@
+{
+  "copies": [
+    {
+      "id": "kit-01",
+      "tom": "informativa",
+      "angulo": "Stop Drill trava a fresa na profundidade exata — sem depender de medição visual",
+      "headline": "Stop Drill trava a fresa na profundidade exata.",
+      "subcopy": "Sem depender da leitura visual da marca a laser sob sangramento. Sete profundidades codificadas por cor, do branco ao laranja, travam a fresa no ponto exato."
+    },
+    {
+      "id": "kit-02",
+      "tom": "informativa",
+      "angulo": "Sete profundidades codificadas por cor, do branco (5.5mm) ao laranja (15mm)",
+      "headline": "Sete profundidades, sete cores: branco a laranja.",
+      "subcopy": "Cada stop tem cor e número, alinhados à sequência do seu kit cirúrgico. O limitador físico trava a fresa na profundidade exata, sem depender da leitura visual."
+    },
+    {
+      "id": "kit-03",
+      "tom": "contra-intuitiva",
+      "angulo": "Mais um componente na mesa não é mais complexidade — é menos erro de seleção",
+      "headline": "Mais um item na mesa? Na verdade, é menos erro.",
+      "subcopy": "O código de cores segue a lógica do seu kit — menos decisão, mais precisão. A segurança não está em olhar o laser: está em travar a fresa."
+    },
+    {
+      "id": "kit-04",
+      "tom": "contra-intuitiva",
+      "angulo": "A segurança não está em olhar a laser, está em travar a fresa",
+      "headline": "Segurança não é olhar o laser — é travar a fresa.",
+      "subcopy": "Um limitador físico elimina a variação da leitura visual sob sangramento. Mais um item na mesa não é mais complexidade: é menos erro de seleção."
+    },
+    {
+      "id": "kit-05",
+      "tom": "tecnica",
+      "angulo": "POM (Polioximetileno) dimensionalmente estável em ciclos de autoclave",
+      "headline": "POM: estável em ciclos repetidos de autoclave.",
+      "subcopy": "Poliacetal não deforma sob temperatura e umidade — trava firme na fresa. A baixa condutibilidade térmica do material ainda protege o tecido ósseo na perfuração."
+    },
+    {
+      "id": "kit-06",
+      "tom": "tecnica",
+      "angulo": "Baixa condutibilidade térmica poliacetal protege o tecido ósseo na perfuração",
+      "headline": "Baixa condutibilidade térmica protege o osso.",
+      "subcopy": "O poliacetal minimiza o risco de superaquecimento por atrito na fresagem. O mesmo POM é dimensionalmente estável em ciclos repetidos de autoclave."
+    },
+    {
+      "id": "kit-07",
+      "tom": "efeito-uau",
+      "angulo": "1.5mm de variação por erro visual — ou zero, com um stop físico",
+      "headline": "1.5mm de erro visual. Ou zero, com um stop físico.",
+      "subcopy": "A diferença entre planejar e executar cabe num limitador que trava na fresa. Nove fresas, sete profundidades, um único travamento preciso em cada uma."
+    },
+    {
+      "id": "kit-08",
+      "tom": "efeito-uau",
+      "angulo": "Nove fresas, sete profundidades, um único travamento preciso",
+      "headline": "Nove fresas, sete profundidades, um travamento.",
+      "subcopy": "Cada fresa do sistema recebe o stop exato para a profundidade planejada. Isso zera os 1,5mm de variação que a leitura visual ainda deixava passar."
+    },
+    {
+      "id": "kit-09",
+      "tom": "educativa",
+      "angulo": "Por que a Conexão deixou de confiar em marcas a laser sob sangramento",
+      "headline": "Confiar só na marca a laser sob sangue é um risco?",
+      "subcopy": "A leitura visual falha exatamente quando a precisão importa mais. O Stop Drill resolve isso integrado ao Master Flex e Start Flex, sem mudar sua rotina."
+    },
+    {
+      "id": "kit-10",
+      "tom": "educativa",
+      "angulo": "Como o Stop Drill transforma Master Flex e Start Flex em sistema de alta precisão",
+      "headline": "O extensor de precisão do seu kit de fresagem.",
+      "subcopy": "Integra-se ao Master Flex e Start Flex, das fresas 1 a 9, sem mudar sua rotina. A Conexão deixou de confiar na marca a laser sob sangramento por esse motivo."
+    }
+  ]
+}

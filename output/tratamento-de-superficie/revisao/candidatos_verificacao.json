@@ -1,0 +1,223 @@
+{
+  "slug": "tratamento-de-superficie",
+  "tipo": "textos",
+  "gerado_em": "2026-08-14T10:15:38.519622+00:00",
+  "candidatos": [
+    {
+      "arquivo": "instagram.txt",
+      "categoria": "hashtag",
+      "trecho": "#ConexaoImplantes",
+      "encontrado_no_dossie": false
+    },
+    {
+      "arquivo": "instagram.txt",
+      "categoria": "hashtag",
+      "trecho": "#VulcanoActives",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "instagram.txt",
+      "categoria": "hashtag",
+      "trecho": "#Implantodontia",
+      "encontrado_no_dossie": false
+    },
+    {
+      "arquivo": "instagram.txt",
+      "categoria": "hashtag",
+      "trecho": "#SuperficieBioativa",
+      "encontrado_no_dossie": false
+    },
+    {
+      "arquivo": "instagram.txt",
+      "categoria": "hashtag",
+      "trecho": "#OssoTipoIV",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "instagram.txt",
+      "categoria": "hashtag",
+      "trecho": "#ImplanteDentario",
+      "encontrado_no_dossie": false
+    },
+    {
+      "arquivo": "instagram.txt",
+      "categoria": "hashtag",
+      "trecho": "#VendaTecnica",
+      "encontrado_no_dossie": false
+    },
+    {
+      "arquivo": "instagram.txt",
+      "categoria": "hashtag",
+      "trecho": "#InovacaoOdontologica",
+      "encontrado_no_dossie": false
+    },
+    {
+      "arquivo": "instagram.txt",
+      "categoria": "percentual",
+      "trecho": "7%",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "instagram.txt",
+      "categoria": "percentual",
+      "trecho": "100%",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "instagram.txt",
+      "categoria": "numero_unidade",
+      "trecho": "60 dias",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "instagram.txt",
+      "categoria": "nome_proprio",
+      "trecho": "Vulcano Actives",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "instagram.txt",
+      "categoria": "nome_proprio",
+      "trecho": "Fase Anatase",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "instagram.txt",
+      "categoria": "nome_proprio",
+      "trecho": "Vulcano Actives",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "linkedin.txt",
+      "categoria": "percentual",
+      "trecho": "98,4%",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "linkedin.txt",
+      "categoria": "percentual",
+      "trecho": "7%",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "linkedin.txt",
+      "categoria": "percentual",
+      "trecho": "100%",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "linkedin.txt",
+      "categoria": "numero_unidade",
+      "trecho": "45 dias",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "linkedin.txt",
+      "categoria": "numero_unidade",
+      "trecho": "6 anos",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "linkedin.txt",
+      "categoria": "numero_unidade",
+      "trecho": "60 dias",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "linkedin.txt",
+      "categoria": "nome_proprio",
+      "trecho": "Vulcano Actives",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "linkedin.txt",
+      "categoria": "nome_proprio",
+      "trecho": "Fase Anatase",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "linkedin.txt",
+      "categoria": "nome_proprio",
+      "trecho": "Vulcano Actives",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "whatsapp.txt",
+      "categoria": "percentual",
+      "trecho": "100%",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "whatsapp.txt",
+      "categoria": "percentual",
+      "trecho": "7%",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "whatsapp.txt",
+      "categoria": "percentual",
+      "trecho": "98,4%",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "whatsapp.txt",
+      "categoria": "percentual",
+      "trecho": "100%",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "whatsapp.txt",
+      "categoria": "numero_unidade",
+      "trecho": "60 dias",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "whatsapp.txt",
+      "categoria": "numero_unidade",
+      "trecho": "6 anos",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "whatsapp.txt",
+      "categoria": "numero_unidade",
+      "trecho": "45 dias",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "whatsapp.txt",
+      "categoria": "numero_unidade",
+      "trecho": "45 dias",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "whatsapp.txt",
+      "categoria": "nome_proprio",
+      "trecho": "Vulcano Actives",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "whatsapp.txt",
+      "categoria": "nome_proprio",
+      "trecho": "Fase Anatase",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "whatsapp.txt",
+      "categoria": "nome_proprio",
+      "trecho": "Vulcano Actives",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "whatsapp.txt",
+      "categoria": "nome_proprio",
+      "trecho": "Vulcano Actives",
+      "encontrado_no_dossie": true
+    },
+    {
+      "arquivo": "whatsapp.txt",
+      "categoria": "nome_proprio",
+      "trecho": "Com Vulcano",
+      "encontrado_no_dossie": true
+    }
+  ]
+}

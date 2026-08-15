@@ -1,0 +1,82 @@
+{
+  "mensagem_central": "Vulcano Actives: previsibilidade, segurança e reabilitação mais rápida.",
+  "publico_alvo": "clientes",
+  "objetivo_tom": "informacional_tecnico",
+  "objetivo": "informacional",
+  "tom_de_voz": "tecnico",
+  "nota_de_escopo": "Projeto /esbocar com todos os 9 materiais. Público clientes com tom informacional_técnico: conceitos técnicos (MAO, anatase, Ra 1,26 µm, contra-torque, estabilidade primária/secundária) traduzidos em benefício concreto. Kits usam público fixo dentista_implantodontista.",
+  "hierarquia_de_conteudo": [
+    "problema clínico: perfis biológicos comprometidos (fumantes, diabéticos, osso Tipo IV) e período de latência óssea",
+    "solução: bioatividade ativa — MAO incorpora Cálcio e Fósforo (P > 7%) ao óxido de titânio",
+    "destaques técnicos: hidrofilia extrema (fase anatase), topografia Ra ≈ 1,26 µm, sinergia Torq/Flash",
+    "evidência clínica: 100% em osso tipo IV; 97,7% em 60 dias (contra-torque 25 N.cm); 91,11% em 45 dias",
+    "indicações estratégicas: carga precoce (45 a 60 dias) e reabilitações em maxila posterior"
+  ],
+  "mapeamento_por_material": {
+    "pdf": {
+      "secoes": [
+        "abertura",
+        "problema",
+        "solução",
+        "destaques",
+        "composição/especificações",
+        "aplicação",
+        "fechamento"
+      ]
+    },
+    "landing-page": {
+      "secoes": [
+        "hero",
+        "problema→solução",
+        "destaques",
+        "prova/composição técnica",
+        "cta final"
+      ]
+    },
+    "apresentacao": {
+      "slides": [
+        "capa",
+        "problema (casos desafiadores e latência óssea)",
+        "solução (bioatividade ativa)",
+        "destaques técnicos (1 por slide)",
+        "evidência clínica",
+        "indicações e segurança",
+        "fechamento/CTA"
+      ]
+    },
+    "arte": {
+      "angulos_criativos": [
+        "problema: perfis biológicos comprometidos (fumantes, diabéticos, osso Tipo IV) e o tempo de espera pela reabilitação",
+        "diferencial técnico: bioatividade ativa (MAO, Ca/P > 7%) e hidrofilia extrema (fase anatase)",
+        "resultado: carga precoce em 45–60 dias (91,11% / 97,7%) e 100% de sucesso em osso tipo IV"
+      ]
+    },
+    "textos": {
+      "canais": ["whatsapp", "instagram", "linkedin"]
+    },
+    "kit": {
+      "angulos_por_tom": {
+        "informativa": [
+          "O que é a superfície Vulcano Actives: bioatividade ativa por MAO, desenvolvida sob fundamentação científica do Dr. Carlos Nelson Elias",
+          "A diferença essencial: superfícies passivas vs ativas — MAO incorpora Cálcio e Fósforo (P > 7%) ao óxido de titânio"
+        ],
+        "contra-intuitiva": [
+          "45 dias é tempo de carga precoce com 91,11% de sucesso — 'quanto antes, mais arriscado' nem sempre vale para esta superfície",
+          "Hidrofilia extrema: o sangue molha o implante instantaneamente — o coágulo estabiliza antes do que a maioria imagina"
+        ],
+        "tecnica": [
+          "MAO: oxidação por arco micro-elétrico incorpora Ca e P na estrutura do óxido de titânio, com fósforo acima de 7%",
+          "Ra ≈ 1,26 µm: o 'ponto ideal' para diferenciação de células-tronco mesenquimais em osteoblastos"
+        ],
+        "efeito-uau": [
+          "100% de sucesso em casos de osso tipo IV — segurança onde a biologia é mais adversa",
+          "60 dias com 97,7% de sucesso, suportando contra-torque de 25 N.cm"
+        ],
+        "educativa": [
+          "Como a bioatividade ativa encurta a latência óssea: deposição de apatita biológica e retenção da rede de fibrina",
+          "Sinergia com a macrogeometria: linhas Torq e Flash — da estabilidade primária (mecânica) à secundária (biológica)"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "slides": [
+    {
+      "tipo": "capa",
+      "titulo": "Vulcano Actives",
+      "corpo": "Bioatividade ativa para osseointegração mais rápida e segura."
+    },
+    {
+      "tipo": "conteudo",
+      "titulo": "O Problema: O Tempo de Espera",
+      "corpo": [
+        "**Latência óssea** — Após instalar o implante, o corpo precisa formar osso ao redor dele, e esse processo leva tempo.",
+        "**Cenários desafiadores** — Em pacientes fumantes, diabéticos ou com osso de baixa densidade (Tipo IV), a resposta é mais lenta.",
+        "**Mais do que se fixar** — Nesses casos, a superfície do implante precisa estimular ativamente a formação óssea."
+      ]
+    },
+    {
+      "tipo": "conteudo",
+      "titulo": "A Solução: Bioatividade Ativa",
+      "corpo": [
+        "**Processo MAO** — A oxidação por arco micro-elétrico incorpora Cálcio e Fósforo diretamente ao titânio, com fósforo acima de 7%.",
+        "**Reconhecimento natural** — O organismo passa a reconhecer o implante como parte do tecido mineralizado.",
+        "**Formação óssea acelerada** — A precipitação de apatita biológica começa muito mais cedo."
+      ]
+    },
+    {
+      "tipo": "conteudo",
+      "titulo": "Hidrofilia Extrema: Resposta Imediata",
+      "corpo": [
+        "**Fase anatase** — O tratamento induz uma fase cristalina de alta energia de superfície.",
+        "**Sangue na superfície na hora** — O sangue molha todo o implante instantaneamente após a instalação.",
+        "**Andaime da formação óssea** — A rede de fibrina é retida desde o início, acelerando a cicatrização."
+      ]
+    },
+    {
+      "tipo": "conteudo",
+      "titulo": "Rugosidade no Ponto Ideal",
+      "corpo": [
+        "**1,26 µm** — Rugosidade média confirmada pelas pesquisas do Dr. Carlos Nelson Elias.",
+        "**Células certas** — O ponto ideal para diferenciar células-tronco em osteoblastos, as células que formam osso.",
+        "**Menos tecido fibroso** — Uma matriz calcificada densa se forma diretamente sobre o metal."
+      ]
+    },
+    {
+      "tipo": "conteudo",
+      "titulo": "Evidência Clínica",
+      "corpo": [
+        "**97,7% de sucesso** — Taxa geral em protocolos de 60 dias em humanos.",
+        "**Carga precoce viável** — Resultados consistentes permitem carga precoce entre 45 e 60 dias."
+      ],
+      "componente": {
+        "tipo": "donut",
+        "dados": {
+          "percentual": 100,
+          "label": "Sucesso em casos de osso tipo IV"
+        }
+      }
+    },
+    {
+      "tipo": "conteudo",
+      "titulo": "Para Quem é Indicada",
+      "corpo": [
+        "**Carga precoce** — Tratamentos finalizados entre 45 e 60 dias, com mais agilidade.",
+        "**Pacientes desafiadores** — Fumantes, diabéticos e ossos de baixa densidade (Tipo IV).",
+        "**Casos convencionais** — Seguem bem atendidos pela superfície Porous, consagrada pela fixação mecânica."
+      ]
+    },
+    {
+      "tipo": "cta",
+      "titulo": "Fale com um Especialista",
+      "corpo": "Conheça se a Vulcano Actives é a solução certa para o seu caso. Conexão Sistemas de Prótese."
+    }
+  ]
+}

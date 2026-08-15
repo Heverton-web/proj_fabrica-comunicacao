@@ -1,0 +1,149 @@
+{
+  "slides": [
+    {
+      "tipo": "capa",
+      "titulo": "Kit Stop Drill",
+      "corpo": "Precisão milimétrica travada na fresa, não no olho."
+    },
+    {
+      "tipo": "conteudo",
+      "titulo": "Posicionamento: Segurança Ativa e Previsibilidade Cirúrgica",
+      "corpo": [
+        "**Remove a incerteza da medição visual** — Marcas a laser deixam de ser o único parâmetro; o cirurgião executa o planejamento reabilitador com fidelidade absoluta à profundidade estabelecida",
+        "**Engenharia de materiais + facilidade operacional** — A proposta de valor do Stop Drill une desempenho técnico do material a um uso simples na rotina cirúrgica"
+      ]
+    },
+    {
+      "tipo": "conteudo",
+      "titulo": "O Problema: Medição Visual a Laser",
+      "corpo": [
+        "**Leitura sob sangramento** — A profundidade de fresagem depende da visualização das marcações a laser, muitas vezes em campo comprometido pelo sangue",
+        "**Variação de até 1.5 mm** — Um erro de leitura visual dessa magnitude compromete o sucesso do carregamento imediato e a segurança do paciente",
+        "**Regiões de risco** — A insegurança se intensifica em operações próximas ao nervo alveolar"
+      ]
+    },
+    {
+      "tipo": "conteudo",
+      "titulo": "A Solução: Limitador Físico que Trava na Fresa",
+      "corpo": [
+        "**Travamento físico** — O Stop Drill trava na fresa correspondente e impede qualquer avanço além da profundidade planejada",
+        "**Substitui a leitura visual** — A decisão deixa de depender do olho do cirurgião e passa a depender de um limite mecânico objetivo",
+        "**Velocidade e segurança** — O sistema de limitadores físicos aumenta a velocidade e a segurança do ato cirúrgico"
+      ]
+    },
+    {
+      "tipo": "conteudo",
+      "titulo": "Destaque Técnico: Material POM (Polioximetileno)",
+      "corpo": [
+        "**Material de engenharia** — Fabricado em Polioximetileno (Poliacetal), material de alta performance",
+        "**Resistência à autoclave** — Suporta ciclos repetidos de esterilização sem sofrer deformações sob temperatura e umidade",
+        "**Estabilidade dimensional** — Mantém a precisão da profundidade travada após múltiplos ciclos de uso"
+      ]
+    },
+    {
+      "tipo": "conteudo",
+      "titulo": "Destaque Técnico: Baixa Condutibilidade Térmica",
+      "corpo": [
+        "**Proteção do tecido ósseo** — O material POM protege a integridade óssea durante a perfuração",
+        "**Menor risco de superaquecimento** — A baixa condutibilidade térmica minimiza o superaquecimento por atrito na fresagem"
+      ]
+    },
+    {
+      "tipo": "conteudo",
+      "titulo": "Destaque Técnico: Travamento Seguro",
+      "corpo": [
+        "**Fixação firme** — Cada stop foi projetado para se prender firmemente à fresa correspondente",
+        "**Estabilidade no ato operatório** — O limitador não se desloca durante a cirurgia, garantindo a profundidade planejada do início ao fim"
+      ]
+    },
+    {
+      "tipo": "conteudo",
+      "titulo": "Composição: Sete Cores, Sete Profundidades",
+      "componente": {
+        "tipo": "barras",
+        "dados": {
+          "unidade": "mm",
+          "max": 15,
+          "itens": [
+            { "label": "Branco", "valor": 5.5, "unidade": "mm" },
+            { "label": "Pink", "valor": 7.0, "unidade": "mm" },
+            { "label": "Verde", "valor": 8.5, "unidade": "mm" },
+            { "label": "Amarelo", "valor": 10, "unidade": "mm" },
+            { "label": "Azul", "valor": 11.5, "unidade": "mm" },
+            { "label": "Roxo", "valor": 13, "unidade": "mm" },
+            { "label": "Laranja", "valor": 15, "unidade": "mm" }
+          ]
+        }
+      }
+    },
+    {
+      "tipo": "conteudo",
+      "titulo": "Identificação Dual: Negrito e Itálico",
+      "corpo": [
+        "**Caixa organizadora** — Espelha a sequência dos kits cirúrgicos Master Flex e Start Flex",
+        "**Número da fresa em negrito** — Identificação rápida do instrumental correspondente",
+        "**Diâmetro em itálico** — Confirmação visual imediata da medida antes do uso"
+      ]
+    },
+    {
+      "tipo": "conteudo",
+      "titulo": "Integração: Master Flex e Start Flex",
+      "corpo": [
+        "**Extensor de precisão** — O Stop Drill não é um produto isolado; estende a precisão dos kits Master Flex e Start Flex",
+        "**Fresas de 1 a 9** — Cada fresa recebe o stop exato para a profundidade desejada",
+        "**Melhor posição tridimensional** — A combinação otimiza o procedimento e a posição do implante na cavidade óssea"
+      ]
+    },
+    {
+      "tipo": "conteudo",
+      "titulo": "Script SPIN: As Quatro Perguntas",
+      "componente": {
+        "tipo": "fluxo",
+        "dados": {
+          "passos": [
+            {
+              "titulo": "S: Situação",
+              "texto": "Doutor, como sua equipe organiza a sequência de fresagem hoje para garantir que a profundidade planejada no software seja exatamente a executada em boca?"
+            },
+            {
+              "titulo": "P: Problema",
+              "texto": "O senhor já sentiu desconforto ou insegurança ao operar perto do nervo alveolar, confiando apenas na visualização das marcações a laser sob sangramento?"
+            },
+            {
+              "titulo": "I: Implicação",
+              "texto": "Se houver uma variação de 1.5 mm por erro de leitura visual, quais as implicações para o carregamento imediato e a segurança do paciente?"
+            },
+            {
+              "titulo": "N: Necessidade de Solução",
+              "texto": "Se eu apresentasse limitadores físicos que travam na fresa e impedem avanço além do planejado, isso aumentaria sua velocidade e segurança cirúrgica?"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "tipo": "conteudo",
+      "titulo": "Contorno de Objeções",
+      "componente": {
+        "tipo": "accordion",
+        "dados": {
+          "itens": [
+            {
+              "pergunta": "\"Esses limitadores não perdem a pressão ou deformam na autoclave?\"",
+              "resposta": "O material é o Poliacetal (POM), dimensionalmente estável sob alta temperatura e umidade — não sofre deformação após os ciclos de esterilização."
+            },
+            {
+              "pergunta": "\"É mais um item para eu me preocupar na mesa.\"",
+              "resposta": "Na verdade simplifica: o kit segue a mesma lógica visual e numérica dos kits Master Flex ou Start Flex. As cores, do branco ao laranja, criam um padrão intuitivo que agiliza o trabalho da auxiliar e evita erros de seleção de profundidade."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "tipo": "cta",
+      "titulo": "Conclusão: Engenharia de Previsibilidade",
+      "corpo": "Vender o Kit Stop Drill é reforçar o compromisso da Conexão Implantes com a **Engenharia de Previsibilidade** — o acessório que transforma um kit de fresagem padrão em um sistema de alta precisão.\n\nAo dominar cores, profundidades e material POM, o consultor deixa de ser vendedor de peças e se torna parceiro da segurança clínica do cirurgião."
+    }
+  ]
+}

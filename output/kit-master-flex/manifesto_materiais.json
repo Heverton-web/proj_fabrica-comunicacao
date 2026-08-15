@@ -1,0 +1,63 @@
+{
+  "slug": "kit-master-flex",
+  "materiais": [
+    {
+      "tipo": "pdf",
+      "status": "concluido_autonomo",
+      "path": "output/kit-master-flex/pdf/apostila_kit-master-flex.pdf"
+    },
+    {
+      "tipo": "landing-page",
+      "status": "concluido_autonomo",
+      "path": "output/kit-master-flex/landing-page/index.html"
+    },
+    {
+      "tipo": "apresentacao",
+      "status": "concluido_autonomo",
+      "path": "output/kit-master-flex/apresentacao/index.html"
+    },
+    {
+      "tipo": "textos",
+      "status": "concluido_autonomo",
+      "path": "output/kit-master-flex/textos"
+    },
+    {
+      "tipo": "arte-01",
+      "status": "concluido_autonomo",
+      "path": "output/kit-master-flex/arte-01"
+    },
+    {
+      "tipo": "arte-02",
+      "status": "concluido_autonomo",
+      "path": "output/kit-master-flex/arte-02"
+    },
+    {
+      "tipo": "arte-03",
+      "status": "concluido_autonomo",
+      "path": "output/kit-master-flex/arte-03"
+    },
+    {
+      "tipo": "kit-consultor",
+      "status": "concluido_autonomo",
+      "path": "output/kit-master-flex/kit-consultor"
+    },
+    {
+      "tipo": "kit-distribuidor",
+      "status": "concluido_autonomo",
+      "path": "output/kit-master-flex/kit-distribuidor"
+    },
+    {
+      "tipo": "kit-consultor-v2",
+      "status": "concluido_autonomo",
+      "path": "output/kit-master-flex/kit-consultor-v2"
+    },
+    {
+      "tipo": "kit-distribuidor-v2",
+      "status": "concluido_autonomo",
+      "path": "output/kit-master-flex/kit-distribuidor-v2"
+    }
+  ],
+  "decisoes_design": [],
+  "informacoes_faltantes": [],
+  "sugestoes_legenda": []
+}

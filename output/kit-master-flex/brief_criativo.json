@@ -1,0 +1,73 @@
+{
+  "mensagem_central": "Um único kit para todas as linhas de implantes Conexão",
+  "publico_alvo": "consultores",
+  "objetivo_tom": "educacional_comercial",
+  "objetivo": "educacional",
+  "tom_de_voz": "comercial",
+  "nota_de_escopo": "Material interno para consultores de vendas da Conexão — foco em como dominar os argumentos de venda do Kit MasterFlex para apresentar ao dentista",
+  "hierarquia_de_conteudo": [
+    "posicionamento estratégico (Single Kit, unificação operacional)",
+    "diferenciais técnicos (Stop Drill, protocolo de fresagem, identificação visual, captura ativa)",
+    "composição do kit (fresas, direction pins, countersinks, drivers, acessórios)",
+    "versatilidade clínica (conexões cônicas, hexágono externo, amplitude de diâmetros)",
+    "script de vendas SPIN e contorno de objeções"
+  ],
+  "mapeamento_por_material": {
+    "pdf": {
+      "secoes": [
+        "capa (título + imagem do kit + edição)",
+        "posicionamento estratégico (Single Kit, unificação operacional)",
+        "diferenciais técnicos (Stop Drill, protocolo, identificação visual, captura ativa)",
+        "composição do kit (fresas, direction pins, countersinks, drivers)",
+        "versatilidade clínica (conexões, diâmetros, Extension Drill)",
+        "script de vendas SPIN (4 frames)",
+        "contorno de objeções (3 bullets)",
+        "conclusão (eficiência operacional, parceria estratégica)"
+      ]
+    },
+    "landing-page": {
+      "secoes": [
+        "hero (título + CTA + imagem do kit)",
+        "posicionamento (Single Kit — unificação operacional)",
+        "diferenciais técnicos (4 diferenciais em cards)",
+        "composição do kit (visão geral dos componentes)",
+        "versatilidade (conexões e diâmetros compatíveis)",
+        "cta final (fale com um consultor)"
+      ]
+    },
+    "apresentacao": {
+      "slides": [
+        "capa (título + imagem)",
+        "Single Kit — o problema da multiplicidade de estojos",
+        "solução: unificação operacional",
+        "diferencial: Stop Drill + Fresa Start",
+        "diferencial: Protocolo de Fresagem na tampa",
+        "diferencial: Identificação Visual (negrito/itálico)",
+        "diferencial: Sistema de Captura Ativa",
+        "composição: fresas e direction pins",
+        "composição: drivers e acessórios",
+        "versatilidade: conexões e diâmetros",
+        "cta — posicione-se como parceiro estratégico"
+      ]
+    },
+    "textos": {
+      "canais": ["whatsapp", "instagram", "linkedin"]
+    },
+    "arte": {
+      "angulos_criativos": [
+        "Single Kit — um estojo para todas as linhas",
+        "Stop Drill — segurança exclusiva de profundidade",
+        "Versatilidade total — de Slim 2.9mm a 5.0mm"
+      ]
+    },
+    "kit": {
+      "angulos_por_tom": {
+        "informativa": ["Single Kit elimina múltiplos estojos", "Protocolo de fresagem impresso na tampa"],
+        "contra-intuitiva": ["Mais completo não é mais complexo", "Um kit, todas as conexões"],
+        "tecnica": ["Stop Drill exclusivo na fresa Start", "Identificação visual negrito/itálico"],
+        "efeito-uau": ["9 linhas de fresas de 2.4 a 4.6mm", "Captura ativa do implante até o alvéolo"],
+        "educativa": ["Como simplificar a logística de esterilização", "Guia visual para ossos Soft e Hard"]
+      }
+    }
+  }
+}

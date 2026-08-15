@@ -1,0 +1,112 @@
+{
+  "hero": {
+    "headline": "Precisão milimétrica travada na fresa, não no olho.",
+    "subheadline": "O Stop Drill remove a incerteza da medição visual das marcas a laser com um limitador físico que trava na fresa correspondente — segurança ativa e previsibilidade cirúrgica para a fresagem em implantodontia.",
+    "cta": "Consultar a aplicação clínica completa"
+  },
+  "problema_solucao": {
+    "problema": {
+      "titulo": "A incerteza da medição visual sob sangramento",
+      "texto": "Confiar apenas na visualização das marcas a laser sob sangramento gera insegurança na fresagem, sobretudo em regiões próximas ao nervo alveolar. Uma variação de apenas 1,5 mm por erro de leitura visual pode comprometer o sucesso do carregamento imediato e a segurança do paciente."
+    },
+    "solucao": {
+      "titulo": "Stop Drill: segurança ativa e previsibilidade cirúrgica",
+      "texto": "O Stop Drill remove essa incerteza com um limitador físico que trava firmemente na fresa correspondente, impedindo qualquer avanço além da profundidade planejada. O cirurgião executa o planejamento reabilitador com fidelidade absoluta à profundidade estabelecida — sem depender da leitura visual sob sangramento."
+    }
+  },
+  "destaques": [
+    {
+      "titulo": "Poliacetal (POM): estabilidade sob autoclave",
+      "texto": "Material de engenharia de alta performance que suporta ciclos repetidos de autoclave sem sofrer deformações sob temperatura e umidade."
+    },
+    {
+      "titulo": "Baixa condutibilidade térmica",
+      "texto": "Protege a integridade do tecido ósseo durante a perfuração, minimizando o risco de superaquecimento por atrito."
+    },
+    {
+      "titulo": "Travamento seguro na fresa",
+      "texto": "Cada stop se prende firmemente à fresa correspondente, garantindo que o limitador não se desloque durante o ato operatório."
+    },
+    {
+      "titulo": "Identificação dual",
+      "texto": "A caixa organizadora espelha a sequência dos kits cirúrgicos: número da fresa em negrito e diâmetro em itálico."
+    },
+    {
+      "titulo": "Sete cores, sete profundidades",
+      "texto": "Codificação por cores do branco ao laranja cria um padrão visual intuitivo que agiliza o trabalho da equipe e evita erros de seleção de profundidade."
+    }
+  ],
+  "prova": {
+    "composicao": {
+      "titulo": "Codificação por cores e profundidades",
+      "cabecalho": ["Cor", "Profundidade"],
+      "linhas": [
+        ["Branco", "5,5 mm"],
+        ["Pink", "7,0 mm"],
+        ["Verde", "8,5 mm"],
+        ["Amarelo", "10 mm"],
+        ["Azul", "11,5 mm"],
+        ["Roxo", "13 mm"],
+        ["Laranja", "15 mm"]
+      ]
+    },
+    "integracao": {
+      "titulo": "Integração com Master Flex e Start Flex",
+      "cabecalho": ["Sistema", "Aplicação"],
+      "linhas": [
+        ["Master Flex", "Cada fresa (de 1 a 9) recebe o stop exato para a profundidade desejada, otimizando o procedimento e a posição tridimensional do implante na cavidade óssea."],
+        ["Start Flex", "Mesma lógica de travamento por profundidade, estendendo a precisão do Stop Drill a este sistema de fresagem."]
+      ]
+    },
+    "spin": {
+      "titulo": "Argumentário comercial: script SPIN Selling",
+      "cabecalho": ["Etapa", "Condução com o dentista"],
+      "linhas": [
+        ["Situação", "Como sua equipe organiza a sequência de fresagem hoje para garantir que a profundidade planejada no software seja exatamente a executada em boca?"],
+        ["Problema", "O senhor já sentiu desconforto ou insegurança ao operar em regiões próximas ao nervo alveolar, confiando apenas na visualização das marcações a laser sob sangramento?"],
+        ["Implicação", "Se houver uma variação de apenas 1,5 mm por erro de leitura visual, quais seriam as implicações para o sucesso do carregamento imediato ou para a segurança do paciente?"],
+        ["Necessidade de solução", "Um sistema de limitadores físicos que travam na fresa e impedem qualquer avanço além do planejado aumentaria sua velocidade e segurança cirúrgica?"]
+      ]
+    }
+  },
+  "cta_final": {
+    "headline": "Engenharia de Previsibilidade em cada fresagem",
+    "cta": "Consultar o guia completo",
+    "dica_ouro": "Dica de ouro: ao dominar cores, profundidades e material POM, você deixa de ser um vendedor de peças para se tornar um parceiro da segurança clínica do cirurgião."
+  },
+  "enriquecimentos": [
+    {
+      "secao": "prova",
+      "tipo": "barras",
+      "dados": {
+        "itens": [
+          {"label": "Branco", "valor": 5.5, "unidade": "mm"},
+          {"label": "Pink", "valor": 7.0, "unidade": "mm"},
+          {"label": "Verde", "valor": 8.5, "unidade": "mm"},
+          {"label": "Amarelo", "valor": 10, "unidade": "mm"},
+          {"label": "Azul", "valor": 11.5, "unidade": "mm"},
+          {"label": "Roxo", "valor": 13, "unidade": "mm"},
+          {"label": "Laranja", "valor": 15, "unidade": "mm"}
+        ],
+        "max": 15,
+        "unidade": "mm"
+      }
+    },
+    {
+      "secao": "prova",
+      "tipo": "accordion",
+      "dados": {
+        "itens": [
+          {
+            "pergunta": "“Esses limitadores não perdem a pressão ou deformam na autoclave?”",
+            "resposta": "O material utilizado é o Poliacetal (POM), dimensionalmente estável sob alta temperatura e umidade — não sofre deformação após os ciclos de esterilização."
+          },
+          {
+            "pergunta": "“É mais um item para eu me preocupar na mesa.”",
+            "resposta": "Na verdade simplifica — o kit segue a mesma lógica visual e numérica dos kits Master ou Start Flex; as cores (do branco ao laranja) criam um padrão intuitivo que agiliza o trabalho da equipe e evita erros de seleção de profundidade."
+          }
+        ]
+      }
+    }
+  ]
+}

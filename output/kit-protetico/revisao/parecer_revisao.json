@@ -1,0 +1,79 @@
+{
+  "decisoes_design": [
+    {
+      "tipo": "textos",
+      "decisao": "Aprovado sem correção. 3 canais (whatsapp/instagram/linkedin) auditados linha a linha contra dossie_insumos.md: todos os claims (composição do kit, catraca+chave digital, 3 tamanhos, hexagonais internas 2,0/2,5/2,7mm, esterilização em autoclave, usinagem específica para parafusos Conexão, argumento 'kit se paga na primeira intercorrência evitada') são rastreáveis à fonte. Registro de linguagem consistente com publico_alvo=consultores e objetivo_tom=educacional_comercial (camada didática seguida de argumento comercial, como exigido pelo brief)."
+    },
+    {
+      "tipo": "kit-consultor+kit-distribuidor",
+      "decisao": "Aprovado sem correção. Auditadas as 10 copies compartilhadas de kits/copies.json cobrindo os 5 tons de brand/tons-kit.json (informativa, contra-intuitiva, tecnica, efeito-uau, educativa) com 2 ângulos genuinamente distintos por tom, todos rastreáveis ao dossiê. Comparação item a item (10 conteudo.json + 10 texto_whatsapp.txt por kit) confirma headline e subcopy IDÊNTICOS entre kit-consultor e kit-distribuidor em todos os 10 itens; único diferencial é cta/assinatura, corretos por variante ('Fale com seu consultor Conexão'/'Consultor Conexão' vs 'Peça ao seu distribuidor Conexão'/'Distribuidor Autorizado Conexão'), conforme brand/kits-conexao.json."
+    },
+    {
+      "tipo": "kit-consultor+kit-distribuidor",
+      "decisao": "config_projeto.elementos_decorativos=false confirmado como comportamento correto, não defeito: nos 20 index.html renderizados (5 tons x 2 itens x 2 kits), 0 divs .forma-decorativa foram injetados no lugar do placeholder {{FORMA_DECORATIVA}} do template arte-1080x1350.html, conforme passo 2.5 de compilador-kit (injeta string vazia quando elementos_decorativos=false)."
+    },
+    {
+      "tipo": "kit-consultor+kit-distribuidor",
+      "decisao": "Fidelidade de marca confirmada por inspeção manual (validar-design-tokens.py não se aplica a este tipo — documentado para landing-page/apresentacao/arte-0N apenas): todos os hex usados no index.html (#0f172a, #148ecb, #1e293b, #94a3b8, #a8873a, #c9a655, #e8d48b, #f8fafc) correspondem exatamente às cores de brand/design-system-conexao.json. CTA usa o estilo de badge dourado translúcido (.marca .cta) definido no próprio templates/arte-1080x1350.html — não é .btn-primario porque este template fixo nunca usou esse componente para o CTA de arte/kit; não é desvio introduzido pelo compilador."
+    },
+    {
+      "tipo": "pdf",
+      "decisao": "Aprovado sem correções. validar-pdf.py OK (3674391 bytes, 8 páginas, 7425 caracteres de texto vetorial) e validar-logo.py OK (logo embutido, 3 XObjects). Todas as seções (abertura, problema, solução, destaques, composição/especificações, aplicação com SPIN + contorno de objeções, fechamento) rastreiam literalmente ao dossie_insumos.md — tabela de composição reproduz exatamente as quantidades do dossiê. Comentários FALTANTE preservados corretamente (torque em N·cm, material das chaves, preço — não inventados, conforme seção 'Itens não verificáveis' do dossiê)."
+    },
+    {
+      "tipo": "pdf",
+      "decisao": "Re-verificação pontual (subagente-revisor-marca, lote isolado ao tipo pdf): validar-pdf.py OK no estado atual do artefato (3678216 bytes, 9 páginas, 7917 caracteres de texto vetorial, capa com 2 linhas e ≥2 palavras do título remetendo ao texto-mãe — checagens de endurecimento do REGRA 6 passando) e validar-logo.py OK (logo embutido, 3 XObjects). validar-design-tokens.py não se aplica a pdf (compilado via Typst, não HTML) — comportamento esperado, confirmado 'n/a'. Auditoria linha a linha de apostila_kit-protetico.md contra dossie_insumos.md: todos os claims de posicionamento, diferenciais técnicos, tabela de composição/especificações (quantidades e milímetros idênticos ao dossiê), script SPIN e contorno de objeções são rastreáveis à fonte; comentário FALTANTE (torque em N·cm, material das chaves, preço) preservado sem invenção. Duas frases de conectivo estilístico sem novo claim verificável ('especificações rigorosas da engenharia', 'e para a paz de espírito do dentista') identificadas como floreio retórico aceitável, não fabricação de dado. Aderência a publico_alvo=consultores e objetivo_tom=educacional_comercial confirmada pela estrutura (camada didática nas seções abertura/problema/solução/destaques/composição antes da camada comercial em aplicação/SPIN/objeções) e pela frase explícita de propósito do guia na abertura. Nenhuma correção necessária; pool-materiais.py --registrar pdf --sucesso executado (tentativa 4)."
+    },
+    {
+      "tipo": "landing-page",
+      "decisao": "Aprovado sem correções. validar-design-tokens.py e validar-html.py e validar-logo.py OK. Hero headline usa mensagem_central literal do brief_criativo.json. As 3 oportunidades de enriquecimento do dossiê estão cobertas: componente fluxo (SPIN, 4 passos numerados 1→4 com setas, sequência real) na seção problema_solução; componente barras (quantidades de chaves por categoria) e accordion (2 objeções) na seção prova — nenhuma oportunidade de enriquecimento perdida (seção 3.1 do skill). Seção 'destaques' (4 cards paralelos, não sequenciais) corretamente SEM numeração decorativa — confirma julgamento de design correto (seção 2.2)."
+    },
+    {
+      "tipo": "apresentacao",
+      "decisao": "Aprovado sem correções. validar-design-tokens.py e validar-html.py e validar-logo.py OK. Estrutura de slides (capa, problema, diferenciais, composição, especificações com componente barras, script SPIN com componente fluxo, objeções com componente accordion, fechamento/CTA) espelha a hierarquia_de_conteudo do brief e cobre as mesmas 3 oportunidades de enriquecimento da landing-page. Nenhum claim fora do dossiê."
+    },
+    {
+      "tipo": "arte-01/arte-02/arte-03",
+      "decisao": "Aprovado sem correções. validar-design-tokens.py, validar-dimensoes.py e validar-logo.py OK para as 9 combinações copy×formato (1080x1080/1080x1350/1080x1920). As 3 copies compartilhadas (output/kit-protetico/arte/copies.json) cobrem os 3 ângulos_criativos distintos do brief (problema / diferencial técnico / versatilidade) — não são variações do mesmo ângulo, conforme docs/05-plano-expansao-multi-copy-arte.md. Confirmado via grep que nenhuma das 9 combinações injeta div .forma-decorativa — config_projeto.elementos_decorativos=false (ver output/kit-protetico/config_projeto.json) está sendo respeitado corretamente por compilar-arte.py (comportamento esperado, não defeito). CTA de cada arte usa o badge dourado translúcido do template fixo (.marca .cta), nunca accent chapado."
+    },
+    {
+      "tipo": "pdf+landing-page+apresentacao+arte-01/02/03",
+      "decisao": "Fontes Inter (300/400/600/700/900) carregadas via woff2 local em todos os HTMLs do lote, nenhuma queda silenciosa para Roboto/sistema (confirmado por @font-face + var(--fonte-titulo/--fonte-corpo) apontando para 'Inter' em 1º lugar). Cores 100% dentro de brand/design-system-conexao.json. Público consultores + tom educacional_comercial consistentes em todo o lote: camada didática (diferenciais técnicos, composição) antes da camada comercial (SPIN, objeções) no pdf e na apresentação; CTAs das artes voltados ao consultor ('Fale com seu consultor Conexão', 'Peça uma demonstração', 'Conheça o Kit Protético')."
+    }
+  ],
+  "informacoes_faltantes": [],
+  "sugestoes_legenda": [
+    {
+      "material": "arte-01 (ângulo problema)",
+      "sugestao": "Torque impreciso pode custar a reputação da sua clínica. Conheça o Kit Protético Conexão Digital e a segurança do torque exato. #ConexaoImplantes #Implantodontia"
+    },
+    {
+      "material": "arte-02 (ângulo diferencial técnico)",
+      "sugestao": "Catraca com referenciador de torque + kit 100% autoclavável. Precisão e biossegurança em cada procedimento. #KitProtetico #ConexaoDigital"
+    },
+    {
+      "material": "arte-03 (ângulo versatilidade)",
+      "sugestao": "3 tamanhos de chave para nenhum caso ficar sem solução — até nas regiões posteriores de difícil acesso. #ConexaoImplantes"
+    },
+    {
+      "material": "landing-page",
+      "sugestao": "Leve ao dentista o argumento técnico e comercial completo do Kit Protético — acesse a landing page e veja a composição, o script SPIN e o contorno de objeções."
+    },
+    {
+      "material": "textos/whatsapp.txt",
+      "sugestao": "Enviar diretamente ao consultor via WhatsApp Business, sem legenda adicional — o texto já inclui gancho, argumento e CTA completos."
+    },
+    {
+      "material": "textos/instagram.txt",
+      "sugestao": "Publicar como carrossel/post educativo no feed institucional para consultores (perfil interno ou grupo fechado); manter hashtags como estão — já incluem #ConsultorConexao e #VendasOdonto para segmentar o público certo."
+    },
+    {
+      "material": "textos/linkedin.txt",
+      "sugestao": "Publicar como artigo/post no perfil institucional Conexão ou compartilhar internamente com a equipe de consultores; tom mais formal já adequado ao canal."
+    },
+    {
+      "material": "kit-consultor e kit-distribuidor (10 artes cada)",
+      "sugestao": "Cada PNG já vem com texto_whatsapp.txt pareado — usar como legenda pronta ao encaminhar a arte ao dentista via WhatsApp; não é necessário escrever legenda adicional."
+    }
+  ]
+}

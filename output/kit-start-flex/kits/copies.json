@@ -1,0 +1,74 @@
+{
+  "copies": [
+    {
+      "id": "kit-01",
+      "tom": "informativa",
+      "angulo": "diâmetros atendidos 2.9, 3.3, 3.5, 3.75 e 4.0mm em qualquer plataforma (HE, NP, GMF ou FIT)",
+      "headline": "Um estojo, cinco diâmetros, qualquer plataforma.",
+      "subcopy": "De 2.9 a 4.0mm — HE, NP, GMF ou FIT — o Kit Start Flex centraliza o necessário para a maioria das cirurgias do dia a dia."
+    },
+    {
+      "id": "kit-02",
+      "tom": "informativa",
+      "angulo": "protocolo de perfuração gravado na própria caixa + marcações a laser de 5.5 a 18mm correspondentes aos comprimentos dos implantes",
+      "headline": "Protocolo de perfuração gravado na caixa.",
+      "subcopy": "A sequência de fresagem está na própria caixa organizadora, com marcações a laser de 5.5 a 18mm correspondendo aos comprimentos dos implantes."
+    },
+    {
+      "id": "kit-03",
+      "tom": "contra-intuitiva",
+      "angulo": "kit de entrada não é limitação: cobre 90% das demandas do dia a dia sem excesso de peças que não se usa",
+      "headline": "Kit de entrada não é menos kit. É eficiência.",
+      "subcopy": "Cobre 90% das demandas de 2.9 a 4.0mm sem excesso de peças que você não usa no dia a dia. Menos peça parada no kit significa mais eficiência dentro do consultório."
+    },
+    {
+      "id": "kit-04",
+      "tom": "contra-intuitiva",
+      "angulo": "código de cores nos anéis O-ring não é estética — é prevenção de confusão no ato cirúrgico",
+      "headline": "Código de cores não é estética. É segurança.",
+      "subcopy": "Os anéis O-ring diferenciam chaves e drivers — roxo para cover screw, azul para cicatrizadores e drivers que evitam confusão na cirurgia."
+    },
+    {
+      "id": "kit-05",
+      "tom": "tecnica",
+      "angulo": "marcações a laser de 5.5 a 18mm com alta durabilidade, visíveis após múltiplas esterilizações",
+      "headline": "Marcações a laser de 5.5 a 18mm, alta durabilidade.",
+      "subcopy": "Visíveis mesmo após múltiplas esterilizações, correspondendo exatamente aos comprimentos dos implantes comercializados."
+    },
+    {
+      "id": "kit-06",
+      "tom": "tecnica",
+      "angulo": "torque recomendado: até 45 Ncm para Slim e até 60 Ncm para NP, FIT e GMF — estabilidade primária sem risco ao componente",
+      "headline": "45 Ncm Slim, 60 Ncm NP, FIT e GMF.",
+      "subcopy": "Torques recomendados pela Conexão para estabilidade primária sem risco ao componente — com catraca referenciadora e adaptador Fitness Square."
+    },
+    {
+      "id": "kit-07",
+      "tom": "efeito-uau",
+      "angulo": "um único estojo cobre de 2.9 a 4.0mm em qualquer plataforma — HE, NP, GMF ou FIT — e ainda instala 4.3mm em maxila Tipo III/IV",
+      "headline": "Um único kit instala 4.3mm em maxila Tipo III/IV.",
+      "subcopy": "O Start Flex cobre implantes estreitos e regulares em qualquer densidade óssea, do Tipo I ao IV. Esse mesmo estojo ainda instala o implante 4.3mm em maxila Tipo III/IV."
+    },
+    {
+      "id": "kit-08",
+      "tom": "efeito-uau",
+      "angulo": "extensor de fresa que aumenta a haste e resolve cirurgias entre dentes com pouco espaço",
+      "headline": "Extensor de fresa chega onde a haste não chega.",
+      "subcopy": "Em cirurgias entre dentes com pouco espaço, o extension drill aumenta a haste sem trocar de kit. Essa haste extra chega onde a fresa comum não alcança."
+    },
+    {
+      "id": "kit-09",
+      "tom": "educativa",
+      "angulo": "por que o protocolo de perfuração gravado na caixa reduz o erro humano e acelera o procedimento",
+      "headline": "Por que o protocolo na caixa reduz erro humano?",
+      "subcopy": "A sequência de perfuração gravada na própria caixa guia a rotina — menos decisão em tempo real, mais velocidade e previsibilidade."
+    },
+    {
+      "id": "kit-10",
+      "tom": "educativa",
+      "angulo": "por que o torque correto (45/60 Ncm) protege a osseointegração — o risco da fresagem excessiva",
+      "headline": "Por que torque errado ameaça a osseointegração?",
+      "subcopy": "Fresagem excessiva ou torque inadequado comprometem a estabilidade primária — por isso o kit define 45 Ncm para Slim e 60 Ncm para NP, FIT e GMF."
+    }
+  ]
+}

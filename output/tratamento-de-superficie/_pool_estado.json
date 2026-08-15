@@ -1,0 +1,41 @@
+{
+  "slug": "tratamento-de-superficie",
+  "lote": 4,
+  "materiais": {
+    "pdf": {
+      "tentativas": 2,
+      "ultimo_erro": "",
+      "estado": "concluido_autonomo"
+    },
+    "apresentacao": {
+      "tentativas": 2,
+      "ultimo_erro": "",
+      "estado": "concluido_autonomo"
+    },
+    "arte-01": {
+      "tentativas": 2,
+      "ultimo_erro": "",
+      "estado": "concluido_autonomo"
+    },
+    "arte-02": {
+      "tentativas": 2,
+      "ultimo_erro": "",
+      "estado": "concluido_autonomo"
+    },
+    "arte-03": {
+      "tentativas": 2,
+      "ultimo_erro": "",
+      "estado": "concluido_autonomo"
+    },
+    "textos": {
+      "tentativas": 2,
+      "ultimo_erro": "",
+      "estado": "concluido_autonomo"
+    },
+    "kit-consultor": {
+      "tentativas": 2,
+      "ultimo_erro": "",
+      "estado": "concluido_autonomo"
+    }
+  }
+}

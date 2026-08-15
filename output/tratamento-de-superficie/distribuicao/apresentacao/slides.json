@@ -1,0 +1,78 @@
+{
+  "slides": [
+    {
+      "tipo": "capa",
+      "titulo": "Vulcano Actives",
+      "corpo": "Entrega previsibilidade em até 45 dias, mesmo nos casos mais críticos de osseointegração."
+    },
+    {
+      "tipo": "conteudo",
+      "titulo": "O Desafio dos Casos Críticos",
+      "corpo": [
+        "**Osso Tipo IV** — Baixa densidade óssea compromete a previsibilidade da osseointegração convencional",
+        "**Fumantes e Diabéticos** — Perfis clínicos com cicatrização mais lenta e imprevisível",
+        "**Tempo Convencional** — Tratamento tradicional leva de 4 a 6 meses até a reabilitação protética"
+      ]
+    },
+    {
+      "tipo": "conteudo",
+      "titulo": "A Resposta: Superfície Vulcano Actives",
+      "componente": {
+        "tipo": "contador",
+        "dados": {
+          "valor_final": 100,
+          "sufixo": "%",
+          "label": "de sucesso em ossos de baixa densidade (Tipo IV), incluindo pacientes fumantes e diabéticos — superfície bioativa e eletroquímica que sinaliza quimicamente ao organismo, em vez de esperar passivamente"
+        }
+      }
+    },
+    {
+      "tipo": "conteudo",
+      "titulo": "Bioatividade Real: Cálcio e Fósforo",
+      "componente": {
+        "tipo": "contador",
+        "dados": {
+          "valor_final": 7,
+          "prefixo": ">",
+          "sufixo": "%",
+          "label": "de Cálcio e Fósforo incorporados na estrutura do implante, reforçando a interação ativa com o organismo"
+        }
+      }
+    },
+    {
+      "tipo": "conteudo",
+      "titulo": "Hidrofilia Extrema: Fase Anatase",
+      "corpo": [
+        "**Anodização MAO** — Muda a estrutura do óxido de titânio para Fase Anatase",
+        "**Segundo Zero** — O sangue molha o implante instantaneamente, iniciando a cura desde o primeiro contato"
+      ]
+    },
+    {
+      "tipo": "conteudo",
+      "titulo": "Rugosidade Ideal: 1,26 µm",
+      "componente": {
+        "tipo": "contador",
+        "dados": {
+          "valor_final": 1.26,
+          "sufixo": " µm",
+          "label": "de rugosidade de superfície, ponto ideal cientificamente comprovado para as células fabricarem osso rapidamente"
+        }
+      }
+    },
+    {
+      "tipo": "conteudo",
+      "titulo": "Comparação Técnica: Tabela Porous e Vulcano Actives",
+      "corpo": [
+        "Tecnologia → Porous: subtrativa (ataque ácido) · Vulcano Actives: eletroquímica (Anodização MAO)",
+        "Interação → Porous: passiva · Vulcano Actives: ativa",
+        "Bioquímica → Porous: titânio puro · Vulcano Actives: incorpora Cálcio e Fósforo (>7%)",
+        "Tempo de Carga → Porous: convencional (4 a 6 meses) · Vulcano Actives: acelerado (45 a 60 dias)"
+      ]
+    },
+    {
+      "tipo": "cta",
+      "titulo": "Previsibilidade em 45 Dias",
+      "corpo": "Com Vulcano Actives, o cliente não compra um implante: compra previsibilidade em 45 dias. Apresente a base técnica e feche com segurança."
+    }
+  ]
+}

@@ -1,0 +1,74 @@
+{
+  "copies": [
+    {
+      "id": "kit-01",
+      "tom": "informativa",
+      "angulo": "composição do kit: controle de torque, fenda/fricção, hexagonal/quadrada, hexagonais internas",
+      "headline": "Kit Protético: torque, fenda, fricção e hexagonais internas.",
+      "subcopy": "Um inventário completo cobre as principais geometrias do sistema Conexão Digital: torque, fenda, fricção, quadrada e hexagonais internas em 2,0mm a 2,7mm."
+    },
+    {
+      "id": "kit-02",
+      "tom": "informativa",
+      "angulo": "chave catraca com referenciador de torque + chave digital para controle de torque",
+      "headline": "Catraca com referenciador de torque + chave digital.",
+      "subcopy": "Dois instrumentos de controle de torque em um único kit organizado. Cada pilar e parafuso recebe a carga exata recomendada pelo fabricante."
+    },
+    {
+      "id": "kit-03",
+      "tom": "contra-intuitiva",
+      "angulo": "mais peças no kit não é redundância — é o que elimina precisar de peças de terceiros",
+      "headline": "Mais peças no kit não é excesso. É o que evita improviso.",
+      "subcopy": "Cada geometria a mais é uma peça de terceiros que você deixa de precisar comprar. Chaves de outra marca podem gerar folgas microscópicas no encaixe."
+    },
+    {
+      "id": "kit-04",
+      "tom": "contra-intuitiva",
+      "angulo": "o kit não é 'só um conjunto de chaves' — é um sistema de garantia clínica",
+      "headline": "Isto não é só um conjunto de chaves.",
+      "subcopy": "É um sistema de garantia clínica: cada componente é instalado conforme a especificação da engenharia. Carga fora do recomendado compromete a fixação a longo prazo."
+    },
+    {
+      "id": "kit-05",
+      "tom": "tecnica",
+      "angulo": "chaves usinadas especificamente para os parafusos Conexão — chaves de terceiros geram folgas microscópicas e desgaste prematuro",
+      "headline": "Chaves usinadas especificamente para parafusos Conexão.",
+      "subcopy": "Chaves de terceiros geram folgas microscópicas e desgaste prematuro do componente. O ajuste exato preserva a garantia técnica de fábrica do sistema."
+    },
+    {
+      "id": "kit-06",
+      "tom": "tecnica",
+      "angulo": "kit totalmente esterilizável em autoclave antes de cada procedimento",
+      "headline": "Kit Protético: totalmente esterilizável em autoclave.",
+      "subcopy": "Biossegurança garantida antes de cada procedimento, sem exceção. O mesmo kit atende controle de torque, fenda, fricção e todas as hexagonais internas."
+    },
+    {
+      "id": "kit-07",
+      "tom": "efeito-uau",
+      "angulo": "o valor do kit se paga na primeira intercorrência evitada — torque inadequado é a principal causa de retorno de pacientes",
+      "headline": "O kit se paga na primeira intercorrência evitada.",
+      "subcopy": "Torque inadequado é a principal causa de retorno de pacientes ao consultório. Cada intercorrência evitada representa tempo de cadeira e confiança preservados."
+    },
+    {
+      "id": "kit-08",
+      "tom": "efeito-uau",
+      "angulo": "3 tamanhos de chave (curta, média, longa) cobrem até as regiões posteriores de difícil acesso",
+      "headline": "3 tamanhos de chave alcançam até o dente mais posterior.",
+      "subcopy": "Curta, média e longa: nenhuma região de difícil acesso fica sem solução. Um único kit substitui múltiplas chaves avulsas de comprimentos diferentes."
+    },
+    {
+      "id": "kit-09",
+      "tom": "educativa",
+      "angulo": "por que o torque exato importa: carga incorreta pode causar soltura ou fratura do parafuso",
+      "headline": "Por que o torque exato evita soltura e fratura de parafuso?",
+      "subcopy": "Carga fora da especificação do fabricante compromete a fixação a longo prazo. A chave catraca com referenciador entrega o valor exato recomendado a cada aperto."
+    },
+    {
+      "id": "kit-10",
+      "tom": "educativa",
+      "angulo": "por que chaves de outra marca podem invalidar garantias: folgas microscópicas e desgaste prematuro do componente",
+      "headline": "Por que chaves de outra marca podem invalidar sua garantia?",
+      "subcopy": "Folgas microscópicas geram desgaste prematuro do componente original. Chaves usinadas especificamente para os parafusos Conexão eliminam esse risco."
+    }
+  ]
+}

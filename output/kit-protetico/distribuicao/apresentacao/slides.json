@@ -1,0 +1,106 @@
+{
+  "slides": [
+    {
+      "tipo": "capa",
+      "titulo": "Kit Protético Conexão Digital",
+      "corpo": "Torque exato e chaves completas, sem improviso clínico."
+    },
+    {
+      "tipo": "conteudo",
+      "titulo": "Problema: Falha Protética Compromete a Reputação",
+      "corpo": [
+        "**Torque impreciso ou chave incompleta** — Compromete a reputação do dentista e gera retrabalho",
+        "**Carga incorreta** — Pilares e parafusos de fixação que não recebem a carga exata recomendada pelo fabricante podem soltar ou fraturar",
+        "**Mais que um conjunto de chaves** — É um sistema de garantia clínica que assegura a instalação de cada componente conforme as especificações da engenharia"
+      ]
+    },
+    {
+      "tipo": "conteudo",
+      "titulo": "Diferenciais Técnicos do Kit Protético",
+      "corpo": [
+        "**Chave Catraca com Referenciador de Torque** — Principal diferencial do kit: garante a carga exata recomendada pelo fabricante",
+        "**Chave Digital** — Segundo instrumento de controle de torque, complementar à catraca",
+        "**Biossegurança** — Kit totalmente esterilizável em autoclave antes de cada procedimento",
+        "**Usinagem Exclusiva** — Chaves usinadas especificamente para os parafusos Conexão"
+      ]
+    },
+    {
+      "tipo": "conteudo",
+      "titulo": "Composição do Kit",
+      "corpo": [
+        "**Controle de Torque** — 1 chave catraca com referenciador + 1 chave digital",
+        "**Fenda e Fricção** — 1 chave com encaixe fenda média + 1 chave fricção média",
+        "**Hexagonal e Quadrada** — Hexagonal 0,9mm (1 média), Quadrada 1,3mm (curta, média, longa), Hexagonal 1,2mm (curta, média, longa)",
+        "**Hexagonais Internas** — 3 unidades: 2,0mm, 2,5mm e 2,7mm, todas no modelo médio"
+      ]
+    },
+    {
+      "tipo": "conteudo",
+      "titulo": "Especificações: Versatilidade em 3 Tamanhos",
+      "componente": {
+        "tipo": "barras",
+        "dados": {
+          "itens": [
+            {"label": "Quadrada 1,3mm", "valor": 3, "unidade": "tamanhos"},
+            {"label": "Hexagonal 1,2mm", "valor": 3, "unidade": "tamanhos"},
+            {"label": "Hexagonais Internas", "valor": 3, "unidade": "diâmetros"},
+            {"label": "Hexagonal 0,9mm", "valor": 1, "unidade": "tamanho"}
+          ],
+          "max": 3,
+          "unidade": "tamanhos"
+        }
+      }
+    },
+    {
+      "tipo": "conteudo",
+      "titulo": "Script de Vendas: Framework SPIN Selling",
+      "componente": {
+        "tipo": "fluxo",
+        "dados": {
+          "passos": [
+            {
+              "titulo": "S: Situação",
+              "texto": "Pergunte como é feita hoje a gestão das chaves protéticas no consultório: organizada ou dispersa"
+            },
+            {
+              "titulo": "P: Problema",
+              "texto": "Identifique a dificuldade de alcançar o dente posterior por falta de chave mais longa, ou a soltura de parafuso por incerteza de torque"
+            },
+            {
+              "titulo": "I: Implicação",
+              "texto": "Prótese que solta por falta de torque preciso gera retrabalho (tempo de cadeira) e afeta a confiança do paciente no tratamento"
+            },
+            {
+              "titulo": "N: Necessidade de Solução",
+              "texto": "Proponha um kit que unifica todas as chaves em 3 comprimentos + catraca torquímetro de alta precisão"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "tipo": "conteudo",
+      "titulo": "Contorno de Objeções",
+      "componente": {
+        "tipo": "accordion",
+        "dados": {
+          "itens": [
+            {
+              "pergunta": "\"O investimento parece alto\"",
+              "resposta": "O valor do kit se paga na primeira intercorrência evitada — torque inadequado é a principal causa de retorno de pacientes; o kit funciona como um seguro para a durabilidade do trabalho"
+            },
+            {
+              "pergunta": "\"Já tenho chaves de outras marcas\"",
+              "resposta": "As chaves Conexão são usinadas especificamente para os parafusos da marca; chaves de terceiros podem gerar folgas microscópicas que levam a desgaste prematuro do componente e podem invalidar garantias técnicas de fábrica"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "tipo": "cta",
+      "titulo": "Leve Torque Exato e Argumento Técnico à Próxima Visita",
+      "corpo": "O Kit Protético Conexão Digital entrega torque exato via chave catraca com referenciador e chave digital, chaves completas em 3 tamanhos e biossegurança total em autoclave. Use o script SPIN e o contorno de objeções para conduzir a conversa com o dentista com autoridade técnica."
+    }
+  ]
+}

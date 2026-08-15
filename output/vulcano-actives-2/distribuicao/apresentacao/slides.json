@@ -1,0 +1,74 @@
+{
+  "slides": [
+    {
+      "tipo": "capa",
+      "titulo": "Vulcano Actives",
+      "corpo": "Previsibilidade, segurança e reabilitação mais rápida."
+    },
+    {
+      "tipo": "conteudo",
+      "titulo": "O Desafio: Espera e Casos Difíceis",
+      "corpo": [
+        "**Latência óssea** — Após instalar o implante, o corpo precisa formar osso ao redor dele, e isso leva tempo.",
+        "**Perfis de risco** — Fumantes, diabéticos e osso de baixa densidade (Tipo IV) têm espera ainda maior.",
+        "**Regiões difíceis** — A maxila posterior é um dos cenários mais desafiadores da reabilitação."
+      ]
+    },
+    {
+      "tipo": "conteudo",
+      "titulo": "A Solução: Bioatividade Ativa",
+      "corpo": [
+        "**Processo MAO** — Cálcio e Fósforo incorporados ao óxido de titânio, com fósforo acima de 7%.",
+        "**Reconhecimento natural** — O organismo trata o implante como parte do tecido mineralizado.",
+        "**Formação óssea acelerada** — A deposição de apatita biológica começa muito mais cedo."
+      ]
+    },
+    {
+      "tipo": "conteudo",
+      "titulo": "Hidrofilia Extrema: Fase Anatase",
+      "corpo": [
+        "**Alta energia de superfície** — A fase anatase dá ao implante uma capacidade de molhagem única.",
+        "**Sangue na superfície na hora** — O implante é molhado instantaneamente após a instalação.",
+        "**Coágulo estabilizado** — A rede de fibrina é retida desde o início, guiando as células osteogênicas."
+      ]
+    },
+    {
+      "tipo": "conteudo",
+      "titulo": "Topografia no Ponto Ideal",
+      "corpo": [
+        "**Ra ≈ 1,26 µm** — Rugosidade média na faixa ideal para a resposta celular.",
+        "**Osteoblastos** — Células-tronco mesenquimais se diferenciam em células formadoras de osso.",
+        "**Bordo alveolar preservado** — Matriz calcificada densa formada diretamente sobre o metal."
+      ]
+    },
+    {
+      "tipo": "conteudo",
+      "titulo": "Evidência Clínica",
+      "corpo": [
+        "**60 dias** — 97,7% de sucesso, com contra-torque de 25 N.cm.",
+        "**45 dias** — 91,11% de sucesso em protocolos ultra-rápidos."
+      ],
+      "componente": {
+        "tipo": "donut",
+        "dados": {
+          "percentual": 100,
+          "label": "Sucesso em casos de osso tipo IV"
+        }
+      }
+    },
+    {
+      "tipo": "conteudo",
+      "titulo": "Sinergia com Torq e Flash",
+      "corpo": [
+        "**Torq** — Ápice ativo para altos torques de inserção.",
+        "**Flash** — Ressalto Web para compactação óssea.",
+        "**Estabilidade garantida** — A mecânica vira biológica rapidamente, reduzindo o risco de falhas na cicatrização."
+      ]
+    },
+    {
+      "tipo": "cta",
+      "titulo": "Fale com um Especialista",
+      "corpo": "Descubra se a Vulcano Actives é a solução certa para o seu caso. Conexão Sistemas de Prótese."
+    }
+  ]
+}

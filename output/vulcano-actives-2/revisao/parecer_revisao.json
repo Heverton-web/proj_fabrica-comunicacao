@@ -1,0 +1,23 @@
+{
+  "decisoes_design": [
+    "pdf: titulo da capa 'Previsibilidade e Segurança Clínica' (34 chars, 4 palavras) — renderiza em 2 linhas x 2 palavras (bloco >= 0.18) e remete ao tema do texto-base (3 palavras em comum).",
+    "pdf: capa com foto do produto (flex_01.png) no bloco de destaque + imagem na Abertura; 7 secoes SPEC_PDF com tabela tecnica escaneavel na secao Composicao/especificacoes.",
+    "landing-page: hero com beneficio de resultado (público clientes), 6 cards de destaques, tabela de specs como prova + 1 componente animado donut (100% osso tipo IV) como unico elemento-assinatura.",
+    "apresentacao: narrativa dor -> alivio (problema -> solucao -> destaques -> evidencia clinica -> sinergia Torq/Flash -> CTA), com donut animado no slide de evidencia clinica.",
+    "arte: 3 copies em 3 angulos distintos (problema/perfis de risco; diferencial MAO+anatase; resultado carga precoce 45-60d), compartilhadas pelos 3 formatos; CTA 'Fale com um especialista'.",
+    "arte/kit: elementos decorativos de fundo desativados conforme pedido do operador (config_projeto.elementos_decorativos=false) - fundo limpo.",
+    "kit-consultor/kit-distribuidor: mesmas 10 copies (2 por tom, 5 tons fixos, publico dentista_implantodontista), paridade 10x10 confirmada por script; CTA/assinatura diferem via brand/kits-conexao.json.",
+    "kit copies ajustadas aos limites de caracteres (headline <=60, subcopy 100-170) na escrita inicial."
+  ],
+  "informacoes_faltantes": [
+    "Referencias completas dos estudos clinicos (nomes/datas/autores dos dados 100% tipo IV, 91,11% 45d e 97,7% 60d) nao constam no texto-base.",
+    "Dados comerciais (preco, codigos de produto, condicoes) ausentes do texto-base.",
+    "Detalhes das linhas Torq/Flash (plataformas, torques de insercao, formatos) alem da mencao nominal no texto-base."
+  ],
+  "sugestoes_legenda": [
+    "copy-01 (problema): 'Recuperacao mais segura, mesmo nos casos dificeis. A Vulcano Actives registrou 100% de sucesso em osso tipo IV - fale com um especialista.'",
+    "copy-02 (diferencial): 'Tecnologia que ativa a formacao ossea. MAO incorpora Calcio e Fosforo ao titanio (P > 7%) e o corpo reconhece o implante como tecido natural.'",
+    "copy-03 (resultado): 'Sua protese em ate 60 dias com seguranca comprovada: 91,11% aos 45 dias e 97,7% aos 60, com contra-torque de 25 N.cm.'",
+    "CTA compartilhado: 'Fale com um especialista' (padrao clientes de brand/publicos-alvo.json)."
+  ]
+}

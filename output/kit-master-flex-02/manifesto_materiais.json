@@ -1,0 +1,131 @@
+{
+  "slug": "kit-master-flex-02",
+  "materiais": [
+    {
+      "tipo": "pdf",
+      "status": "concluido_autonomo",
+      "path": "output/kit-master-flex-02/pdf/apostila_kit-master-flex-02.pdf"
+    },
+    {
+      "tipo": "landing-page",
+      "status": "concluido_autonomo",
+      "path": "output/kit-master-flex-02/landing-page/index.html"
+    },
+    {
+      "tipo": "apresentacao",
+      "status": "concluido_autonomo",
+      "path": "output/kit-master-flex-02/apresentacao/index.html"
+    },
+    {
+      "tipo": "arte-01",
+      "status": "concluido_autonomo",
+      "path": "output/kit-master-flex-02/arte-01"
+    },
+    {
+      "tipo": "arte-02",
+      "status": "concluido_autonomo",
+      "path": "output/kit-master-flex-02/arte-02"
+    },
+    {
+      "tipo": "arte-03",
+      "status": "concluido_autonomo",
+      "path": "output/kit-master-flex-02/arte-03"
+    },
+    {
+      "tipo": "textos",
+      "status": "concluido_autonomo",
+      "path": "output/kit-master-flex-02/textos"
+    },
+    {
+      "tipo": "kit-consultor",
+      "status": "concluido_autonomo",
+      "path": "output/kit-master-flex-02/kit-consultor"
+    },
+    {
+      "tipo": "kit-distribuidor",
+      "status": "concluido_autonomo",
+      "path": "output/kit-master-flex-02/kit-distribuidor"
+    },
+    {
+      "tipo": "pdf-v2",
+      "status": "concluido_autonomo",
+      "path": "output/kit-master-flex-02/pdf-v2/apostila_kit-master-flex-02.pdf"
+    },
+    {
+      "tipo": "pdf-v3",
+      "status": "concluido_autonomo",
+      "path": "output/kit-master-flex-02/pdf-v3/apostila_kit-master-flex-02.pdf"
+    },
+    {
+      "tipo": "apresentacao-v2",
+      "status": "concluido_autonomo",
+      "path": "output/kit-master-flex-02/apresentacao-v2/index.html"
+    },
+    {
+      "tipo": "arte-01-v2",
+      "status": "concluido_autonomo",
+      "path": "output/kit-master-flex-02/arte-01-v2"
+    },
+    {
+      "tipo": "textos-v2",
+      "status": "concluido_autonomo",
+      "path": "output/kit-master-flex-02/textos-v2"
+    },
+    {
+      "tipo": "kit-consultor-v2",
+      "status": "concluido_autonomo",
+      "path": "output/kit-master-flex-02/kit-consultor-v2"
+    },
+    {
+      "tipo": "kit-distribuidor-v2",
+      "status": "concluido_autonomo",
+      "path": "output/kit-master-flex-02/kit-distribuidor-v2"
+    }
+  ],
+  "decisoes_design": [
+    {
+      "material": "pdf-v3",
+      "decisao": "Regeneracao com edicao '2a Edicao' (config_projeto.json) e tom informacional_tecnico. Corpo reaproveitado da v2 (mesmo texto-base, diff so por logo/sugestoes visuais/CRLF), recompilado e revalidado: capa 2 linhas, tema em comum com o texto-base, contracapa com logo, 8 paginas, 1,9 MB (< 5 MB).",
+      "rastreabilidade": "validar-pdf.py --pasta pdf-v3 [OK] x6; capa 'Previsibilidade e Excelencia Clinica'"
+    },
+    {
+      "material": "apresentacao-v2",
+      "decisao": "slides.json reaproveitado (8 slides ja refletiam o texto-base MasterFlex), recompilado em pasta nova. Claims dos 8 slides rastreaveis ao dossie (fatos 1-16); shimmer dourado no h2 do slide Flex-Bone Drill Protocol preservado (sugestao do texto-base).",
+      "rastreabilidade": "validar-html.py --pasta apresentacao-v2 [OK]; validar-design-tokens [OK]"
+    },
+    {
+      "material": "arte-01-v2",
+      "decisao": "3 copies compartilhadas (copies.json) regravadas para tom tecnico: angulos (problema/isca - copy-01, diferencial tecnico Stop Drill - copy-02, versatilidade/eficiencia - copy-03), todos rastreaveis aos fatos 3-12 do dossie. Fundo limpo (elementos_decorativos=false).",
+      "rastreabilidade": "validar-dimensoes.py --pasta arte-01-v2 [OK]; validar-design-tokens [OK]"
+    },
+    {
+      "material": "textos-v2",
+      "decisao": "3 textos de apoio (whatsapp/instagram/linkedin) com claims 100% rastreaveis ao dossie; 2,9mm/5,0mm nos textos = mesmos valores da fonte (2.9mm/5.0mm, so separador decimal) — verificacao manual; hashtags = keywords de descoberta, nao claims.",
+      "rastreabilidade": "validar-textos.py --pasta textos-v2 [OK]; pre-filtro extrair-claims-candidatos.py: apenas hashtags + variacoes de separador decimal"
+    },
+    {
+      "material": "kit-consultor-v2 + kit-distribuidor-v2",
+      "decisao": "10 copies (kits/copies.json) regravadas para tom tecnico, identicas entre os 2 kits exceto CTA/assinatura (paridade 10x10 confirmada por script); CTA exato de brand/kits-conexao.json (consultor='Fale com seu consultor Conexao'/'Consultor Conexao'; distribuidor='Peca ao seu distribuidor Conexao'/'Distribuidor Autorizado Conexao'). Fundo limpo honrado.",
+      "rastreabilidade": "validar-kit.py [OK] x2; validar-design-tokens [OK] em 20/20 pecas; paridade script 10x10"
+    }
+  ],
+  "informacoes_faltantes": [
+    "Referencias completas dos estudos clinicos citados (nomes/datas/autores) — ausentes do texto-base",
+    "Dados comerciais (preco/codigos) — ausentes do texto-base",
+    "Detalhes das linhas Torq/Flash alem da mencao nominal (nota: pertence ao projeto vulcano-actives-2; para kit-master-flex-02 nada alem do texto-base fornecido)"
+  ],
+  "sugestoes_legenda": [
+    {
+      "material": "textos",
+      "sugestao": "Instagram: 'O unico sistema com Fresa Start + Stop Drill dedicado. Previsibilidade desde o primeiro contato osseo. #MasterFlex #Implantodontia'"
+    },
+    {
+      "material": "arte-01",
+      "sugestao": "Instagram: 'Perfuracao sem limite arrisca estruturas nobres. O Stop Drill exclusivo do MasterFlex devolve o controle desde o primeiro contato osseo.'"
+    },
+    {
+      "material": "kit-consultor",
+      "sugestao": "WhatsApp: 'Quer elevar o padrao das suas reabilitacoes? Fale com seu consultor Conexao e conheca o MasterFlex de perto.'"
+    }
+  ]
+}

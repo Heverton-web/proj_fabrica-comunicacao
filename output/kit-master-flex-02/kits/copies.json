@@ -1,0 +1,74 @@
+{
+  "copies": [
+    {
+      "id": "kit-01",
+      "tom": "informativa",
+      "angulo": "O que é o Kit MasterFlex: Single Kit que unifica a prática clínica com rigor científico",
+      "headline": "Um único kit para toda a cirurgia.",
+      "subcopy": "O Kit MasterFlex reúne Fresa Start, fresas helicoidais 1 a 9 com Stop Drill, drivers com anéis coloridos e pinos de paralelismo em um único estojo."
+    },
+    {
+      "id": "kit-02",
+      "tom": "informativa",
+      "angulo": "Conexões e diâmetros cobertos: cônicas Morse NP/GMF/FIT e hexágono externo HE-RD/HE-SD/HI, de 2.9mm a 5.0mm",
+      "headline": "Da Morse NP ao hexágono externo.",
+      "subcopy": "Compatível com cônicas Morse (NP, GMF, FIT), hexágono externo (HE-RD, HE-SD, HI) e implantes de 2.9mm a 5.0mm em um único sistema."
+    },
+    {
+      "id": "kit-03",
+      "tom": "contra-intuitiva",
+      "angulo": "'Mais fresas, mais complexidade'? Não: as 9 fresas têm limitador de profundidade próprio (Stop Drill)",
+      "headline": "Mais fresas, menos risco.",
+      "subcopy": "Cada fresa helicoidal tem seu próprio Stop Drill: o controle de profundidade elimina a dependência do tato e protege estruturas nobres desde o primeiro contato ósseo."
+    },
+    {
+      "id": "kit-04",
+      "tom": "contra-intuitiva",
+      "angulo": "Um único estojo substitui vários: da Fresa Start (Lança) ao Extension Drill, para todos os casos",
+      "headline": "Um estojo, todos os casos.",
+      "subcopy": "Do alvéolo estreito ao de extração imediata, o MasterFlex cobre 2.9mm a 5.0mm com um único estojo — menos caixas na bancada, mais previsibilidade na sequência."
+    },
+    {
+      "id": "kit-05",
+      "tom": "tecnica",
+      "angulo": "Stop Drill dedicado: fidelidade ao planejamento digital/tomográfico desde o primeiro contato ósseo",
+      "headline": "Planejamento, fidelidade absoluta.",
+      "subcopy": "O Stop Drill dedicado à Fresa Start garante que o planejamento digital ou tomográfico seja executado com fidelidade desde o primeiro contato ósseo, mitigando acidentes."
+    },
+    {
+      "id": "kit-06",
+      "tom": "tecnica",
+      "angulo": "Flex-Bone Drill Protocol: sequência de fresagem por densidade (Soft III-IV / Hard I-II) na tampa da caixa",
+      "headline": "Protocolo estampado na caixa.",
+      "subcopy": "O Flex-Bone Drill Protocol orienta a sequência exata de fresagem por densidade óssea, Soft III-IV ou Hard I-II, direto na tampa da caixa organizadora."
+    },
+    {
+      "id": "kit-07",
+      "tom": "efeito-uau",
+      "angulo": "Único sistema no mercado com Fresa Start + Stop Drill dedicado",
+      "headline": "O único com Start + Stop Drill.",
+      "subcopy": "Único sistema no mercado a integrar a Fresa Start (Lança) com Stop Drill dedicado: controle de profundidade em toda a fresagem, da primeira broca à última."
+    },
+    {
+      "id": "kit-08",
+      "tom": "efeito-uau",
+      "angulo": "Instrumentação completa de 2.9mm (espaços estreitos) a 5.0mm (extração imediata)",
+      "headline": "De 2.9mm a 5.0mm, um kit só.",
+      "subcopy": "Do Slim 2.9mm para espaços protéticos estreitos ao diâmetro largo 5.0mm para alvéolos de extração imediata — instrumentação completa em uma única plataforma."
+    },
+    {
+      "id": "kit-09",
+      "tom": "educativa",
+      "angulo": "Por que o controle de profundidade é o pilar da osseointegração e da preservação anatômica",
+      "headline": "Profundidade exata, osseointegração.",
+      "subcopy": "A cavidade cirúrgica exata para o implante selecionado é o que garante estabilidade primária e preservação anatômica — o Stop Drill torna isso padrão, não exceção."
+    },
+    {
+      "id": "kit-10",
+      "tom": "educativa",
+      "angulo": "Anéis coloridos dos drivers: Azul NP, Verde GMF/FIT/HE-RD, Vermelho SL/HE-SD — reconhecimento imediato",
+      "headline": "Corre por cor, sem hesitar.",
+      "subcopy": "Drivers de captura ativa com anéis coloridos: Azul para NP, Verde para GMF/FIT/HE-RD e Vermelho para SL/HE-SD — reconhecimento imediato e menos tempo de cadeira."
+    }
+  ]
+}

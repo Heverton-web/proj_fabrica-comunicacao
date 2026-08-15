@@ -1,0 +1,12 @@
+{
+  "slug": "kit-protetico",
+  "texto_base": "output/kit-protetico/insumos/texto-mae.txt",
+  "imagens": [
+    {"path": "output/kit-protetico/insumos/kit_protetico_01.png", "descricao": "foto do produto Kit Protético"}
+  ],
+  "publico_alvo": "consultores",
+  "objetivo_tom": "educacional_comercial",
+  "materiais_selecionados": ["pdf", "landing-page", "apresentacao", "arte-01", "arte-02", "arte-03", "textos", "kit-consultor", "kit-distribuidor"],
+  "edicao": "1ª Edição",
+  "elementos_decorativos": false
+}

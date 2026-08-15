@@ -1,0 +1,12 @@
+{
+  "slug": "kit-master-flex-02",
+  "texto_base": "output/kit-master-flex-02/insumos/texto-mae-02.txt",
+  "imagens": [
+    {"path": "output/kit-master-flex-02/insumos/kit-master-flex.png", "descricao": "foto do produto Kit Master Flex"}
+  ],
+  "publico_alvo": "clientes",
+  "objetivo_tom": "informacional_tecnico",
+  "materiais_selecionados": ["pdf", "landing-page", "apresentacao", "arte-01", "arte-02", "arte-03", "textos", "kit-consultor", "kit-distribuidor"],
+  "edicao": "2ª Edição",
+  "elementos_decorativos": false
+}

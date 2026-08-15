@@ -1,0 +1,74 @@
+{
+  "copies": [
+    {
+      "id": "kit-01",
+      "tom": "informativa",
+      "angulo": "Single Kit elimina múltiplos estojos",
+      "headline": "Um estojo. Todas as linhas de implantes Conexão.",
+      "subcopy": "O MasterFlex unifica NP, GMF, FIT, HE-RD e HE-SD em uma única plataforma. Um único estojo substitui a necessidade de vários kits separados na clínica."
+    },
+    {
+      "id": "kit-02",
+      "tom": "informativa",
+      "angulo": "Protocolo de fresagem impresso na tampa",
+      "headline": "O protocolo de fresagem está na tampa do kit.",
+      "subcopy": "Sequência visual para ossos Soft (III-IV) e Hard (I-II) — sem consulta externa. O protocolo impresso na tampa guia a fresagem sem precisar parar a cirurgia."
+    },
+    {
+      "id": "kit-03",
+      "tom": "contra-intuitiva",
+      "angulo": "Mais completo não é mais complexo",
+      "headline": "Mais completo. Menos etapas na cadeira.",
+      "subcopy": "O layout didático com cores e marcações torna a instrumentação ágil. Mais componentes no estojo não significam mais tempo perdido escolhendo a peça certa."
+    },
+    {
+      "id": "kit-04",
+      "tom": "contra-intuitiva",
+      "angulo": "Um kit, todas as conexões",
+      "headline": "Não são vários kits. É um só que faz tudo.",
+      "subcopy": "De Slim 2.9mm a 5.0mm, cônicas e hexágono externo — tudo em um estojo. Toda a versatilidade clínica cabe num único kit, sem precisar trocar de estojo entre casos."
+    },
+    {
+      "id": "kit-05",
+      "tom": "tecnica",
+      "angulo": "Stop Drill exclusivo na fresa Start",
+      "headline": "Stop Drill dedicado na fresa Start. Controle de profundidade desde o início.",
+      "subcopy": "Único sistema com parada de profundidade no primeiro passo da perfuração. O Stop Drill exclusivo da fresa Start evita o excesso de perfuração desde a primeira etapa."
+    },
+    {
+      "id": "kit-06",
+      "tom": "tecnica",
+      "angulo": "Identificação visual negrito/itálico",
+      "headline": "Número em negrito. Diâmetro em itálico. Zero erro na escolha.",
+      "subcopy": "Marcações duplas nas fresas para instrumentação sem confusão. Número em negrito e diâmetro em itálico eliminam a leitura errada na hora da escolha."
+    },
+    {
+      "id": "kit-07",
+      "tom": "efeito-uau",
+      "angulo": "9 linhas de fresas de 2.4 a 4.6mm",
+      "headline": "9 fresas. 2.4 a 4.6mm. Qualquer caso, um kit.",
+      "subcopy": "Helicoidais dispostas horizontalmente para sequência cirúrgica fluida. Nove linhas de fresas, de 2.4 a 4.6mm, cobrem qualquer caso sem precisar de outro kit."
+    },
+    {
+      "id": "kit-08",
+      "tom": "efeito-uau",
+      "angulo": "Captura ativa do implante até o alvéolo",
+      "headline": "Captura direto da embalagem. Até o alvéolo. Sem contato.",
+      "subcopy": "Drivers com captura ativa — implante seguro do estojo ao sítio cirúrgico. A captura começa direto na embalagem e segue até o alvéolo, sem contato manual."
+    },
+    {
+      "id": "kit-09",
+      "tom": "educativa",
+      "angulo": "Como simplificar a logística de esterilização",
+      "headline": "Um kit para esterilizar. Um estojo para gerenciar.",
+      "subcopy": "Reduza custos de esterilização e otimizações de estoque com o Single Kit. Um kit único para esterilizar significa um estojo só para gerenciar na central."
+    },
+    {
+      "id": "kit-10",
+      "tom": "educativa",
+      "angulo": "Guia visual para ossos Soft e Hard",
+      "headline": "Soft ou Hard? O kit mostra o caminho.",
+      "subcopy": "Protocolo de fresagem estampado na tampa — densidade óssea guia a sequência. Soft ou Hard, a tampa mostra o caminho certo antes mesmo de abrir o estojo."
+    }
+  ]
+}

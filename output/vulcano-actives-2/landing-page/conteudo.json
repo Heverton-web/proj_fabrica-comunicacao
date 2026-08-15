@@ -1,0 +1,76 @@
+{
+  "hero": {
+    "headline": "Previsibilidade, segurança e reabilitação mais rápida",
+    "subheadline": "A superfície Vulcano Actives acelera a formação óssea com bioatividade ativa — menos tempo de espera entre a cirurgia e a prótese definitiva, mesmo nos casos mais desafiadores.",
+    "cta": "Fale com um especialista"
+  },
+  "problema_solucao": {
+    "problema": {
+      "titulo": "O tempo de espera e os casos difíceis",
+      "texto": "Depois de instalar um implante, o corpo precisa formar osso ao redor dele — e isso leva tempo. Pacientes fumantes, diabéticos ou com osso de baixa densidade (Tipo IV) enfrentam uma espera ainda maior, e regiões como a maxila posterior são especialmente desafiadoras. A superfície do implante precisa fazer mais do que se fixar: ela precisa trabalhar a favor da biologia."
+    },
+    "solucao": {
+      "titulo": "Uma superfície que ativa a cicatrização",
+      "texto": "A Vulcano Actives usa **bioatividade ativa**: o processo MAO incorpora Cálcio e Fósforo ao óxido de titânio (fósforo acima de 7%), e o organismo passa a reconhecer o implante como parte do tecido mineralizado. A fase cristalina anatase dá hidrofilia extrema — o sangue molha o implante instantaneamente, estabilizando o coágulo e retendo a rede de fibrina que guia a formação óssea."
+    }
+  },
+  "destaques": [
+    {
+      "titulo": "100% de sucesso em osso tipo IV",
+      "texto": "Segurança comprovada onde a biologia é mais adversa, com margem de segurança para reabilitações em maxila posterior."
+    },
+    {
+      "titulo": "Carga precoce a partir de 45 dias",
+      "texto": "91,11% de sucesso aos 45 dias e 97,7% aos 60 dias — protocolos rápidos com segurança biológica."
+    },
+    {
+      "titulo": "Contra-torque de 25 N.cm",
+      "texto": "Aos 60 dias, a superfície suporta testes de contra-torque de 25 N.cm, confirmando a estabilidade."
+    },
+    {
+      "titulo": "Hidrofilia extrema",
+      "texto": "A fase anatase faz o sangue molhar o implante instantaneamente, retendo a rede de fibrina desde o início."
+    },
+    {
+      "titulo": "Topografia no ponto ideal",
+      "texto": "Rugosidade Ra ≈ 1,26 µm diferencia células-tronco em osteoblastos e ajuda a preservar o bordo alveolar."
+    },
+    {
+      "titulo": "Sinergia com Torq e Flash",
+      "texto": "A estabilidade primária (mecânica) vira estabilidade secundária (biológica) rapidamente, minimizando riscos na cicatrização."
+    }
+  ],
+  "prova": {
+    "composicao": {
+      "titulo": "Especificações técnicas",
+      "cabecalho": ["Característica", "Vulcano Actives"],
+      "linhas": [
+        ["Bioatividade", "Ativa (biomaterial bioativo)"],
+        ["Processo", "Oxidação por arco micro-elétrico (MAO)"],
+        ["Elementos incorporados", "Cálcio (Ca) e Fósforo (P), fósforo > 7%"],
+        ["Fase induzida", "Cristalina anatase (alta energia de superfície)"],
+        ["Hidrofilia", "Extrema — sangue molha o implante instantaneamente"],
+        ["Rugosidade média", "Ra ≈ 1,26 µm (ponto ideal)"],
+        ["Carga precoce 45 dias", "91,11% de sucesso"],
+        ["Carga precoce 60 dias", "97,7% de sucesso, contra-torque de 25 N.cm"],
+        ["Osso tipo IV", "100% de sucesso"],
+        ["Macrogeometria", "Linhas Torq (ápice ativo) e Flash (ressalto Web)"]
+      ]
+    }
+  },
+  "cta_final": {
+    "headline": "Menos espera, mais segurança: conheça o Vulcano Actives",
+    "cta": "Fale com um especialista",
+    "dica_ouro": "Bioatividade ativa (MAO), hidrofilia extrema e 100% de sucesso em osso tipo IV — tecnologia para tratamentos mais rápidos e previsíveis."
+  },
+  "enriquecimentos": [
+    {
+      "secao": "prova",
+      "tipo": "donut",
+      "dados": {
+        "percentual": 100,
+        "label": "Sucesso em casos de osso tipo IV"
+      }
+    }
+  ]
+}

@@ -1,0 +1,110 @@
+{
+  "slug": "kit-stop-drill",
+  "materiais": [
+    {
+      "tipo": "pdf",
+      "status": "concluido_autonomo",
+      "path": "output/kit-stop-drill/pdf/apostila_kit-stop-drill.pdf"
+    },
+    {
+      "tipo": "landing-page",
+      "status": "concluido_autonomo",
+      "path": "output/kit-stop-drill/landing-page/index.html"
+    },
+    {
+      "tipo": "apresentacao",
+      "status": "concluido_autonomo",
+      "path": "output/kit-stop-drill/apresentacao/index.html"
+    },
+    {
+      "tipo": "arte-01",
+      "status": "concluido_autonomo",
+      "path": "output/kit-stop-drill/arte-01"
+    },
+    {
+      "tipo": "arte-02",
+      "status": "concluido_autonomo",
+      "path": "output/kit-stop-drill/arte-02"
+    },
+    {
+      "tipo": "arte-03",
+      "status": "concluido_autonomo",
+      "path": "output/kit-stop-drill/arte-03"
+    },
+    {
+      "tipo": "textos",
+      "status": "concluido_autonomo",
+      "path": "output/kit-stop-drill/textos"
+    },
+    {
+      "tipo": "kit-consultor",
+      "status": "concluido_autonomo",
+      "path": "output/kit-stop-drill/kit-consultor"
+    },
+    {
+      "tipo": "kit-distribuidor",
+      "status": "concluido_autonomo",
+      "path": "output/kit-stop-drill/kit-distribuidor"
+    },
+    {
+      "tipo": "kit-consultor-v2",
+      "status": "concluido_autonomo",
+      "path": "output/kit-stop-drill/kit-consultor-v2"
+    },
+    {
+      "tipo": "kit-distribuidor-v2",
+      "status": "concluido_autonomo",
+      "path": "output/kit-stop-drill/kit-distribuidor-v2"
+    }
+  ],
+  "decisoes_design": [
+    {
+      "tipo": "pdf",
+      "nota": "Material estatico (Typst/PDF) sem componentes animados aplicaveis; secoes seguem estrutura de 7 blocos de SPEC_PDF.md sem desvio de marca."
+    },
+    {
+      "tipo": "landing-page",
+      "nota": "Usou 'barras' para as 7 profundidades e 'accordion' para as 2 objecoes (enriquecimentos corretos, sem oportunidade perdida). CTA com gradiente de assinatura, 0 badges de contexto."
+    },
+    {
+      "tipo": "apresentacao",
+      "nota": "Usou 'barras' (7 profundidades), 'fluxo' (4 passos SPIN, sequencia real) e 'accordion' (2 objecoes) - 3 componentes animados todos justificados pelo conteudo do dossie, nenhum decorativo. Badge 'Dica de Ouro' e do slide CTA final, nao de peca de arte/kit, regra de 1-badge-por-peca nao se aplica."
+    },
+    {
+      "tipo": "textos",
+      "nota": "Corrigido desvio de publico-alvo: linkedin.txt endereçava 'consultores e distribuidores', mas dossie fixa publico_alvo=consultores para textos (distribuidor so tem escopo fixo no kit-distribuidor). Ajustado para 'Para o consultor Conexao'. Demais claims (POM, condutibilidade termica, 1.5mm, 7 cores/profundidades, Master Flex/Start Flex fresas 1-9, Engenharia de Previsibilidade) rastreados ao dossie nos 3 canais."
+    },
+    {
+      "tipo": "kit-consultor",
+      "nota": "10 copies (2 por tom x 5 tons de brand/tons-kit.json) auditadas contra o dossie - todos os claims rastreaveis (POM/autoclave, baixa condutibilidade, travamento, 7 cores/profundidades, identificacao dual negrito/italico, extensor Master Flex/Start Flex fresas 1-9, 1.5mm de erro visual). CTA pill (class=cta) e o unico elemento tipo badge, 0 badges de contexto, conforme SPEC_KITS.md endurecido. Cores/gradiente/fontes Inter locais conferem com brand/design-system-conexao.json."
+    },
+    {
+      "tipo": "kit-distribuidor",
+      "nota": "Comparado item a item com kit-consultor: headline e subcopy identicos nas 10 pecas, unica diferenca e CTA ('Peca ao seu distribuidor Conexao') e assinatura ('Distribuidor Autorizado Conexao'), exatamente como definido em brand/kits-conexao.json. Mesma fidelidade de conteudo e marca do kit-consultor confirmada (compartilham kits/copies.json)."
+    },
+    {
+      "tipo": "arte-01,arte-02,arte-03",
+      "nota": "3 copies de output/kit-stop-drill/arte/copies.json auditadas - angulos genuinamente distintos (problema/solucao medicao visual vs limitador fisico; diferencial tecnico POM/autoclave; versatilidade 7 cores/7 profundidades), todos rastreaveis ao dossie. Renderizacao identica das 3 copies confirmada nos 3 formatos (index.html/index_copy02.html/index_copy03.html). Cores hex confinadas a :root (tokens), sem hardcode solto fora de variavel. CTA pill (class=cta, outline translucido em accent, nao chapado) e o unico elemento tipo badge em cada PNG, 0 badges de contexto, conforme SPEC_ARTE.md endurecido."
+    }
+  ],
+  "informacoes_faltantes": [
+    {
+      "tipo": "pdf",
+      "nota": "Torque de aperto do stop na fresa e certificacoes ANVISA/ISO nao constam no dossie e nao foram inventados no material (corretamente omitidos)."
+    }
+  ],
+  "sugestoes_legenda": [
+    {
+      "tipo": "landing-page",
+      "texto": "Precisao milimetrica travada na fresa, nao no olho. Conheca o Stop Drill."
+    },
+    {
+      "tipo": "kit-consultor",
+      "texto": "Precisao que trava na fresa, nao no olho. Fale com seu consultor Conexao."
+    },
+    {
+      "tipo": "kit-distribuidor",
+      "texto": "Precisao que trava na fresa, nao no olho. Peca ao seu distribuidor Conexao."
+    }
+  ]
+}

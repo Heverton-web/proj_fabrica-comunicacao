@@ -1,0 +1,81 @@
+{
+  "slug": "kit-protetico",
+  "lote": 4,
+  "materiais": {
+    "pdf": {
+      "tentativas": 4,
+      "ultimo_erro": "",
+      "estado": "concluido_autonomo"
+    },
+    "landing-page": {
+      "tentativas": 2,
+      "ultimo_erro": "",
+      "estado": "concluido_autonomo"
+    },
+    "apresentacao": {
+      "tentativas": 2,
+      "ultimo_erro": "",
+      "estado": "concluido_autonomo"
+    },
+    "arte-01": {
+      "tentativas": 2,
+      "ultimo_erro": "",
+      "estado": "concluido_autonomo"
+    },
+    "arte-02": {
+      "tentativas": 2,
+      "ultimo_erro": "",
+      "estado": "concluido_autonomo"
+    },
+    "arte-03": {
+      "tentativas": 2,
+      "ultimo_erro": "",
+      "estado": "concluido_autonomo"
+    },
+    "textos": {
+      "tentativas": 2,
+      "ultimo_erro": "",
+      "estado": "concluido_autonomo"
+    },
+    "kit-consultor": {
+      "tentativas": 2,
+      "ultimo_erro": "",
+      "estado": "concluido_autonomo"
+    },
+    "kit-distribuidor": {
+      "tentativas": 2,
+      "ultimo_erro": "",
+      "estado": "concluido_autonomo"
+    },
+    "pdf-v2": {
+      "tentativas": 1,
+      "ultimo_erro": "",
+      "estado": "concluido_autonomo"
+    },
+    "kit-consultor-v3": {
+      "tentativas": 1,
+      "ultimo_erro": "",
+      "estado": "concluido_autonomo"
+    },
+    "kit-distribuidor-v3": {
+      "tentativas": 1,
+      "ultimo_erro": "",
+      "estado": "concluido_autonomo"
+    },
+    "arte-01-v3": {
+      "tentativas": 1,
+      "ultimo_erro": "",
+      "estado": "concluido_autonomo"
+    },
+    "arte-02-v3": {
+      "tentativas": 1,
+      "ultimo_erro": "",
+      "estado": "concluido_autonomo"
+    },
+    "arte-03-v3": {
+      "tentativas": 1,
+      "ultimo_erro": "",
+      "estado": "concluido_autonomo"
+    }
+  }
+}

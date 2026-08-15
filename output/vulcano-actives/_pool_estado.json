@@ -1,0 +1,71 @@
+{
+  "slug": "vulcano-actives",
+  "lote": 4,
+  "materiais": {
+    "pdf": {
+      "tentativas": 1,
+      "ultimo_erro": "",
+      "estado": "concluido_autonomo"
+    },
+    "apresentacao": {
+      "tentativas": 1,
+      "ultimo_erro": "",
+      "estado": "concluido_autonomo"
+    },
+    "arte-01": {
+      "tentativas": 1,
+      "ultimo_erro": "",
+      "estado": "concluido_autonomo"
+    },
+    "arte-02": {
+      "tentativas": 1,
+      "ultimo_erro": "",
+      "estado": "concluido_autonomo"
+    },
+    "arte-03": {
+      "tentativas": 1,
+      "ultimo_erro": "",
+      "estado": "concluido_autonomo"
+    },
+    "textos": {
+      "tentativas": 1,
+      "ultimo_erro": "",
+      "estado": "concluido_autonomo"
+    },
+    "kit-consultor": {
+      "tentativas": 1,
+      "ultimo_erro": "",
+      "estado": "concluido_autonomo"
+    },
+    "pdf-v2": {
+      "tentativas": 1,
+      "ultimo_erro": "",
+      "estado": "concluido_autonomo"
+    },
+    "apresentacao-v2": {
+      "tentativas": 1,
+      "ultimo_erro": "",
+      "estado": "concluido_autonomo"
+    },
+    "arte-01-v2": {
+      "tentativas": 1,
+      "ultimo_erro": "",
+      "estado": "concluido_autonomo"
+    },
+    "arte-02-v2": {
+      "tentativas": 1,
+      "ultimo_erro": "",
+      "estado": "concluido_autonomo"
+    },
+    "arte-03-v2": {
+      "tentativas": 1,
+      "ultimo_erro": "",
+      "estado": "concluido_autonomo"
+    },
+    "kit-consultor-v2": {
+      "tentativas": 1,
+      "ultimo_erro": "",
+      "estado": "concluido_autonomo"
+    }
+  }
+}

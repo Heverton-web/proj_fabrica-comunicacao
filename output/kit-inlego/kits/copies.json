@@ -1,0 +1,74 @@
+{
+  "copies": [
+    {
+      "id": "kit-01",
+      "tom": "informativa",
+      "angulo": "compatibilidade com os sistemas de abutments Micro Unit (MU) e Multi Base (MB)",
+      "headline": "Kit inLego: compatível com Micro Unit e Multi Base.",
+      "subcopy": "Um único kit cobre os dois sistemas de abutment, MU e MB, sem precisar de um kit dedicado para cada um."
+    },
+    {
+      "id": "kit-02",
+      "tom": "informativa",
+      "angulo": "composição do kit: Scan inL, SC (10mm), TS (13mm), hastes de escaneamento em alturas variadas",
+      "headline": "Scan inL, SC (10mm), TS (13mm) e hastes em alturas variadas.",
+      "subcopy": "Componentes em PEEK e PEEK-Titânio pensados para cada etapa do escaneamento digital do arco inferior."
+    },
+    {
+      "id": "kit-03",
+      "tom": "contra-intuitiva",
+      "angulo": "ausência de parafuso passante parece limitação, mas é o que resolve o espaço reduzido em regiões posteriores",
+      "headline": "Sem parafuso passante não é limitação. É a solução.",
+      "subcopy": "Onde a chave não entra, o rosqueamento manual do inLego resolve o que o parafuso passante não resolvia."
+    },
+    {
+      "id": "kit-04",
+      "tom": "contra-intuitiva",
+      "angulo": "rosqueamento manual (não elétrico) é o que garante controle, não menos precisão",
+      "headline": "Rosqueamento manual: menos ferramenta, não menos precisão.",
+      "subcopy": "O controle do próprio dedo garante a mesma precisão de rosqueamento, sem depender do espaço para a chave."
+    },
+    {
+      "id": "kit-05",
+      "tom": "tecnica",
+      "angulo": "hastes em PEEK Grau Médico lidas pelo escâner com a mesma facilidade que um dente natural",
+      "headline": "PEEK Grau Médico: o escâner lê como se fosse dente natural.",
+      "subcopy": "O software para de se perder entre os implantes — leitura contínua, sem interrupção de imagem. As hastes em PEEK Grau Médico leem como um dente natural."
+    },
+    {
+      "id": "kit-06",
+      "tom": "tecnica",
+      "angulo": "assentamento passivo via match com bibliotecas digitais (MU in lab), prevenindo fratura de parafusos",
+      "headline": "Match com a biblioteca MU in lab garante assentamento passivo.",
+      "subcopy": "Assentamento passivo na barra de protocolo, prevenindo fratura de parafusos a longo prazo. O encaixe vem do match com a biblioteca digital MU in lab, sem ajuste manual."
+    },
+    {
+      "id": "kit-07",
+      "tom": "efeito-uau",
+      "angulo": "redução do tempo de cadeira pela metade com um único escaneamento",
+      "headline": "Um escaneamento. Metade do tempo de cadeira.",
+      "subcopy": "Gengiva e pilares capturados juntos — o que levava duas etapas, agora leva uma. Essa etapa única corta o tempo de cadeira pela metade, para mais pacientes."
+    },
+    {
+      "id": "kit-08",
+      "tom": "efeito-uau",
+      "angulo": "Conexão Dupla: até 2 hastes por pilar, lendo áreas anteriores e posteriores ao mesmo tempo",
+      "headline": "2 hastes por pilar leem a área anterior e posterior juntas.",
+      "subcopy": "A Conexão Dupla do inLego une o pilar aos vizinhos e ainda aponta para a área distal. As 2 hastes leem a área anterior e a posterior ao mesmo tempo, sem etapas extras."
+    },
+    {
+      "id": "kit-09",
+      "tom": "educativa",
+      "angulo": "por que a mandíbula é o 'deserto anatômico' do escaneamento digital (sem referência como a rugosidade palatina da maxila)",
+      "headline": "Por que a mandíbula 'confunde' o escâner e a maxila não?",
+      "subcopy": "A maxila tem a rugosidade palatina como referência; a mandíbula, nenhuma — por isso o escâner se perde."
+    },
+    {
+      "id": "kit-10",
+      "tom": "educativa",
+      "angulo": "por que gambiarras (elástico, resina) eram necessárias antes e o risco de retrabalho/fratura que geravam",
+      "headline": "Elástico e resina não eram vaidade. Eram a única referência.",
+      "subcopy": "Sem pontos de referência na mandíbula, essas gambiarras tentavam dar ao software o que faltava — e geravam retrabalho."
+    }
+  ]
+}
