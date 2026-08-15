@@ -1,0 +1,38 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cat >/dev/null || true; command -v code-review-graph >/dev/null 2>&1 || exit 0; git rev-parse --git-dir >/dev/null 2>&1 && code-review-graph update --skip-flows --repo \"$(git rev-parse --show-toplevel 2>/dev/null)\" || true",
+            "timeout": 30
+          },
+          {
+            "type": "command",
+            "command": "python -c \"import sys,json,subprocess; d=json.load(sys.stdin); p=(d.get('tool_input') or {}).get('file_path','') or ''; p=p.replace(chr(92),'/'); a=('commands/esbocar.md','commands/produzir-comunicacao-completa.md','commands/gerar-pdf.md','commands/gerar-landing.md','commands/gerar-apresentacao.md','commands/gerar-arte.md','commands/gerar-arte-1080x1080.md','commands/gerar-arte-1080x1350.md','commands/gerar-arte-1080x1920.md','commands/gerar-textos.md','commands/gerar-kit-consultor.md','commands/gerar-kit-distribuidor.md','SPEC.md','SPEC_COMANDOS.md'); (subprocess.run(['python','scripts/verificar-consistencia-pipeline.py','--estrito']) if any(p.endswith(x) for x in a) else None)\" 2>/dev/null || true",
+            "timeout": 15
+          },
+          {
+            "type": "command",
+            "command": "python -c \"import sys,json,subprocess; d=json.load(sys.stdin); p=(d.get('tool_input') or {}).get('file_path','') or ''; p=p.replace(chr(92),'/'); a=('AGENTS.md','CLAUDE.md','GEMINI.md','CODEBUDDY.md','QODER.md','SPEC_COMANDOS.md','SPEC.md','.mcp.json','opencode.jsonc','settings.json','verificar-universalidade.py'); (subprocess.run(['python','scripts/verificar-universalidade.py','--estrito']) if any(p.endswith(x) for x in a) or '/commands/' in p or '/skills/' in p else None)\" 2>/dev/null || true",
+            "timeout": 15
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cat >/dev/null || true; command -v code-review-graph >/dev/null 2>&1 || exit 0; git rev-parse --git-dir >/dev/null 2>&1 && code-review-graph status --repo \"$(git rev-parse --show-toplevel 2>/dev/null)\" || echo 'Not a git repo, skipping'",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}

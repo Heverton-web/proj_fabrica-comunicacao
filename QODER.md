@@ -1,0 +1,51 @@
+<!-- code-review-graph MCP tools -->
+## MCP Tools: code-review-graph
+
+**IMPORTANT: This project has a knowledge graph. ALWAYS use the
+code-review-graph MCP tools BEFORE using Grep/Glob/Read to explore
+the codebase.** The graph is faster, cheaper (fewer tokens), and gives
+you structural context (callers, dependents, test coverage) that file
+scanning cannot.
+
+### When to use graph tools FIRST
+
+- **Exploring code**: `semantic_search_nodes_tool` or `query_graph_tool` instead of Grep
+- **Understanding impact**: `get_impact_radius_tool` instead of manually tracing imports
+- **Code review**: `detect_changes_tool` + `get_review_context_tool` instead of reading entire files
+- **Finding relationships**: `query_graph_tool` with callers_of/callees_of/imports_of/tests_for
+- **Architecture questions**: `get_architecture_overview_tool` + `list_communities_tool`
+
+Fall back to Grep/Glob/Read **only** when the graph doesn't cover what you need.
+
+### Key Tools
+
+| Tool | Use when |
+| ------ | ---------- |
+| `detect_changes_tool` | Reviewing code changes — gives risk-scored analysis |
+| `get_review_context_tool` | Need source snippets for review — token-efficient |
+| `get_impact_radius_tool` | Understanding blast radius of a change |
+| `get_affected_flows_tool` | Finding which execution paths are impacted |
+| `query_graph_tool` | Tracing callers, callees, imports, tests, dependencies |
+| `semantic_search_nodes_tool` | Finding functions/classes by name or keyword |
+| `get_architecture_overview_tool` | Understanding high-level codebase structure |
+| `refactor_tool` | Planning renames, finding dead code |
+
+### Workflow
+
+1. The graph auto-updates on file changes (via hooks).
+2. Use `detect_changes_tool` for code review.
+3. Use `get_affected_flows_tool` to understand impact.
+4. Use `query_graph_tool` pattern="tests_for" to check coverage.
+
+## Comandos da Fábrica
+
+Este repositório é a "Fábrica de Materiais de Comunicação". Os comandos
+(`/esbocar`, `/produzir-comunicacao-completa`, `/gerar-pdf`, `/gerar-landing`,
+`/gerar-apresentacao`, `/gerar-arte` e variantes por tamanho, `/gerar-textos`,
+`/gerar-kit-consultor`, `/gerar-kit-distribuidor`) são universais (não exclusivos
+do Claude Code) — o procedimento completo de cada um está em `SPEC_COMANDOS.md`
+(fonte única de verdade; a lista canônica vive em `AGENTS.md`). Se o operador
+digitar um desses comandos (ou pedir o equivalente em linguagem natural, ex.:
+"inicie a fábrica para o produto X"), leia `SPEC_COMANDOS.md` por completo e siga
+a seção correspondente. `AGENTS.md` é a fonte de verdade da arquitetura/regras do
+projeto.

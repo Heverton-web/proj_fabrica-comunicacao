@@ -1,0 +1,18 @@
+# Added by code-review-graph
+.code-review-graph/
+
+# Config/permissões locais da máquina
+.claude/settings.local.json
+
+# Caches e temporários
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.crg-*.py
+.crg-hook.log
+.DS_Store
+*.bak
+
+# Estado de runtime do Claude Code
+.claude/scheduled_tasks.lock
