@@ -1,0 +1,29 @@
+
+-------------------------------------------------------------------------------
+   ROBOCOPY     ::     Robust File Copy para Windows                              
+-------------------------------------------------------------------------------
+
+  Iniciado: s bado, 15 de agosto de 2026 18:08:39
+   Origem : C:\Users\trcnologia\Desktop\01_Projetos_e_Desenvolvimento\proj_fabrica-comunicacao\
+     Destino : D:\Backup_C_trcnologia_2026-08-14\Desktop\01_Projetos_e_Desenvolvimento\proj_fabrica-comunicacao\
+
+    Arquivos: *.*
+	    
+  Op‡äes: *.* /NDL /NFL /S /E /DCOPY:DA /COPY:DAT /NP /MT:8 /R:5 /W:2 
+
+------------------------------------------------------------------------------
+
+
+------------------------------------------------------------------------------
+
+               Total   Copiada  IgnoradaIncompatibilidade     FALHA    Extras
+Diret¢rios:      3044      3044       967         0        24         6
+ Arquivos:     14478     10074      4404         0         0        26
+    Bytes:   2.620 g   1.827 g  812.48 m         0         0   521.1 k
+N.§ de Vezes:   0:47:20   0:05:08                       0:00:00   0:00:43
+
+
+Velocidade:           6.363.136 Bytes/s.
+Velocidade:             364,102 MegaBytes/min.
+   Finalizado em: s bado, 15 de agosto de 2026 18:14:31
+
