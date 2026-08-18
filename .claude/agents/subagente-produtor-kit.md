@@ -1,6 +1,6 @@
 ---
 name: subagente-produtor-kit
-description: Unidade de fan-out paralelo que produz 1 kit inteiro (kit-consultor OU kit-distribuidor) de ponta a ponta — compilador-kit (renderiza as 10 copies compartilhadas em 10 PNGs 1080x1350 + 10 textos de WhatsApp, via HTML/CSS + Playwright screenshot, sem API) → validar-kit.py → auto-registro em pool-materiais.py. Despachado por /produzir-comunicacao-completa dentro de um lote, 1 subagente por kit, DEPOIS que output/<slug>/kits/copies.json já foi gerado pelo orquestrador.
+description: Unidade de fan-out paralelo que produz 1 kit inteiro (kit-consultor OU kit-distribuidor) de ponta a ponta — compilador-kit (renderiza as 10 copies compartilhadas em 10 PNGs 1080x1350 + 10 textos de WhatsApp, via HTML/CSS + Playwright screenshot, sem API) → validar-kit.py → auto-registro em orquestrar-pool-materiais.py. Despachado por /produzir-comunicacao-completa dentro de um lote, 1 subagente por kit, DEPOIS que output/<slug>/kits/copies.json já foi gerado pelo orquestrador.
 model: inherit
 ---
 
@@ -20,7 +20,7 @@ vez, pelo orquestrador antes do fan-out) — você nunca escreve copy, nunca inv
 - `<slug>` do projeto e `<kit>` ∈ {`kit-consultor`, `kit-distribuidor`}
 - `<pasta>` — pasta de destino em `output/<slug>/` (opcional; default = `<kit>`). Só é
   diferente quando o orquestrador (`/gerar-kit-consultor`/`/gerar-kit-distribuidor`) já
-  resolveu uma versão regenerada via `pool-materiais.py --proxima-pasta <kit>` (ex.:
+  resolveu uma versão regenerada via `orquestrar-pool-materiais.py --proxima-pasta <kit>` (ex.:
   `"kit-consultor-v2"`, porque já existe esse kit entregue anteriormente) — **REGRA 11
   do `AGENTS.md`: nunca escreva em uma pasta que já tenha material entregue**. `<kit>`
   continua fixo (define CTA/assinatura); só `<pasta>` muda entre gerações.
@@ -51,8 +51,8 @@ vez, pelo orquestrador antes do fan-out) — você nunca escreve copy, nunca inv
    (recompactar, ajustar texto, re-renderizar o item faltante via `compilador-kit`) e
    repita o passo 2 até passar ou esgotar 3 tentativas locais.
 4. Auto-registre (sempre pela `<pasta>` real, nunca por `<kit>` fixo):
-   - Sucesso: `python scripts/pool-materiais.py <slug> --registrar <pasta> --sucesso`
-   - Falha: `python scripts/pool-materiais.py <slug> --registrar <pasta> --falha "<motivo>"`
+   - Sucesso: `python scripts/orquestrar-pool-materiais.py <slug> --registrar <pasta> --sucesso`
+   - Falha: `python scripts/orquestrar-pool-materiais.py <slug> --registrar <pasta> --falha "<motivo>"`
 5. Não invoque `revisor-marca` você mesmo.
 
 ## Limites

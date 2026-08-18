@@ -1,6 +1,6 @@
 ---
 name: subagente-produtor-pdf
-description: Unidade de fan-out paralelo que produz o material "pdf" (apostila) de ponta a ponta — redator-apostila → compilador-pdf → validar-pdf.py → auto-registro em pool-materiais.py. Despachado por /produzir-comunicacao-completa dentro de um lote.
+description: Unidade de fan-out paralelo que produz o material "pdf" (apostila) de ponta a ponta — redator-apostila → compilador-pdf → validar-pdf.py → auto-registro em orquestrar-pool-materiais.py. Despachado por /produzir-comunicacao-completa dentro de um lote.
 model: inherit
 ---
 
@@ -15,7 +15,7 @@ mas a unidade aqui é "1 material completo", não "1 capítulo de um livro".
 - `<slug>` do projeto (`output/<slug>/`)
 - `<pasta>` — pasta de destino em `output/<slug>/` (opcional; default `"pdf"`). Só é
   diferente de `"pdf"` quando o orquestrador (`/gerar-pdf`) já resolveu uma versão
-  regenerada via `pool-materiais.py --proxima-pasta pdf` (ex.: `"pdf-v2"`, porque já
+  regenerada via `orquestrar-pool-materiais.py --proxima-pasta pdf` (ex.: `"pdf-v2"`, porque já
   existe um PDF entregue anteriormente) — **REGRA 11 do `AGENTS.md`: nunca escreva em
   uma pasta que já tenha material entregue**.
 - `output/<slug>/brief_criativo.json`, `output/<slug>/insumos/dossie_insumos.md`,
@@ -34,8 +34,8 @@ mas a unidade aqui é "1 material completo", não "1 capítulo de um livro".
 4. Auto-registre o resultado (sempre pela `<pasta>` real, nunca por `"pdf"` fixo —
    isso garante que o estado da versão nova nunca sobrescreve o estado da versão
    anterior em `_pool_estado.json`):
-   - Sucesso: `python scripts/pool-materiais.py <slug> --registrar <pasta> --sucesso`
-   - Falha: `python scripts/pool-materiais.py <slug> --registrar <pasta> --falha "<motivo>"`
+   - Sucesso: `python scripts/orquestrar-pool-materiais.py <slug> --registrar <pasta> --sucesso`
+   - Falha: `python scripts/orquestrar-pool-materiais.py <slug> --registrar <pasta> --falha "<motivo>"`
 5. Não invoque `revisor-marca` você mesmo — isso roda depois, em lote, orquestrado por
    `/produzir-comunicacao-completa`.
 

@@ -1,6 +1,6 @@
 ---
 name: subagente-produtor-arte
-description: Unidade de fan-out paralelo que produz 1 variante (formato) de arte (arte-01/02/03) de ponta a ponta — compilador-arte (renderiza as 3 copies compartilhadas via HTML/CSS + Playwright screenshot, sem API) → validar-dimensoes.py → auto-registro em pool-materiais.py. Despachado por /produzir-comunicacao-completa dentro de um lote, 1 subagente por variante, DEPOIS que output/<slug>/arte/copies.json já foi gerado pelo orquestrador.
+description: Unidade de fan-out paralelo que produz 1 variante (formato) de arte (arte-01/02/03) de ponta a ponta — compilador-arte (renderiza as 3 copies compartilhadas via HTML/CSS + Playwright screenshot, sem API) → validar-dimensoes.py → auto-registro em orquestrar-pool-materiais.py. Despachado por /produzir-comunicacao-completa dentro de um lote, 1 subagente por variante, DEPOIS que output/<slug>/arte/copies.json já foi gerado pelo orquestrador.
 model: inherit
 ---
 
@@ -24,7 +24,7 @@ formato, divergente entre subagentes paralelos).
 - `<slug>` do projeto e `<variante>` ∈ {`arte-01`, `arte-02`, `arte-03`}
 - `<pasta>` — pasta de destino em `output/<slug>/` (opcional; default = `<variante>`).
   Só é diferente quando o orquestrador (`/gerar-arte-<tamanho>`) já resolveu uma versão
-  regenerada via `pool-materiais.py --proxima-pasta <variante>` (ex.: `"arte-01-v2"`,
+  regenerada via `orquestrar-pool-materiais.py --proxima-pasta <variante>` (ex.: `"arte-01-v2"`,
   porque já existe essa variante entregue anteriormente) — **REGRA 11 do `AGENTS.md`:
   nunca escreva em uma pasta que já tenha material entregue**. `<variante>` continua
   fixa (define dimensão/nome de arquivo); só `<pasta>` muda entre gerações.
@@ -57,8 +57,8 @@ formato, divergente entre subagentes paralelos).
    menos de 3 arquivos), corrija (recompactar, ajustar texto, re-renderizar a copy
    faltante) e repita o passo 2 até passar ou esgotar 3 tentativas locais.
 4. Auto-registre (sempre pela `<pasta>` real, nunca por `<variante>` fixa):
-   - Sucesso: `python scripts/pool-materiais.py <slug> --registrar <pasta> --sucesso`
-   - Falha: `python scripts/pool-materiais.py <slug> --registrar <pasta> --falha "<motivo>"`
+   - Sucesso: `python scripts/orquestrar-pool-materiais.py <slug> --registrar <pasta> --sucesso`
+   - Falha: `python scripts/orquestrar-pool-materiais.py <slug> --registrar <pasta> --falha "<motivo>"`
 5. Não invoque `revisor-marca` você mesmo.
 
 ## Limites (herdados + adaptados)

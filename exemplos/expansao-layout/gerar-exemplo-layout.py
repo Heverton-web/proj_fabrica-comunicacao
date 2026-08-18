@@ -10,7 +10,7 @@ somente como fonte de insumo (copies em exemplos/expansao-layout/copies.json e a
 imagem do produto via config_projeto.json), e escreve apenas em exemplos/expansao-layout/.
 
 Uso:
-    python exemplos/expansao-layout/gerar_exemplo.py
+    python exemplos/expansao-layout/gerar-exemplo-layout.py
 """
 
 import sys

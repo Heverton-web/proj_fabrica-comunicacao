@@ -72,7 +72,7 @@ insumos ou escolhas sem refazer o `/esbocar` inteiro.
 **REGRA 4 — Auto-Correção Interna:** desvios estruturais ou de formatação detectados
 pelos scripts de validação (`validar-*.py`, `auditar-projeto.py`) são corrigidos
 internamente pelo skill/subagente responsável antes da entrega — nunca surfaçados ao
-operador como bloqueio, salvo esgotamento de tentativas (ver `pool-materiais.py`).
+operador como bloqueio, salvo esgotamento de tentativas (ver `orquestrar-pool-materiais.py`).
 
 **REGRA 5 — Universalidade de Modelo:** todo arquivo em `.claude/agents/*.md` declara
 `model: inherit` no frontmatter. Nunca fixar um modelo específico — a fábrica é
@@ -143,7 +143,7 @@ comando `/gerar-<material>` que encontrar uma pasta de material já entregue
 cria uma nova pasta numerada (`<tipo>-v2`, `<tipo>-v3`...) e preserva todas as
 versões anteriores intactas, lado a lado, sempre visíveis em `output/<slug>/`. A
 resolução de qual pasta usar é **sempre** feita pelo script determinístico
-`pool-materiais.py --proxima-pasta <tipo>` (ver `SPEC_COMANDOS.md`, seção
+`orquestrar-pool-materiais.py --proxima-pasta <tipo>` (ver `SPEC_COMANDOS.md`, seção
 "Resolver pasta de destino" de `/gerar-pdf`) — nunca por julgamento do agente sobre
 se é "seguro" sobrescrever. `manifesto_materiais.json` (via `empacotar-projeto.py`)
 lista automaticamente toda versão encontrada em disco, não só a mais recente. Motivo:
@@ -161,7 +161,7 @@ brand/design-system-conexao.json (FIXO, mesmo para todo projeto)
 /kit-completo-<publico> (Passo 1 alternativo — preset: público + materiais fixos, entrevista adaptada; mesmo fluxo a seguir)
    └─► analista-insumos ─► diretor-de-arte ─► config_projeto.json + brief_criativo.json
                                                           │
-/produzir-comunicacao-completa <slug> (Passo 2 — autônomo, lote 4, pool-materiais.py)
+/produzir-comunicacao-completa <slug> (Passo 2 — autônomo, lote 4, orquestrar-pool-materiais.py)
    ├─► redator-apostila      ─► compilador-pdf     ─► output/<slug>/pdf/          (interim: usa o mesmo brand fixo)
    ├─► redator-landing       ─► compilador-html    ─► output/<slug>/landing-page/
    ├─► redator-apresentacao  ─► compilador-html    ─► output/<slug>/apresentacao/

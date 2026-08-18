@@ -12,7 +12,7 @@ apareca como string literal dentro de scripts/compilar-*.py e um sinal forte de
 hardcoding especifico de projeto que nao vai generalizar.
 
 Uso:
-    python scripts/preflight-compatibilidade-slug.py <slug> [--estrito]
+    python scripts/verificar-compatibilidade-slug.py <slug> [--estrito]
 
 Exit code 0 = nenhum hardcoding suspeito encontrado (ou aviso, sem --estrito).
 Exit code 1 = hardcoding suspeito encontrado com --estrito.

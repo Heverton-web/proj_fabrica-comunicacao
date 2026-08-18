@@ -16,12 +16,12 @@ despacha em LOTES, consultando este script para saber:
 Estado persistido em: output/<slug>/_pool_estado.json
 
 Uso:
-    python scripts/pool-materiais.py <slug> --plano [--lote 4]
-    python scripts/pool-materiais.py <slug> --proximo-lote [--lote 4]
-    python scripts/pool-materiais.py <slug> --pendentes [--estrito]
-    python scripts/pool-materiais.py <slug> --registrar pdf --sucesso
-    python scripts/pool-materiais.py <slug> --registrar arte-01 --falha "playwright timeout"
-    python scripts/pool-materiais.py <slug> --status
+    python scripts/orquestrar-pool-materiais.py <slug> --plano [--lote 4]
+    python scripts/orquestrar-pool-materiais.py <slug> --proximo-lote [--lote 4]
+    python scripts/orquestrar-pool-materiais.py <slug> --pendentes [--estrito]
+    python scripts/orquestrar-pool-materiais.py <slug> --registrar pdf --sucesso
+    python scripts/orquestrar-pool-materiais.py <slug> --registrar arte-01 --falha "playwright timeout"
+    python scripts/orquestrar-pool-materiais.py <slug> --status
 """
 
 import argparse

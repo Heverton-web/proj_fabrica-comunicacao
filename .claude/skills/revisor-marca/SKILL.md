@@ -140,11 +140,11 @@ componente sem reinterpretação).
 Se um defeito for corrigível sem re-escrever o conteúdo do zero (ex.: hex hardcoded que
 devia ser variável, texto de arte que excede o limite de caracteres), corrija você
 mesmo e rode a validação de novo. Só escale para `esgotado` via
-`pool-materiais.py --registrar <tipo> --falha "<motivo>"` depois de 3 tentativas.
+`orquestrar-pool-materiais.py --registrar <tipo> --falha "<motivo>"` depois de 3 tentativas.
 
 ### 5. Aprovar
 
-Se tudo passar: `pool-materiais.py --registrar <tipo> --sucesso`. Acrescente ao
+Se tudo passar: `orquestrar-pool-materiais.py --registrar <tipo> --sucesso`. Acrescente ao
 parecer (`output/<slug>/revisao/parecer_revisao.json`, ver "Saída" abaixo): decisões de
 design tomadas (o que foi extraído/ajustado e por quê) e sugestões de legenda de
 compartilhamento (para artes/landing) — isso alimenta `manifesto_materiais.json` via

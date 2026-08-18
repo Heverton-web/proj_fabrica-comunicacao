@@ -199,10 +199,10 @@ def verificar():
                         f"({agente_dispatch}) ausente na secao do comando - "
                         f"material do preset nunca sera despachado."
                     )
-            if "--proxima-pasta" not in secao or "pool-materiais.py" not in secao:
+            if "--proxima-pasta" not in secao or "orquestrar-pool-materiais.py" not in secao:
                 problemas.append(
                     f"[kit-completo-consultor] resolucao de pasta por "
-                    f"'pool-materiais.py <slug> --proxima-pasta <tipo>' ausente na "
+                    f"'orquestrar-pool-materiais.py <slug> --proxima-pasta <tipo>' ausente na "
                     f"secao do comando (REGRA 11 - nunca sobrescrever)."
                 )
         else:
@@ -231,6 +231,32 @@ def verificar():
                         f"distribuicao nao auto-atualiza neste ciclo."
                     )
 
+    problemas.extend(verificar_nomenclatura_scripts())
+
+    return problemas
+
+
+# Convencao: docs/CONVENCAO-NOMENCLATURA-SCRIPTS.md. Modulos importados (nunca
+# executados como CLI) e prefixados com "_" ficam isentos do padrao tipo-oque.py.
+PADRAO_NOME_SCRIPT = re.compile(r"^[a-z]+(-[a-z0-9]+)+\.py$")
+EXCECOES_NOMENCLATURA = {
+    "_arte_common.py", "_icones_conexao.py", "_tipos_comuns.py",
+    "parametros_projeto.py", "pdf_typst.py",
+}
+
+
+def verificar_nomenclatura_scripts():
+    problemas = []
+    for caminho in sorted(DIR_SCRIPTS.glob("*.py")):
+        nome = caminho.name
+        if nome in EXCECOES_NOMENCLATURA:
+            continue
+        if not PADRAO_NOME_SCRIPT.match(nome):
+            problemas.append(
+                f"[nomenclatura] scripts/{nome} nao segue o padrao tipo-oque.py "
+                f"(ver docs/CONVENCAO-NOMENCLATURA-SCRIPTS.md) e nao esta na lista "
+                f"de excecoes documentadas."
+            )
     return problemas
 
 

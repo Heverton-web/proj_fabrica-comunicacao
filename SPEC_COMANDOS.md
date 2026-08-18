@@ -220,7 +220,7 @@ foi interrompida antes do Passo 6 dele — gravação e preparação), invoque
 ### Passo 1 — Pre-flight de compatibilidade de slug
 
 ```
-python scripts/preflight-compatibilidade-slug.py <slug> --estrito
+python scripts/verificar-compatibilidade-slug.py <slug> --estrito
 ```
 
 Roda uma única vez, antes de qualquer fan-out, para detectar se algum
@@ -233,7 +233,7 @@ subagentes descubram o mesmo problema de forma redundante durante a produção r
 ### Passo 2 — Plano de lotes
 
 ```
-python scripts/pool-materiais.py <slug> --plano --lote 4
+python scripts/orquestrar-pool-materiais.py <slug> --plano --lote 4
 ```
 
 Imprime os materiais de `materiais_selecionados` divididos em lotes de até 4.
@@ -281,14 +281,14 @@ Para cada lote do plano, **nesta ordem, sem pular etapas**:
    - `kit-consultor`/`kit-distribuidor` → `subagente-produtor-kit` (um por kit —
      requer que o Passo 2.7 já tenha gerado `kits/copies.json`)
 2. Aguarde **todos** os subagentes do lote terminarem (cada um já auto-registra sucesso
-   ou falha via `pool-materiais.py --registrar`).
-3. Só então consulte `python scripts/pool-materiais.py <slug> --proximo-lote --lote 4`
+   ou falha via `orquestrar-pool-materiais.py --registrar`).
+3. Só então consulte `python scripts/orquestrar-pool-materiais.py <slug> --proximo-lote --lote 4`
    e despache o próximo lote.
 
 Depois de todos os lotes planejados, drene pendentes:
 
 ```
-python scripts/pool-materiais.py <slug> --pendentes --lote 4
+python scripts/orquestrar-pool-materiais.py <slug> --pendentes --lote 4
 ```
 
 Retentar com o backoff indicado (15s × 2^tentativas, máx. 240s), máximo 3 tentativas
@@ -427,7 +427,7 @@ Para **cada material** do conjunto final montado no passo 4 acima, resolva a pas
 real de destino em disco **antes de despachar qualquer subagente**:
 
 ```
-python scripts/pool-materiais.py <slug> --proxima-pasta <tipo>
+python scripts/orquestrar-pool-materiais.py <slug> --proxima-pasta <tipo>
 ```
 
 Isso imprime `<tipo>` sem sufixo se `output/<slug>/<tipo>/` ainda não existir (1ª
@@ -514,7 +514,7 @@ e "Procedimento (despacho)" de `/gerar-pdf` acima, trocando o material principal
    resultado da entrevista" de `/gerar-pdf`).
 3. Para cada variante resolvida no passo 1, resolva a pasta de destino (**"Resolver
    pasta de destino" de `/gerar-pdf` acima — REGRA 11 do `AGENTS.md`, nunca
-   sobrescrever**): `python scripts/pool-materiais.py <slug> --proxima-pasta
+   sobrescrever**): `python scripts/orquestrar-pool-materiais.py <slug> --proxima-pasta
    <variante>`. Guarde o par `(variante, pasta)` de cada uma.
 4. Para cada par `(variante, pasta)`, execute o "Procedimento (despacho)" do comando
    específico correspondente abaixo (`/gerar-arte-1080x1080`,
@@ -547,7 +547,7 @@ primeiro a **entrevista de regeneração** e "Aplicar resultado da entrevista" d
 `/gerar-pdf` acima, trocando o material principal `pdf` por `arte-01` (a pergunta 5
 sobre edição só se aplica se `config_projeto.edicao` já existir); em seguida resolva a
 pasta de destino (**"Resolver pasta de destino" de `/gerar-pdf` acima — REGRA 11 do
-`AGENTS.md`**): `python scripts/pool-materiais.py <slug> --proxima-pasta arte-01`. Se
+`AGENTS.md`**): `python scripts/orquestrar-pool-materiais.py <slug> --proxima-pasta arte-01`. Se
 chamado **pelo guarda-chuva** `/gerar-arte`, a entrevista e a pasta já foram
 resolvidas — pule direto para o despacho abaixo usando a `<pasta>` recebida.
 
@@ -640,7 +640,7 @@ e "Procedimento (despacho)" de `/gerar-pdf` acima, trocando o material principal
    de `/gerar-pdf` acima, trocando o material principal `pdf` por `kit-consultor`
    (a pergunta 5 sobre edição só se aplica se `config_projeto.edicao` já existir).
 2. Resolva a pasta de destino (**"Resolver pasta de destino" de `/gerar-pdf` acima —
-   REGRA 11 do `AGENTS.md`**): `python scripts/pool-materiais.py <slug>
+   REGRA 11 do `AGENTS.md`**): `python scripts/orquestrar-pool-materiais.py <slug>
    --proxima-pasta kit-consultor`.
 3. Se `kit-consultor` não estiver em `config_projeto.materiais_selecionados`,
    adicione-o.
@@ -804,7 +804,7 @@ Para **cada material** do preset, resolva a pasta real de destino **antes de
 despachar qualquer subagente**:
 
 ```
-python scripts/pool-materiais.py <slug> --proxima-pasta <tipo>
+python scripts/orquestrar-pool-materiais.py <slug> --proxima-pasta <tipo>
 ```
 
 `<tipo>` ∈ {`pdf`, `landing-page`, `apresentacao`, `kit-consultor` (preset consultor),
@@ -857,7 +857,7 @@ Variante do preset **distribuidores** — mesmo procedimento de
   "Rentabilidade para o seu negócio"; apresentação idem);
 - entrevista: reforçar que o texto-base deve conter dados de rentabilidade
   (margem/preço/condições) se existirem — ausência vira "faltante" (REGRA 6);
-- `pool-materiais.py --proxima-pasta` para `kit-distribuidor` (nunca sobrescrever,
+- `orquestrar-pool-materiais.py --proxima-pasta` para `kit-distribuidor` (nunca sobrescrever,
   REGRA 11).
 
 ---
@@ -877,5 +877,5 @@ acima, trocando apenas o preset:
   este produto");
 - entrevista: **não perguntar** elementos decorativos (sem kits, sem artes) —
   gravar `config_projeto.elementos_decorativos` = `true` por default;
-- `pool-materiais.py --proxima-pasta` para `pdf`, `landing-page` e `apresentacao`
+- `orquestrar-pool-materiais.py --proxima-pasta` para `pdf`, `landing-page` e `apresentacao`
   (nunca sobrescrever, REGRA 11).

@@ -81,7 +81,7 @@ def checar_r9(slug, tipos):
     """R9: todo material do lote terminou concluido_autonomo ou esgotado."""
     estado_path = DIR_OUTPUT / slug / "_pool_estado.json"
     if not estado_path.exists():
-        return False, "_pool_estado.json nao encontrado - pool-materiais.py ainda nao rodou"
+        return False, "_pool_estado.json nao encontrado - orquestrar-pool-materiais.py ainda nao rodou"
     estado = json.loads(estado_path.read_text(encoding="utf-8"))
     materiais = estado.get("materiais", {})
     nao_finalizados = [t for t in tipos

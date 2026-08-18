@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Helper compartilhado por pool-materiais.py, auditar-projeto.py e
+Helper compartilhado por orquestrar-pool-materiais.py, auditar-projeto.py e
 empacotar-projeto.py: separa "tipo" (qual validador/dimensao/CTA se aplica) de
 "pasta" (nome real do diretorio em output/<slug>/, que pode ser uma versao
 regenerada por /gerar-<material> — ver REGRA 11 do AGENTS.md).

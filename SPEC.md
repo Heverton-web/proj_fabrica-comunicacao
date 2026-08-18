@@ -19,7 +19,7 @@ procedimento completo e universal (qualquer harness) de cada comando vive em
 | R7 | Landing page e apresentação: HTML estático autocontido, sem erro de console no Playwright, sem asset quebrado. Ver `SPEC_HTML.md`. |
 | R8 | Arte PNG: dimensão pixel-perfect exata por variante (1080×1080 / 1080×1350 / 1080×1920), peso <1MB. Ver `SPEC_ARTE.md`. |
 | R9 | Todo material selecionado em `config_projeto.json` termina `concluido_autonomo` ou `esgotado` — nunca fica silenciosamente ausente do relatório final. |
-| R10 | Fan-out em lote de 4 (`pool-materiais.py`, `LOTE_PADRAO = 4`) — nunca despachar todos os subagentes de uma vez. |
+| R10 | Fan-out em lote de 4 (`orquestrar-pool-materiais.py`, `LOTE_PADRAO = 4`) — nunca despachar todos os subagentes de uma vez. |
 | R11 | Toda entrega final produz: decisões de design tomadas, informações faltantes, sugestões de legenda/CTA (REGRA 6). `revisor-marca` acumula essas 3 listas em `revisao/parecer_revisao.json`; `empacotar-projeto.py` as consolida em `manifesto_materiais.json`. |
 | R12 | `output/<slug>/` segue exatamente: `pdf/`, `landing-page/`, `apresentacao/`, `arte-01/`, `arte-02/`, `arte-03/`, `textos/`, `kit-consultor/`, `kit-distribuidor/` — nunca aninhado por marca/data. |
 | R13 | Kit do Consultor/Distribuidor: 5 tons fixos × 2 itens, cada um com PNG 1080×1350 pixel-perfect (<1MB) + copy + texto de WhatsApp — 10 de cada por kit. As 10 copies são compartilhadas entre os 2 kits (idênticas exceto CTA/assinatura). Ver `SPEC_KITS.md`. |
@@ -34,7 +34,7 @@ aguardando_revisao ──(revisor-marca reprova, REGRA 4 auto-correção)──�
 em_producao ──(3 tentativas esgotadas)──► esgotado
 ```
 
-Estado persistido em `output/<slug>/_pool_estado.json`, gerido por `scripts/pool-materiais.py`
+Estado persistido em `output/<slug>/_pool_estado.json`, gerido por `scripts/orquestrar-pool-materiais.py`
 (porte de `pool-capitulos.py` da referência — mesma interface CLI, unidade = 1 material).
 
 ## Fluxo de 2 passos
@@ -70,12 +70,12 @@ Ao final da rodada 4, `/esbocar`:
 ### Passo 2 — `/produzir-comunicacao-completa <slug>` (autônomo)
 
 1. `parametros_projeto.py --validar` (R2).
-2. `pool-materiais.py <slug> --plano --lote 4` → plano de lotes.
+2. `orquestrar-pool-materiais.py <slug> --plano --lote 4` → plano de lotes.
 2.5/2.7. Se `arte-0N`/`kit-*` estiver selecionado, gera a copy compartilhada
    (`arte/copies.json` / `kits/copies.json`) **uma única vez**, inline, ANTES de
    despachar qualquer subagente de arte/kit — nunca dentro do subagente (ver
    `SPEC_ARTE.md`/`SPEC_KITS.md`).
-3. Para cada lote: despachar `subagente-produtor-<tipo>` de todos os materiais do lote em paralelo, aguardar todos terminarem, cada um roda seu `compilador-*` → `validar-*.py` → auto-registra via `pool-materiais.py --registrar <tipo> --sucesso|--falha` (`redator-*` só roda dentro do subagente para tipos SEM copy compartilhada — pdf, landing-page, apresentacao, textos).
+3. Para cada lote: despachar `subagente-produtor-<tipo>` de todos os materiais do lote em paralelo, aguardar todos terminarem, cada um roda seu `compilador-*` → `validar-*.py` → auto-registra via `orquestrar-pool-materiais.py --registrar <tipo> --sucesso|--falha` (`redator-*` só roda dentro do subagente para tipos SEM copy compartilhada — pdf, landing-page, apresentacao, textos).
 4. Drenar pendentes com backoff exponencial (15s×2^n, máx. 240s, máx. 3 tentativas).
 5. `revisor-marca` audita o lote de materiais concluídos (fidelidade de fonte + marca).
 6. `auditar-projeto.py <slug> --estrito` — gate determinístico final (R4, R5, R9).

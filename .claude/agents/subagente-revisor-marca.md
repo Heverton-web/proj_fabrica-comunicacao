@@ -28,7 +28,7 @@ Para cada tipo de material do seu lote (e só eles):
 2. Se `revisor-marca` aplicar auto-correção (REGRA 4), confirme que a validação passa
    de novo antes de registrar sucesso.
 3. Ao final de cada material do lote, o próprio skill `revisor-marca` já chama
-   `pool-materiais.py --registrar <tipo> --sucesso|--falha`.
+   `orquestrar-pool-materiais.py --registrar <tipo> --sucesso|--falha`.
 
 ## Limites
 

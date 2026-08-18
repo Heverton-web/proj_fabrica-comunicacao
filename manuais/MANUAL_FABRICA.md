@@ -44,7 +44,7 @@ O estado de cada projeto é sempre gravado em arquivos JSON dentro da pasta do p
 | **Brief criativo** (`brief_criativo.json`) | Mensagem central, hierarquia de conteúdo, tom, público e mapeamento de conteúdo por material, escrito pelo `diretor-de-arte`. |
 | **Design system fixo** | Paleta, tipografia e componentes visuais da marca Conexão, definidos uma vez em `brand/design-system-conexao.json` e aplicados sempre da mesma forma pela skill `aplicador-marca-conexao` — não é reextraído a cada projeto. |
 | **Material** | Cada um dos 9 tipos de entregável (pdf, landing-page, apresentacao, arte-01/02/03, textos, kit-consultor, kit-distribuidor). |
-| **Lote (pool)** | A produção roda em paralelo, em lotes de até 4 materiais por vez, orquestrada por `pool-materiais.py`. |
+| **Lote (pool)** | A produção roda em paralelo, em lotes de até 4 materiais por vez, orquestrada por `orquestrar-pool-materiais.py`. |
 | **Manifesto** (`manifesto_materiais.json`) | Relatório final de tudo que foi produzido: status, caminho, decisões de design, faltantes e sugestões de legenda/CTA por material. |
 
 ## Regras que todo operador deveria conhecer
