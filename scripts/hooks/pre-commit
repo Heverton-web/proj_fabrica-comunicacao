@@ -1,0 +1,48 @@
+#!/bin/bash
+# Pre-commit hook: Blindagem de Segredos
+# Bloqueia commits que contenham padrões conhecidos de API keys, chaves PEM, tokens
+# Executa ANTES de testes (falha rápida)
+
+set -e
+
+# Cores para output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m' # No Color
+
+# Padrões de segredo (regex)
+PATTERNS=(
+    "sk-[a-zA-Z0-9_-]{20,}"              # Anthropic API keys
+    "-----BEGIN [A-Z ]*PRIVATE KEY-----" # PEM private keys
+    "AKIA[0-9A-Z]{16}"                   # AWS access keys
+    "ghp_[a-zA-Z0-9]{36}"                # GitHub Personal Access Token
+    "xox[baprs]-[0-9a-zA-Z-]+"           # Slack tokens
+)
+
+# Compilar regex pattern
+COMBINED_PATTERN=$(IFS='|'; echo "${PATTERNS[*]}")
+
+# Procurar padrões no staged content
+SECRETS_FOUND=0
+while IFS= read -r file; do
+    if git diff --cached --unified=0 -- "$file" | grep -E "$COMBINED_PATTERN" > /dev/null 2>&1; then
+        echo -e "${RED}[BLOQUEADO]${NC} Possível segredo detectado em: ${YELLOW}$file${NC}"
+        SECRETS_FOUND=1
+    fi
+done < <(git diff --cached --name-only)
+
+if [ $SECRETS_FOUND -eq 1 ]; then
+    echo ""
+    echo -e "${RED}Commit bloqueado por motivos de segurança.${NC}"
+    echo "Por favor, revise o arquivo(s) acima e remova qualquer informação sensível."
+    echo ""
+    echo "Para contornar este gate (NÃO RECOMENDADO):"
+    echo "  git commit --no-verify"
+    echo ""
+    exit 1
+fi
+
+# Gate passou — continuar com testes
+echo -e "${GREEN}[OK]${NC} Gate de segredos passou."
+exit 0

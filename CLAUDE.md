@@ -16,7 +16,7 @@ Infraestrutura em `.token-economy/` (submodule). Ver [`docs/prompt-mestre-token-
 4. **Delegação:** subagentes para buscas/edições extensas (nunca para prosa criativa dos redatores).
 5. **Build ISENTO:** pipelines de compilação (pandoc, typst, playwright, scripts/*.py) são liberados e obrigatórios, nunca comprimidos na saída de erro.
 6. **Fidelidade de conteúdo:** `output/**`, `config_projeto.json`, `brief_criativo.json` e scripts de auditoria (`scripts/*.py --estrito`) são isentos de compressão.
-7. **Auto-commit/push:** autorizado para este projeto — commitar e pushar ao concluir uma tarefa, sem precisar reconfirmar a cada vez.
+7. **Auto-commit/push:** autorizado para este projeto — commitar e pushar ao concluir uma tarefa, sem precisar reconfirmar a cada vez. **Gate de segurança ativo:** pre-commit hook bloqueia automaticamente qualquer commit contendo padrão de API key (Anthropic `sk-*`, AWS `AKIA*`, GitHub `ghp_*`, Slack `xox*`) ou chave PEM. Para ativar em nova máquina: `powershell -ExecutionPolicy Bypass -File scripts/setup-hooks.ps1`.
 8. **Skills disponíveis** (junctions em `.claude/skills/`, fonte em `.token-economy/`): `lean-ctx`, `headroom`, `caveman`, `rtk-memory`, `pre-flight-check`, `calcular-gastos-sessao`, `fable-method`, `fable-judge`, `self-learning`.
 
 ---
