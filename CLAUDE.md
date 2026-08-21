@@ -43,3 +43,12 @@ instrução.
 - **Auto-Correção Interna:** Erros de validação devem ser autocorrigidos autonomamente antes da entrega final.
 - **Árbitro Determinístico:** Validações visuais e estruturais são sempre regidas pelos scripts em `scripts/*.py` (`--estrito`).
 - **Hooks de Grafo:** O Claude Code utiliza os hooks `PostToolUse`/`SessionStart` configurados em `.claude/settings.json` para atualização do `code-review-graph`.
+
+---
+
+## RTK SCRATCHPAD
+
+Aprendizados sessão-por-sessão, padrões confirmados e ajustes táticos são documentados
+em [`RTK-SCRATCHPAD.md`](./RTK-SCRATCHPAD.md) (arquivo separado). Este arquivo pode
+crescer livremente sem afetar o prefixo de cache de `CLAUDE.md`. Ver arquivo para
+entradas datadas.
