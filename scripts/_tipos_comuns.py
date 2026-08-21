@@ -14,9 +14,19 @@ duplicado.
 Convencao de versionamento (mesma do slug de projeto inteiro no /esbocar):
 1a geracao = pasta sem sufixo (ex.: "pdf"); regeneracoes seguintes = "pdf-v2",
 "pdf-v3"... Nunca sobrescreve uma pasta ja entregue.
+
+Modulo de Resiliencia de Rede (Retry com Backoff):
+Fornece retry automatico com backoff exponencial + jitter para operacoes que podem
+falhar temporariamente (HTTP, timeouts do browser, etc).
+Reaproveita stdlib: time, random, urllib, itertools.
 """
 
 import re
+import time
+import random
+from urllib.error import HTTPError, URLError
+from urllib.request import urlopen
+from itertools import count
 
 RE_VERSAO = re.compile(r"^(.+)-v(\d+)$")
 
@@ -99,3 +109,83 @@ def erros_preset_kit_completo(config):
                 f"estar em materiais_selecionados"
             )
     return erros
+
+
+# === RESILIENCIA DE REDE ===
+
+def http_get_with_retry(url, max_retries=3, timeout=10, verbose=False):
+    """Fetch HTTP com retry exponencial + jitter para falhas transitórias.
+
+    Retorna: bytes do response body
+    Levanta: URLError/HTTPError se todos os retries falharem
+
+    Padrões retentáveis:
+    - HTTPError 429 (Too Many Requests), 502 (Bad Gateway), 503 (Service Unavailable)
+    - URLError de timeout
+
+    Padrões NÃO retentáveis (levantam imediatamente):
+    - HTTPError 404, 403, 401, 400
+    - Qualquer outro erro não-transitório
+    """
+    for attempt in range(max_retries):
+        try:
+            if verbose:
+                print(f"[HTTP GET] {url} (tentativa {attempt + 1}/{max_retries})")
+            response = urlopen(url, timeout=timeout)
+            return response.read()
+        except HTTPError as e:
+            if e.code in (429, 502, 503):
+                if attempt == max_retries - 1:
+                    raise
+                wait = 0.5 * (2 ** attempt) + random.uniform(0, 0.3)
+                if verbose:
+                    print(f"  → Erro {e.code} (transitório), aguardando {wait:.2f}s...")
+                time.sleep(wait)
+            else:
+                if verbose:
+                    print(f"  → Erro {e.code} (não-retentável), falhando imediatamente")
+                raise
+        except (URLError, TimeoutError) as e:
+            if attempt == max_retries - 1:
+                raise
+            wait = 0.5 * (2 ** attempt) + random.uniform(0, 0.3)
+            if verbose:
+                print(f"  → Timeout/URLError, aguardando {wait:.2f}s...")
+            time.sleep(wait)
+
+    raise URLError(f"Máximo de retries ({max_retries}) atingido para {url}")
+
+
+def playwright_goto_with_retry(page, url, max_retries=3, timeout=30000, verbose=False):
+    """Wrapper de page.goto() com retry exponencial + jitter.
+
+    Útil para contornar timeouts transitórios ao carregar URLs em Playwright.
+
+    Args:
+        page: Objeto Playwright page
+        url: URL a carregar
+        max_retries: Número máximo de tentativas
+        timeout: Timeout em ms (padrão Playwright é 30000)
+        verbose: Log de retries
+
+    Retorna: response object do page.goto()
+    Levanta: TimeoutError ou exceção original se todos retries falharem
+    """
+    for attempt in range(max_retries):
+        try:
+            if verbose:
+                print(f"[PLAYWRIGHT GOTO] {url} (tentativa {attempt + 1}/{max_retries})")
+            return page.goto(url, wait_until="networkidle", timeout=timeout)
+        except (TimeoutError, Exception) as e:
+            if "timeout" not in str(e).lower() and "connection" not in str(e).lower():
+                if verbose:
+                    print(f"  → Erro não-transitório: {type(e).__name__}")
+                raise
+            if attempt == max_retries - 1:
+                raise
+            wait = 0.5 * (2 ** attempt) + random.uniform(0, 0.3)
+            if verbose:
+                print(f"  → Timeout/conexão, aguardando {wait:.2f}s...")
+            time.sleep(wait)
+
+    raise TimeoutError(f"Máximo de retries ({max_retries}) atingido para {url}")
